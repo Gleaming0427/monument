@@ -4,6 +4,9 @@ const $ = id => document.getElementById(id);
 // One page = one building (#<id>). Its file, monuments/<id>.json (dated, sourced phases and the
 // elements to build), is written by the /monument skill when someone asks for the building.
 const SECONDS_PER_PHASE = 6;
+// The website stamps its deploy on the module URL (?v=…); monument files carry the same stamp, so a
+// cached engine and a newer monument file are never mixed.
+const version = new URL(import.meta.url).search;
 const params = new URLSearchParams(location.search);
 
 let stage = null, data = null, time = 0, playing = false, touched = false, last = performance.now(), shown = '';
@@ -29,7 +32,7 @@ function empty(id) {
 }
 
 async function open(id) {
-  const response = id ? await fetch(`monuments/${id}.json`) : null;
+  const response = id ? await fetch(`monuments/${id}.json${version}`) : null;
   if (!response?.ok) return empty(id);
   data = await response.json();
   // A monument may bring its own bricks: a module next to its file whose default export holds generators.

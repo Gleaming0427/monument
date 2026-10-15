@@ -18,6 +18,12 @@ await cp(join(root, 'site'), out, {recursive: true});
 await cp(join(root, 'kit'), join(out, 'view', 'kit'), {recursive: true});
 await copyFile(join(root, 'kit', 'viewer.html'), join(out, 'view', 'index.html'));
 await rm(join(out, 'view', 'kit', 'viewer.html'));
+// GitHub Pages lets browsers keep files for ten minutes: versioned URLs keep the viewer, its engine and
+// the monument files from two different deploys apart.
+const version = (process.env.GITHUB_SHA ?? (() => { try { return execFileSync('git', ['rev-parse', 'HEAD'], {cwd: root, encoding: 'utf8'}).trim(); } catch { return String(Date.now()); } })()).slice(0, 8);
+const stamp = async (file, pairs) => { let text = await readFile(file, 'utf8'); for (const [from, to] of pairs) { if (!text.includes(from)) throw new Error(`${from} not found in ${file}`); text = text.replaceAll(from, to); } await writeFile(file, text); };
+await stamp(join(out, 'view', 'index.html'), [['href="kit/style.css"', `href="kit/style.css?v=${version}"`], ['src="kit/app.js"', `src="kit/app.js?v=${version}"`]]);
+await stamp(join(out, 'view', 'kit', 'app.js'), [["from './builder.js'", `from './builder.js?v=${version}'`]]);
 await rm(join(out, 'collection.json'));
 const monuments = join(out, 'view', 'monuments');
 await mkdir(monuments, {recursive: true});
