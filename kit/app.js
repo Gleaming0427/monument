@@ -48,8 +48,11 @@ async function open(id) {
     if (!/^[a-z0-9-]+\.bricks\.js$/.test(data.bricks) || bricksUrl.origin !== location.origin) { data = null; return empty(id); }
     Object.assign(generators, (await import(bricksUrl)).default);
   }
+  // The requested building is the default scene. Real map context is available explicitly with
+  // `view.context: true` or the `?context` query parameter.
+  const showContext = params.has('context') || data.view?.context === true;
   document.body.classList.remove('empty');
-  stage.load(data);
+  stage.load(showContext ? data : {...data, context: undefined});
   $('name').textContent = data.name; $('place').textContent = data.place ?? '';
   document.title = `${data.name} — Monument`;
   $('model-note').textContent = data.modelNote ?? 'Simplified 3D model · sourced dates and figures.';
@@ -83,7 +86,7 @@ async function open(id) {
   });
   fitTimeline();
   $('labels').innerHTML = '';
-  for (const label of data.labels ?? []) {
+  for (const label of showContext ? data.labels ?? [] : []) {
     const span = document.createElement('span');
     span.textContent = label.text; span.dataset.at = JSON.stringify(label.at);
     $('labels').append(span);

@@ -57,10 +57,10 @@ One rule sits at the top of [`SKILL.md`](SKILL.md): **the building is the eviden
 1. **Size it**: a building, an ensemble or a whole site, with a time estimate. A whole site never starts without you.
 2. **Identify it**: name, address, historic names, sources in the local language.
 3. **Place it on the real plan**: footprints and heights from the land registry or OpenStreetMap ([references/real-plan.md](references/real-plan.md)).
-4. **Read the architecture**: four photos or more and the list of features that make it recognisable ([references/fidelity.md](references/fidelity.md)).
+4. **Read the architecture**: three useful views and the details that make it recognisable ([references/fidelity.md](references/fidelity.md)).
 5. **Write the timeline**: dated, sourced phases and construction moments ([references/format.md](references/format.md)).
 6. **Build it from bricks**: generators that turn each element into small solid pieces ([references/bricks.md](references/bricks.md)). A new kind of architecture gets a new brick.
-7. **Compare with the photos**: the finished model is captured from each photo's viewpoint (`scripts/capture.mjs`) and corrected, at least twice.
+7. **Compare with the photos**: a standard build uses one focused capture pass; publication adds the complete second pass.
 8. **Report honestly**: what is measured, documented and interpreted, and what still differs.
 
 ## The collection
@@ -112,8 +112,8 @@ site/               the website, deployed to GitHub Pages
 ## Limits
 
 - **It is only as good as the record.** A documented history and good photos give a good model; a thin record gives a short timeline, labelled as such.
-- **It is slow when it is good.** Count 30 to 90 minutes for one building, hours for an ensemble.
-- **Shapes come from bricks.** A new kind of architecture needs a new brick; the first version is a draft.
+- **A focused building is fast.** The standard workflow targets 10–20 minutes by omitting unrequested streets, neighbours and repeated publication evidence. A new complex brick may take 20–35 minutes.
+- **Shapes come from bricks.** A new kind of architecture needs a new brick; the first version states its deliberate simplifications.
 - **It is a model, not a survey.** Footprints and heights are measured; facades, roofs and the split between periods are read from sources and photos.
 
 ## Credits

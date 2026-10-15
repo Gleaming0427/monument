@@ -912,7 +912,7 @@ export function createStage(host) {
       mesh.frustumCulled = false;
       scene.add(mesh); meshes.push(mesh);
     }
-    // Real context: neighbouring buildings at their height and streets, to read the true plan.
+    // Optional real context. The app hides this layer by default so it cannot compete with the monument.
     if (data.context) {
       const block = new T.MeshStandardMaterial({color: '#3a3e50', roughness: .95, metalness: 0});
       const line = new T.LineBasicMaterial({color: '#6b7393', transparent: true, opacity: .45});

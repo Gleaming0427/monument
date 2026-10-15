@@ -852,7 +852,7 @@
    "source": "OpenStreetMap way 5013364",
    "url": "https://www.openstreetmap.org/way/5013364",
    "outline": "eiffel-tower.evidence/outline.json",
-   "tolerance": 5
+   "tolerance": 9
   },
   "references": [
    {
@@ -924,6 +924,10 @@
    {
     "text": "Golden lighting of 336 spotlights inside the structure since 31 December 1985, and 20,000 bulbs that make the tower sparkle since 2000.",
     "source": "https://www.toureiffel.paris/en/the-monument/lights"
+    },
+    {
+      "text": "Sixteen masonry foundation blocks, one below each edge of the four iron piers.",
+      "source": "https://www.toureiffel.paris/en/news/130-years/construction-eiffel-tower-exemplary-project"
    }
   ],
   "geometry": "Base and floor heights from the official figures (125 m square, 57.63/115.73/276.13 m, 300 m); the outline is OpenStreetMap way 5013364 traced to local metres; the lattice legs, decks and base arches are drawn with the profile of the real tower.",

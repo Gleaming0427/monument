@@ -24,7 +24,7 @@ if (taken) { console.error(`“${id}” is already in the collection. Rename the
 
 // The monument must pass the same checks as the gallery's CI before it leaves.
 try { run('node', [join(skill, 'scripts', 'validate.mjs'), '--strict', resolve(file)]); }
-catch (error) { console.error(error.stdout + error.stderr); console.error('This monument is still a draft: every step of SKILL.md must leave its evidence before it can be published.'); process.exit(1); }
+catch (error) { console.error(error.stdout + error.stderr); console.error('This monument does not yet pass the publication evidence gate. Complete the strict comparison and evidence before publishing.'); process.exit(1); }
 
 const meta = {title: flag('title') ?? monument.name, id, author, model, prompt, date: new Date().toISOString().slice(0, 10)};
 const files = [['monument.json', resolve(file)]];

@@ -4,8 +4,8 @@ Someone who knows the building should recognise it at first glance, find its pro
 
 ## References, before modelling
 
-- At least four photos from different directions (main front, sides, a view from above if one exists), a measured footprint or a plan, the official dimensions. Look at them for real in the browser; write down for each one the azimuth it was taken from (direction of the photographer seen from the building, in degrees from north) and roughly how high. Prefer freely licensed photos (Wikimedia Commons) and link them in `evidence.references`.
-- Write the **architectural reading**: the list of features that make the building recognisable, each with its source. For Himeji Castle: white plaster, white tile joints, kara and chidori gables placed face by face, lattice windows in pairs, a fan-shaped stone base, ridge ornaments. Every listed feature must be modelled, at least simplified. Keep it in `evidence.features`.
+- For a standard build, use at least three useful photos from two sides (main front, a side, and the best view of the roof or structure), a measured footprint or plan, and official dimensions. Publication uses four photos from three sides. Look at them for real in the browser; note the azimuth and approximate height. Prefer freely licensed photos and link them in `evidence.references`.
+- Write the **architectural reading**: at least six features that make the building recognisable, each with its source. For Himeji Castle: white plaster, white tile joints, kara and chidori gables placed face by face, lattice windows in pairs, a fan-shaped stone base, ridge ornaments. Every listed feature must be visibly modelled, at least simplified. Keep it in `evidence.features`.
 
 ## Model this building
 
@@ -18,16 +18,16 @@ Someone who knows the building should recognise it at first glance, find its pro
 ## Compare, fix, repeat
 
 1. Give each reference photo its viewpoint in `evidence.references`: `azimuth` (degrees from north, 180 = seen from the south), `elevation` (negative looks up from the foot of the building), `distance` and `target`.
-2. Run `node scripts/compare.mjs monuments/<id>.json --pass 1`. It photographs the finished model from every reference viewpoint, and the end of every phase, into `<id>.evidence/compare/pass-1/`, and records the pass in `evidence.comparisons`.
+2. For a standard build, run `node scripts/compare.mjs monuments/<id>.json --pass 1 --quick`. It photographs the finished model from every reference viewpoint and skips phase screenshots. Play the timeline once, fix the visible gaps, then rerun the same command to refresh the captures. Publication runs the command without `--quick` for two passes.
 3. Open each photo and its capture, one after the other. Write in that pass's `gaps` what differs: silhouette, proportions, number of elements, roof shapes, openings, colours, ornaments, and whether every phase reads. A photo taken from the foot of a building flattens its upper roofs: match the viewpoint before judging proportions.
-4. Fix the model, write what you changed in `fixed`, and run `--pass 2`. Repeat until only deliberate, named simplifications remain; write them in the last pass's `remaining` and in `evidence.uncertainties`.
+4. Write what you changed in `fixed`. Standard mode finishes after the refreshed first pass when only deliberate, named simplifications remain. Publication adds a second pass. Write remaining simplifications in the last pass's `remaining` and in `evidence.uncertainties`.
 
 ## Beautiful
 
 - Daylight, contrasted materials, a silhouette that reads in the final framing and during construction.
 - No floating pieces, no flickering coplanar faces, no holes, no detail below a pixel at the usual framing that turns into noise.
 - Each phase lays visible pieces, in an order that reads.
-- Context stays quiet and true: real neighbours at real heights, or nothing.
+- Context stays quiet and true when explicitly requested; otherwise show the building alone.
 
 ## Report honestly
 

@@ -15,31 +15,30 @@ Name a building in one line, and you get it rising piece by piece: on its real p
 
 ## Before anything: check your tools
 
-This skill needs four abilities. Check them first, and if one is missing, tell the user which one and stop; never fall back to modelling from memory or from a search engine's summaries:
-- **open web pages** and read them (a fetch or browser tool), not only search;
-- **look at images** (a browser, or reading image files), to see the reference photos and the captures;
-- **run Node 20+**, for the viewer and the scripts;
-- **a local Chrome or Chromium**, for `compare.mjs` and `plan.mjs` captures (set `CHROME=` if it is not found).
+The standard build needs web pages you can open and read, images you can inspect, and Node 20+. A local Chrome or Chromium makes the comparison sheet automatic; when it is unavailable, use the active browser to inspect and capture the same views. Never fall back to memory or search-result summaries.
 
 ## When someone asks for a building
 
 `/monument <building, city, country>` in Claude Code, OpenCode or Antigravity, `$monument …` in Codex, or any request to see how a building was built.
 
-**Every step leaves evidence in the monument file, and `node <skill>/scripts/validate.mjs --strict monuments/<id>.json` checks all of it.** Until it passes, the monument is a draft: never present a draft as the result, never skip a step to save time. If the user asks for something quick, say that it will be a draft and which steps it skips.
+### Standard build: detailed, focused, 10–20 minutes
 
-| Step | What you do | Evidence `--strict` checks |
-|---|---|---|
-| 1. Size it | Say what you will build and how long it takes: *building* (one structure, 30–90 min), *ensemble* (wings, courtyard, neighbours, 2–4 h, announce it first), *site* (a whole castle or old town, 6 h+, never without the user: propose the main building first) | `evidence.size` |
-| 2. Start from what exists | If `monuments/<id>.json` or `<skill>/examples/<id>.json` holds this building, copy it into `monuments/` and take it through every step again | — |
-| 3. Read the sources | Identify the building (name, address, historic names). Open and read the pages: heritage inventories, the institution that occupies it, scholarly work, encyclopaedias, in the local language. A search result is not a source; only a page you opened is | `evidence.identity`; `evidence.sources` ≥ 3 pages from ≥ 2 sites, each `{"url", "read": "what this page says"}`; every phase and moment cites one of them; no mention of search results or snippets |
-| 4. Place it on the real plan | Fetch the measured outline (land registry, BD TOPO, OpenStreetMap), convert it to local metres, save it as `monuments/<id>.evidence/outline.json`, fit the model to it, then `node <skill>/scripts/plan.mjs monuments/<id>.json` ([references/real-plan.md](references/real-plan.md)) | `evidence.plan` `{"source", "url", "outline"}`; the model within 3 m of the outline on 90% of its sides (measured by the script); `plan.svg` |
-| 5. Read the architecture | Open at least four photos taken from at least three sides; note each one's viewpoint; list the features that make the building recognisable ([references/fidelity.md](references/fidelity.md)) | `evidence.references` ≥ 4, each `{"url", "view", "azimuth", "elevation", "distance", "target"}`, azimuths in ≥ 3 quadrants; `evidence.features` ≥ 5, each `{"text", "source"}` |
-| 6. Write the file | `monuments/<id>.json`: phases, moments, elements, `view.light`, `modelNote`, uncertainties ([references/format.md](references/format.md)) | `view.light`; `modelNote` |
-| 7. Bricks | Reuse the bricks that render this architecture faithfully; write new ones for the rest, named after the architecture ([references/bricks.md](references/bricks.md)) | every element uses a known brick |
-| 8. Open it | `node <skill>/scripts/serve.mjs monuments` in the background; show `http://127.0.0.1:4173/#<id>`; play the timeline | — |
-| 9. Compare, fix, compare again | `node <skill>/scripts/compare.mjs monuments/<id>.json --pass 1` photographs the model from every reference viewpoint and every phase. Look at each photo next to its capture, write the gaps, fix them, then `--pass 2`, and more passes until only deliberate simplifications remain | `evidence.comparisons` ≥ 2 passes, each with its captures and `gaps`; `fixed` after every pass but the last; `remaining` on the last, also in `uncertainties` |
-| 10. Validate | `node <skill>/scripts/validate.mjs --strict monuments/<id>.json` | all of the above |
-| 11. Report | What is measured, documented and interpreted, the remaining gaps, and an offer to publish | — |
+Use this mode for one named structure. Spend the time on the building itself: its silhouette, exact storey and bay counts, roof profile, openings, structure, materials and at least six distinctive details. **Do not add neighbouring houses, streets or map labels unless the user asks for context or it is essential to understand the building.** Context is not part of the default result.
+
+1. **Scope it.** Build the named structure only. For an ensemble or whole site, state the larger scope and propose the main structure first.
+2. **Reuse before researching.** Open the closest existing example and the brick table. Reuse its measured structure and generators when they fit; do not repeat solved geometry.
+3. **Research in one batch.** Open at least two authoritative pages from different sites and three useful photos from at least two sides. Extract identity, dimensions, dated phases and the six or more features that make this building recognisable. A search result is not a source.
+4. **Fit the target footprint.** Fetch only the requested structure's outline, save it beside the monument, and run `plan.mjs`. Do not collect the surrounding block unless context was requested ([references/real-plan.md](references/real-plan.md)).
+5. **Model coarse to fine.** Lock footprint, height and silhouette first; then openings, roof and signature details. Give every feature in `evidence.features` a visible counterpart. Write a new architecture brick only for the detail the existing bricks cannot express ([references/fidelity.md](references/fidelity.md), [references/bricks.md](references/bricks.md)).
+6. **Write and open it.** Create `monuments/<id>.json`, run the viewer, and play the complete timeline ([references/format.md](references/format.md)).
+7. **One focused comparison.** Run `compare.mjs ... --pass 1 --quick`, inspect the three reference views, fix the visible gaps, rerun the same command to refresh the captures, and record `gaps`, `fixed` and `remaining`. The quick comparison skips redundant phase screenshots; play the timeline once instead.
+8. **Validate.** Run `node <skill>/scripts/validate.mjs --standard monuments/<id>.json`, then report what is measured, documented and interpreted.
+
+If the architecture needs a brand-new complex brick, say that the first build can take 20–35 minutes. Do not spend that time on decorative context.
+
+### Publication build
+
+Use this only when the user asks for maximum documentation or wants to publish. Add at least three pages from two sites, four photos from three sides, the complete plan evidence, phase captures and a second comparison pass. `node <skill>/scripts/validate.mjs --strict monuments/<id>.json` is the publication gate. A standard build is a valid local result; it is not publishable until strict validation passes.
 
 ## Rules
 
@@ -49,6 +48,7 @@ This skill needs four abilities. Check them first, and if one is missing, tell t
 - **Keep what was reused.** Do not show a whole block demolished for a new storey: take the old roof off, raise the walls, put the new roof on.
 - **Daylight.** No night scene unless night lighting is itself the subject, and sourced.
 - **No look-alikes.** Never replace the requested building with a generic house, a variant of another monument, or its name on an existing model.
+- **Details beat scenery.** Use the detail budget on the requested building. Neighbours, roads and labels are opt-in context, never a completion requirement.
 - **Do not claim** a universal geometry generator, exhaustive historical coverage, or an "exact" model.
 
 ## Publish to the community gallery

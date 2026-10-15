@@ -49,7 +49,7 @@ One building = one JSON file, `monuments/<id>.json` in the user's project (`exam
 
 ## evidence
 
-Everything a reader needs to trust the model, and what `validate.mjs --strict` checks. Paths are relative to the monument file; supporting files live in `<id>.evidence/`.
+Everything a reader needs to trust the model. `validate.mjs --standard` checks the focused local result; `--strict` adds the publication requirements. Paths are relative to the monument file; supporting files live in `<id>.evidence/`.
 
 ```json
 "evidence": {
@@ -70,18 +70,20 @@ Everything a reader needs to trust the model, and what `validate.mjs --strict` c
 
 - `size`: building, ensemble or site (step 1).
 - `sources`: pages that were opened and read, with what each says. Every phase and moment `source` must be one of them. Search results are not sources.
-- `plan.outline`: the measured outline as `{"source", "url", "polygons": [[[x, z], …]], "lines": [[[x, z], …]]}` (closed polygons, and open lines for rings split into several ways) in local metres (x east, z south, same origin as the model). `scripts/plan.mjs` measures the gap and draws `<id>.evidence/plan.svg`; `plan.tolerance` (at most 5 m) only for a building known from a published plan.
-- `references`: at least four photos from at least three sides; `azimuth` is the direction of the photographer seen from the building, in degrees from north; `elevation` (negative looks up) and `distance` place the camera, `target` is the point it looks at, and `fov` (optional, degrees) matches a wide-angle lens: put the camera where the photographer stood rather than moving it back.
+- `plan.outline`: the measured outline as `{"source", "url", "polygons": [[[x, z], …]], "lines": [[[x, z], …]]}` (closed polygons, and open lines for rings split into several ways) in local metres (x east, z south, same origin as the model). `scripts/plan.mjs` measures the gap and draws `<id>.evidence/plan.svg`; the default tolerance is 3 m. `plan.tolerance` may reach 10 m only for an open structure whose aerial outline cannot be represented by solid boxes, with the gap stated in `uncertainties`.
+- `references`: standard mode uses at least three photos from two sides; publication uses four from three sides. `azimuth` is the direction of the photographer seen from the building, in degrees from north; `elevation` (negative looks up) and `distance` place the camera, `target` is the point it looks at, and `fov` (optional, degrees) matches a wide-angle lens: put the camera where the photographer stood rather than moving it back.
 - `features`: what makes the building recognisable, each with the page that says so.
 - `comparisons`: written by `scripts/compare.mjs` (captures) and by you (gaps, fixed, remaining).
 
 `modelNote` is the one-line version shown in the page.
 
-## context and labels (optional, static, visible from the start)
+## context and labels (optional, hidden by default)
 
 - `context.buildings`: `[{"points": [[x, z], …], "holes": [[[x, z], …]], "height": 18.4}]`, neighbours at their real height.
 - `context.streets`: `[{"name": "Rue …", "width": 12, "points": [[x, z], …]}]`.
 - `labels`: `[{"text": "Garden", "at": [x, y, z]}]`, names of streets, courtyards, gardens.
+
+Do not generate these for a standard building unless the user asks for the surroundings. The viewer reveals them with `?context`, or permanently when `view.context` is `true`. Keep label anchors on the ground (`y` near `0`) and use them only when a name adds information the geometry cannot show.
 
 ## bricks (optional)
 
