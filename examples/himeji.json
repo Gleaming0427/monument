@@ -1,0 +1,714 @@
+{
+ "id": "himeji",
+ "name": "Himeji Castle",
+ "place": "Himeji · Hyōgo · Japan",
+ "seed": 1609,
+ "view": {
+  "target": [
+   0,
+   21,
+   0
+  ],
+  "distance": 115,
+  "width": 85,
+  "radius": 65,
+  "height": 46.35,
+  "dots": 1.5,
+  "drop": 5,
+  "direction": [
+   0.7,
+   0.48,
+   0.9
+  ],
+  "start": {
+   "target": [
+    0,
+    6,
+    0
+   ],
+   "distance": 85
+  },
+  "light": "day"
+ },
+ "live": [
+  {
+   "label": "Highest point",
+   "kind": "height",
+   "unit": "m"
+  }
+ ],
+ "facts": [
+  {
+   "value": "姫路城",
+   "label": "main keep"
+  },
+  {
+   "value": "5 / 6",
+   "label": "roofs / floors inside"
+  },
+  {
+   "value": "46.35 m",
+   "label": "base + building (city)"
+  }
+ ],
+ "modelNote": "Main keep: floor plans in ken, official heights, OSM footprint. Gables, windows and roofs read from photos; ornaments simplified. Construction animation is schematic.",
+ "evidence": {
+  "identity": "Himeji-jō, 68 Honmachi, Himeji, Hyōgo, Japan",
+  "origin": [
+   134.69402,
+   34.83933135
+  ],
+  "osmWay": 23707900,
+  "sources": [
+   "https://www.himejicastle.jp/fr/guide/history/",
+   "https://www.city.himeji.lg.jp/castle/0000007746.html",
+   "https://www.mlit.go.jp/tagengo-db/R1-00663.html",
+   "https://www.openstreetmap.org/way/23707900",
+   "https://ja.wikipedia.org/wiki/%E5%A7%AB%E8%B7%AF%E5%9F%8E",
+   "https://www.kobe-np.co.jp/rentoku/heiseimoyou/201812/0011894918.shtml"
+  ],
+  "geometry": "Floor plans in ken (1 ken ≈ 1.97 m) from Japanese Wikipedia; the second tier (12 × 9 ken) is estimated from the photo taken from the south. Official heights: 14.85 + 31.5 m, shared between the roofs from the same photo. The OSM outline (30.0 × 25.2 m) is the overhang of the first roof seen from above (13 × 10 ken + 2.4 m eaves = 30.4 × 24.5 m), not the foot of the base.",
+  "uncertainties": [
+   "Height of each tier, eaves and roof pitches estimated from photos; only the base and building heights are official.",
+   "Plan of the second tier (12 × 9 ken) estimated.",
+   "Gables, windows and ornaments simplified; window counts approximate; loopholes and stone-drop bays (ishi-otoshi) not shown.",
+   "Fan profile and batter of the base estimated.",
+   "Hill not modelled: the model’s zero is the foot of the base.",
+   "Small keeps and covered corridors not modelled: the scene shows the main keep alone (their OSM outlines have no height).",
+   "The technical sub-steps of 1601–1609 are not a documented year-by-year chronology."
+  ],
+  "references": [
+   {
+    "view": "south",
+    "azimuth": 180,
+    "url": "https://commons.wikimedia.org/wiki/File:From_the_Main_Viewing_Point_(2856040672).jpg"
+   },
+   {
+    "view": "south-west",
+    "azimuth": 220,
+    "url": "https://commons.wikimedia.org/wiki/File:Himeji_Castle_with_cherry_blossoms_from_SouthWest.jpg"
+   },
+   {
+    "view": "west",
+    "azimuth": 250,
+    "url": "https://commons.wikimedia.org/wiki/File:Himeji-Castle-tenshu-2017-Luka-Peternel.jpg"
+   },
+   {
+    "view": "east",
+    "azimuth": 95,
+    "url": "https://commons.wikimedia.org/wiki/File:East_side_of_white_heron_castle.jpg"
+   }
+  ],
+  "features": [
+   "Five roofs, six floors and a basement; plans of 13 × 10, 11 × 8, 9 × 6 (two floors) and 7 × 5 ken (Japanese Wikipedia).",
+   "White plaster on the walls and on the tile joints (official castle site).",
+   "First roof: curved gable (kara-hafu) in the middle of the east face, over a 4-ken projecting window; brackets on all four faces.",
+   "Second roof: kara-hafu on the south, over a 5-ken projecting window; large triangular gables (irimoya) east and west, crossing the third roof.",
+   "Third roof: a pair of triangular gables (hiyoku irimoya) south and north.",
+   "Fourth roof: triangular gable (chidori) south and north, kara-hafu east and west.",
+   "Top roof hip-and-gable (irimoya), gables east and west, kara-hafu south and north, ridge ornaments (shachihoko).",
+   "Lattice windows, often in pairs, except on the top floor; exposed posts on the top floor.",
+   "14.85 m stone base with a fan-shaped profile."
+  ]
+ },
+ "phases": [
+  {
+   "id": "socle",
+   "when": "1601–1609",
+   "title": "Stone base",
+   "text": "Ikeda Terumasa has the castle rebuilt. The stone base carries the keep and gives its walls their sloping profile.",
+   "source": "https://www.mlit.go.jp/tagengo-db/R1-00663.html",
+   "moments": [
+    {
+     "at": 0.8,
+     "tag": "Figure",
+     "title": "A documented height",
+     "text": "The city gives 14.85 m for the stone base and 31.5 m for the building.",
+     "anchor": [
+      0,
+      10,
+      11.6
+     ],
+     "source": "https://www.city.himeji.lg.jp/castle/0000007746.html"
+    }
+   ]
+  },
+  {
+   "id": "ossature",
+   "when": "1601–1609",
+   "title": "The frame carries the keep",
+   "text": "The timber frame appears before its shell. This split explains the structure; it does not date each step of the work.",
+   "source": "https://www.himejicastle.jp/fr/guide/history/",
+   "moments": [
+    {
+     "at": 0.8,
+     "tag": "Technique",
+     "title": "Two great pillars",
+     "text": "Two central pillars, 24.6 m tall according to the city, run up through the frame.",
+     "anchor": [
+      2.2,
+      34,
+      0
+     ],
+     "source": "https://www.city.himeji.lg.jp/castle/0000007746.html"
+    }
+   ]
+  },
+  {
+   "id": "enveloppe",
+   "when": "1609",
+   "title": "The White Heron Castle",
+   "text": "White plaster, tiles and gables make the silhouette. The five roofs do not match the six floors inside.",
+   "source": "https://www.city.himeji.lg.jp/castle/0000007746.html",
+   "moments": [
+    {
+     "at": 0.8,
+     "tag": "Technique",
+     "title": "White protects the wood",
+     "text": "The lime plaster helps protect this mostly timber building from fire.",
+     "anchor": [
+      0,
+      24,
+      8.9
+     ],
+     "source": "https://www.himejicastle.jp/fr/guide/history/"
+    }
+   ]
+  },
+  {
+   "id": "depose",
+   "when": "1956",
+   "title": "Taken apart to be kept",
+   "text": "Shōwa restoration: the main keep is dismantled to be repaired. The animated dismantling is schematic and does not show the historic scaffold.",
+   "source": "https://www.mlit.go.jp/tagengo-db/R1-00663.html",
+   "moments": [
+    {
+     "at": 0.8,
+     "tag": "Restoration",
+     "title": "Understanding the joints",
+     "text": "A model of the frame helped prepare the restoration of the keep.",
+     "anchor": [
+      0,
+      25,
+      0
+     ],
+     "source": "https://www.himejicastle.jp/fr/guide/history/"
+    }
+   ]
+  },
+  {
+   "id": "remontage",
+   "when": "1964",
+   "title": "Putting the keep back",
+   "text": "Repaired or strengthened parts are put back. The story keeps the same plan and volumes.",
+   "source": "https://www.himejicastle.jp/fr/guide/history/",
+   "moments": [
+    {
+     "at": 0.8,
+     "tag": "Restoration",
+     "title": "Repair rather than replace",
+     "text": "The restoration preserves the architecture and renews the damaged parts.",
+     "anchor": [
+      0,
+      28,
+      0
+     ],
+     "source": "https://www.himejicastle.jp/fr/guide/history/"
+    }
+   ]
+  },
+  {
+   "id": "patrimoine",
+   "when": "1993 · 2009–2015",
+   "title": "Heritage, cared for",
+   "text": "Inscribed as World Heritage in 1993, the castle gets another major restoration from 2009 to 2015.",
+   "source": "https://www.mlit.go.jp/tagengo-db/R1-00663.html",
+   "moments": [
+    {
+     "at": 0.6,
+     "tag": "Anecdote",
+     "title": "The castle that was too white",
+     "text": "When the scaffold comes off the main keep, its dazzling whiteness surprises everyone: it is nicknamed “the castle that is too white”. The fuss makes the rarity of an all-white castle known.",
+     "anchor": [
+      0,
+      40,
+      4
+     ],
+     "source": "https://www.kobe-np.co.jp/rentoku/heiseimoyou/201812/0011894918.shtml"
+    }
+   ]
+  }
+ ],
+ "elements": [
+  {
+   "type": "batteredBase",
+   "phase": "socle",
+   "center": [
+    0,
+    0
+   ],
+   "size": [
+    29.6,
+    23.7
+   ],
+   "top": [
+    26.6,
+    20.7
+   ],
+   "height": 14.85,
+   "curve": 2.2,
+   "rot": -0.09358711361950345,
+   "colors": [
+    "#9d9b94",
+    "#8b8982",
+    "#aaa69d",
+    "#7c7a74",
+    "#969087"
+   ]
+  },
+  {
+   "type": "timberFrame",
+   "phase": "ossature",
+   "center": [
+    0,
+    0
+   ],
+   "size": [
+    24.4,
+    18.5
+   ],
+   "y0": 14.85,
+   "rot": -0.09358711361950345,
+   "until": "depose",
+   "ken": 1.97,
+   "levels": [
+    4.0,
+    8.0,
+    12.0,
+    16.0,
+    20.0,
+    24.5
+   ],
+   "plans": [
+    [
+     12.4,
+     9.4
+    ],
+    [
+     11.4,
+     8.4
+    ],
+    [
+     10.4,
+     7.4
+    ],
+    [
+     8.4,
+     5.4
+    ],
+    [
+     8.4,
+     5.4
+    ],
+    [
+     6.4,
+     4.4
+    ]
+   ],
+   "pillars": {
+    "offsets": [
+     -2.2,
+     2.2
+    ],
+    "height": 24.6
+   }
+  },
+  {
+   "type": "timberFrame",
+   "phase": "remontage",
+   "center": [
+    0,
+    0
+   ],
+   "size": [
+    24.4,
+    18.5
+   ],
+   "y0": 14.85,
+   "rot": -0.09358711361950345,
+   "ken": 1.97,
+   "levels": [
+    4.0,
+    8.0,
+    12.0,
+    16.0,
+    20.0,
+    24.5
+   ],
+   "plans": [
+    [
+     12.4,
+     9.4
+    ],
+    [
+     11.4,
+     8.4
+    ],
+    [
+     10.4,
+     7.4
+    ],
+    [
+     8.4,
+     5.4
+    ],
+    [
+     8.4,
+     5.4
+    ],
+    [
+     6.4,
+     4.4
+    ]
+   ],
+   "pillars": {
+    "offsets": [
+     -2.2,
+     2.2
+    ],
+    "height": 24.6
+   }
+  },
+  {
+   "type": "tieredKeep",
+   "center": [
+    0,
+    0
+   ],
+   "rot": -0.09358711361950345,
+   "y0": 14.85,
+   "ken": 1.97,
+   "tiers": [
+    {
+     "plan": [
+      13,
+      10
+     ],
+     "height": 5.95,
+     "eave": 2.4,
+     "brackets": true,
+     "bays": [
+      {
+       "face": "e",
+       "width": 4
+      }
+     ],
+     "gables": [
+      {
+       "face": "e",
+       "kind": "kara",
+       "width": 4
+      }
+     ]
+    },
+    {
+     "plan": [
+      12,
+      9
+     ],
+     "height": 5.6,
+     "eave": 2.4,
+     "bays": [
+      {
+       "face": "s",
+       "width": 5
+      }
+     ],
+     "gables": [
+      {
+       "face": "s",
+       "kind": "kara",
+       "width": 5
+      },
+      {
+       "face": "e",
+       "kind": "irimoya",
+       "width": 6,
+       "height": 8.6
+      },
+      {
+       "face": "w",
+       "kind": "irimoya",
+       "width": 6,
+       "height": 8.6
+      }
+     ]
+    },
+    {
+     "plan": [
+      11,
+      8
+     ],
+     "height": 5.05,
+     "eave": 2.3,
+     "gables": [
+      {
+       "face": "s",
+       "kind": "irimoya",
+       "width": 4,
+       "height": 3.6,
+       "at": -2.05
+      },
+      {
+       "face": "s",
+       "kind": "irimoya",
+       "width": 4,
+       "height": 3.6,
+       "at": 2.05
+      },
+      {
+       "face": "n",
+       "kind": "irimoya",
+       "width": 4,
+       "height": 3.6,
+       "at": -2.05
+      },
+      {
+       "face": "n",
+       "kind": "irimoya",
+       "width": 4,
+       "height": 3.6,
+       "at": 2.05
+      }
+     ]
+    },
+    {
+     "plan": [
+      9,
+      6
+     ],
+     "height": 5.05,
+     "eave": 2.1,
+     "gables": [
+      {
+       "face": "s",
+       "kind": "chidori",
+       "width": 4,
+       "height": 3.4
+      },
+      {
+       "face": "n",
+       "kind": "chidori",
+       "width": 4,
+       "height": 3.4
+      },
+      {
+       "face": "e",
+       "kind": "kara",
+       "width": 3
+      },
+      {
+       "face": "w",
+       "kind": "kara",
+       "width": 3
+      }
+     ]
+    },
+    {
+     "plan": [
+      7,
+      5
+     ],
+     "height": 3.85,
+     "eave": 2.0,
+     "ridge": 5.75,
+     "posts": true,
+     "lattice": false,
+     "windowPitch": 1.5,
+     "gables": [
+      {
+       "face": "s",
+       "kind": "kara",
+       "width": 3
+      },
+      {
+       "face": "n",
+       "kind": "kara",
+       "width": 3
+      }
+     ]
+    }
+   ],
+   "phase": "enveloppe",
+   "until": "depose",
+   "tile": "#777c82",
+   "joint": "#d8d6d0",
+   "pitch": 33
+  },
+  {
+   "type": "tieredKeep",
+   "center": [
+    0,
+    0
+   ],
+   "rot": -0.09358711361950345,
+   "y0": 14.85,
+   "ken": 1.97,
+   "tiers": [
+    {
+     "plan": [
+      13,
+      10
+     ],
+     "height": 5.95,
+     "eave": 2.4,
+     "brackets": true,
+     "bays": [
+      {
+       "face": "e",
+       "width": 4
+      }
+     ],
+     "gables": [
+      {
+       "face": "e",
+       "kind": "kara",
+       "width": 4
+      }
+     ]
+    },
+    {
+     "plan": [
+      12,
+      9
+     ],
+     "height": 5.6,
+     "eave": 2.4,
+     "bays": [
+      {
+       "face": "s",
+       "width": 5
+      }
+     ],
+     "gables": [
+      {
+       "face": "s",
+       "kind": "kara",
+       "width": 5
+      },
+      {
+       "face": "e",
+       "kind": "irimoya",
+       "width": 6,
+       "height": 8.6
+      },
+      {
+       "face": "w",
+       "kind": "irimoya",
+       "width": 6,
+       "height": 8.6
+      }
+     ]
+    },
+    {
+     "plan": [
+      11,
+      8
+     ],
+     "height": 5.05,
+     "eave": 2.3,
+     "gables": [
+      {
+       "face": "s",
+       "kind": "irimoya",
+       "width": 4,
+       "height": 3.6,
+       "at": -2.05
+      },
+      {
+       "face": "s",
+       "kind": "irimoya",
+       "width": 4,
+       "height": 3.6,
+       "at": 2.05
+      },
+      {
+       "face": "n",
+       "kind": "irimoya",
+       "width": 4,
+       "height": 3.6,
+       "at": -2.05
+      },
+      {
+       "face": "n",
+       "kind": "irimoya",
+       "width": 4,
+       "height": 3.6,
+       "at": 2.05
+      }
+     ]
+    },
+    {
+     "plan": [
+      9,
+      6
+     ],
+     "height": 5.05,
+     "eave": 2.1,
+     "gables": [
+      {
+       "face": "s",
+       "kind": "chidori",
+       "width": 4,
+       "height": 3.4
+      },
+      {
+       "face": "n",
+       "kind": "chidori",
+       "width": 4,
+       "height": 3.4
+      },
+      {
+       "face": "e",
+       "kind": "kara",
+       "width": 3
+      },
+      {
+       "face": "w",
+       "kind": "kara",
+       "width": 3
+      }
+     ]
+    },
+    {
+     "plan": [
+      7,
+      5
+     ],
+     "height": 3.85,
+     "eave": 2.0,
+     "ridge": 5.75,
+     "posts": true,
+     "lattice": false,
+     "windowPitch": 1.5,
+     "gables": [
+      {
+       "face": "s",
+       "kind": "kara",
+       "width": 3
+      },
+      {
+       "face": "n",
+       "kind": "kara",
+       "width": 3
+      }
+     ]
+    }
+   ],
+   "phase": "remontage",
+   "tile": "#777c82",
+   "joint": "#d8d6d0",
+   "pitch": 33
+  }
+ ]
+}

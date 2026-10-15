@@ -1,0 +1,614 @@
+{
+ "id": "carcassonne",
+ "name": "Cité de Carcassonne",
+ "place": "Carcassonne · Aude · France",
+ "seed": 1280,
+ "view": {
+  "start": {
+   "target": [
+    0,
+    2,
+    20
+   ],
+   "distance": 260
+  },
+  "width": 380,
+  "target": [
+   0,
+   8,
+   10
+  ],
+  "distance": 420,
+  "radius": 200,
+  "height": 26,
+  "dots": 4,
+  "drop": 14,
+  "direction": [
+   0.55,
+   0.52,
+   0.66
+  ]
+ },
+ "live": [
+  {
+   "label": "Towers",
+   "kind": "count",
+   "tag": "tour"
+  }
+ ],
+ "facts": [
+  {
+   "value": "≈ 3 km",
+   "label": "of ramparts"
+  },
+  {
+   "value": "52",
+   "label": "towers"
+  },
+  {
+   "value": "1997",
+   "label": "World Heritage"
+  }
+ ],
+ "phases": [
+  {
+   "id": "romain",
+   "when": "Late 3rd century",
+   "title": "The Gallo-Roman wall",
+   "text": "A first enclosure, strengthened with towers, closes off the plateau. It will become the base of the inner wall.",
+   "source": "https://www.monuments-nationaux.fr/var/cmn_inter/storage/original/application/04c4ac49032d69b1d28487e75f935011.pdf",
+   "moments": [
+    {
+     "at": 0.5,
+     "tag": "Technique",
+     "title": "A wall reused",
+     "anchor": [
+      88,
+      9,
+      0
+     ],
+     "source": "https://www.techno-science.net/fr/definitions/cite-de-carcassonne",
+     "text": "The inner enclosure takes over the ancient rampart, reworked around 1280."
+    }
+   ]
+  },
+  {
+   "id": "comtal",
+   "when": "12th century",
+   "title": "The Trencavel castle",
+   "text": "The Trencavel viscounts build the count's castle against the western wall. The town grows denser around its basilica.",
+   "source": "https://www.tourisme-occitanie.com/les-sites-classes-unesco/cite-medievale-de-carcassonne",
+   "moments": [
+    {
+     "at": 0.55,
+     "tag": "Technique",
+     "title": "A fortress within the fortress",
+     "anchor": [
+      -79,
+      20,
+      0
+     ],
+     "source": "https://www.techno-science.net/fr/definitions/cite-de-carcassonne",
+     "text": "The count's castle is a true fortress inside the Cité, with its own walls and towers."
+    }
+   ]
+  },
+  {
+   "id": "royal",
+   "when": "13th century",
+   "title": "The kings double the wall",
+   "text": "Now a royal stronghold, the Cité gets a second wall. The inner wall is raised and the Narbonne Gate takes its present form at the end of the century.",
+   "source": "https://whc.unesco.org/document/153233",
+   "moments": [
+    {
+     "at": 0.5,
+     "tag": "Technique",
+     "title": "The lists",
+     "anchor": [
+      0,
+      4,
+      160
+     ],
+     "source": "https://www.cityzeum.com/remparts-de-la-cite",
+     "text": "Between the two walls lie the lists. Whoever crosses the first wall is caught in the open at the foot of the second."
+    },
+    {
+     "at": 0.9,
+     "tag": "Monument",
+     "title": "The Narbonne Gate",
+     "anchor": [
+      93,
+      22,
+      0
+     ],
+     "source": "https://ryo.co/fr/destinations/france/lieux/porte-narbonnaise/",
+     "text": "Two great towers frame the main entrance, guarded by a barbican. It takes its present form at the end of the 13th century."
+    }
+   ]
+  },
+  {
+   "id": "declin",
+   "when": "17th – 18th century",
+   "title": "Abandonment",
+   "text": "The border moves away and the Cité loses its military role. The tops of walls and towers fall into ruin.",
+   "source": "https://fr.wikipedia.org/wiki/Cit%C3%A9_de_Carcassonne"
+  },
+  {
+   "id": "restauration",
+   "when": "1853 – late 19th century",
+   "title": "Viollet-le-Duc restores",
+   "text": "Viollet-le-Duc rebuilds the walls and caps the towers with pointed slate roofs, a choice still debated. His successors finish the work.",
+   "source": "https://www.techno-science.net/fr/definitions/cite-de-carcassonne",
+   "moments": [
+    {
+     "at": 0.08,
+     "tag": "Anecdote",
+     "title": "Saved from demolition",
+     "anchor": [
+      -60,
+      10,
+      -120
+     ],
+     "source": "https://en.wikipedia.org/wiki/Cit%C3%A9_de_Carcassonne",
+     "text": "In 1849 a decree plans to demolish the fortifications. The mayor Jean-Pierre Cros-Mayrevieille and Prosper Mérimée lead the campaign that saves them."
+    },
+    {
+     "at": 0.55,
+     "tag": "Controversy",
+     "title": "Roofs from the north",
+     "anchor": [
+      0,
+      24,
+      143
+     ],
+     "source": "https://www.herodote.net/Une_vie_au_service_du_patrimoine_architectural-synthese-2073.php",
+     "text": "Viollet-le-Duc caps the towers with slate cones, as in northern France. His critics point out that here, roofs were tiled and gently sloped."
+    }
+   ]
+  },
+  {
+   "id": "unesco",
+   "when": "1997",
+   "title": "World Heritage",
+   "text": "The Cité is inscribed on the UNESCO World Heritage List: nearly 3 km of ramparts and 52 towers.",
+   "source": "https://www.monuments-nationaux.fr/var/cmn_inter/storage/original/application/04c4ac49032d69b1d28487e75f935011.pdf"
+  }
+ ],
+ "elements": [
+  {
+   "type": "enceinte",
+   "phase": "romain",
+   "center": [
+    0,
+    0
+   ],
+   "radii": [
+    88,
+    140
+   ],
+   "segments": 28,
+   "wobble": 0.05,
+   "skip": [
+    [
+     354,
+     6
+    ],
+    [
+     158,
+     202
+    ]
+   ],
+   "wall": {
+    "height": 8,
+    "thickness": 2.4,
+    "color": "#b49c7c"
+   },
+   "towers": {
+    "radius": 5.5,
+    "height": 11,
+    "tag": "tour",
+    "color": "#b49c7c"
+   }
+  },
+  {
+   "type": "wall",
+   "phase": "comtal",
+   "points": [
+    [
+     -100,
+     -26
+    ],
+    [
+     -58,
+     -26
+    ],
+    [
+     -58,
+     26
+    ],
+    [
+     -100,
+     26
+    ]
+   ],
+   "closed": true,
+   "height": 14,
+   "thickness": 2.4,
+   "crenel": {
+    "h": 1.6
+   },
+   "y0": 0,
+   "ruin": {
+    "phase": "declin",
+    "share": 0.3,
+    "restore": "restauration",
+    "depth": 0.2
+   }
+  },
+  {
+   "type": "tower",
+   "phase": "comtal",
+   "at": [
+    -100,
+    -26
+   ],
+   "radius": 4.6,
+   "height": 18,
+   "tag": "tour",
+   "crenel": {
+    "h": 1.4
+   },
+   "roof": {
+    "phase": "restauration"
+   }
+  },
+  {
+   "type": "tower",
+   "phase": "comtal",
+   "at": [
+    -58,
+    -26
+   ],
+   "radius": 4.6,
+   "height": 18,
+   "tag": "tour",
+   "crenel": {
+    "h": 1.4
+   },
+   "roof": {
+    "phase": "restauration"
+   }
+  },
+  {
+   "type": "tower",
+   "phase": "comtal",
+   "at": [
+    -58,
+    26
+   ],
+   "radius": 4.6,
+   "height": 18,
+   "tag": "tour",
+   "crenel": {
+    "h": 1.4
+   },
+   "roof": {
+    "phase": "restauration"
+   }
+  },
+  {
+   "type": "tower",
+   "phase": "comtal",
+   "at": [
+    -100,
+    26
+   ],
+   "radius": 4.6,
+   "height": 18,
+   "tag": "tour",
+   "crenel": {
+    "h": 1.4
+   },
+   "roof": {
+    "phase": "restauration"
+   }
+  },
+  {
+   "type": "tower",
+   "phase": "comtal",
+   "at": [
+    -79,
+    -26
+   ],
+   "radius": 4,
+   "height": 17,
+   "tag": "tour",
+   "crenel": {
+    "h": 1.4
+   },
+   "roof": {
+    "phase": "restauration"
+   }
+  },
+  {
+   "type": "tower",
+   "phase": "comtal",
+   "at": [
+    -79,
+    26
+   ],
+   "radius": 4,
+   "height": 17,
+   "tag": "tour",
+   "crenel": {
+    "h": 1.4
+   },
+   "roof": {
+    "phase": "restauration"
+   }
+  },
+  {
+   "type": "tower",
+   "phase": "comtal",
+   "at": [
+    -58,
+    0
+   ],
+   "radius": 4.2,
+   "height": 18,
+   "tag": "tour",
+   "crenel": {
+    "h": 1.4
+   },
+   "roof": {
+    "phase": "restauration"
+   }
+  },
+  {
+   "type": "tower",
+   "phase": "comtal",
+   "at": [
+    -100,
+    0
+   ],
+   "radius": 4,
+   "height": 17,
+   "tag": "tour",
+   "crenel": {
+    "h": 1.4
+   },
+   "roof": {
+    "phase": "restauration"
+   }
+  },
+  {
+   "type": "building",
+   "phase": "comtal",
+   "center": [
+    -84,
+    0
+   ],
+   "size": [
+    12,
+    34
+   ],
+   "height": 12,
+   "roof": {
+    "height": 7
+   }
+  },
+  {
+   "type": "building",
+   "phase": "comtal",
+   "center": [
+    24,
+    96
+   ],
+   "size": [
+    18,
+    46
+   ],
+   "rot": 1.5708,
+   "height": 15,
+   "roof": {
+    "height": 9
+   }
+  },
+  {
+   "type": "tower",
+   "phase": "comtal",
+   "at": [
+    -4,
+    96
+   ],
+   "radius": 4,
+   "height": 24,
+   "roof": {
+    "phase": "comtal"
+   }
+  },
+  {
+   "type": "village",
+   "phase": "comtal",
+   "center": [
+    8,
+    6
+   ],
+   "radii": [
+    68,
+    112
+   ],
+   "count": 34,
+   "gap": 12,
+   "avoid": [
+    [
+     -79,
+     0,
+     34
+    ],
+    [
+     24,
+     96,
+     33
+    ],
+    [
+     -4,
+     96,
+     10
+    ],
+    [
+     90,
+     0,
+     20
+    ]
+   ],
+   "width": [
+    7,
+    10
+   ],
+   "depth": [
+    9,
+    14
+   ],
+   "height": [
+    7,
+    11
+   ],
+   "color": "#cbb592",
+   "roof": "#a4553a"
+  },
+  {
+   "type": "enceinte",
+   "phase": "royal",
+   "center": [
+    0,
+    0
+   ],
+   "radii": [
+    88,
+    140
+   ],
+   "segments": 28,
+   "wobble": 0.05,
+   "skip": [
+    [
+     354,
+     6
+    ],
+    [
+     158,
+     202
+    ]
+   ],
+   "y0": 8,
+   "height": 4,
+   "ruin": {
+    "phase": "declin",
+    "share": 0.5,
+    "restore": "restauration",
+    "depth": 1
+   },
+   "wall": {
+    "y0": 8,
+    "height": 4,
+    "thickness": 2.4,
+    "crenel": {
+     "h": 1.6
+    }
+   },
+   "towers": {
+    "y0": 11,
+    "radius": 5.5,
+    "height": 6,
+    "crenel": {
+     "h": 1.5
+    },
+    "roof": {
+     "phase": "restauration"
+    }
+   }
+  },
+  {
+   "type": "enceinte",
+   "phase": "royal",
+   "center": [
+    0,
+    0
+   ],
+   "radii": [
+    120,
+    178
+   ],
+   "segments": 36,
+   "rotate": 5,
+   "wobble": 0.04,
+   "skip": [
+    [
+     356,
+     4
+    ]
+   ],
+   "y0": 0,
+   "height": 8.5,
+   "ruin": {
+    "phase": "declin",
+    "share": 0.35,
+    "restore": "restauration",
+    "depth": 0.35
+   },
+   "wall": {
+    "height": 7,
+    "thickness": 2.2,
+    "crenel": {
+     "h": 1.5
+    }
+   },
+   "towers": {
+    "every": 2,
+    "radius": 4.5,
+    "height": 10,
+    "tag": "tour",
+    "crenel": {
+     "h": 1.4
+    },
+    "roof": {
+     "phase": "restauration"
+    }
+   }
+  },
+  {
+   "type": "tower",
+   "phase": "royal",
+   "at": [
+    93,
+    -8
+   ],
+   "radius": 6.5,
+   "height": 22,
+   "tag": "tour",
+   "crenel": {
+    "h": 1.6
+   },
+   "roof": {
+    "phase": "restauration"
+   }
+  },
+  {
+   "type": "tower",
+   "phase": "royal",
+   "at": [
+    93,
+    8
+   ],
+   "radius": 6.5,
+   "height": 22,
+   "tag": "tour",
+   "crenel": {
+    "h": 1.6
+   },
+   "roof": {
+    "phase": "restauration"
+   }
+  }
+ ]
+}

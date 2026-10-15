@@ -1,0 +1,816 @@
+{
+ "id": "eiffel-tower",
+ "name": "Eiffel Tower",
+ "place": "Paris · France",
+ "seed": 1889,
+ "view": {
+  "start": {
+   "target": [
+    0,
+    8,
+    0
+   ],
+   "distance": 230
+  },
+  "width": 150,
+  "target": [
+   0,
+   150,
+   0
+  ],
+  "distance": 610,
+  "radius": 170,
+  "height": 300,
+  "dots": 3.2,
+  "drop": 24,
+  "direction": [
+   0.62,
+   0.3,
+   0.74
+  ]
+ },
+ "live": [
+  {
+   "label": "Height",
+   "kind": "height",
+   "unit": "m"
+  }
+ ],
+ "facts": [
+  {
+   "value": "18,038",
+   "label": "iron parts"
+  },
+  {
+   "value": "2.5 million",
+   "label": "rivets"
+  },
+  {
+   "value": "2 years, 2 months, 5 days",
+   "label": "on site"
+  }
+ ],
+ "phases": [
+  {
+   "id": "fondations",
+   "from": "1887-01-26",
+   "to": "1887-06-30",
+   "title": "The foundations",
+   "text": "Masonry blocks receive each of the four feet. Near the Seine, the digging goes on in compressed-air caissons, below the water line.",
+   "source": "https://www.toureiffel.paris/en/the-monument/history",
+   "moments": [
+    {
+     "at": 0.3,
+     "tag": "Figure",
+     "title": "Sixteen stone blocks",
+     "anchor": [
+      50,
+      4,
+      50
+     ],
+     "source": "https://www.toureiffel.paris/en/news/130-years/construction-eiffel-tower-exemplary-project",
+     "text": "Each leg stands on four blocks, one per edge: sixteen blocks built in five months."
+    },
+    {
+     "at": 0.65,
+     "tag": "Technique",
+     "title": "Digging under the Seine",
+     "anchor": [
+      -50,
+      3,
+      50
+     ],
+     "source": "https://www.toureiffel.paris/en/news/130-years/construction-eiffel-tower-exemplary-project",
+     "text": "On the river side, workers dig below the water line, sheltered by watertight iron caissons."
+    }
+   ]
+  },
+  {
+   "id": "piliers",
+   "from": "1887-07-01",
+   "to": "1888-04-01",
+   "title": "The four legs rise",
+   "text": "Parts arrive from the works already drilled. Above 30 m, twelve timber scaffolds hold up the leaning legs, then four 45 m ones carry the girders of the first floor, reached at 57 m.",
+   "source": "https://www.toureiffel.paris/en/the-monument/history",
+   "moments": [
+    {
+     "at": 0.12,
+     "tag": "Technique",
+     "title": "Everything is made in the works",
+     "anchor": [
+      48,
+      12,
+      48
+     ],
+     "source": "https://www.toureiffel.paris/en/news/130-years/construction-eiffel-tower-exemplary-project",
+     "text": "Every part is calculated, drawn, cut, drilled and pre-assembled at Levallois-Perret. A faulty part goes back to the workshop."
+    },
+    {
+     "at": 0.38,
+     "tag": "Figure",
+     "title": "One rivet, four men",
+     "anchor": [
+      -44,
+      26,
+      44
+     ],
+     "source": "https://www.toureiffel.paris/en/news/130-years/how-did-they-build-tower-so-quickly",
+     "text": "The first heats the rivet, the second holds it, the third shapes the head, the fourth strikes it with a sledgehammer. Two thirds of the rivets are fitted in the works."
+    },
+    {
+     "at": 0.6,
+     "tag": "Technique",
+     "title": "Cranes that climb",
+     "anchor": [
+      42,
+      44,
+      -42
+     ],
+     "source": "https://www.toureiffel.paris/en/news/130-years/how-did-they-build-tower-so-quickly",
+     "text": "On each leg, a small 3-tonne steam crane climbs with the tower, on the rails of the future lifts."
+    },
+    {
+     "at": 0.86,
+     "tag": "Technique",
+     "title": "A junction to the millimetre",
+     "anchor": [
+      0,
+      57,
+      36
+     ],
+     "source": "https://www.toureiffel.paris/en/news/130-years/eiffel-tower-mounted-cylinders",
+     "text": "The first-floor girders rest on sandboxes that are slowly emptied. At the foot of two legs, hydraulic jacks correct a few centimetres."
+    }
+   ]
+  },
+  {
+   "id": "deuxieme",
+   "from": "1888-04-01",
+   "to": "1888-08-14",
+   "title": "The second floor",
+   "text": "The legs draw together and meet. The second floor is reached at 115 m on 14 August 1888.",
+   "source": "https://www.toureiffel.paris/en/the-monument/history",
+   "moments": [
+    {
+     "at": 0.5,
+     "tag": "Figure",
+     "title": "150 to 300 workers",
+     "anchor": [
+      0,
+      95,
+      22
+     ],
+     "source": "https://www.toureiffel.paris/en/news/130-years/construction-eiffel-tower-exemplary-project",
+     "text": "Thanks to prefabrication, 150 to 300 workers are enough to assemble every part on site."
+    }
+   ]
+  },
+  {
+   "id": "sommet",
+   "from": "1888-08-14",
+   "to": "1889-03-31",
+   "title": "The top",
+   "text": "Above the second floor, a single column rises to 300 m.",
+   "source": "https://www.toureiffel.paris/en/news/130-years/construction-eiffel-tower-exemplary-project",
+   "moments": [
+    {
+     "at": 0.4,
+     "tag": "Figure",
+     "title": "Thousands of drawings",
+     "anchor": [
+      0,
+      200,
+      10
+     ],
+     "source": "https://www.toureiffel.paris/en/news/130-years/construction-eiffel-tower-exemplary-project",
+     "text": "The design office produces 700 engineering drawings and 3,600 workshop plans for the 18,038 parts."
+    },
+    {
+     "at": 0.9,
+     "tag": "Anecdote",
+     "title": "1,710 steps",
+     "anchor": [
+      0,
+      306,
+      0
+     ],
+     "source": "https://structurae.net/fr/ouvrages/tour-eiffel",
+     "text": "On 31 March 1889, Gustave Eiffel climbs the 1,710 steps to the top."
+    }
+   ]
+  },
+  {
+   "id": "lumiere",
+   "when": "Since 1985 and 2000",
+   "title": "The tower lights up",
+   "mood": "night",
+   "sparkle": true,
+   "text": "Since 31 December 1985, 336 lamps set inside the structure light it in gold. Since 2000, 20,000 bulbs make it sparkle.",
+   "source": "https://www.toureiffel.paris/en/the-monument/lights"
+  }
+ ],
+ "elements": [
+  {
+   "type": "slab",
+   "phase": "fondations",
+   "center": [
+    62.5,
+    62.5
+   ],
+   "size": [
+    8,
+    4,
+    8
+   ],
+   "y0": 0,
+   "block": [
+    2.6,
+    1.3,
+    2.6
+   ]
+  },
+  {
+   "type": "slab",
+   "phase": "fondations",
+   "center": [
+    37.5,
+    62.5
+   ],
+   "size": [
+    8,
+    4,
+    8
+   ],
+   "y0": 0,
+   "block": [
+    2.6,
+    1.3,
+    2.6
+   ]
+  },
+  {
+   "type": "slab",
+   "phase": "fondations",
+   "center": [
+    62.5,
+    37.5
+   ],
+   "size": [
+    8,
+    4,
+    8
+   ],
+   "y0": 0,
+   "block": [
+    2.6,
+    1.3,
+    2.6
+   ]
+  },
+  {
+   "type": "slab",
+   "phase": "fondations",
+   "center": [
+    37.5,
+    37.5
+   ],
+   "size": [
+    8,
+    4,
+    8
+   ],
+   "y0": 0,
+   "block": [
+    2.6,
+    1.3,
+    2.6
+   ]
+  },
+  {
+   "type": "slab",
+   "phase": "fondations",
+   "center": [
+    -62.5,
+    62.5
+   ],
+   "size": [
+    8,
+    4,
+    8
+   ],
+   "y0": 0,
+   "block": [
+    2.6,
+    1.3,
+    2.6
+   ]
+  },
+  {
+   "type": "slab",
+   "phase": "fondations",
+   "center": [
+    -37.5,
+    62.5
+   ],
+   "size": [
+    8,
+    4,
+    8
+   ],
+   "y0": 0,
+   "block": [
+    2.6,
+    1.3,
+    2.6
+   ]
+  },
+  {
+   "type": "slab",
+   "phase": "fondations",
+   "center": [
+    -62.5,
+    37.5
+   ],
+   "size": [
+    8,
+    4,
+    8
+   ],
+   "y0": 0,
+   "block": [
+    2.6,
+    1.3,
+    2.6
+   ]
+  },
+  {
+   "type": "slab",
+   "phase": "fondations",
+   "center": [
+    -37.5,
+    37.5
+   ],
+   "size": [
+    8,
+    4,
+    8
+   ],
+   "y0": 0,
+   "block": [
+    2.6,
+    1.3,
+    2.6
+   ]
+  },
+  {
+   "type": "slab",
+   "phase": "fondations",
+   "center": [
+    62.5,
+    -62.5
+   ],
+   "size": [
+    8,
+    4,
+    8
+   ],
+   "y0": 0,
+   "block": [
+    2.6,
+    1.3,
+    2.6
+   ]
+  },
+  {
+   "type": "slab",
+   "phase": "fondations",
+   "center": [
+    37.5,
+    -62.5
+   ],
+   "size": [
+    8,
+    4,
+    8
+   ],
+   "y0": 0,
+   "block": [
+    2.6,
+    1.3,
+    2.6
+   ]
+  },
+  {
+   "type": "slab",
+   "phase": "fondations",
+   "center": [
+    62.5,
+    -37.5
+   ],
+   "size": [
+    8,
+    4,
+    8
+   ],
+   "y0": 0,
+   "block": [
+    2.6,
+    1.3,
+    2.6
+   ]
+  },
+  {
+   "type": "slab",
+   "phase": "fondations",
+   "center": [
+    37.5,
+    -37.5
+   ],
+   "size": [
+    8,
+    4,
+    8
+   ],
+   "y0": 0,
+   "block": [
+    2.6,
+    1.3,
+    2.6
+   ]
+  },
+  {
+   "type": "slab",
+   "phase": "fondations",
+   "center": [
+    -62.5,
+    -62.5
+   ],
+   "size": [
+    8,
+    4,
+    8
+   ],
+   "y0": 0,
+   "block": [
+    2.6,
+    1.3,
+    2.6
+   ]
+  },
+  {
+   "type": "slab",
+   "phase": "fondations",
+   "center": [
+    -37.5,
+    -62.5
+   ],
+   "size": [
+    8,
+    4,
+    8
+   ],
+   "y0": 0,
+   "block": [
+    2.6,
+    1.3,
+    2.6
+   ]
+  },
+  {
+   "type": "slab",
+   "phase": "fondations",
+   "center": [
+    -62.5,
+    -37.5
+   ],
+   "size": [
+    8,
+    4,
+    8
+   ],
+   "y0": 0,
+   "block": [
+    2.6,
+    1.3,
+    2.6
+   ]
+  },
+  {
+   "type": "slab",
+   "phase": "fondations",
+   "center": [
+    -37.5,
+    -37.5
+   ],
+   "size": [
+    8,
+    4,
+    8
+   ],
+   "y0": 0,
+   "block": [
+    2.6,
+    1.3,
+    2.6
+   ]
+  },
+  {
+   "type": "scaffold",
+   "phase": "piliers",
+   "until": "deuxieme",
+   "at": [
+    30,
+    46
+   ],
+   "height": 30
+  },
+  {
+   "type": "scaffold",
+   "phase": "piliers",
+   "until": "deuxieme",
+   "at": [
+    46,
+    30
+   ],
+   "height": 30
+  },
+  {
+   "type": "scaffold",
+   "phase": "piliers",
+   "until": "deuxieme",
+   "at": [
+    32,
+    32
+   ],
+   "height": 30
+  },
+  {
+   "type": "scaffold",
+   "phase": "piliers",
+   "until": "deuxieme",
+   "at": [
+    -30,
+    46
+   ],
+   "height": 30
+  },
+  {
+   "type": "scaffold",
+   "phase": "piliers",
+   "until": "deuxieme",
+   "at": [
+    -46,
+    30
+   ],
+   "height": 30
+  },
+  {
+   "type": "scaffold",
+   "phase": "piliers",
+   "until": "deuxieme",
+   "at": [
+    -32,
+    32
+   ],
+   "height": 30
+  },
+  {
+   "type": "scaffold",
+   "phase": "piliers",
+   "until": "deuxieme",
+   "at": [
+    30,
+    -46
+   ],
+   "height": 30
+  },
+  {
+   "type": "scaffold",
+   "phase": "piliers",
+   "until": "deuxieme",
+   "at": [
+    46,
+    -30
+   ],
+   "height": 30
+  },
+  {
+   "type": "scaffold",
+   "phase": "piliers",
+   "until": "deuxieme",
+   "at": [
+    32,
+    -32
+   ],
+   "height": 30
+  },
+  {
+   "type": "scaffold",
+   "phase": "piliers",
+   "until": "deuxieme",
+   "at": [
+    -30,
+    -46
+   ],
+   "height": 30
+  },
+  {
+   "type": "scaffold",
+   "phase": "piliers",
+   "until": "deuxieme",
+   "at": [
+    -46,
+    -30
+   ],
+   "height": 30
+  },
+  {
+   "type": "scaffold",
+   "phase": "piliers",
+   "until": "deuxieme",
+   "at": [
+    -32,
+    -32
+   ],
+   "height": 30
+  },
+  {
+   "type": "scaffold",
+   "phase": "piliers",
+   "until": "deuxieme",
+   "at": [
+    21,
+    21
+   ],
+   "height": 45,
+   "size": 7
+  },
+  {
+   "type": "scaffold",
+   "phase": "piliers",
+   "until": "deuxieme",
+   "at": [
+    -21,
+    21
+   ],
+   "height": 45,
+   "size": 7
+  },
+  {
+   "type": "scaffold",
+   "phase": "piliers",
+   "until": "deuxieme",
+   "at": [
+    21,
+    -21
+   ],
+   "height": 45,
+   "size": 7
+  },
+  {
+   "type": "scaffold",
+   "phase": "piliers",
+   "until": "deuxieme",
+   "at": [
+    -21,
+    -21
+   ],
+   "height": 45,
+   "size": 7
+  },
+  {
+   "type": "lattice",
+   "color": "#7b5a3c",
+   "profile": [
+    [
+     0,
+     62.5
+    ],
+    [
+     15,
+     55.5
+    ],
+    [
+     30,
+     49
+    ],
+    [
+     45,
+     42
+    ],
+    [
+     57,
+     36.5
+    ],
+    [
+     75,
+     30.5
+    ],
+    [
+     95,
+     25
+    ],
+    [
+     115,
+     20
+    ],
+    [
+     140,
+     15.6
+    ],
+    [
+     170,
+     12.4
+    ],
+    [
+     200,
+     10.2
+    ],
+    [
+     230,
+     8.6
+    ],
+    [
+     260,
+     7.2
+    ],
+    [
+     276,
+     6.4
+    ],
+    [
+     290,
+     3.6
+    ],
+    [
+     300,
+     2.2
+    ]
+   ],
+   "legWidth": [
+    [
+     0,
+     25
+    ],
+    [
+     57,
+     23
+    ],
+    [
+     115,
+     20
+    ]
+   ],
+   "merge": 115,
+   "shaft": 276,
+   "height": 300,
+   "ring": 4,
+   "bands": [
+    {
+     "to": 57.5,
+     "phase": "piliers"
+    },
+    {
+     "to": 115.5,
+     "phase": "deuxieme"
+    },
+    {
+     "to": 999,
+     "phase": "sommet"
+    }
+   ],
+   "arch": {
+    "base": 14,
+    "rise": 30,
+    "span": 31,
+    "depth": 2.5
+   },
+   "decks": [
+    {
+     "y": 57,
+     "overhang": 3,
+     "gallery": 4.5
+    },
+    {
+     "y": 115,
+     "overhang": 2.5,
+     "gallery": 3
+    },
+    {
+     "y": 276,
+     "overhang": 2,
+     "gallery": 3
+    }
+   ],
+   "flag": {
+    "pole": 12,
+    "phase": "sommet",
+    "colors": [
+     "#1f3c96",
+     "#f2f2f2",
+     "#d4202c"
+    ]
+   }
+  }
+ ]
+}

@@ -1,0 +1,49 @@
+name: Submit a monument
+description: Add a monument to the community gallery without a terminal.
+title: "Community: "
+body:
+  - type: markdown
+    attributes:
+      value: Put your `monuments/<id>.json` in a public Gist, then fill in this form. A maintainer turns it into a pull request; the checks rebuild and photograph it.
+  - type: input
+    id: title
+    attributes:
+      label: Title
+      placeholder: Himeji Castle
+    validations:
+      required: true
+  - type: input
+    id: id
+    attributes:
+      label: Id (lowercase letters, digits and dashes)
+      placeholder: himeji
+    validations:
+      required: true
+  - type: input
+    id: gist
+    attributes:
+      label: Gist with the monument file
+      placeholder: https://gist.github.com/…
+    validations:
+      required: true
+  - type: textarea
+    id: prompt
+    attributes:
+      label: The prompt that made it
+      placeholder: /monument Himeji Castle, Himeji, Japan
+    validations:
+      required: true
+  - type: input
+    id: model
+    attributes:
+      label: Model
+      placeholder: Claude Opus 5.5
+  - type: checkboxes
+    id: rules
+    attributes:
+      label: Rules
+      options:
+        - label: Every phase and moment links to a source that supports it.
+          required: true
+        - label: Nothing in the timeline is invented.
+          required: true

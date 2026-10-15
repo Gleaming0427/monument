@@ -1,0 +1,35 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Monument</title><link rel="stylesheet" href="kit/style.css"><script type="importmap">{"imports":{"three":"./kit/vendor/three/three.module.js","three/addons/":"./kit/vendor/three/addons/"}}</script></head><body>
+<script>// ?embed and ?clean hide parts of the interface before the first paint.
+for(const key of ["embed","clean"])if(new URLSearchParams(location.search).has(key))document.body.classList.add(key);</script>
+<div id="stage"><div id="fallback" hidden>3D rendering needs WebGL 2.</div></div>
+<header class="top">
+ <a href="../" class="brand"><span class="mark" aria-hidden="true"></span>Monument</a>
+ <div class="building"><b id="name"></b><span id="place"></span></div>
+</header>
+<section id="empty">
+ <h1 id="empty-title"></h1>
+ <p>Ask your agent for it. It researches the building, places it on the real plan, models it and opens it here:</p>
+ <code>/monument &lt;building, city, country&gt;</code>
+</section>
+<div id="labels" aria-hidden="true"></div><div id="pin" hidden></div><i id="leader" hidden></i>
+<aside id="moment" hidden aria-live="polite"><span id="m-tag"></span><b id="m-title"></b><p id="m-text"></p><a id="m-source" target="_blank" rel="noreferrer"></a></aside>
+<aside class="live" aria-live="polite"><div id="live"></div><ul id="facts"></ul></aside>
+<section class="story" aria-live="polite">
+ <span id="when"></span>
+ <h1 id="title"></h1>
+ <p id="text"></p>
+ <a id="source" target="_blank" rel="noreferrer"></a>
+ <p id="model-note" hidden></p>
+</section>
+<footer class="timeline">
+ <button id="play" aria-label="Pause"></button>
+ <div class="track">
+  <ol id="phases"></ol>
+  <i id="head" aria-hidden="true"></i>
+  <input id="scrub" type="range" min="0" max="1000" step="5" value="0" aria-label="Move through the construction">
+ </div>
+</footer>
+<script>// Opened as a file, the page cannot load its modules: say what to do instead.
+if(location.protocol==='file:')addEventListener('DOMContentLoaded',()=>{const f=document.getElementById('fallback');f.hidden=false;document.body.style.cssText='margin:0;background:#07080f;color:#f4efe6;font:16px/1.5 system-ui,sans-serif';f.style.cssText='max-width:560px;margin:20vh auto;padding:20px;border:1px solid #333;border-radius:14px';f.innerHTML='Open this page through the local server: run <code>node scripts/serve.mjs</code> in the skill folder, then go to <a href="http://127.0.0.1:4173/">http://127.0.0.1:4173</a>.';});</script>
+<script type="module" src="kit/app.js"></script>
+</body></html>
