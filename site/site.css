@@ -12,7 +12,9 @@ nav.site{display:flex;align-items:center;gap:22px;font-size:13px;color:var(--mut
 nav.site a{text-decoration:none}
 nav.site a:hover,nav.site a[aria-current=page]{color:var(--ink)}
 nav.site .brand{color:var(--ink);font-weight:750}
-nav.site .gh{margin-left:auto;display:flex}
+nav.site .x{margin-left:auto;display:flex}
+nav.site .x svg{width:15px;height:15px;fill:currentColor}
+nav.site .gh{display:flex}
 nav.site .gh svg{width:17px;height:17px;fill:currentColor}
 header.intro{padding:34px 0 8px}
 .kicker{font-size:14px;color:var(--muted)}

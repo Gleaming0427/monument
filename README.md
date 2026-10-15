@@ -118,6 +118,8 @@ site/               the website, deployed to GitHub Pages
 
 ## Credits
 
+Made by [@Gleaming0427](https://x.com/Gleaming0427) with Claude Code.
+
 The format of this skill, of its install and of its website follows [Anatomy](https://skills.wheresryan.sh/anatomy) by Ryan. Built with [Three.js](https://threejs.org) (MIT) and [Manrope](https://github.com/sharanda/manrope) (SIL Open Font License). Footprints and streets: © [OpenStreetMap](https://www.openstreetmap.org/copyright) contributors (ODbL) and IGN BD TOPO (Licence Ouverte). Each monument links to its own sources.
 
 MIT licence.
