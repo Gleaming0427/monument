@@ -41,7 +41,10 @@ for (const file of (await Promise.all(targets.map(files))).flat()) {
   for (const key of ['name', 'place', 'view', 'phases', 'elements']) check(d[key], `${at} missing "${key}"`);
   if (!d.phases || !d.elements) continue;
   let bricks = kit;
+  for (const stat of d.live ?? []) check(typeof stat.label === 'string' && ['height', 'count'].includes(stat.kind), `${at} each "live" entry needs a text "label" and a kind "height" or "count"`);
+  for (const fact of d.facts ?? []) check(typeof fact.value === 'string' && typeof fact.label === 'string', `${at} each "facts" entry needs a text "value" and "label"`);
   if (d.bricks) {
+    if (!/^[a-z0-9-]+\.bricks\.js$/.test(d.bricks)) { check(false, `${at} "bricks" must be a plain file name like "${id}.bricks.js"`); continue; }
     const source = await readFile(join(dirname(file), d.bricks), 'utf8').catch(() => '');
     check(source, `${at} bricks module ${d.bricks} not found`);
     bricks = new Set([...kit, ...bricksOf(source)]);

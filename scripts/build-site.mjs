@@ -43,6 +43,7 @@ for (const id of (await readdir(join(root, 'community')).catch(() => [])).sort()
   const dir = join(root, 'community', id);
   if (!(await exists(join(dir, 'monument.json')))) continue;
   const d = await json(join(dir, 'monument.json')), meta = await json(join(dir, 'meta.json')).catch(() => ({}));
+  if (d.bricks && !/^[a-z0-9-]+\.bricks\.js$/.test(d.bricks)) throw new Error(`${id}: "bricks" must be a plain file name`);
   await copyFile(join(dir, 'monument.json'), join(monuments, `${id}.json`));
   if (d.bricks) await copyFile(join(dir, d.bricks), join(monuments, d.bricks));
   let thumb = await exists(join(root, 'site', 'thumbs', `${id}.jpg`)) ? `${id}.jpg` : null;

@@ -42,7 +42,12 @@ async function open(id) {
   if (!response?.ok) return empty(id);
   data = await response.json();
   // A monument may bring its own bricks: a module next to its file whose default export holds generators.
-  if (data.bricks) Object.assign(generators, (await import(new URL(data.bricks, response.url))).default);
+  if (data.bricks) {
+    // Only a plain file name, loaded from the same origin as the monument file: never a remote script.
+    const bricksUrl = new URL(data.bricks, response.url);
+    if (!/^[a-z0-9-]+\.bricks\.js$/.test(data.bricks) || bricksUrl.origin !== location.origin) { data = null; return empty(id); }
+    Object.assign(generators, (await import(bricksUrl)).default);
+  }
   document.body.classList.remove('empty');
   stage.load(data);
   $('name').textContent = data.name; $('place').textContent = data.place ?? '';
@@ -132,7 +137,12 @@ function update() {
     }
   }
   for (const tick of $('phases').querySelectorAll('.tick')) tick.classList.toggle('seen', Number(tick.dataset.at) <= time);
-  $('live').innerHTML = data.live.map(stat => `<span>${stat.label}</span><b>${stat.kind === 'height' ? Math.round(stage.height(time)) + ' m' : stage.count(stat.tag, time)}</b>`).join('');
+  $('live').replaceChildren(...data.live.flatMap(stat => {
+    const label = document.createElement('span'), value = document.createElement('b');
+    label.textContent = stat.label;
+    value.textContent = stat.kind === 'height' ? Math.round(stage.height(time)) + ' m' : stage.count(stat.tag, time);
+    return [label, value];
+  }));
   const bar = $('phases').children[index].querySelector('.seg-bar'), done = Math.min(1, local);
   bar.firstChild.style.width = `${done * 100}%`;
   $('head').style.left = `${bar.offsetLeft + done * bar.offsetWidth}px`;
