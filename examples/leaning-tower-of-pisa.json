@@ -1,0 +1,356 @@
+{
+ "id": "leaning-tower-of-pisa",
+ "name": "Leaning Tower of Pisa",
+ "place": "Piazza del Duomo · Pisa · Italy",
+ "seed": 1173,
+ "view": {
+  "target": [
+   0,
+   27,
+   0
+  ],
+  "distance": 92,
+  "width": 40,
+  "radius": 40,
+  "height": 57,
+  "dots": 1.2,
+  "drop": 5,
+  "direction": [
+   0.78,
+   0.3,
+   0.55
+  ],
+  "start": {
+   "target": [
+    0,
+    6,
+    0
+   ],
+   "distance": 48
+  },
+  "light": "day"
+ },
+ "live": [
+  {
+   "label": "Height",
+   "kind": "height",
+   "unit": "m"
+  }
+ ],
+ "facts": [
+  {
+   "value": "55.86 m",
+   "label": "high on the low side"
+  },
+  {
+   "value": "3.97°",
+   "label": "lean since 2001 (5.5° in 1990)"
+  },
+  {
+   "value": "199 years",
+   "label": "from the first stone to the bells"
+  }
+ ],
+ "modelNote": "Dimensions, storeys, columns and dates from the sources. The lean before 1990 is schematic: only 5.5° (1990) and 3.97° (2001) are documented. The slight curve of the upper floors is not modelled.",
+ "evidence": {
+  "identity": "Torre di Pisa, Piazza del Duomo, Pisa, Italy (OSM relation 12982355)",
+  "sources": [
+   "https://en.wikipedia.org/wiki/Leaning_Tower_of_Pisa",
+   "https://www.italia.it/it/toscana/pisa/torre-di-pisa",
+   "https://www.openstreetmap.org/relation/12982355"
+  ],
+  "references": [
+   {
+    "view": "east",
+    "azimuth": 80,
+    "url": "https://commons.wikimedia.org/wiki/File:Leaning_tower_of_pisa_2.jpg"
+   }
+  ],
+  "features": [
+   "A hollow cylinder of white marble, 15.484 m across at the base, walls 2.44 m thick (Wikipedia).",
+   "Eight storeys: a ground floor of blind arcades on engaged columns, six open galleries of 30 columns each, and a smaller bell chamber with seven bells (italia.it, Wikipedia).",
+   "A lean to the south: 5.5° in 1990, 3.97° since 2001 (Wikipedia, Burland et al.)."
+  ],
+  "geometry": "Outer radius 7.742 m (Wikipedia); the OSM outline (radius 8.25 m) includes the footing. Total height 56 m shared between storeys from the photo taken from the east: ground floor about 1.8 gallery heights, bell chamber about 1.3, its radius about 0.65 of the tower's.",
+  "uncertainties": [
+   "Storey heights and bell chamber size read from photos.",
+   "15 blind arches on the ground floor and 12 openings in the bell chamber counted on photos.",
+   "Lean before 1990 schematic; the gradual change of the masons' corrections (the curve of the upper floors) is not modelled.",
+   "Split of the upper galleries between 1272–1278 and 1319 inferred from the dates in the sources.",
+   "Cathedral and baptistery not shown."
+  ]
+ },
+ "phases": [
+  {
+   "id": "first",
+   "when": "1173–1178",
+   "title": "The first three levels",
+   "source": "https://en.wikipedia.org/wiki/Leaning_Tower_of_Pisa",
+   "text": "Foundations are laid on 9 August 1173. When the masons reach the second floor in 1178, the soft ground gives way and the tower begins to sink. Work stops.",
+   "moments": [
+    {
+     "at": 0.55,
+     "tag": "Figure",
+     "title": "A hollow cylinder",
+     "text": "15.48 m across at the base, with walls 2.44 m thick: a ring of white marble around a shaft 7.37 m wide.",
+     "anchor": [
+      0,
+      6,
+      7.9
+     ],
+     "source": "https://en.wikipedia.org/wiki/Leaning_Tower_of_Pisa"
+    }
+   ]
+  },
+  {
+   "id": "pause",
+   "when": "1178–1272",
+   "title": "A century of waiting",
+   "source": "https://en.wikipedia.org/wiki/Leaning_Tower_of_Pisa",
+   "text": "Pisa is at war, and the work stops for most of a century. The pause gives the ground time to settle under the weight of the first floors.",
+   "moments": [
+    {
+     "at": 0.5,
+     "tag": "Anecdote",
+     "title": "The pause that saved it",
+     "text": "Without these hundred years for the soil to settle, the tower would almost certainly have toppled.",
+     "anchor": [
+      0,
+      20,
+      0
+     ],
+     "source": "https://en.wikipedia.org/wiki/Leaning_Tower_of_Pisa"
+    }
+   ]
+  },
+  {
+   "id": "resumed",
+   "when": "1272–1278",
+   "title": "Floors taller on one side",
+   "source": "https://en.wikipedia.org/wiki/Leaning_Tower_of_Pisa",
+   "text": "Work resumes in 1272 under Giovanni di Simone. To make up for the tilt, the upper floors are built with one side taller than the other.",
+   "moments": [
+    {
+     "at": 0.6,
+     "tag": "Technique",
+     "title": "Correcting a lean in stone",
+     "text": "Each new floor is taller on the leaning side, so the tower rises with a slight curve instead of a straight line.",
+     "anchor": [
+      0,
+      32,
+      7.5
+     ],
+     "source": "https://en.wikipedia.org/wiki/Leaning_Tower_of_Pisa"
+    }
+   ]
+  },
+  {
+   "id": "seventh",
+   "when": "1319",
+   "title": "The seventh floor",
+   "source": "https://en.wikipedia.org/wiki/Leaning_Tower_of_Pisa",
+   "text": "After another halt in 1278, the seventh floor is completed in 1319: six galleries of thirty columns now stand on the ground floor.",
+   "moments": [
+    {
+     "at": 0.6,
+     "tag": "Figure",
+     "title": "180 columns",
+     "text": "Six rings of galleries with thirty columns each stand on the blind arcades of the ground floor.",
+     "anchor": [
+      0,
+      42,
+      7.5
+     ],
+     "source": "https://www.italia.it/it/toscana/pisa/torre-di-pisa"
+    }
+   ]
+  },
+  {
+   "id": "belfry",
+   "when": "1372",
+   "title": "The bell chamber",
+   "source": "https://en.wikipedia.org/wiki/Leaning_Tower_of_Pisa",
+   "text": "Tommaso di Andrea Pisano adds the bell chamber, a smaller ring at the top. The tower is finished 199 years after its first stone.",
+   "moments": [
+    {
+     "at": 0.6,
+     "tag": "Figure",
+     "title": "Seven bells",
+     "text": "The bell chamber holds seven bells, one for each note of the major scale.",
+     "anchor": [
+      0,
+      52,
+      0
+     ],
+     "source": "https://en.wikipedia.org/wiki/Leaning_Tower_of_Pisa"
+    }
+   ]
+  },
+  {
+   "id": "closed",
+   "when": "1990",
+   "title": "Closed at 5.5°",
+   "source": "https://en.wikipedia.org/wiki/Leaning_Tower_of_Pisa",
+   "text": "On 7 January 1990 the tower is closed to the public: its tilt has reached 5.5 degrees. The bells are taken down and cables are tied around the third level.",
+   "moments": [
+    {
+     "at": 0.6,
+     "tag": "Technique",
+     "title": "870 tonnes of lead",
+     "text": "From 1993, 870 tonnes of lead counterweights on the raised side straighten the tower slightly.",
+     "anchor": [
+      0,
+      1,
+      -8
+     ],
+     "source": "https://en.wikipedia.org/wiki/Leaning_Tower_of_Pisa"
+    }
+   ]
+  },
+  {
+   "id": "saved",
+   "when": "1999–2001",
+   "title": "Straightened by 45 cm",
+   "source": "https://en.wikipedia.org/wiki/Leaning_Tower_of_Pisa",
+   "text": "38 m³ of soil are drawn out from under the raised side. The tilt falls to 3.97°, back to where it was in 1838, and the tower reopens on 15 December 2001.",
+   "moments": [
+    {
+     "at": 0.85,
+     "tag": "Anecdote",
+     "title": "Still for the first time",
+     "text": "In May 2008, engineers announce that the tower has stopped moving for the first time in its history.",
+     "anchor": [
+      0,
+      46,
+      0
+     ],
+     "source": "https://en.wikipedia.org/wiki/Leaning_Tower_of_Pisa"
+    }
+   ]
+  }
+ ],
+ "elements": [
+  {
+   "type": "arcadedTower",
+   "phase": "first",
+   "center": [
+    0,
+    0
+   ],
+   "radius": 7.742,
+   "y0": 0,
+   "color": "#ede7da",
+   "shade": "#cfc5b2",
+   "storeys": [
+    {
+     "phase": "first",
+     "kind": "blind",
+     "height": 11.1,
+     "arches": 15
+    },
+    {
+     "phase": "first",
+     "kind": "loggia",
+     "height": 6.15,
+     "columns": 30
+    },
+    {
+     "phase": "first",
+     "kind": "loggia",
+     "height": 6.15,
+     "columns": 30
+    },
+    {
+     "phase": "resumed",
+     "kind": "loggia",
+     "height": 6.15,
+     "columns": 30
+    },
+    {
+     "phase": "resumed",
+     "kind": "loggia",
+     "height": 6.15,
+     "columns": 30
+    },
+    {
+     "phase": "resumed",
+     "kind": "loggia",
+     "height": 6.15,
+     "columns": 30
+    },
+    {
+     "phase": "seventh",
+     "kind": "loggia",
+     "height": 6.15,
+     "columns": 30
+    },
+    {
+     "phase": "belfry",
+     "kind": "belfry",
+     "height": 8.0,
+     "radius": 5.0,
+     "arches": 12
+    }
+   ],
+   "lean": {
+    "pivot": [
+     0,
+     0,
+     0
+    ],
+    "toward": [
+     0,
+     0,
+     1
+    ],
+    "radius": 20,
+    "track": [
+     [
+      0,
+      0
+     ],
+     [
+      0.8,
+      0
+     ],
+     [
+      1,
+      0.25
+     ],
+     [
+      2,
+      0.6
+     ],
+     [
+      3,
+      1.0
+     ],
+     [
+      4,
+      1.4
+     ],
+     [
+      5,
+      2.0
+     ],
+     [
+      5.45,
+      5.5
+     ],
+     [
+      6.15,
+      5.5
+     ],
+     [
+      6.8,
+      3.97
+     ],
+     [
+      7,
+      3.97
+     ]
+    ]
+   }
+  }
+ ]
+}

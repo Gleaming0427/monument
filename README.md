@@ -12,8 +12,8 @@
   <a href="#limits">Limits</a>
 </p>
 
-<p align="center"><img src="site/thumbs/himeji.jpg" width="640" alt="Himeji Castle's main keep, white plaster tiers with grey roofs and white tile joints, on its stone base."></p>
-<p align="center"><sub><code>examples/himeji.json</code>: the main keep of Himeji Castle, checked against photos taken from four sides.</sub></p>
+<p align="center"><img src=".github/assets/leaning-tower-of-pisa.gif" width="560" alt="The Leaning Tower of Pisa rising storey by storey, then leaning south as the years go by, and being pulled back by the engineers."></p>
+<p align="center"><sub><code>examples/leaning-tower-of-pisa.json</code>: three campaigns from 1173 to 1372, then the lean that reaches 5.5° in 1990 and is brought back to 3.97° in 2001.</sub></p>
 
 ---
 
@@ -38,7 +38,7 @@ In Codex, type `$monument`. No API keys and nothing to `npm install`: the viewer
 Name the building, its city and its country. Deciding how to build it is Claude's job.
 
 ```text
-/monument Palais consulaire, Toulouse, France
+/monument Taj Mahal, Agra, India
 /monument Notre-Dame de Paris, from 1163 to the 2024 reopening
 /monument Mont-Saint-Michel, the abbey and the village
 $monument Sagrada Família, Barcelona
@@ -65,10 +65,13 @@ One rule sits at the top of [`SKILL.md`](SKILL.md): **the building is the eviden
 
 ## The collection
 
-| | | |
-|---|---|---|
-| <a href="https://gleaming0427.github.io/monument/view/#himeji"><img src="site/thumbs/himeji.jpg" alt="Himeji Castle"></a><br><b>Himeji Castle</b>, Japan | <a href="https://gleaming0427.github.io/monument/view/#eiffel-tower"><img src="site/thumbs/eiffel-tower.jpg" alt="Eiffel Tower"></a><br><b>Eiffel Tower</b>, Paris | <a href="https://gleaming0427.github.io/monument/view/#carcassonne"><img src="site/thumbs/carcassonne.jpg" alt="Cité de Carcassonne"></a><br><b>Cité de Carcassonne</b>, France |
-| <a href="https://gleaming0427.github.io/monument/view/#palais-consulaire-toulouse"><img src="site/thumbs/palais-consulaire-toulouse.jpg" alt="Palais consulaire, Toulouse"></a><br><b>Palais consulaire</b>, Toulouse | <a href="https://gleaming0427.github.io/monument/view/#golden-gate"><img src="site/thumbs/golden-gate.jpg" alt="Golden Gate Bridge"></a><br><b>Golden Gate Bridge</b>, San Francisco | |
+The world's most recognised monuments, built one by one. Each animation is recorded from the live viewer with `scripts/record.mjs`.
+
+| | |
+|---|---|
+| <a href="https://gleaming0427.github.io/monument/view/#leaning-tower-of-pisa"><img src=".github/assets/leaning-tower-of-pisa.gif" alt="The Leaning Tower of Pisa being built"></a><br><b>Leaning Tower of Pisa</b>, Italy | <a href="https://gleaming0427.github.io/monument/view/#eiffel-tower"><img src=".github/assets/eiffel-tower.gif" alt="The Eiffel Tower being built"></a><br><b>Eiffel Tower</b>, Paris |
+
+Coming next, following a survey in which people from six continents were asked to name fifty landmarks ([AllClear, via Time Out](https://www.timeout.com/sydney/news/the-sydney-opera-house-just-ranked-among-the-worlds-top-10-most-recognisable-landmarks-110124)), with the Great Wall in place of the White House: the Statue of Liberty, the Taj Mahal, the Colosseum, the Great Wall, the Sydney Opera House, Big Ben, the Great Pyramid of Giza and Stonehenge.
 
 Every one is live on the [website](https://gleaming0427.github.io/monument/collection/).
 
@@ -100,7 +103,7 @@ Monument is a standard [Agent Skill](https://agentskills.io): this repository is
 SKILL.md            the skill: what Claude does when you ask for a building
 references/         monument file format, real-plan method, fidelity loop, bricks
 kit/                the viewer: engine (builder.js), interface, Three.js and fonts, vendored
-scripts/            serve, validate, capture, publish, build-site
+scripts/            serve, validate, capture, record (GIF and MP4), publish, build-site
 examples/           the collection
 community/          the community gallery, one folder per monument
 site/               the website, deployed to GitHub Pages

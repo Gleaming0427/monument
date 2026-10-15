@@ -265,6 +265,139 @@ export const generators = {
     });
   },
 
+  // Round campanile of superposed arcades (Pisa type): a blind arcade on engaged columns at the foot,
+  // open galleries of columns and arches around a cylindrical core, and a narrower belfry. Each storey
+  // can belong to its own phase, so a tower built in several campaigns rises campaign by campaign.
+  arcadedTower(k, e, P) {
+    const {center:[cx,cz], radius:R, y0=0, color='#ece6d8', shade='#d6ccb9', core='#9f998e', dark='#2b2a30'} = e;
+    const up = new T.Vector3(0, 1, 0);
+    const pos = (a, r, y) => new T.Vector3(cx + Math.sin(a) * r, y, cz + Math.cos(a) * r);
+    const box = (a, r, y, size, hex, ph) => { const p = pos(a, r, y); k.box('stone', [p.x, p.y, p.z], size, a, k.tint(hex, .035), ph, p.y); };
+    // A ring of tangent blocks: a cylindrical wall, band or cornice.
+    const ring = (r, y, h, t, hex, ph, step = .85) => { const n = Math.max(24, Math.round(2 * Math.PI * r / step)); for (let i = 0; i < n; i++) box((i + .5) / n * 2 * Math.PI, r, y + h / 2, [2 * Math.PI * r / n * 1.05, h, t], hex, ph); };
+    // A round arch between two columns, laid voussoir by voussoir in the tangent plane.
+    const arch = (a0, a1, r, spring, depth, hex, ph) => {
+      const am = (a0 + a1) / 2, ra = r * Math.sin((a1 - a0) / 2), mid = pos(am, r * Math.cos((a1 - a0) / 2), spring), tan = new T.Vector3(Math.cos(am), 0, -Math.sin(am)), rad = new T.Vector3(Math.sin(am), 0, Math.cos(am));
+      for (let j = 0; j < 7; j++) {
+        const th = Math.PI * (j + .5) / 7, p = mid.clone().addScaledVector(tan, -ra * Math.cos(th)).addScaledVector(up, ra * Math.sin(th));
+        const x = tan.clone().multiplyScalar(Math.sin(th)).addScaledVector(up, Math.cos(th)).normalize(), z = new T.Vector3().crossVectors(x, rad).normalize();
+        k.oriented('stone', p, x, rad, z, [Math.PI * ra / 7 * 1.08, depth, .32], k.tint(hex, .035), ph, p.y);
+      }
+      return ra;
+    };
+    const column = (a, r, y, h, d, hex, ph) => { box(a, r, y + .18, [d * 1.5, .36, d * 1.5], hex, ph); box(a, r, y + h / 2, [d, h - .7, d], hex, ph); box(a, r, y + h - .17, [d * 1.55, .34, d * 1.55], hex, ph); };
+    let y = y0;
+    for (const s of e.storeys) {
+      const ph = P(s.phase ?? e.phase), h = s.height;
+      if (s.kind === 'blind') {
+        ring(R + .35, y, .7, .9, shade, ph);
+        ring(R - .6, y + .7, h - 1.15, 1.2, color, ph);
+        const n = s.arches, spring = y + h * .78;
+        for (let i = 0; i < n; i++) {
+          const a = i / n * 2 * Math.PI;
+          column(a, R + .12, y + .7, spring - y - .7, .55, color, ph);
+          arch(a, (i + 1) / n * 2 * Math.PI, R + .08, spring, .4, color, ph);
+        }
+        ring(R - .45, y + h - .4, .4, 1.3, color, ph);
+      } else if (s.kind === 'loggia') {
+        // The gallery's back wall is darker: it stands in the shade of the floor above, as on photos.
+        const rc = R - .25, n = s.columns, top = y + h - .4, ra = rc * Math.sin(Math.PI / n), spring = top - ra - .5, back = s.core ?? R - 1.9;
+        ring(back, y, h, .9, core, ph, 1.1);
+        for (let i = 0; i < n; i++) {
+          const a = i / n * 2 * Math.PI;
+          column(a, rc, y, spring - y, .34, color, ph);
+          box(a, rc, spring + ra * .3, [ra * .95, ra * .6, .32], color, ph);
+          arch(a, (i + 1) / n * 2 * Math.PI, rc, spring, .34, color, ph);
+        }
+        ring(rc - .02, spring + ra * .62, top - spring - ra * .62, .3, color, ph);
+        ring((R + .1 + back) / 2, top, .4, R + .1 - back, color, ph);
+      } else if (s.kind === 'belfry') {
+        const rb = s.radius ?? R * .7, n = s.arches, top = y + h - .5, ra = rb * Math.sin(Math.PI / n), spring = top - ra - .45;
+        ring(rb - 1.3, y, h - .5, .5, dark, ph, 1.1);
+        for (let i = 0; i < n; i++) {
+          const a = i / n * 2 * Math.PI;
+          box(a, rb, y + (spring - y) / 2, [Math.PI * rb / n, spring - y, .8], color, ph);
+          box(a, rb, spring + ra * .3, [ra * .9, ra * .6, .7], color, ph);
+          arch(a, (i + 1) / n * 2 * Math.PI, rb, spring, .7, color, ph);
+        }
+        ring(rb, spring + ra * .62, top - spring - ra * .62, .7, color, ph);
+        ring(rb + .2, top, .5, 1.1, color, ph);
+        ring(rb - .2, top + .5, .6, .35, color, ph);
+      }
+      y += h;
+    }
+  },
+
+  // Elliptical amphitheatre (Colosseum type): an outer façade of superposed arcades framed by engaged
+  // columns and topped by an attic with pilasters, an inner ring, raked seating down to the arena wall,
+  // and the arena's underground walls. `arc` keeps only the bays between two angles (degrees), so a
+  // ruined side can be its own element with `until`.
+  amphitheatre(k, e, P) {
+    const {center:[cx,cz], radii:[A,B], rot=0, bays=80, color='#d9c9a8', brick='#b07a55', part='facade'} = e, ph = P(e.phase);
+    const co = Math.cos(rot), si = Math.sin(rot), up = new T.Vector3(0, 1, 0);
+    const world = (x, y, z) => new T.Vector3(cx + x * co + z * si, y, cz - x * si + z * co);
+    // Point, tangent and outward normal on an ellipse grown by d metres.
+    const at = (th, d = 0) => { const ct = Math.cos(th), st = Math.sin(th), n = new T.Vector3(B * ct, 0, A * st).normalize(); return {p: new T.Vector3(A * ct, 0, B * st).addScaledVector(n, d), n, t: new T.Vector3(-A * st, 0, B * ct).normalize()}; };
+    const inArc = th => { if (!e.arc) return true; const deg = (th * 180 / Math.PI + 360) % 360, [a0, a1] = e.arc; return a0 <= a1 ? deg >= a0 && deg < a1 : deg >= a0 || deg < a1; };
+    const yaw = t => rot + Math.atan2(-t.z, t.x);
+    const put = (p, y, size, t, hex, kind = 'stone') => { const w = world(p.x, y, p.z); k.box(kind, [w.x, w.y, w.z], size, yaw(t), k.tint(hex, .05), ph, w.y); };
+    const arch = (p0, p1, spring, depth, hex) => {
+      const mid = p0.clone().add(p1).multiplyScalar(.5), dir = p1.clone().sub(p0), ra = dir.length() / 2; dir.normalize();
+      const rad = new T.Vector3(dir.z, 0, -dir.x);
+      for (let j = 0; j < 7; j++) {
+        const th = Math.PI * (j + .5) / 7, q = mid.clone().addScaledVector(dir, -ra * Math.cos(th)), w = world(q.x, spring + ra * Math.sin(th), q.z);
+        const x = new T.Vector3(dir.x * co + dir.z * si, 0, -dir.x * si + dir.z * co).multiplyScalar(Math.sin(th)).addScaledVector(up, Math.cos(th)).normalize();
+        const y = new T.Vector3(rad.x * co + rad.z * si, 0, -rad.x * si + rad.z * co);
+        k.oriented('stone', w, x, y, new T.Vector3().crossVectors(x, y), [Math.PI * ra / 7 * 1.1, depth, .7], k.tint(hex, .05), ph, w.y);
+      }
+    };
+    const step = 2 * Math.PI / bays;
+    if (part === 'facade' || part === 'inner') {
+      // Superposed arcades: each storey has piers, engaged columns, arches and an entablature band.
+      const d = part === 'inner' ? -(e.ring ?? 10) : 0;
+      let y = e.y0 ?? 0;
+      for (const s of e.storeys) {
+        for (let i = 0; i < bays; i++) {
+          const th = i * step; if (!inArc(th) || !inArc(th + step)) continue;
+          const {p, t} = at(th, d), next = at(th + step, d).p, bay = p.distanceTo(next), spring = y + s.height * .62, open = bay * .62;
+          if (s.kind === 'attic') {
+            const m = at(th + step / 2, d);
+            put(m.p, y + s.height / 2, [bay * 1.03, s.height, 1.6], m.t, color);
+            put(p, y + s.height / 2, [.8, s.height - .4, 2.1], t, color);
+            if (i % 2 === 0) put(m.p.clone().addScaledVector(m.n, .55), y + s.height * .55, [1.1, 1.7, .6], m.t, '#4a4037');
+            put(p.clone().addScaledVector(at(th, d).n, .9), y + s.height - .6, [.5, .8, 1.2], t, color);
+            continue;
+          }
+          put(p, y + (spring - y) / 2, [bay - open, spring - y, 2.4], t, color);
+          if (s.column) put(p.clone().addScaledVector(at(th, d).n, 1.3), y + (s.height - 1.4) / 2 + .2, [.95, s.height - 1.4, .5], t, color);
+          arch(p.clone().addScaledVector(t, (bay - open) / 2), next.clone().addScaledVector(t, -(bay - open) / 2), spring, 2.4, color);
+          const m = at(th + step / 2, d);
+          put(m.p, spring + open / 2 + (y + s.height - 1.2 - spring - open / 2) / 2, [bay * 1.03, y + s.height - 1.2 - spring - open / 2 + .4, 2.3], m.t, color);
+          put(m.p.clone().addScaledVector(m.n, .4), y + s.height - .6, [bay * 1.05, 1.2, 3.2], m.t, color);
+        }
+        y += s.height;
+      }
+    } else if (part === 'cavea') {
+      // Seating raked from the inner ring down to the podium round the arena; radial walls carry it.
+      const {from, to, rows = 24} = e;
+      for (let r = 0; r < rows; r++) {
+        const f = (r + .5) / rows, d = -from.ring - (to.ring - from.ring) * f, y = from.height + (to.height - from.height) * f;
+        for (let i = 0; i < bays * 2; i++) {
+          const th = (i + .5) * step / 2; if (!inArc(th)) continue;
+          const {p, t} = at(th, d), len = p.distanceTo(at(th + step / 2, d).p);
+          put(p, y - .45, [len * 1.04, .9, (to.ring - from.ring) / rows * 1.15], t, r % 6 === 5 ? '#c9b994' : color);
+        }
+      }
+      for (let i = 0; i < bays; i += 2) { const th = i * step; if (!inArc(th)) continue; const a = world(at(th, -from.ring).p.x, from.height - 1, at(th, -from.ring).p.z), b = world(at(th, -to.ring).p.x, to.height - 1, at(th, -to.ring).p.z); k.beam('stone', a, b, 1.1, k.tint(brick, .06), ph); }
+    } else if (part === 'arena') {
+      // The podium wall round the arena, and the underground galleries (hypogeum) below its floor.
+      const [a, b] = e.arena;
+      for (let i = 0; i < bays * 2; i++) { const th = (i + .5) * step / 2, q = new T.Vector3(a * Math.cos(th), 0, b * Math.sin(th)), t = new T.Vector3(-a * Math.sin(th), 0, b * Math.cos(th)).normalize(); put(q, (e.podium ?? 4) / 2, [Math.PI * (a + b) / (bays * 2) * 1.05, e.podium ?? 4, 1.2], t, color); }
+      for (let x = -a * .82; x <= a * .82; x += 3.2) { const half = b * Math.sqrt(Math.max(0, 1 - (x / a) ** 2)) * .86; put(new T.Vector3(x, 0, 0), .9, [.7, 1.8, half * 2], new T.Vector3(1, 0, 0), brick); }
+      put(new T.Vector3(0, 0, 0), 1.9, [a * 1.7, .25, 1.1], new T.Vector3(1, 0, 0), brick);
+    }
+  },
+
   // Reusable facade with actual openings, stone surrounds and optional balconies.
   facade(k, e, P) {
     const {center:[cx,cz], length, floors=2, floorHeight=3.6, bays=5, rot=0, y0=0,
@@ -598,7 +731,9 @@ export function createStage(host) {
   composer.addPass(bloom);
   composer.addPass(new OutputPass());
 
-  const uniforms = {uTime: {value: 0}, uFly: {value: FLY}, uDrop: {value: 30}, uNight: {value: 0}, uSparkle: {value: 0}, uClock: {value: 0}, uHeight: {value: 100}, uNightColor: {value: new T.Color('#ff9a2e')}};
+  const uniforms = {uTime: {value: 0}, uFly: {value: FLY}, uDrop: {value: 30}, uNight: {value: 0}, uSparkle: {value: 0}, uClock: {value: 0}, uHeight: {value: 100}, uNightColor: {value: new T.Color('#ff9a2e')},
+    // One leaning group per monument (a tower sinking on soft ground): pivot, axis and angle over time.
+    uLeanPivot: {value: new T.Vector3()}, uLeanAxis: {value: new T.Vector3(1, 0, 0)}, uLeanAngle: {value: 0}};
   // Sky, distant ground and fog share one horizon colour: no visible seam.
   const DUSK = new T.Color().setRGB(.15, .105, .13), NIGHT = new T.Color().setRGB(.03, .042, .085);
   const horizon = {value: DUSK.clone()};
@@ -642,7 +777,7 @@ export function createStage(host) {
   let light = LIGHTS.golden;
 
   const meshes = [];
-  let monument = null, total = 1, heightTrack = [], tagTrack = {};
+  let monument = null, total = 1, heightTrack = [], tagTrack = {}, leaning = null;
 
   function material(kind) {
     const mat = new T.MeshStandardMaterial({color: '#ffffff', ...KINDS[kind]});
@@ -652,8 +787,8 @@ export function createStage(host) {
       shader.uniforms.uKind = {value: kind === 'metal' ? 1 : kind === 'stone' ? 0 : -1};
       shader.vertexShader = shader.vertexShader
         .replace('#include <common>', `#include <common>
-          attribute vec2 aLife; attribute float aSeed;
-          uniform float uTime,uFly,uDrop;
+          attribute vec2 aLife; attribute float aSeed; attribute float aLean;
+          uniform float uTime,uFly,uDrop,uLeanAngle; uniform vec3 uLeanPivot,uLeanAxis;
           varying float vGlow; varying float vWorldY; varying float vSeed;`)
         .replace('#include <begin_vertex>', `#include <begin_vertex>
           float kIn=clamp((uTime-aLife.x)/uFly,0.,1.);
@@ -669,6 +804,8 @@ export function createStage(host) {
             mvPosition=instanceMatrix*mvPosition;
           #endif
           mvPosition.y+=drop;
+          if(aLean>.5){vec3 p=mvPosition.xyz-uLeanPivot;float c=cos(uLeanAngle),s=sin(uLeanAngle);
+            mvPosition.xyz=uLeanPivot+p*c+cross(uLeanAxis,p)*s+uLeanAxis*dot(uLeanAxis,p)*(1.-c);}
           vWorldY=(modelMatrix*mvPosition).y;
           mvPosition=modelViewMatrix*mvPosition;
           gl_Position=projectionMatrix*mvPosition;`);
@@ -696,6 +833,13 @@ export function createStage(host) {
   function load(data) {
     clear();
     monument = data; moved = false;
+    // An element with `lean` tilts with all its pieces: angle (degrees) over time from `track`, towards `toward`.
+    leaning = data.elements.find(element => element.lean)?.lean ?? null;
+    uniforms.uLeanAngle.value = 0;
+    if (leaning) {
+      uniforms.uLeanPivot.value.set(...(leaning.pivot ?? [0, 0, 0]));
+      uniforms.uLeanAxis.value.crossVectors(UP, new T.Vector3(...(leaning.toward ?? [0, 0, 1])).normalize()).normalize();
+    }
     const index = Object.fromEntries(data.phases.map((p, i) => [p.id, i]));
     const P = id => { if (!(id in index)) throw new Error(`Unknown phase: ${id}`); return index[id]; };
     const k = kit(random(data.seed ?? 7));
@@ -705,6 +849,7 @@ export function createStage(host) {
       generators[element.type](k, element, P);
       if(element.type === "timberFrame")for(const piece of k.pieces.slice(before))piece.structural=true;
       if(element.until)for(const piece of k.pieces.slice(before))piece.until=P(element.until);
+      if(element.lean)for(const piece of k.pieces.slice(before))piece.lean=1;
       if (element.ruin) {
         const fresh = k.pieces.slice(before), cut = (element.y0 ?? 0) + (element.height ?? 0) * (1 - (element.ruin.depth ?? .3));
         for (const piece of fresh) if (piece.phase < P(element.ruin.phase) && (piece.crown || piece.top > cut) && k.rand() < element.ruin.share) {
@@ -725,14 +870,15 @@ export function createStage(host) {
     const groups = {};
     for (const piece of k.pieces) (groups[piece.kind] ??= []).push(piece);
     for (const [kind, list] of Object.entries(groups)) {
-      const geometry = new T.BoxGeometry(1, 1, 1), life = new Float32Array(list.length * 2), seed = new Float32Array(list.length);
+      const geometry = new T.BoxGeometry(1, 1, 1), life = new Float32Array(list.length * 2), seed = new Float32Array(list.length), lean = new Float32Array(list.length);
       const mesh = new T.InstancedMesh(geometry, material(kind), list.length);
       list.forEach((piece, i) => {
         mesh.setMatrixAt(i, piece.matrix); mesh.setColorAt(i, piece.color);
-        life[i * 2] = piece.birth; life[i * 2 + 1] = piece.until === undefined ? 1e6 : death(piece.until); seed[i] = k.rand() * 100;
+        life[i * 2] = piece.birth; life[i * 2 + 1] = piece.until === undefined ? 1e6 : death(piece.until); seed[i] = k.rand() * 100; lean[i] = piece.lean ?? 0;
       });
       geometry.setAttribute('aLife', new T.InstancedBufferAttribute(life, 2));
       geometry.setAttribute('aSeed', new T.InstancedBufferAttribute(seed, 1));
+      geometry.setAttribute('aLean', new T.InstancedBufferAttribute(lean, 1));
       mesh.frustumCulled = false;
       scene.add(mesh); meshes.push(mesh);
     }
@@ -844,12 +990,17 @@ export function createStage(host) {
     },
     // Screen position of a scene point (to pin a moment).
     project(point) {
-      const v = new T.Vector3(...point).project(camera);
+      const v = new T.Vector3(...point);
+      // Pins on a leaning building lean with it.
+      if (leaning && Math.hypot(v.x - uniforms.uLeanPivot.value.x, v.z - uniforms.uLeanPivot.value.z) < (leaning.radius ?? 30))
+        v.sub(uniforms.uLeanPivot.value).applyAxisAngle(uniforms.uLeanAxis.value, uniforms.uLeanAngle.value).add(uniforms.uLeanPivot.value);
+      v.project(camera);
       return {x: (v.x * .5 + .5) * host.clientWidth, y: (-v.y * .5 + .5) * host.clientHeight, visible: v.z < 1 && Math.abs(v.x) < 1.1 && Math.abs(v.y) < 1.1};
     },
     get duration() { return total; },
     setTime(t) {
       uniforms.uTime.value = t;
+      if (leaning) uniforms.uLeanAngle.value = lerp(leaning.track, t) * Math.PI / 180;
       const phase = monument.phases[Math.min(total - 1, Math.floor(t))];
       const night = phase?.mood === 'night' ? Math.min(1, (t - Math.floor(t)) * 3 + (t >= total ? 1 : 0)) : 0;
       uniforms.uNight.value = night;

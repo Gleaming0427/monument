@@ -23,6 +23,8 @@ Units are metres. `x` points east, `z` points south, `y` up; the ground (or wate
 | `batteredBase` | A stone base with sloping walls | `center`, `size` (foot), `top` (top), `height`, `rot`, `curve` (> 1: fan-shaped profile, flared at the foot), `colors` |
 | `timberFrame` | A timber frame of setback floors | `center`, `size`, `levels` (floor heights), `plans` (width, depth per level, in ken), `ken`, `y0`, `rot`, `pillars` (`offsets`, `height`, `width`: masts through every floor) |
 | `tieredKeep` | A Japanese castle keep: plastered tiers, curved hip roofs with white tile joints, gables face by face | `center`, `rot`, `y0`, `ken`, `pitch`, `tile`, `joint`, `wall`, `tiers` (per tier: `plan` in ken, `height` eave to eave, `eave`, `brackets`, `bays`, `windowPitch`, `lattice`, `posts`, `gables` with `face` s/n/e/w, `kind` kara/chidori/irimoya, `width`, `height`, `at`, `slope`; top tier: `ridge`, `hip`) |
+| `arcadedTower` | A round campanile of superposed arcades (Pisa type) | `center`, `radius`, `y0`, `color`, `shade`, `storeys` (per storey: `kind` blind/loggia/belfry, `height`, `phase`, `arches` or `columns`, `core`, belfry `radius`) |
+| `amphitheatre` | An elliptical amphitheatre (Colosseum type) | `center`, `radii`, `rot`, `bays`, `part` (`facade`, `inner`, `cavea`, `arena`), `arc` (degrees kept, for a ruined side), facade `storeys` (`height`, `column`, `kind: attic`), `ring`, cavea `from`/`to` (`ring`, `height`), `rows`, `arena`, `podium`, `color`, `brick` |
 
 ## Change over time
 
@@ -30,6 +32,7 @@ Everything that happens to a building is tied to a phase:
 - raise a building: a second element with a higher `y0`;
 - ruin then restore: `"ruin": {"phase", "share", "restore"}`;
 - take a whole element down: `until`; for `wing`, `roof.until` removes only the roof before a new storey goes on.
+- lean a building as the ground gives way: `"lean": {"pivot": [x, y, z], "toward": [dx, 0, dz], "track": [[t, degrees], …]}` on an element; `t` is the timeline position in phases, and pins within `radius` lean with it. One leaning group per monument.
 
 ## Adding a brick
 

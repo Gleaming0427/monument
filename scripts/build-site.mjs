@@ -28,7 +28,7 @@ const collection = [];
 for (const {id, blurb} of curated) {
   const d = await json(join(root, 'examples', `${id}.json`));
   await copyFile(join(root, 'examples', `${id}.json`), join(monuments, `${id}.json`));
-  collection.push({id, name: d.name, place: d.place, blurb});
+  collection.push({id, name: d.name, place: d.place, blurb, video: await exists(join(root, 'site', 'media', `${id}.mp4`))});
 }
 
 // Community: one folder per monument, with meta.json from scripts/publish.mjs.
@@ -49,12 +49,15 @@ for (const id of (await readdir(join(root, 'community')).catch(() => [])).sort()
       thumb = `${id}.png`;
     } catch { console.warn(`No thumbnail for ${id}.`); }
   }
-  community.push({id, name: d.name, place: d.place, thumb, ...meta, title: meta.title ?? d.name});
+  community.push({id, name: d.name, place: d.place, thumb, video: await exists(join(root, 'site', 'media', `${id}.mp4`)), ...meta, title: meta.title ?? d.name});
 }
 community.sort((a, b) => String(b.date).localeCompare(String(a.date)));
 
-const card = (m, i, prefix) => `<a class="card" href="${prefix}view/#${esc(m.id)}">`
-  + (m.thumb === null ? `<span class="ph">${esc(m.id)}</span>` : `<img src="${prefix}thumbs/${esc(m.thumb ?? `${m.id}.jpg`)}" alt="${esc(m.name)}, the finished model" loading="lazy">`)
+// A recorded construction (site/media/<id>.mp4) plays in a loop; otherwise the thumbnail, or a placeholder.
+const visual = (m, prefix) => m.video
+  ? `<video src="${prefix}media/${esc(m.id)}.mp4" poster="${prefix}thumbs/${esc(m.id)}.jpg" autoplay muted loop playsinline preload="metadata" aria-label="${esc(m.name)} being built"></video>`
+  : m.thumb === null ? `<span class="ph">${esc(m.id)}</span>` : `<img src="${prefix}thumbs/${esc(m.thumb ?? `${m.id}.jpg`)}" alt="${esc(m.name)}, the finished model" loading="lazy">`;
+const card = (m, i, prefix) => `<a class="card" href="${prefix}view/#${esc(m.id)}">` + visual(m, prefix)
   + `<div><span class="n">${String(i + 1).padStart(2, '0')}</span><h3>${esc(m.title ?? m.name)}</h3><span class="place">${esc(m.place)}</span>`
   + (m.blurb ? `<p>${esc(m.blurb)}</p>` : '')
   + (m.prompt ? `<div class="prompt">${esc(m.prompt.length > 160 ? m.prompt.slice(0, 157) + '…' : m.prompt)}</div>` : '')
@@ -68,7 +71,7 @@ const fill = async (page, values) => {
 const authors = new Set(community.map(m => m.author)).size, models = new Set(community.map(m => m.model)).size;
 await fill('index.html', {
   COUNT: collection.length,
-  STRIP: collection.map(m => `<a href="view/#${esc(m.id)}" aria-label="${esc(m.name)}"><img src="thumbs/${esc(m.id)}.jpg" alt="" loading="lazy"></a>`).join(''),
+  STRIP: collection.map(m => `<a href="view/#${esc(m.id)}" aria-label="${esc(m.name)}">${visual(m, '')}</a>`).join(''),
   COLLECTION: collection.slice(0, 4).map((m, i) => card(m, i, '')).join(''),
 });
 await fill('collection/index.html', {COUNT: collection.length, COLLECTION: collection.map((m, i) => card(m, i, '../')).join('')});

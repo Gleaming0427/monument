@@ -238,6 +238,13 @@ try {
   console.error('3D rendering unavailable', error);
 }
 
+// Recording tools (scripts/record.mjs) drive the timeline frame by frame through this hook.
+window.monument = {
+  seek(t) { time = Math.max(0, Math.min(stage.duration, t)); play(false); },
+  get duration() { return stage?.duration ?? 0; },
+  get ready() { return Boolean(data); },
+};
+
 // Direct links can change only the fragment without reloading the document.
 addEventListener('hashchange', () => {
   const id = decodeURIComponent(location.hash.slice(1));

@@ -1,6 +1,6 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Monument</title><link rel="stylesheet" href="kit/style.css"><script type="importmap">{"imports":{"three":"./kit/vendor/three/three.module.js","three/addons/":"./kit/vendor/three/addons/"}}</script></head><body>
-<script>// ?embed and ?clean hide parts of the interface before the first paint.
-for(const key of ["embed","clean"])if(new URLSearchParams(location.search).has(key))document.body.classList.add(key);</script>
+<script>// ?embed, ?clean and ?caption hide parts of the interface before the first paint.
+for(const key of ["embed","clean","caption"])if(new URLSearchParams(location.search).has(key))document.body.classList.add(key);</script>
 <div id="stage"><div id="fallback" hidden>3D rendering needs WebGL 2.</div></div>
 <header class="top">
  <a href="../" class="brand"><span class="mark" aria-hidden="true"></span>Monument</a>
