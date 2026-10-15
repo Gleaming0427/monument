@@ -3,7 +3,14 @@ import {createStage, generators} from './builder.js';
 const $ = id => document.getElementById(id);
 // One page = one building (#<id>). Its file, monuments/<id>.json (dated, sourced phases and the
 // elements to build), is written by the /monument skill when someone asks for the building.
-const SECONDS_PER_PHASE = 6;
+// Pacing follows reading: a phase lasts as long as its text takes to read (about 3 words a second),
+// a moment holds playback while its card is read, and the viewer can slow everything down.
+const WORDS_PER_SECOND = 3;
+const words = text => String(text ?? '').split(/\s+/).filter(Boolean).length;
+const phaseSeconds = phase => Math.min(18, Math.max(8, words(phase.text) / WORDS_PER_SECOND + 3));
+const SPEEDS = [1, .5, .25, 2];
+let speed = 1;
+try { speed = SPEEDS.includes(Number(localStorage.getItem('monument-speed'))) ? Number(localStorage.getItem('monument-speed')) : 1; } catch {}
 // The website stamps its deploy on the module URL (?v=…); monument files carry the same stamp, so a
 // cached engine and a newer monument file are never mixed.
 const version = new URL(import.meta.url).search;
@@ -11,8 +18,7 @@ const params = new URLSearchParams(location.search);
 
 let stage = null, data = null, time = 0, playing = false, touched = false, last = performance.now(), shown = '';
 // Active construction moment: pinned in 3D; playback slows down long enough to read it.
-let moment = null, momentKey = '', momentSince = 0;
-const READING = 4500;
+let moment = null, momentKey = '', momentSince = 0, reading = 0;
 
 function when(phase, local) {
   if (phase.when) return phase.when;
@@ -117,7 +123,7 @@ function update() {
   for (const m of phase.moments ?? []) if (local >= m.at) moment = m;
   const pinned = moment ? `${data.id}:${index}:${moment.at}` : '';
   if (pinned !== momentKey) {
-    momentKey = pinned; momentSince = performance.now();
+    momentKey = pinned; momentSince = performance.now(); reading = moment ? (words(moment.title) + words(moment.text)) / WORDS_PER_SECOND * 1000 + 1500 : 0;
     $('moment').hidden = !moment;
     if (moment) {
       $('m-tag').textContent = moment.tag; $('m-title').textContent = moment.title; $('m-text').textContent = moment.text;
@@ -168,8 +174,8 @@ function frame(now) {
   if (!data) return stage.render(now / 1000);
   if (playing) {
     // A frame timestamp can precede the start of playback: never a negative time.
-    const slow = momentKey && now - momentSince < READING ? .22 : 1;
-    time = Math.max(0, time + Math.min(.1, Math.max(0, now - last) / 1000) * slow / SECONDS_PER_PHASE);
+    const slow = momentKey && now - momentSince < reading / speed ? .12 : 1, phase = data.phases[Math.min(data.phases.length - 1, Math.floor(time))];
+    time = Math.max(0, time + Math.min(.1, Math.max(0, now - last) / 1000) * slow * speed / phaseSeconds(phase));
     if (time >= stage.duration) { time = stage.duration; play(false); }
   }
   last = now;
@@ -205,6 +211,15 @@ function layout() {
 }
 
 $('play').onclick = () => play(!playing);
+// Playback speed: the button cycles 1× → 0.5× → 0.25× → 2×; − and + step through it.
+function setSpeed(next) {
+  speed = next;
+  $('speed').textContent = `${String(speed).replace(/^0/, '')}×`;
+  $('speed').setAttribute('aria-label', `Playback speed ${speed}×`);
+  try { localStorage.setItem('monument-speed', String(speed)); } catch {}
+}
+$('speed').onclick = () => setSpeed(SPEEDS[(SPEEDS.indexOf(speed) + 1) % SPEEDS.length]);
+setSpeed(speed);
 $('scrub').oninput = event => { time = event.target.value / 1000 * stage.duration; play(false); };
 let scrubbing = false;
 function seek(x) {
@@ -222,7 +237,13 @@ $('phases').addEventListener('pointerdown', event => {
 $('phases').addEventListener('pointermove', event => { if (scrubbing) seek(event.clientX); });
 $('phases').addEventListener('pointerup', () => { scrubbing = false; });
 $('phases').addEventListener('pointercancel', () => { scrubbing = false; });
-addEventListener('keydown', event => { if (event.code === 'Space' && event.target === document.body) { event.preventDefault(); play(!playing); } });
+addEventListener('keydown', event => {
+  if (event.target !== document.body) return;
+  if (event.code === 'Space') { event.preventDefault(); play(!playing); }
+  const order = [.25, .5, 1, 2], i = order.indexOf(speed);
+  if (event.key === '-' && i > 0) setSpeed(order[i - 1]);
+  if ((event.key === '+' || event.key === '=') && i < order.length - 1) setSpeed(order[i + 1]);
+});
 
 // When the 3D scene cannot start, say why and how to fix it, and play the recorded construction instead
 // (the website keeps one per monument in ../media/<id>.mp4).
