@@ -115,8 +115,8 @@
     "height": 48,
     "workers": 14,
     "materials": true,
-    "scaffold": {"width": 28, "height": 32, "offset": [0, -7]},
-    "hoist": true,
+    "scaffold": {"kind": "tower", "width": 20, "depth": 20, "height": 32},
+    "hoist": {"kind": "steam-crane", "offset": [8, 8], "height": 9, "from": 4, "to": 39},
     "dust": 0.7,
     "source": "https://www.toureiffel.paris/en/news/130-years/how-did-they-build-tower-so-quickly"
    },
@@ -1024,6 +1024,7 @@
   "uncertainties": [
    "The lattice is schematic: the real tower has several hundred lattice members per panel; the model keeps the silhouette and the panel rhythm.",
    "The lifts, restaurants and the 2022 antenna (330 m) are left out.",
+   "The climbing steam crane and scaffold cage follow the documented construction method, while their exact position within the selected leg is interpretive.",
    "The model's ground plan still differs from the OpenStreetMap outline in the sectors between the legs: the tower's piers are drawn as square lattice boxes, while the real piers are rounded and the space between them follows the base arches; the 90th-percentile gap is 8.2 m (max 23.6 m)."
   ]
  },

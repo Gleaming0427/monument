@@ -871,7 +871,7 @@ export function createStage(host) {
   const meshes = [];
   // Human-scale construction tableaux, described and sourced per phase. They are deliberately kept
   // outside buildPieces(): workers, dust and temporary tools must not alter plan or height checks.
-  const siteGroups = [], siteActors = [], siteDust = [];
+  const siteGroups = [], siteActors = [], siteDust = [], siteRigs = [];
   const siteBox = new T.BoxGeometry(1, 1, 1), siteCylinder = new T.CylinderGeometry(1, 1, 1, 8), siteHead = new T.SphereGeometry(1, 12, 8);
   const siteMaterials = new Map();
   const siteMaterial = (color, kind = 'matte') => {
@@ -908,7 +908,8 @@ export function createStage(host) {
 
   function makeWorksite(spec, phase, seed) {
     const group = new T.Group(), rand = random(seed), [cx, cz] = spec.at ?? [0, 0], radius = Math.max(4, spec.radius ?? 14), height = Math.max(3, spec.height ?? 9);
-    group.position.set(cx, 0, cz); group.visible = false; scene.add(group); siteGroups.push({group, phase, spec});
+    const site = {group, phase, spec, scaffoldParts: [], progress: 0};
+    group.position.set(cx, 0, cz); group.visible = false; scene.add(group); siteGroups.push(site);
     const fill = new T.PointLight('#ffd3a0', 24, radius * 3.5, 1.7); fill.position.set(0, Math.min(height, 12) * .75, 0); group.add(fill);
     const wood = siteMaterial(spec.wood ?? '#765236'), stone = siteMaterial(spec.materialColor ?? (spec.craft === 'metal' ? '#58616a' : '#a79579'), spec.craft === 'metal' ? 'metal' : 'matte');
     const rope = siteMaterial('#80684d'), palette = spec.clothes ?? ['#9a5b38', '#5c6f7b', '#7c6943', '#6d4c45'];
@@ -924,25 +925,89 @@ export function createStage(host) {
     }
 
     if (spec.scaffold) {
-      const cfg = typeof spec.scaffold === 'object' ? spec.scaffold : {}, width = cfg.width ?? radius * 1.45, levels = Math.max(2, Math.round((cfg.height ?? height) / 2.3)), z = cfg.offset?.[1] ?? -radius * .32, ox = cfg.offset?.[0] ?? 0;
-      const scaffold = new T.Group(); scaffold.rotation.y = cfg.rot ?? 0; group.add(scaffold);
-      for (let x = -width / 2; x <= width / 2 + .1; x += 2.4) for (const depth of [0, 1.55]) siteBeam(scaffold, [ox + x, 0, z + depth], [ox + x, levels * 2.3, z + depth], .065, wood);
-      for (let level = 1; level <= levels; level++) {
-        const y = level * 2.3;
-        for (const depth of [0, 1.55]) siteBeam(scaffold, [ox - width / 2, y, z + depth], [ox + width / 2, y, z + depth], .055, wood);
-        for (let x = -width / 2; x < width / 2; x += 2.4) {
-          siteBeam(scaffold, [ox + x, y - 2.3, z], [ox + Math.min(width / 2, x + 2.4), y, z], .04, wood);
-          siteMesh(scaffold, siteBox, wood, [ox + x + 1.1, y + .05, z + .78], [2.25, .09, 1.35]);
+      const cfg = typeof spec.scaffold === 'object' ? spec.scaffold : {kind: 'facade'}, kind = cfg.kind ?? 'facade';
+      const scaffold = new T.Group(), [ox, oz] = cfg.offset ?? [0, kind === 'facade' ? -radius * .32 : 0];
+      scaffold.position.set(ox, 0, oz); scaffold.rotation.y = cfg.rot ?? 0; group.add(scaffold);
+      const levelHeight = cfg.levelHeight ?? 2.3, levels = Math.max(2, Math.ceil((cfg.height ?? height) / levelHeight));
+      const add = (mesh, level) => { mesh.userData.siteReveal = .04 + .88 * level / levels; site.scaffoldParts.push(mesh); return mesh; };
+      const beam = (a, b, r, level) => add(siteBeam(scaffold, a, b, r, wood), level);
+      const plank = (position, scale, turn, level) => { const mesh = add(siteMesh(scaffold, siteBox, wood, position, scale), level); mesh.rotation.y = turn; return mesh; };
+
+      if (kind === 'ring') {
+        const inner = Math.max(.8, cfg.radius ?? radius * .52), depth = cfg.depth ?? 1.55, outer = inner + depth;
+        const segments = Math.max(8, Math.round(cfg.segments ?? Math.PI * 2 * outer / 2.4));
+        const arc = (cfg.arc ?? 360) * Math.PI / 180, start = (cfg.start ?? -90) * Math.PI / 180;
+        const closed = Math.abs(arc - Math.PI * 2) < .001, bays = closed ? segments : Math.max(1, segments - 1), point = (r, a, y) => [Math.cos(a) * r, y, Math.sin(a) * r];
+        for (let level = 1; level <= levels; level++) {
+          const y0 = (level - 1) * levelHeight, y1 = level * levelHeight;
+          for (let i = 0; i < segments; i++) {
+            const a = start + arc * i / (closed ? segments : segments - 1);
+            for (const r of [inner, outer]) beam(point(r, a, y0), point(r, a, y1), .06, level);
+          }
+          for (let i = 0; i < bays; i++) {
+            const a = start + arc * i / (closed ? segments : segments - 1), b = start + arc * (i + 1) / (closed ? segments : segments - 1), mid = (a + b) / 2;
+            for (const r of [inner, outer]) beam(point(r, a, y1), point(r, b, y1), .05, level);
+            beam(point(inner, a, y1), point(outer, a, y1), .045, level);
+            beam(point(outer, a, level % 2 ? y0 : y1), point(outer, b, level % 2 ? y1 : y0), .035, level);
+            plank(point((inner + outer) / 2, mid, y1 + .05), [Math.max(.4, 2 * outer * Math.sin(Math.abs(b - a) / 2) * .9), .08, depth * .78], Math.PI / 2 - mid, level);
+          }
+        }
+      } else if (kind === 'tower') {
+        const width = cfg.width ?? radius * .8, depth = cfg.depth ?? width, corners = [[-width / 2, -depth / 2], [width / 2, -depth / 2], [width / 2, depth / 2], [-width / 2, depth / 2]];
+        for (let level = 1; level <= levels; level++) {
+          const y0 = (level - 1) * levelHeight, y1 = level * levelHeight;
+          for (const [x, z] of corners) beam([x, y0, z], [x, y1, z], .065, level);
+          for (let i = 0; i < 4; i++) {
+            const a = corners[i], b = corners[(i + 1) % 4];
+            beam([a[0], y1, a[1]], [b[0], y1, b[1]], .055, level);
+            beam([a[0], level % 2 ? y0 : y1, a[1]], [b[0], level % 2 ? y1 : y0, b[1]], .038, level);
+          }
+          for (let x = -width / 2 + .6; x < width / 2; x += 1.2) plank([x, y1 + .05, 0], [1.05, .08, depth * .86], 0, level);
+        }
+      } else {
+        const width = cfg.width ?? radius * 1.45, depth = cfg.depth ?? 1.55, bays = Math.max(1, Math.ceil(width / 2.4)), step = width / bays, z = 0;
+        for (let level = 1; level <= levels; level++) {
+          const y0 = (level - 1) * levelHeight, y1 = level * levelHeight;
+          for (let i = 0; i <= bays; i++) for (const d of [0, depth]) beam([-width / 2 + i * step, y0, z + d], [-width / 2 + i * step, y1, z + d], .065, level);
+          for (let i = 0; i < bays; i++) {
+            const x0 = -width / 2 + i * step, x1 = x0 + step;
+            for (const d of [0, depth]) beam([x0, y1, z + d], [x1, y1, z + d], .055, level);
+            beam([x0, level % 2 ? y0 : y1, z], [x1, level % 2 ? y1 : y0, z], .04, level);
+            plank([(x0 + x1) / 2, y1 + .05, z + depth / 2], [step * .92, .09, depth * .86], 0, level);
+          }
         }
       }
     }
 
     if (spec.hoist) {
-      const hx = radius * .35, hz = -radius * .08, hh = Math.min(18, height + 3);
-      siteBeam(group, [hx - 2.2, 0, hz], [hx, hh, hz], .14, wood); siteBeam(group, [hx + 2.2, 0, hz], [hx, hh, hz], .14, wood);
-      siteBeam(group, [hx - 3.4, hh, hz], [hx + 3.4, hh, hz], .12, wood); siteBeam(group, [hx + 2.7, hh, hz], [hx + 2.7, hh * .42, hz], .025, rope);
-      const load = siteMesh(group, siteBox, stone, [hx + 2.7, hh * .38, hz], [.75, .45, .65]);
-      load.userData = {hoist: true, baseY: load.position.y, offset: rand() * 9}; siteActors.push(load);
+      const cfg = typeof spec.hoist === 'object' ? spec.hoist : {kind: 'gin-pole'}, kind = cfg.kind ?? 'gin-pole', [hx, hz] = cfg.offset ?? [radius * .35, -radius * .08];
+      const rig = new T.Group(); rig.position.set(hx, 0, hz); group.add(rig);
+      const rigWood = kind === 'steam-crane' ? siteMaterial('#59636a', 'metal') : wood, hh = cfg.height ?? Math.min(kind === 'steam-crane' ? 11 : 18, height + 3);
+      let load, boom, wheel;
+      if (kind === 'treadwheel') {
+        siteBeam(rig, [-1.3, 0, 0], [-1.3, hh, 0], .13, rigWood); siteBeam(rig, [1.3, 0, 0], [1.3, hh, 0], .13, rigWood);
+        wheel = new T.Group(); wheel.position.set(0, hh * .43, 0); rig.add(wheel);
+        const wr = Math.min(2.25, hh * .24), spokes = 12;
+        for (let i = 0; i < spokes; i++) {
+          const a = i / spokes * Math.PI * 2, b = (i + 1) / spokes * Math.PI * 2;
+          siteBeam(wheel, [Math.cos(a) * wr, Math.sin(a) * wr, 0], [Math.cos(b) * wr, Math.sin(b) * wr, 0], .085, rigWood);
+          if (i % 2 === 0) siteBeam(wheel, [0, 0, 0], [Math.cos(a) * wr, Math.sin(a) * wr, 0], .055, rigWood);
+        }
+        boom = new T.Group(); rig.add(boom); siteBeam(boom, [0, hh * .7, 0], [4.4, hh, 0], .14, rigWood); siteBeam(boom, [0, hh * .7, 0], [4.4, hh, 0], .045, rope);
+        siteBeam(rig, [4.4, hh, 0], [4.4, 2.2, 0], .025, rope); load = siteMesh(rig, siteBox, stone, [4.4, 1.9, 0], [.75, .45, .65]);
+      } else if (kind === 'steam-crane') {
+        siteMesh(rig, siteBox, rigWood, [0, .35, 0], [3.4, .7, 2.3]); siteBeam(rig, [0, .7, 0], [0, hh, 0], .18, rigWood);
+        boom = new T.Group(); rig.add(boom); siteBeam(boom, [0, hh * .78, 0], [6.4, hh + 2.5, 0], .16, rigWood); siteBeam(boom, [0, hh * .78, 0], [-2.4, hh + .5, 0], .13, rigWood);
+        siteMesh(rig, siteBox, stone, [-2.5, hh + .45, 0], [1.2, .8, 1.1]); siteBeam(rig, [6.4, hh + 2.5, 0], [6.4, 2.5, 0], .025, rope);
+        load = siteMesh(rig, siteBox, stone, [6.4, 2.2, 0], [.85, .45, .7]);
+      } else {
+        siteBeam(rig, [-2.2, 0, 0], [0, hh, 0], .14, rigWood); siteBeam(rig, [2.2, 0, 0], [0, hh, 0], .14, rigWood);
+        boom = new T.Group(); rig.add(boom); siteBeam(boom, [-3.4, hh, 0], [3.4, hh, 0], .12, rigWood); siteBeam(rig, [2.7, hh, 0], [2.7, hh * .42, 0], .025, rope);
+        load = siteMesh(rig, siteBox, stone, [2.7, hh * .38, 0], [.75, .45, .65]);
+      }
+      if (load) { load.userData = {hoist: true, baseY: load.position.y, offset: rand() * 9}; siteActors.push(load); }
+      rig.userData = {site, kind, from: cfg.from ?? 0, to: cfg.to ?? Math.max(0, height - hh), start: cfg.start ?? .04, end: cfg.end ?? .94, boom, wheel, offset: rand() * 9};
+      siteRigs.push(rig);
     }
 
     const workerCount = Math.max(0, Math.min(18, Math.round(spec.workers ?? 6)));
@@ -1013,7 +1078,7 @@ export function createStage(host) {
     for (const mesh of meshes) { scene.remove(mesh); mesh.geometry.dispose(); mesh.material.dispose(); }
     meshes.length = 0;
     for (const {group} of siteGroups) scene.remove(group);
-    siteGroups.length = 0; siteActors.length = 0; siteDust.length = 0;
+    siteGroups.length = 0; siteActors.length = 0; siteDust.length = 0; siteRigs.length = 0;
   }
 
   function load(data) {
@@ -1180,7 +1245,17 @@ export function createStage(host) {
       horizon.value.copy(DUSK).lerp(NIGHT, night);
       scene.fog.color.copy(horizon.value);
       const phaseIndex = Math.min(total - 1, Math.floor(t));
-      for (const site of siteGroups) site.group.visible = site.phase === phaseIndex;
+      for (const site of siteGroups) {
+        site.group.visible = site.phase === phaseIndex;
+        site.progress = Math.max(0, Math.min(1, t - site.phase));
+        if (t >= total && site.phase === total - 1) site.progress = 1;
+        for (const part of site.scaffoldParts) part.visible = part.userData.siteReveal <= site.progress;
+      }
+      for (const rig of siteRigs) {
+        const u = rig.userData, raw = Math.max(0, Math.min(1, (u.site.progress - u.start) / Math.max(.01, u.end - u.start))), eased = raw * raw * (3 - 2 * raw);
+        rig.visible = u.site.group.visible && u.site.progress >= u.start;
+        rig.position.y = u.from + (u.to - u.from) * eased;
+      }
     },
     height: t => at(heightTrack, t),
     count: (tag, t) => (tagTrack[tag] ?? []).filter(birth => birth <= t).length,
@@ -1204,6 +1279,11 @@ export function createStage(host) {
           actor.position.y = u.baseY + Math.abs(wave) * .018; actor.rotation.y = u.baseTurn + wave * .025;
           u.arms?.forEach((arm, i) => { const base = u.role === 'lift' ? 2.45 : u.role === 'carry' ? 1.3 : .45; arm.rotation.z = (i ? -1 : 1) * (base + wave * (u.role === 'mason' ? .4 : .12)); });
         }
+      }
+      for (const rig of siteRigs) if (rig.visible) {
+        const u = rig.userData;
+        if (u.boom) u.boom.rotation.y = Math.sin(clock * .16 + u.offset) * (u.kind === 'steam-crane' ? .16 : .07);
+        if (u.wheel) u.wheel.rotation.z = clock * .22;
       }
       for (const dust of siteDust) if (dust.points.parent?.visible) {
         const position = dust.points.geometry.attributes.position;

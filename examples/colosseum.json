@@ -170,6 +170,7 @@
    "80 bays per ring; arches, columns and attic simplified.",
    "Seating raked in one slope; the timber upper gallery and its fire of 217 are not shown.",
    "Underground galleries drawn as parallel walls, not their real plan.",
+   "The timber facade scaffold and gin-pole hoists explain the masonry sequence; their exact Roman site layout is interpretive.",
    "Which end dates from 1807 and which from 1827 is not stated in the sources used; the wedge (east) and the stepped arches (west) follow photos.",
    "Stone weathering, black crusts and clamp pits not drawn; arches, cornices, attic windows and corbels simplified.",
    "The 1807 wedge: the east photo shows it on the other side of the wall's cut end; drawn as a stepped slope."
@@ -294,8 +295,8 @@
     "height": 34,
     "workers": 16,
     "materials": true,
-    "scaffold": {"width": 34, "height": 26, "offset": [0, -8]},
-    "hoist": true,
+    "scaffold": {"kind": "facade", "width": 34, "depth": 1.8, "height": 26, "offset": [0, -8]},
+    "hoist": {"kind": "gin-pole", "offset": [11, -3], "height": 14, "from": 0, "to": 12},
     "dust": 0.55,
     "source": "https://en.wikipedia.org/wiki/Colosseum"
    },
@@ -351,7 +352,7 @@
     "height": 11,
     "workers": 12,
     "materials": true,
-    "hoist": true,
+    "hoist": {"kind": "gin-pole", "offset": [10, -2], "height": 10, "from": 0, "to": 2},
     "dust": 0.5,
     "source": "https://en.wikipedia.org/wiki/Colosseum"
    },

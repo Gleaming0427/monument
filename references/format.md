@@ -13,7 +13,7 @@ One building = one JSON file, `monuments/<id>.json` in the user's project (`exam
   "evidence": {"identity": "…", "sources": ["https://…"], "references": [], "features": [], "geometry": "…", "uncertainties": ["…"]},
   "phases": [{
     "id": "foundations", "from": "1933-01-05", "to": "1933-11-07", "title": "The foundations", "text": "…", "source": "https://…",
-    "scene": {"craft": "earth", "at": [-640, 0], "focus": [-640, 6, 0], "distance": 65, "radius": 35, "height": 12, "workers": 8, "materials": true, "scaffold": false, "hoist": true, "dust": 0.35, "source": "https://…"},
+    "scene": {"craft": "earth", "at": [-640, 0], "focus": [-640, 6, 0], "distance": 65, "radius": 35, "height": 12, "workers": 8, "materials": true, "scaffold": {"kind": "facade", "width": 28, "height": 10}, "hoist": {"kind": "gin-pole", "from": 0, "to": 4}, "dust": 0.35, "source": "https://…"},
     "moments": [{"at": 0.7, "tag": "Technique", "title": "A bathtub at sea", "text": "…", "anchor": [-640, 4, 0], "source": "https://…"}]
   }],
   "elements": [{"type": "suspension", "phase": "foundations", "…": "…"}]
@@ -34,7 +34,10 @@ At least two construction phases in a standard build carry `scene`, unless the w
 - `craft`: `masonry`, `timber`, `metal`, `earth`, `restoration` or `mixed`; this chooses the restrained material and particle language.
 - `at`: `[x, z]` centre of the activity. `focus`: `[x, y, z]` point the camera should feel close to. `distance` sets the human-scale camera distance in metres; frame at least one worker and the detail being built. `radius` controls the spread and `height` the work reached.
 - `workers`: 0–18. Figures communicate human scale; do not use them to assert an unsupported workforce count.
-- `materials`, `scaffold`, `hoist`: include only what the scene's source supports. `scaffold` may be an object with `width`, `height`, `rot` and `offset: [x, z]`.
+- `materials`, `scaffold`, `hoist`: include only what the scene's source supports. Temporary structures grow during the phase, so describe their geometry instead of using `true`.
+  - `scaffold.kind`: `facade` for a straight wall, `ring` for a circular or curved tower, or `tower` for a freestanding pier. All accept `height`, `levelHeight`, `rot` and `offset: [x, z]`. A facade also accepts `width` and `depth`; a ring uses `radius`, `depth`, `segments`, and optional `arc`/`start` degrees; a tower uses `width` and `depth`.
+  - `hoist.kind`: `gin-pole`, `treadwheel` or `steam-crane`. Use `height`, `offset: [x, z]`, and `from`/`to` for the base height followed during the phase. `start` and `end` (0–1) limit the moving interval.
+  - Match both to the geometry, period and phase: never place a straight facade scaffold against a round tower, or repeat a modern crane in an earlier phase. If the exact arrangement is unknown, state the reconstruction in `evidence.uncertainties`.
 - `dust`: 0–1. For `metal`, these points read as brief sparks; otherwise as fine construction dust.
 - `source`: a page in `evidence.sources` that supports the craft, tool or temporary structure. Put uncertain staging in `evidence.uncertainties`.
 

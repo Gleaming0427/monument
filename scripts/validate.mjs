@@ -73,6 +73,23 @@ for (const file of (await Promise.all(targets.map(files))).flat()) {
       check(p.scene.distance === undefined || Number.isFinite(p.scene.distance) && p.scene.distance > 0, `${at} phase ${p.id}: scene.distance must be a positive camera distance`);
       check(p.scene.workers === undefined || Number.isInteger(p.scene.workers) && p.scene.workers >= 0 && p.scene.workers <= 18, `${at} phase ${p.id}: scene.workers must be 0–18`);
       check(p.scene.dust === undefined || Number.isFinite(p.scene.dust) && p.scene.dust >= 0 && p.scene.dust <= 1, `${at} phase ${p.id}: scene.dust must be 0–1`);
+      if (p.scene.scaffold) {
+        const scaffold = p.scene.scaffold;
+        check(typeof scaffold === 'object' && ['facade', 'ring', 'tower'].includes(scaffold.kind), `${at} phase ${p.id}: scene.scaffold needs kind "facade", "ring" or "tower"`);
+        check(scaffold.offset === undefined || scaffold.offset?.length === 2 && scaffold.offset.every(Number.isFinite), `${at} phase ${p.id}: scene.scaffold.offset must be [x, z]`);
+        check(scaffold.height === undefined || Number.isFinite(scaffold.height) && scaffold.height > 0, `${at} phase ${p.id}: scene.scaffold.height must be positive`);
+        if (scaffold.kind === 'ring') check(Number.isFinite(scaffold.radius) && scaffold.radius > 0, `${at} phase ${p.id}: a ring scaffold needs a positive radius`);
+        if (['facade', 'tower'].includes(scaffold.kind)) check(Number.isFinite(scaffold.width) && scaffold.width > 0, `${at} phase ${p.id}: a ${scaffold.kind} scaffold needs a positive width`);
+      }
+      if (p.scene.hoist) {
+        const hoist = p.scene.hoist;
+        check(typeof hoist === 'object' && ['gin-pole', 'treadwheel', 'steam-crane'].includes(hoist.kind), `${at} phase ${p.id}: scene.hoist needs kind "gin-pole", "treadwheel" or "steam-crane"`);
+        check(hoist.offset === undefined || hoist.offset?.length === 2 && hoist.offset.every(Number.isFinite), `${at} phase ${p.id}: scene.hoist.offset must be [x, z]`);
+        check(hoist.from === undefined || Number.isFinite(hoist.from), `${at} phase ${p.id}: scene.hoist.from must be a height`);
+        check(hoist.to === undefined || Number.isFinite(hoist.to), `${at} phase ${p.id}: scene.hoist.to must be a height`);
+        check(hoist.start === undefined || Number.isFinite(hoist.start) && hoist.start >= 0 && hoist.start <= 1, `${at} phase ${p.id}: scene.hoist.start must be 0–1`);
+        check(hoist.end === undefined || Number.isFinite(hoist.end) && hoist.end >= 0 && hoist.end <= 1, `${at} phase ${p.id}: scene.hoist.end must be 0–1`);
+      }
     }
     for (const m of p.moments ?? []) {
       check(m.at >= 0 && m.at <= 1, `${at} moment "${m.title}" must have 0 ≤ at ≤ 1`);
