@@ -56,7 +56,7 @@ The first measured draft can also be generated directly:
 node ~/.claude/skills/monument/scripts/scaffold.mjs "Palais consulaire de Toulouse, Toulouse, France" --out monuments
 ```
 
-This downloads the named building's OpenStreetMap footprint, selects an architecture family and writes an oriented, detailed base shell plus its control plan. It stops instead of substituting a nearby building when no usable footprint can be found.
+This downloads the named building's OpenStreetMap footprint, selects an architecture family and writes an oriented, detailed base shell plus its control plan. Framed openings, mullions, doors, cornices and roof edges are generated immediately. It stops instead of substituting a nearby building when no usable footprint can be found.
 
 ## How it works
 
@@ -67,7 +67,7 @@ One rule sits at the top of [`SKILL.md`](SKILL.md): **the building is the eviden
 3. **Generate its measured skeleton**: `scaffold.mjs` resolves and downloads the footprint, converts it to metres, chooses a broad family and produces detailed base volumes in seconds ([references/scaffold.md](references/scaffold.md)).
 4. **Read the architecture**: replace its explicit estimates using three useful views and the details that make it recognisable ([references/fidelity.md](references/fidelity.md)).
 5. **Write the timeline**: dated, sourced phases and construction moments ([references/format.md](references/format.md)).
-6. **Build it from bricks**: generators that turn each element into small solid pieces ([references/bricks.md](references/bricks.md)). A new kind of architecture gets a new brick.
+6. **Build it from bricks**: generators that turn each element into small solid pieces, then sourced human-scale worksite tableaux add workers, materials, hoists, scaffolds, dust and sparks to the relevant phases ([references/bricks.md](references/bricks.md)). A new kind of architecture gets a new brick.
 7. **Compare with the photos**: a standard build uses one focused capture pass; publication adds the complete second pass.
 8. **Report honestly**: what is measured, documented and interpreted, and what still differs.
 

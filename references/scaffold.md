@@ -29,7 +29,7 @@ It normally completes in one map lookup plus one local build. No browser automat
 
 ## What the family changes
 
-Every family keeps the measured polygon. The `footprintBuilding` brick then generates masonry courses, storey bands, doors, windows and a roof fitted to that polygon. The family changes conservative base massing: civic blocks get an interior pitched-roof wing, religious buildings get nave and transept masses, compact towers get a circular shaft, amphitheatres get an arcaded ellipse, fortified buildings get a crenellated shell, and modern buildings get a flat glazed shell.
+Every family keeps the measured polygon. The `footprintBuilding` brick then generates masonry courses, storey bands, framed openings with mullions, panelled doors, cornices, a parapet and a roof fitted to that polygon. The family changes conservative base massing and proportions: religious buildings narrow their openings, towers become taller and more vertical, amphitheatres get an arcaded ellipse, fortified buildings get a crenellated shell, and modern buildings get a flatter glazed rhythm.
 
 These choices are working geometry. The JSON records the reason for the family, whether height and storeys came from map tags or defaults, and every unresolved estimate in `evidence.uncertainties`. Research must replace those estimates before standard validation.
 

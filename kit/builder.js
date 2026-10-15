@@ -591,17 +591,27 @@ export const generators = {
         k.box(door ? 'wood' : 'metal', [x, y, z], [w, h, .12], edge.rot, k.tint(door ? '#5e4435' : '#304552', .04), P(e.phase), y * 1e4 + along);
         for (const side of [-1, 1]) k.box('stone', [x + edge.ux * side * (w / 2 + .08), y, z + edge.uz * side * (w / 2 + .08)], [.13, h + .25, .18], edge.rot, k.tint(trim, .03), P(e.phase), y * 1e4 + along + side);
         for (const dy of [-h / 2 - .08, h / 2 + .08]) k.box('stone', [x, y + dy, z], [w + .3, .14, .18], edge.rot, k.tint(trim, .03), P(e.phase), y * 1e4 + along + dy);
+        if (door) {
+          for (const side of [-1, 1]) for (const dy of [-.22, .22]) k.box('wood', [x + edge.ux * side * w * .24 + edge.nx * .08, y + dy * h, z + edge.uz * side * w * .24 + edge.nz * .08], [w * .38, h * .32, .09], edge.rot, k.tint('#765744', .025), P(e.phase), y * 1e4 + along + side + dy);
+          k.box('metal', [x + edge.ux * w * .28 + edge.nx * .14, y, z + edge.uz * w * .28 + edge.nz * .14], [.06, .06, .08], edge.rot, k.tint('#c2a56d', .04), P(e.phase), y * 1e4 + along + 9);
+        } else {
+          k.box('metal', [x, y, z + 0], [.045, h * .9, .15], edge.rot, k.tint('#d6d0bd', .025), P(e.phase), y * 1e4 + along + 3);
+          k.box('metal', [x, y + h * .06, z + 0], [w * .9, .045, .15], edge.rot, k.tint('#d6d0bd', .025), P(e.phase), y * 1e4 + along + 4);
+        }
       }
       for (let floor = 1; floor <= floors; floor++) {
         const x = edge.a[0] + edge.ux * edge.length / 2 + edge.nx * (thickness / 2 + .1), z = edge.a[1] + edge.uz * edge.length / 2 + edge.nz * (thickness / 2 + .1);
         k.box('stone', [x, y0 + floor * floorHeight, z], [edge.length, .16, .18], edge.rot, k.tint(trim, .03), P(e.phase), (y0 + floor * floorHeight) * 1e4);
       }
+      const x = edge.a[0] + edge.ux * edge.length / 2 + edge.nx * (thickness / 2 + .22), z = edge.a[1] + edge.uz * edge.length / 2 + edge.nz * (thickness / 2 + .22);
+      k.box('stone', [x, y0 + height + .18, z], [edge.length + .25, .36, .5], edge.rot, k.tint(trim, .025), P(e.phase), (y0 + height) * 1e4 + edge.length);
     }
     if (!e.roof) return;
     const xs = points.map(point => point[0]), zs = points.map(point => point[1]), area = Math.max(1, (Math.max(...xs) - Math.min(...xs)) * (Math.max(...zs) - Math.min(...zs)));
     const step = Math.max(1.4, Math.sqrt(area / 3500)), inside = (x, z) => { let hit = false; for (let i = 0, j = points.length - 1; i < points.length; j = i++) { const [xi, zi] = points[i], [xj, zj] = points[j]; if ((zi > z) !== (zj > z) && x < (xj - xi) * (z - zi) / (zj - zi) + xi) hit = !hit; } return hit; };
     for (let x = Math.min(...xs) + step / 2; x < Math.max(...xs); x += step) for (let z = Math.min(...zs) + step / 2; z < Math.max(...zs); z += step) if (inside(x, z))
       k.box(e.roof.kind === 'flat' ? 'stone' : (e.roof.kind ?? 'slate'), [x, y0 + height + .18, z], [step * .98, .32, step * .98], 0, k.tint(e.roof.color ?? '#716d68', .04), P(e.roof.phase ?? e.phase), (y0 + height) * 1e4 + x + z);
+    if (e.roof.kind === 'flat' && e.roof.parapet !== false) generators.wall(k, {...e, points, closed: true, y0: y0 + height + .34, height: .65, thickness: .42, block: [1.4, .65], color: trim, crenel: undefined, phase: e.roof.phase ?? e.phase}, P);
   },
 
   // Oval enclosure: continuous wall with towers at its vertices, and openings (`skip`, in degrees).
@@ -859,6 +869,98 @@ export function createStage(host) {
   let light = LIGHTS.golden;
 
   const meshes = [];
+  // Human-scale construction tableaux, described and sourced per phase. They are deliberately kept
+  // outside buildPieces(): workers, dust and temporary tools must not alter plan or height checks.
+  const siteGroups = [], siteActors = [], siteDust = [];
+  const siteBox = new T.BoxGeometry(1, 1, 1), siteCylinder = new T.CylinderGeometry(1, 1, 1, 8), siteHead = new T.SphereGeometry(1, 12, 8);
+  const siteMaterials = new Map();
+  const siteMaterial = (color, kind = 'matte') => {
+    const key = `${color}:${kind}`;
+    if (!siteMaterials.has(key)) siteMaterials.set(key, new T.MeshStandardMaterial({color, emissive: color, emissiveIntensity: .07, roughness: kind === 'metal' ? .42 : .9, metalness: kind === 'metal' ? .55 : 0}));
+    return siteMaterials.get(key);
+  };
+  const siteMesh = (group, geometry, material, position, scale) => {
+    const mesh = new T.Mesh(geometry, material); mesh.position.set(...position); mesh.scale.set(...scale); group.add(mesh); return mesh;
+  };
+  const siteBeam = (group, a, b, radius, material) => {
+    const A = new T.Vector3(...a), B = new T.Vector3(...b), direction = B.clone().sub(A), mesh = siteMesh(group, siteCylinder, material, A.add(B).multiplyScalar(.5).toArray(), [radius, direction.length(), radius]);
+    mesh.quaternion.setFromUnitVectors(UP, direction.normalize()); return mesh;
+  };
+
+  function makeWorker(parent, x, z, turn, palette, role, offset) {
+    const actor = new T.Group(); actor.position.set(x, 0, z); actor.rotation.y = turn; parent.add(actor);
+    const cloth = siteMaterial(palette[offset % palette.length]), skin = siteMaterial('#9a6949'), dark = siteMaterial('#3c342d'), stone = siteMaterial('#a89a83');
+    siteMesh(actor, siteCylinder, cloth, [0, 1.14, 0], [.19, .58, .19]);
+    siteMesh(actor, siteHead, skin, [0, 1.59, 0], [.14, .16, .14]);
+    siteMesh(actor, siteBox, dark, [0, 1.72, 0], [.22, .07, .2]);
+    siteBeam(actor, [-.1, .84, 0], [-.11, .1, .02], .065, dark);
+    siteBeam(actor, [.1, .84, 0], [.13, .1, -.02], .065, dark);
+    const arms = [];
+    for (const side of [-1, 1]) {
+      const pivot = new T.Group(); pivot.position.set(side * .2, 1.38, 0); actor.add(pivot);
+      siteMesh(pivot, siteCylinder, skin, [0, -.24, 0], [.055, .48, .055]);
+      pivot.rotation.z = side * (role === 'lift' ? 2.45 : role === 'carry' ? 1.3 : .45); arms.push(pivot);
+    }
+    if (role === 'carry') siteMesh(actor, siteBox, stone, [0, 1.03, .28], [.5, .2, .28]);
+    if (role === 'mason') { actor.scale.y = .82; siteMesh(actor, siteBox, stone, [0, .35, .45], [.32, .2, .34]); }
+    actor.userData = {baseY: 0, baseTurn: turn, offset, arms, role}; siteActors.push(actor);
+  }
+
+  function makeWorksite(spec, phase, seed) {
+    const group = new T.Group(), rand = random(seed), [cx, cz] = spec.at ?? [0, 0], radius = Math.max(4, spec.radius ?? 14), height = Math.max(3, spec.height ?? 9);
+    group.position.set(cx, 0, cz); group.visible = false; scene.add(group); siteGroups.push({group, phase, spec});
+    const fill = new T.PointLight('#ffd3a0', 24, radius * 3.5, 1.7); fill.position.set(0, Math.min(height, 12) * .75, 0); group.add(fill);
+    const wood = siteMaterial(spec.wood ?? '#765236'), stone = siteMaterial(spec.materialColor ?? (spec.craft === 'metal' ? '#58616a' : '#a79579'), spec.craft === 'metal' ? 'metal' : 'matte');
+    const rope = siteMaterial('#80684d'), palette = spec.clothes ?? ['#9a5b38', '#5c6f7b', '#7c6943', '#6d4c45'];
+
+    if (spec.materials !== false) {
+      if (spec.craft === 'timber' || spec.craft === 'metal') for (let i = 0; i < 9; i++) {
+        const z = radius * .54 + (i % 3) * .24, y = .11 + Math.floor(i / 3) * .19;
+        siteBeam(group, [-radius * .64, y, z], [-radius * .05, y, z + (rand() - .5) * .12], spec.craft === 'metal' ? .065 : .1, stone);
+      } else for (let i = 0; i < 18; i++) {
+        const row = Math.floor(i / 6), col = i % 6;
+        siteMesh(group, siteBox, stone, [-radius * .62 + col * .55, .16 + row * .3, radius * .48 + (row % 2) * .16], [.48 + rand() * .06, .28, .36 + rand() * .08]);
+      }
+    }
+
+    if (spec.scaffold) {
+      const cfg = typeof spec.scaffold === 'object' ? spec.scaffold : {}, width = cfg.width ?? radius * 1.45, levels = Math.max(2, Math.round((cfg.height ?? height) / 2.3)), z = cfg.offset?.[1] ?? -radius * .32, ox = cfg.offset?.[0] ?? 0;
+      const scaffold = new T.Group(); scaffold.rotation.y = cfg.rot ?? 0; group.add(scaffold);
+      for (let x = -width / 2; x <= width / 2 + .1; x += 2.4) for (const depth of [0, 1.55]) siteBeam(scaffold, [ox + x, 0, z + depth], [ox + x, levels * 2.3, z + depth], .065, wood);
+      for (let level = 1; level <= levels; level++) {
+        const y = level * 2.3;
+        for (const depth of [0, 1.55]) siteBeam(scaffold, [ox - width / 2, y, z + depth], [ox + width / 2, y, z + depth], .055, wood);
+        for (let x = -width / 2; x < width / 2; x += 2.4) {
+          siteBeam(scaffold, [ox + x, y - 2.3, z], [ox + Math.min(width / 2, x + 2.4), y, z], .04, wood);
+          siteMesh(scaffold, siteBox, wood, [ox + x + 1.1, y + .05, z + .78], [2.25, .09, 1.35]);
+        }
+      }
+    }
+
+    if (spec.hoist) {
+      const hx = radius * .35, hz = -radius * .08, hh = Math.min(18, height + 3);
+      siteBeam(group, [hx - 2.2, 0, hz], [hx, hh, hz], .14, wood); siteBeam(group, [hx + 2.2, 0, hz], [hx, hh, hz], .14, wood);
+      siteBeam(group, [hx - 3.4, hh, hz], [hx + 3.4, hh, hz], .12, wood); siteBeam(group, [hx + 2.7, hh, hz], [hx + 2.7, hh * .42, hz], .025, rope);
+      const load = siteMesh(group, siteBox, stone, [hx + 2.7, hh * .38, hz], [.75, .45, .65]);
+      load.userData = {hoist: true, baseY: load.position.y, offset: rand() * 9}; siteActors.push(load);
+    }
+
+    const workerCount = Math.max(0, Math.min(18, Math.round(spec.workers ?? 6)));
+    for (let i = 0; i < workerCount; i++) {
+      const angle = -Math.PI * .1 + (i + .5) / Math.max(1, workerCount) * Math.PI * 1.2, distance = radius * (.45 + rand() * .28);
+      makeWorker(group, Math.cos(angle) * distance, Math.sin(angle) * distance, -angle + Math.PI / 2 + (rand() - .5) * .5, palette, ['mason', 'carry', 'lift'][i % 3], i * 1.7 + rand());
+    }
+
+    const dustAmount = Math.max(0, Math.min(1, spec.dust ?? .35)), count = Math.round(120 * dustAmount);
+    if (count) {
+      const positions = new Float32Array(count * 3), base = [];
+      for (let i = 0; i < count; i++) { const a = rand() * Math.PI * 2, r = Math.sqrt(rand()) * radius; base.push([Math.cos(a) * r, rand() * Math.min(height, 8), Math.sin(a) * r, rand() * 10]); }
+      const geometry = new T.BufferGeometry(); geometry.setAttribute('position', new T.BufferAttribute(positions, 3));
+      const points = new T.Points(geometry, new T.PointsMaterial({color: spec.craft === 'metal' ? '#ffad57' : '#d7ba8e', size: Math.max(.06, radius * .009), transparent: true, opacity: spec.craft === 'metal' ? .75 : .32, depthWrite: false, blending: spec.craft === 'metal' ? T.AdditiveBlending : T.NormalBlending}));
+      group.add(points); siteDust.push({points, base, radius, height: Math.min(height, 8), sparks: spec.craft === 'metal'});
+    }
+  }
+
   let monument = null, total = 1, heightTrack = [], tagTrack = {}, leaning = null;
 
   function material(kind) {
@@ -910,6 +1012,8 @@ export function createStage(host) {
   function clear() {
     for (const mesh of meshes) { scene.remove(mesh); mesh.geometry.dispose(); mesh.material.dispose(); }
     meshes.length = 0;
+    for (const {group} of siteGroups) scene.remove(group);
+    siteGroups.length = 0; siteActors.length = 0; siteDust.length = 0;
   }
 
   function load(data) {
@@ -968,6 +1072,7 @@ export function createStage(host) {
         scene.add(mesh); meshes.push(mesh);
       }
     }
+    data.phases.forEach((phase, i) => { if (phase.scene) makeWorksite(phase.scene, i, (data.seed ?? 7) + i * 977 + 41); });
     // Height reached and counters over time.
     const sorted = [...k.pieces].sort((a, b) => a.birth - b.birth);
     let max = 0;
@@ -1042,12 +1147,12 @@ export function createStage(host) {
     },
     // Camera plan: close to the foundations at first, then pulling back to the overall view.
     // With an active moment, the camera eases towards the piece concerned.
-    cinematic(t, focus) {
+    cinematic(t, focus, closeDistance) {
       const start = monument.view.start ?? {target: monument.view.target, distance: fit()}, end = new T.Vector3(...monument.view.target);
       const f = Math.min(1, t / Math.max(1, total - 1)), s = f * f * (3 - 2 * f);
       const target = new T.Vector3(...start.target).lerp(end, s);
       let distance = start.distance + (fit() - start.distance) * s;
-      if (focus) { target.lerp(new T.Vector3(...focus), .45); distance *= .72; }
+      if (focus) { target.lerp(new T.Vector3(...focus), Number.isFinite(closeDistance) ? .82 : .45); distance = Number.isFinite(closeDistance) ? closeDistance : distance * .72; }
       if(host.clientWidth <= 1100) distance=Math.max(distance,fit());
       const dir = camera.position.clone().sub(controls.target).normalize(), now = camera.position.distanceTo(controls.target);
       controls.target.lerp(target, .06);
@@ -1074,6 +1179,8 @@ export function createStage(host) {
       bloom.strength = .5 + night * .35;
       horizon.value.copy(DUSK).lerp(NIGHT, night);
       scene.fog.color.copy(horizon.value);
+      const phaseIndex = Math.min(total - 1, Math.floor(t));
+      for (const site of siteGroups) site.group.visible = site.phase === phaseIndex;
     },
     height: t => at(heightTrack, t),
     count: (tag, t) => (tagTrack[tag] ?? []).filter(birth => birth <= t).length,
@@ -1087,7 +1194,27 @@ export function createStage(host) {
       controls.update();
     },
     autoRotate(on) { controls.autoRotate = on; },
-    render(clock) { uniforms.uClock.value = clock; controls.update(); composer.render(); },
+    render(clock) {
+      uniforms.uClock.value = clock;
+      for (const actor of siteActors) if (actor.parent?.visible) {
+        const u = actor.userData;
+        if (u.hoist) actor.position.y = u.baseY + Math.sin(clock * .65 + u.offset) * .35;
+        else {
+          const wave = Math.sin(clock * 2.1 + u.offset);
+          actor.position.y = u.baseY + Math.abs(wave) * .018; actor.rotation.y = u.baseTurn + wave * .025;
+          u.arms?.forEach((arm, i) => { const base = u.role === 'lift' ? 2.45 : u.role === 'carry' ? 1.3 : .45; arm.rotation.z = (i ? -1 : 1) * (base + wave * (u.role === 'mason' ? .4 : .12)); });
+        }
+      }
+      for (const dust of siteDust) if (dust.points.parent?.visible) {
+        const position = dust.points.geometry.attributes.position;
+        dust.base.forEach(([x, y, z, offset], i) => {
+          const rise = (clock * (dust.sparks ? 2.4 : .3) + offset) % dust.height;
+          position.setXYZ(i, x + Math.sin(clock * .45 + offset) * .18, (y + rise) % dust.height, z + Math.cos(clock * .37 + offset) * .18);
+        });
+        position.needsUpdate = true;
+      }
+      controls.update(); composer.render();
+    },
     onInteract(callback) { controls.addEventListener('start', callback); },
   };
 }

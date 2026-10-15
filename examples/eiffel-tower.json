@@ -59,6 +59,18 @@
    "title": "The foundations",
    "text": "Masonry blocks receive each of the four feet. Near the Seine, the digging goes on in compressed-air caissons, below the water line.",
    "source": "https://www.toureiffel.paris/en/the-monument/history",
+   "scene": {
+    "craft": "earth",
+    "at": [50, 50],
+    "focus": [50, 4, 50],
+    "distance": 42,
+    "radius": 18,
+    "height": 7,
+    "workers": 10,
+    "materials": true,
+    "dust": 0.35,
+    "source": "https://www.toureiffel.paris/en/news/130-years/construction-eiffel-tower-exemplary-project"
+   },
    "moments": [
     {
      "at": 0.3,
@@ -69,6 +81,7 @@
       4,
       50
      ],
+     "distance": 28,
      "source": "https://www.toureiffel.paris/en/news/130-years/construction-eiffel-tower-exemplary-project",
      "text": "Each leg stands on four blocks, one per edge: sixteen blocks built in five months."
     },
@@ -93,6 +106,20 @@
    "title": "The four legs rise",
    "text": "Parts arrive from the works already drilled. Above 30 m, twelve timber scaffolds hold up the leaning legs, then four 45 m ones carry the girders of the first floor, reached at 57 m.",
    "source": "https://www.toureiffel.paris/en/the-monument/history",
+   "scene": {
+    "craft": "metal",
+    "at": [44, 44],
+    "focus": [44, 28, 44],
+    "distance": 58,
+    "radius": 22,
+    "height": 48,
+    "workers": 14,
+    "materials": true,
+    "scaffold": {"width": 28, "height": 32, "offset": [0, -7]},
+    "hoist": true,
+    "dust": 0.7,
+    "source": "https://www.toureiffel.paris/en/news/130-years/how-did-they-build-tower-so-quickly"
+   },
    "moments": [
     {
      "at": 0.12,
@@ -115,6 +142,7 @@
       26,
       44
      ],
+     "distance": 36,
      "source": "https://www.toureiffel.paris/en/news/130-years/how-did-they-build-tower-so-quickly",
      "text": "The first heats the rivet, the second holds it, the third shapes the head, the fourth strikes it with a sledgehammer. Two thirds of the rivets are fitted in the works."
     },
@@ -928,6 +956,14 @@
     {
       "text": "Sixteen masonry foundation blocks, one below each edge of the four iron piers.",
       "source": "https://www.toureiffel.paris/en/news/130-years/construction-eiffel-tower-exemplary-project"
+   },
+   {
+    "text": "Every iron part was calculated, cut, drilled and pre-assembled at Levallois-Perret before reaching the site.",
+    "source": "https://www.toureiffel.paris/en/news/130-years/construction-eiffel-tower-exemplary-project"
+   },
+   {
+    "text": "Twelve timber scaffolds first held the leaning legs, followed by four 45 m scaffold towers below the first floor.",
+    "source": "https://www.toureiffel.paris/en/the-monument/history"
    }
   ],
   "geometry": "Base and floor heights from the official figures (125 m square, 57.63/115.73/276.13 m, 300 m); the outline is OpenStreetMap way 5013364 traced to local metres; the lattice legs, decks and base arches are drawn with the profile of the real tower.",

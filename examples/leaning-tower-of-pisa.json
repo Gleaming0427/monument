@@ -149,6 +149,14 @@
    {
     "text": "55.86 m high on the low side and 56.67 m on the high side.",
     "source": "https://en.wikipedia.org/wiki/Leaning_Tower_of_Pisa"
+   },
+   {
+    "text": "The ground floor reads as a ring of blind arches on engaged columns, with deep shadow behind the pale marble frames.",
+    "source": "https://en.wikipedia.org/wiki/Leaning_Tower_of_Pisa"
+   },
+   {
+    "text": "Continuous marble cornices separate the open column galleries into strong horizontal rings.",
+    "source": "https://www.italia.it/it/toscana/pisa/torre-di-pisa"
    }
   ],
   "geometry": "Outer radius 7.742 m (Wikipedia); the OSM outline (radius 8.25 m) includes the footing. Total height 56 m shared between storeys from the photo taken from the east: ground floor about 1.8 gallery heights, bell chamber about 1.3, its radius about 0.65 of the tower's.",
@@ -236,6 +244,20 @@
    "title": "The first three levels",
    "source": "https://en.wikipedia.org/wiki/Leaning_Tower_of_Pisa",
    "text": "Foundations are laid on 9 August 1173. When the masons reach the second floor in 1178, the soft ground gives way and the tower begins to sink. Work stops.",
+   "scene": {
+    "craft": "masonry",
+    "at": [0, 0],
+    "focus": [0, 7, 8],
+    "distance": 38,
+    "radius": 18,
+    "height": 20,
+    "workers": 10,
+    "materials": true,
+    "scaffold": {"width": 18, "height": 17, "offset": [0, -7]},
+    "hoist": true,
+    "dust": 0.45,
+    "source": "https://en.wikipedia.org/wiki/Leaning_Tower_of_Pisa"
+   },
    "moments": [
     {
      "at": 0.55,
@@ -247,6 +269,7 @@
       6,
       7.9
      ],
+     "distance": 24,
      "source": "https://en.wikipedia.org/wiki/Leaning_Tower_of_Pisa"
     }
    ]
@@ -278,6 +301,20 @@
    "title": "Floors taller on one side",
    "source": "https://en.wikipedia.org/wiki/Leaning_Tower_of_Pisa",
    "text": "Work resumes in 1272 under Giovanni di Simone. To make up for the tilt, the upper floors are built with one side taller than the other.",
+   "scene": {
+    "craft": "masonry",
+    "at": [0, 0],
+    "focus": [0, 31, 8],
+    "distance": 44,
+    "radius": 19,
+    "height": 39,
+    "workers": 8,
+    "materials": true,
+    "scaffold": {"width": 18, "height": 34, "offset": [0, -7]},
+    "hoist": true,
+    "dust": 0.4,
+    "source": "https://en.wikipedia.org/wiki/Leaning_Tower_of_Pisa"
+   },
    "moments": [
     {
      "at": 0.6,
@@ -289,6 +326,7 @@
       32,
       7.5
      ],
+     "distance": 26,
      "source": "https://en.wikipedia.org/wiki/Leaning_Tower_of_Pisa"
     }
    ]

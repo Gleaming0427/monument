@@ -13,6 +13,7 @@ One building = one JSON file, `monuments/<id>.json` in the user's project (`exam
   "evidence": {"identity": "…", "sources": ["https://…"], "references": [], "features": [], "geometry": "…", "uncertainties": ["…"]},
   "phases": [{
     "id": "foundations", "from": "1933-01-05", "to": "1933-11-07", "title": "The foundations", "text": "…", "source": "https://…",
+    "scene": {"craft": "earth", "at": [-640, 0], "focus": [-640, 6, 0], "distance": 65, "radius": 35, "height": 12, "workers": 8, "materials": true, "scaffold": false, "hoist": true, "dust": 0.35, "source": "https://…"},
     "moments": [{"at": 0.7, "tag": "Technique", "title": "A bathtub at sea", "text": "…", "anchor": [-640, 4, 0], "source": "https://…"}]
   }],
   "elements": [{"type": "suspension", "phase": "foundations", "…": "…"}]
@@ -26,12 +27,24 @@ One building = one JSON file, `monuments/<id>.json` in the user's project (`exam
 - `title`: a few words. `text`: two sentences at most. `source`: a page actually read.
 - No night by default. `"mood": "night"` (and `"sparkle": true` for metal) only when night lighting is itself the subject and sourced, like the Eiffel Tower's illumination. Openings, inscriptions and restorations are shown by day.
 
+### Human-scale worksite scene
+
+At least two construction phases in a standard build carry `scene`, unless the whole documented history has only one phase. The viewer places animated workers, material stacks, dust or sparks and optional temporary structures around the building, then brings the camera closer to `focus`.
+
+- `craft`: `masonry`, `timber`, `metal`, `earth`, `restoration` or `mixed`; this chooses the restrained material and particle language.
+- `at`: `[x, z]` centre of the activity. `focus`: `[x, y, z]` point the camera should feel close to. `distance` sets the human-scale camera distance in metres; frame at least one worker and the detail being built. `radius` controls the spread and `height` the work reached.
+- `workers`: 0–18. Figures communicate human scale; do not use them to assert an unsupported workforce count.
+- `materials`, `scaffold`, `hoist`: include only what the scene's source supports. `scaffold` may be an object with `width`, `height`, `rot` and `offset: [x, z]`.
+- `dust`: 0–1. For `metal`, these points read as brief sparks; otherwise as fine construction dust.
+- `source`: a page in `evidence.sources` that supports the craft, tool or temporary structure. Put uncertain staging in `evidence.uncertainties`.
+
 ## Moments
 
 - `at`: position in the phase, 0 to 1. Playback slows down on each moment and the camera eases towards it.
 - `tag`: one short word for the kind of moment (Technique, Figure, Anecdote, Controversy, Plan, Restoration…). Vary them within a file.
-- `anchor`: the point, in metres, where the pin goes.
+- `anchor`: the point, in metres, where the pin goes. `distance` optionally moves the camera much closer for a tool, joint or ornament; keep enough context to understand what is being built.
 - `title` and `text`: one true, surprising detail, with its `source`.
+- Use at least one close construction moment: a joint, tool, temporary support or material operation. Its anchor should be where the viewer can see the corresponding geometry while reading it.
 
 ## view
 

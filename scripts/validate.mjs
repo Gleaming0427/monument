@@ -4,7 +4,7 @@
 // Every phase and moment must cite a source, every element must use a known brick, and every brick of
 // the kit must be documented in references/bricks.md, or the next monument will not find it.
 // --standard checks the focused local workflow: measured outline, two sources, three reference views,
-// recognisable features and one comparison pass. --strict is the publication gate and adds the wider
+// recognisable close details, sourced worksite scenes and one comparison pass. --strict adds the wider
 // source/photo set, phase captures and a second comparison pass.
 import {readFile, readdir, stat} from 'node:fs/promises';
 import {join, resolve, dirname, basename} from 'node:path';
@@ -65,9 +65,19 @@ for (const file of (await Promise.all(targets.map(files))).flat()) {
     check(p.title && p.text, `${at} phase ${p.id} needs a title and a text`);
     check(p.when || (!isNaN(Date.parse(p.from)) && !isNaN(Date.parse(p.to))), `${at} phase ${p.id} needs "when" or ISO "from" and "to"`);
     check(!p.when || p.when.length <= 28, `${at} phase ${p.id}: "when" is a date or period only ("${p.when}")`);
+    if (p.scene) {
+      check(['masonry', 'timber', 'metal', 'earth', 'restoration', 'mixed'].includes(p.scene.craft), `${at} phase ${p.id}: scene.craft must name the work shown`);
+      check(p.scene.at?.length === 2 && p.scene.at.every(Number.isFinite), `${at} phase ${p.id}: scene.at needs an [x, z] worksite centre`);
+      check(p.scene.focus?.length === 3 && p.scene.focus.every(Number.isFinite), `${at} phase ${p.id}: scene.focus needs a camera [x, y, z] point`);
+      check(url(p.scene.source), `${at} phase ${p.id}: the worksite scene needs its own source URL`);
+      check(p.scene.distance === undefined || Number.isFinite(p.scene.distance) && p.scene.distance > 0, `${at} phase ${p.id}: scene.distance must be a positive camera distance`);
+      check(p.scene.workers === undefined || Number.isInteger(p.scene.workers) && p.scene.workers >= 0 && p.scene.workers <= 18, `${at} phase ${p.id}: scene.workers must be 0–18`);
+      check(p.scene.dust === undefined || Number.isFinite(p.scene.dust) && p.scene.dust >= 0 && p.scene.dust <= 1, `${at} phase ${p.id}: scene.dust must be 0–1`);
+    }
     for (const m of p.moments ?? []) {
       check(m.at >= 0 && m.at <= 1, `${at} moment "${m.title}" must have 0 ≤ at ≤ 1`);
       check(m.anchor?.length === 3 && m.anchor.every(Number.isFinite), `${at} moment "${m.title}" needs an [x, y, z] anchor`);
+      check(m.distance === undefined || Number.isFinite(m.distance) && m.distance > 0, `${at} moment "${m.title}": distance must be a positive camera distance`);
       check(url(m.source), `${at} moment "${m.title}" needs a source URL`);
     }
   }
@@ -95,8 +105,11 @@ async function evidence(d, text, file, id, at, strict) {
   check(sources.length >= sourceMinimum && sources.every(s => s && url(s.url) && typeof s.read === 'string' && s.read.length >= 20), `${at} evidence.sources needs at least ${sourceMinimum} pages read, each {"url", "read": "what this page says"}`);
   check(new Set(sources.map(s => { try { return new URL(s.url).hostname; } catch { return ''; } })).size >= 2, `${at} evidence.sources must come from at least 2 different sites`);
   const read = new Set(sources.map(s => s?.url));
+  const scenes = d.phases.filter(phase => phase.scene);
+  check(scenes.length >= Math.min(2, d.phases.length), `${at} show a sourced human-scale worksite in at least ${Math.min(2, d.phases.length)} phases with phase.scene`);
   for (const p of d.phases) {
     check(read.has(p.source), `${at} phase ${p.id}: its source is not one of the pages in evidence.sources`);
+    if (p.scene) check(read.has(p.scene.source), `${at} phase ${p.id}: its scene source is not one of the pages in evidence.sources`);
     for (const m of p.moments ?? []) check(read.has(m.source), `${at} moment "${m.title}": its source is not one of the pages in evidence.sources`);
   }
   // Step 4: the measured outline, and the model sitting on it.
@@ -118,7 +131,7 @@ async function evidence(d, text, file, id, at, strict) {
   const sides = new Set(photos.filter(r => Number.isFinite(r?.azimuth)).map(r => Math.floor((((r.azimuth % 360) + 360) % 360) / 90)));
   check(sides.size >= sideMinimum, `${at} the reference photos must be taken from at least ${sideMinimum} sides (azimuths in different quadrants)`);
   const features = Array.isArray(ev.features) ? ev.features : [];
-  check(features.length >= 6 && features.every(f => f && typeof f.text === 'string' && url(f.source)), `${at} evidence.features needs at least 6 recognisable features, each {"text", "source"}`);
+  check(features.length >= 8 && features.every(f => f && typeof f.text === 'string' && url(f.source)), `${at} evidence.features needs at least 8 recognisable features, including close details, each {"text", "source"}`);
   // Standard: one focused final-view pass. Publication: two passes and phase captures.
   const passes = Array.isArray(ev.comparisons) ? ev.comparisons : [];
   const passMinimum = strict ? 2 : 1;

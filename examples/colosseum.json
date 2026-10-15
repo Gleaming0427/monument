@@ -158,6 +158,10 @@
    {
     "text": "Walls pitted where the iron clamps were hacked out.",
     "source": "https://en.wikipedia.org/wiki/Colosseum"
+   },
+   {
+    "text": "Each facade bay has a deep arched opening framed by engaged columns and a projecting storey cornice.",
+    "source": "https://en.wikipedia.org/wiki/Colosseum"
    }
   ],
   "geometry": "Ellipses fitted by least squares to the OpenStreetMap building parts: centre and axis (19.7° from east towards south) from the inner ring (36 m), fitted within 0.4 m; outer wall 94.0 × 76.2 m semi-axes on its outer edge (0.65 m rms), inner ring 81.2 × 64.5 m, cavea steps 74.0 × 55.2 m (24 m) and 65.5 × 49.6 m (12 m). The standing outer wall runs from 188° to 356° (north side). Arena 87 × 55 m (Wikipedia).",
@@ -281,6 +285,20 @@
    "title": "Vespasian’s amphitheatre",
    "source": "https://en.wikipedia.org/wiki/Colosseum",
    "text": "Vespasian starts the amphitheatre around 70–72. By his death in 79, three storeys of arcades ring the arena and the seating rises inside.",
+   "scene": {
+    "craft": "masonry",
+    "at": [24.4, -71.2],
+    "focus": [24.4, 16, -71.2],
+    "distance": 54,
+    "radius": 23,
+    "height": 34,
+    "workers": 16,
+    "materials": true,
+    "scaffold": {"width": 34, "height": 26, "offset": [0, -8]},
+    "hoist": true,
+    "dust": 0.55,
+    "source": "https://en.wikipedia.org/wiki/Colosseum"
+   },
    "moments": [
     {
      "at": 0.6,
@@ -292,6 +310,7 @@
       16,
       -71.2
      ],
+     "distance": 34,
      "source": "https://en.wikipedia.org/wiki/Colosseum"
     }
    ]
@@ -323,6 +342,19 @@
    "title": "Under the arena",
    "source": "https://en.wikipedia.org/wiki/Colosseum",
    "text": "Domitian adds the hypogeum, a network of tunnels below the arena floor for animals and slaves, and a gallery at the top for more seats.",
+   "scene": {
+    "craft": "mixed",
+    "at": [-0.94, -0.43],
+    "focus": [-0.94, 3, -0.43],
+    "distance": 58,
+    "radius": 30,
+    "height": 11,
+    "workers": 12,
+    "materials": true,
+    "hoist": true,
+    "dust": 0.5,
+    "source": "https://en.wikipedia.org/wiki/Colosseum"
+   },
    "moments": [
     {
      "at": 0.6,

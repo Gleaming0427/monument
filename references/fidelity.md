@@ -5,7 +5,8 @@ Someone who knows the building should recognise it at first glance, find its pro
 ## References, before modelling
 
 - For a standard build, use at least three useful photos from two sides (main front, a side, and the best view of the roof or structure), a measured footprint or plan, and official dimensions. Publication uses four photos from three sides. Look at them for real in the browser; note the azimuth and approximate height. Prefer freely licensed photos and link them in `evidence.references`.
-- Write the **architectural reading**: at least six features that make the building recognisable, each with its source. For Himeji Castle: white plaster, white tile joints, kara and chidori gables placed face by face, lattice windows in pairs, a fan-shaped stone base, ridge ornaments. Every listed feature must be visibly modelled, at least simplified. Keep it in `evidence.features`.
+- Write the **architectural reading**: at least eight features that make the building recognisable, each with its source. Cover the silhouette, then details that reward a close camera: joints, frames, fasteners, cornices, surface rhythm, carvings or roof edges. For Himeji Castle: white plaster, white tile joints, kara and chidori gables placed face by face, lattice windows in pairs, a fan-shaped stone base, ridge ornaments and their close construction. Every listed feature must be visibly modelled, at least simplified. Keep it in `evidence.features`.
+- Read the worksite too. Find images or descriptions of materials arriving, temporary supports, lifting, joining and finishing. Use those sources for at least two `phase.scene` tableaux; do not dress every century as the same generic timber scaffold.
 
 ## Model this building
 
@@ -27,6 +28,8 @@ Someone who knows the building should recognise it at first glance, find its pro
 - Daylight, contrasted materials, a silhouette that reads in the final framing and during construction.
 - No floating pieces, no flickering coplanar faces, no holes, no detail below a pixel at the usual framing that turns into noise.
 - Each phase lays visible pieces, in an order that reads.
+- Let a person establish scale. A close phase should reveal individual blocks, mullions, rivets or joints; the sourced worksite scene supplies figures, material stacks and temporary equipment without surrounding the monument with decorative scenery.
+- Surprise comes from truth at small scale: the tool that solved a structural problem, the temporary support hidden in the finished silhouette, or the joint that only appears when the camera moves close. Put that fact in a pinned moment and its geometry at the anchor.
 - Context stays quiet and true when explicitly requested; otherwise show the building alone.
 
 ## Report honestly

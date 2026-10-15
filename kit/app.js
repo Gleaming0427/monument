@@ -187,15 +187,18 @@ function pinMoment() {
 function frame(now) {
   requestAnimationFrame(frame);
   if (!data) return stage.render(now / 1000);
+  const phase = data.phases[Math.min(data.phases.length - 1, Math.floor(time))];
   if (playing) {
     // A frame timestamp can precede the start of playback: never a negative time.
-    const slow = momentKey && now - momentSince < reading / speed ? .12 : 1, phase = data.phases[Math.min(data.phases.length - 1, Math.floor(time))];
+    const slow = momentKey && now - momentSince < reading / speed ? .12 : 1;
     time = Math.max(0, time + Math.min(.1, Math.max(0, now - last) / 1000) * slow * speed / phaseSeconds(phase));
     if (time >= stage.duration) { time = stage.duration; play(false); }
   }
   last = now;
   update();
-  if (!touched) stage.cinematic(time, moment?.anchor);
+  // Sourced worksite tableaux keep the camera at human scale between the more precise pinned moments.
+  const siteFocus = phase.scene?.focus ?? (phase.scene?.at ? [phase.scene.at[0], (phase.scene.height ?? data.view.height ?? 12) * .55, phase.scene.at[1]] : null);
+  if (!touched) stage.cinematic(time, moment?.anchor ?? siteFocus, moment?.distance ?? phase.scene?.distance);
   stage.render(now / 1000);
   pinMoment();
   placeLabels();
