@@ -19,7 +19,6 @@ body.failed :is(.building,.story,.timeline,.live,#moment,#pin,#leader,#labels){d
 .top{position:fixed;top:16px;left:20px;right:20px;display:flex;align-items:center;gap:18px;pointer-events:none}
 .top>*{pointer-events:auto}
 .brand{display:flex;align-items:center;gap:9px;color:#fff;text-decoration:none;font-weight:800;letter-spacing:-.02em}
-.mark{width:18px;height:18px;background:linear-gradient(135deg,#6f9bff,var(--blue) 60%,#123aa8);clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%)}
 /* The building on show: name and place */
 .building{display:flex;align-items:baseline;gap:10px;min-width:0;padding:8px 14px;border-radius:12px;background:var(--glass);border:1px solid var(--line);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
 #name{font-size:14px;font-weight:700;white-space:nowrap}

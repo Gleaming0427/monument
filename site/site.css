@@ -11,8 +11,7 @@ a:hover{text-decoration-color:var(--gold)}
 nav.site{display:flex;align-items:center;gap:22px;font-size:13px;color:var(--muted);padding-bottom:22px;border-bottom:1px solid var(--line)}
 nav.site a{text-decoration:none}
 nav.site a:hover,nav.site a[aria-current=page]{color:var(--ink)}
-nav.site .brand{display:flex;align-items:center;gap:8px;color:var(--ink);font-weight:750}
-nav.site .mark{width:12px;height:12px;background:linear-gradient(135deg,#6f9bff,#2f6bff 60%,#123aa8);clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%)}
+nav.site .brand{color:var(--ink);font-weight:750}
 nav.site .gh{margin-left:auto;display:flex}
 nav.site .gh svg{width:17px;height:17px;fill:currentColor}
 header.intro{padding:34px 0 8px}
