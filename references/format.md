@@ -49,7 +49,33 @@ One building = one JSON file, `monuments/<id>.json` in the user's project (`exam
 
 ## evidence
 
-What a reader needs to trust the model: `identity` (name, address), `sources`, `references` (reference photos with their viewing azimuth), `features` (the architectural reading, each item sourced), `geometry` (what is measured and where it comes from) and `uncertainties` (what is estimated or simplified). `modelNote` is the one-line version shown in the page.
+Everything a reader needs to trust the model, and what `validate.mjs --strict` checks. Paths are relative to the monument file; supporting files live in `<id>.evidence/`.
+
+```json
+"evidence": {
+  "size": "building",
+  "identity": "Torre di Pisa, Piazza del Duomo, Pisa, Italy (OSM relation 12982355)",
+  "sources": [{"url": "https://…", "read": "What this page says that the model uses"}],
+  "plan": {"source": "OpenStreetMap relation 12982355", "url": "https://www.openstreetmap.org/relation/12982355", "outline": "<id>.evidence/outline.json"},
+  "references": [{"url": "https://commons.wikimedia.org/wiki/File:…", "view": "east", "azimuth": 80, "elevation": 3, "distance": 95, "target": [0, 28, 0]}],
+  "features": [{"text": "Six galleries of 30 columns each", "source": "https://…"}],
+  "geometry": "What is measured, and from where",
+  "comparisons": [
+    {"pass": 1, "captures": ["<id>.evidence/compare/pass-1/ref-0.jpg"], "phases": ["…"], "gaps": ["…"], "fixed": ["…"]},
+    {"pass": 2, "captures": ["…"], "gaps": ["…"], "remaining": ["…"]}
+  ],
+  "uncertainties": ["What is estimated or simplified"]
+}
+```
+
+- `size`: building, ensemble or site (step 1).
+- `sources`: pages that were opened and read, with what each says. Every phase and moment `source` must be one of them. Search results are not sources.
+- `plan.outline`: the measured outline as `{"source", "url", "polygons": [[[x, z], …]], "lines": [[[x, z], …]]}` (closed polygons, and open lines for rings split into several ways) in local metres (x east, z south, same origin as the model). `scripts/plan.mjs` measures the gap and draws `<id>.evidence/plan.svg`; `plan.tolerance` (at most 5 m) only for a building known from a published plan.
+- `references`: at least four photos from at least three sides; `azimuth` is the direction of the photographer seen from the building, in degrees from north; `elevation` (negative looks up) and `distance` place the camera, `target` is the point it looks at, and `fov` (optional, degrees) matches a wide-angle lens: put the camera where the photographer stood rather than moving it back.
+- `features`: what makes the building recognisable, each with the page that says so.
+- `comparisons`: written by `scripts/compare.mjs` (captures) and by you (gaps, fixed, remaining).
+
+`modelNote` is the one-line version shown in the page.
 
 ## context and labels (optional, static, visible from the start)
 

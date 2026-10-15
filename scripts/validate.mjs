@@ -1,11 +1,15 @@
 #!/usr/bin/env node
-// Checks monument files: node scripts/validate.mjs [file or folder ...]
-// Without arguments: the collection (examples/) and the community gallery (community/*/monument.json).
+// Checks monument files: node scripts/validate.mjs [--strict] [file or folder ...]
+// Without paths: the collection (examples/) and the community gallery (community/*/monument.json).
 // Every phase and moment must cite a source, every element must use a known brick, and every brick of
 // the kit must be documented in references/bricks.md, or the next monument will not find it.
+// --strict is the definition of done: it also checks the evidence of every step of SKILL.md (size,
+// pages read, measured outline and fit, reference photos from several sides, features, two passes of
+// photo comparison with their captures). A monument that fails it is a draft.
 import {readFile, readdir, stat} from 'node:fs/promises';
 import {join, resolve, dirname, basename} from 'node:path';
 import {fileURLToPath} from 'node:url';
+import {measurePlan} from './lib/plan.mjs';
 
 const skill = fileURLToPath(new URL('..', import.meta.url));
 const bricksOf = source => new Set([...source.matchAll(/^\s{2}(\w+)\(k,\s*e,\s*P\)/gm)].map(m => m[1]));
@@ -29,11 +33,15 @@ async function files(target) {
 }
 
 const url = value => { try { return ['https:', 'http:'].includes(new URL(value).protocol); } catch { return false; } };
-const targets = process.argv.slice(2).length ? process.argv.slice(2).map(arg => resolve(arg)) : [join(skill, 'examples'), join(skill, 'community')];
+const strict = process.argv.includes('--strict'), paths = process.argv.slice(2).filter(arg => arg !== '--strict');
+const targets = paths.length ? paths.map(arg => resolve(arg)) : [join(skill, 'examples'), join(skill, 'community')];
+const exists = path => stat(path).then(() => true, () => false);
+// Words that betray facts taken from a search engine's summary instead of a page that was read.
+const HEARSAY = /search[- ](result|snippet)|\bsnippets?\b|search engine|summari[sz]ing (the )?(search|results)/i;
 const seen = new Map();
 for (const file of (await Promise.all(targets.map(files))).flat()) {
-  let d;
-  try { d = JSON.parse(await readFile(file, 'utf8')); } catch (error) { check(false, `${file}: not valid JSON (${error.message})`); continue; }
+  let d, text;
+  try { text = await readFile(file, 'utf8'); d = JSON.parse(text); } catch (error) { check(false, `${file}: not valid JSON (${error.message})`); continue; }
   const id = basename(file) === 'monument.json' ? basename(dirname(file)) : basename(file, '.json'), at = `${id}:`;
   check(/^[a-z0-9-]+$/.test(id), `${at} id must be lowercase letters, digits and dashes`);
   check(d.id === id, `${at} "id" must be "${id}" (the file or folder name)`);
@@ -68,6 +76,58 @@ for (const file of (await Promise.all(targets.map(files))).flat()) {
     if (value && typeof value === 'object') refs(value);
   } };
   for (const e of d.elements) { check(bricks.has(e.type), `${at} unknown brick "${e.type}"`); refs(e); }
-  console.log(`${id}: ${d.phases.length} phases, ${d.elements.length} elements`);
+  if (strict) await evidence(d, text, file, id, at);
+  console.log(`${id}: ${d.phases.length} phases, ${d.elements.length} elements${strict ? ', evidence checked' : ''}`);
 }
-if (failures) { console.error(`${failures} problem(s).`); process.exitCode = 1; } else console.log('All monuments are valid.');
+if (failures) { console.error(`${failures} problem(s).${strict ? ' Until they are fixed, the monument is a draft.' : ''}`); process.exitCode = 1; }
+else console.log(strict ? 'All monuments are valid, with the evidence of every step.' : 'All monuments are valid.');
+
+// The evidence of every step of SKILL.md, read from the file and the files next to it.
+async function evidence(d, text, file, id, at) {
+  const ev = d.evidence ?? {}, dir = dirname(file);
+  check(!HEARSAY.test(text), `${at} mentions search results or snippets: every fact must come from a page that was opened and read`);
+  check(['building', 'ensemble', 'site'].includes(ev.size), `${at} evidence.size must be "building", "ensemble" or "site" (step 1, size it)`);
+  check(typeof ev.identity === 'string' && ev.identity.length > 10, `${at} evidence.identity must name the building and its address (step 3)`);
+  // Step 3: pages actually read, and every phase and moment backed by one of them.
+  const sources = Array.isArray(ev.sources) ? ev.sources : [];
+  check(sources.length >= 3 && sources.every(s => s && url(s.url) && typeof s.read === 'string' && s.read.length >= 20), `${at} evidence.sources needs at least 3 pages read, each {"url", "read": "what this page says"}`);
+  check(new Set(sources.map(s => { try { return new URL(s.url).hostname; } catch { return ''; } })).size >= 2, `${at} evidence.sources must come from at least 2 different sites`);
+  const read = new Set(sources.map(s => s?.url));
+  for (const p of d.phases) {
+    check(read.has(p.source), `${at} phase ${p.id}: its source is not one of the pages in evidence.sources`);
+    for (const m of p.moments ?? []) check(read.has(m.source), `${at} moment "${m.title}": its source is not one of the pages in evidence.sources`);
+  }
+  // Step 4: the measured outline, and the model sitting on it.
+  const plan = ev.plan ?? {};
+  check(plan.source && url(plan.url) && typeof plan.outline === 'string', `${at} evidence.plan needs "source", "url" and "outline" (the measured outline file, step 4)`);
+  if (typeof plan.outline === 'string') {
+    try {
+      const {result} = await measurePlan(file), tolerance = Math.min(5, plan.tolerance ?? 3);
+      check(result.p90 !== null && result.p90 <= tolerance, `${at} the model is ${result.p90} m off its measured outline (90% of sectors; max ${result.max} m); fit it within ${tolerance} m`);
+      check(result.coverage >= .5, `${at} the model covers only ${Math.round(result.coverage * 100)}% of the measured outline`);
+    } catch (error) { check(false, `${at} cannot measure the plan: ${error.message}`); }
+    check(await exists(join(dir, `${id}.evidence`, 'plan.svg')), `${at} ${id}.evidence/plan.svg is missing: run node scripts/plan.mjs`);
+  }
+  // Step 5: reference photos from several sides, and the features that make the building recognisable.
+  const photos = Array.isArray(ev.references) ? ev.references : [];
+  check(photos.length >= 4, `${at} evidence.references needs at least 4 reference photos (step 5)`);
+  for (const [i, r] of photos.entries()) check(url(r?.url) && typeof r.view === 'string' && [r.azimuth, r.elevation, r.distance].every(Number.isFinite), `${at} reference ${i} needs "url", "view", "azimuth", "elevation" and "distance"`);
+  const sides = new Set(photos.filter(r => Number.isFinite(r?.azimuth)).map(r => Math.floor((((r.azimuth % 360) + 360) % 360) / 90)));
+  check(sides.size >= 3, `${at} the reference photos must be taken from at least 3 sides (azimuths in 3 quadrants)`);
+  const features = Array.isArray(ev.features) ? ev.features : [];
+  check(features.length >= 5 && features.every(f => f && typeof f.text === 'string' && url(f.source)), `${at} evidence.features needs at least 5 recognisable features, each {"text", "source"}`);
+  // Step 10: at least two passes of photo comparison, with their captures, gaps and fixes.
+  const passes = Array.isArray(ev.comparisons) ? ev.comparisons : [];
+  check(passes.length >= 2, `${at} evidence.comparisons needs at least 2 passes: node scripts/compare.mjs ${basename(file)} --pass 1, then --pass 2`);
+  for (const c of passes) {
+    check(Array.isArray(c.captures) && c.captures.length >= photos.length, `${at} pass ${c.pass}: one capture per reference photo (run compare.mjs again)`);
+    for (const capture of c.captures ?? []) check(await exists(join(dir, capture)), `${at} pass ${c.pass}: capture ${capture} not found`);
+    check(Array.isArray(c.gaps) && c.gaps.length > 0 && c.gaps.every(g => typeof g === 'string' && g.length > 10), `${at} pass ${c.pass}: write in "gaps" what differs between each photo and its capture`);
+  }
+  for (const c of passes.slice(0, -1)) check(Array.isArray(c.fixed) && c.fixed.length > 0, `${at} pass ${c.pass}: write in "fixed" what was changed after it`);
+  const last = passes.at(-1);
+  if (last) check(Array.isArray(last.remaining), `${at} the last pass needs "remaining": the simplifications left, or []`);
+  if (last?.remaining?.length) check((ev.uncertainties ?? []).length > 0, `${at} the remaining gaps must also be in evidence.uncertainties`);
+  check(['day', 'golden'].includes(d.view?.light), `${at} view.light must be chosen, "day" or "golden" (references/fidelity.md)`);
+  check(typeof d.modelNote === 'string' && d.modelNote.length > 20, `${at} modelNote must say what is measured and what is interpreted`);
+}

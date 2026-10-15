@@ -27,7 +27,8 @@
     30
    ],
    "distance": 160
-  }
+  },
+  "light": "day"
  },
  "live": [
   {
@@ -58,30 +59,219 @@
    12.4923303
   ],
   "sources": [
-   "https://en.wikipedia.org/wiki/Colosseum",
-   "https://www.openstreetmap.org/relation/1834818"
+   {
+    "url": "https://en.wikipedia.org/wiki/Colosseum",
+    "read": "Ellipse of 189 × 156 m, outer wall 48 m high; three storeys of arcades with engaged columns and an attic with Corinthian pilasters and windows; over 100,000 m³ of travertine without mortar and 300 t of iron clamps; Vespasian began it around 70–72, Titus finished the top level in 80; Domitian added the hypogeum; 240 mast corbels for the velarium; the 217 fire; the south side fell in the 1349 earthquake; stone robbing; brick wedges of 1807 and 1827; the 2013–2016 cleaning."
+   },
+   {
+    "url": "https://www.openstreetmap.org/relation/1834818",
+    "read": "The amphitheatre as building parts with heights: the outer wall 48.5 m on the north side, the inner ring 36 m all round, the cavea at 24 m and 12 m, the arena wall at 3 m; the outlines used to fit the ellipses."
+   },
+   {
+    "url": "https://colosseo.it/en/area/the-colosseum/",
+    "read": "Built in the 1st century CE by the Flavian emperors, the largest amphitheatre in the world; visits include the underground levels and the attic; after the Romantic period it became a place of systematic excavation and restoration."
+   }
   ],
   "references": [
    {
-    "view": "north-west",
-    "azimuth": 292,
-    "url": "https://commons.wikimedia.org/wiki/File:Colosseum_in_Rome,_Italy_-_April_2007.jpg"
+    "url": "https://commons.wikimedia.org/wiki/File:KolosseumNorden.jpg",
+    "view": "north",
+    "azimuth": 356,
+    "elevation": -7.1,
+    "distance": 133,
+    "target": [
+     -0.94,
+     18,
+     -0.43
+    ],
+    "fov": 62,
+    "camera": "132 m from the centre at ground level (Commons camera location)"
+   },
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:Exteriores_del_Coliseo_01.jpg",
+    "view": "east",
+    "azimuth": 94,
+    "elevation": -7.2,
+    "distance": 130,
+    "target": [
+     88.1,
+     20,
+     25.9
+    ],
+    "fov": 55,
+    "camera": "129 m from the centre at ground level (Commons camera location)"
+   },
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:Roma_-_Coliseo_Romano_-_001.jpg",
+    "view": "south",
+    "azimuth": 186,
+    "elevation": -5.5,
+    "distance": 170.8,
+    "target": [
+     -0.94,
+     18,
+     -0.43
+    ],
+    "fov": 48,
+    "camera": "Placed 170 m from the centre to match the photo's framing; the Commons camera location (99 m) does not fit what the photo shows"
+   },
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:The_Colosseum_(Colosseo)_-_Rome,_Italy_2024-03-03_(16).jpg",
+    "view": "west",
+    "azimuth": 260,
+    "elevation": -5.8,
+    "distance": 161.8,
+    "target": [
+     -13.8,
+     20,
+     -26.5
+    ],
+    "fov": 42,
+    "camera": "161 m from the centre at ground level (Commons camera location)"
    }
   ],
   "features": [
-   "An ellipse of 189 × 156 m, outer wall 48 m high (Wikipedia).",
-   "Three storeys of arcades framed by engaged columns, and a tall attic with pilasters and windows (Wikipedia).",
-   "240 mast corbels round the top of the attic for the velarium (Wikipedia).",
-   "The outer wall stands only on the north side; on the south side the inner ring is exposed (OpenStreetMap 3D outline: outer part 48.5 m, inner ring 36 m, cavea 24 and 12 m).",
-   "Two 19th-century props at the ends of the standing outer wall (1807 and 1827): a sloping brick wedge at one end, brick arches rebuilt in steps at the other (Wikipedia; shapes read from photos)."
+   {
+    "text": "An ellipse of 189 × 156 m with an outer wall 48 m high.",
+    "source": "https://en.wikipedia.org/wiki/Colosseum"
+   },
+   {
+    "text": "Three storeys of arcades framed by engaged columns, under a tall attic with Corinthian pilasters and windows.",
+    "source": "https://en.wikipedia.org/wiki/Colosseum"
+   },
+   {
+    "text": "240 mast corbels round the top of the attic, for the velarium.",
+    "source": "https://en.wikipedia.org/wiki/Colosseum"
+   },
+   {
+    "text": "The outer wall stands on the north side only; on the south the 36 m inner ring is exposed.",
+    "source": "https://www.openstreetmap.org/relation/1834818"
+   },
+   {
+    "text": "Triangular brick wedges propping the cut ends of the outer wall, from 1807 and 1827.",
+    "source": "https://en.wikipedia.org/wiki/Colosseum"
+   },
+   {
+    "text": "Underground levels below the arena.",
+    "source": "https://colosseo.it/en/area/the-colosseum/"
+   },
+   {
+    "text": "Walls pitted where the iron clamps were hacked out.",
+    "source": "https://en.wikipedia.org/wiki/Colosseum"
+   }
   ],
-  "geometry": "Ellipse centre, axis (18.6° from east towards south) and ring sizes fitted to the OpenStreetMap building parts: outer wall 94.5 × 78 m semi-axes, inner ring 81.1 × 64.4 m, cavea steps at 78.2 × 57.8 m (24 m) and 65.6 × 49.3 m (12 m). The standing outer wall runs from about 184° to 356° (north side). Arena 87 × 55 m (Wikipedia).",
+  "geometry": "Ellipses fitted by least squares to the OpenStreetMap building parts: centre and axis (19.7° from east towards south) from the inner ring (36 m), fitted within 0.4 m; outer wall 94.0 × 76.2 m semi-axes on its outer edge (0.65 m rms), inner ring 81.2 × 64.5 m, cavea steps 74.0 × 55.2 m (24 m) and 65.5 × 49.6 m (12 m). The standing outer wall runs from 188° to 356° (north side). Arena 87 × 55 m (Wikipedia).",
   "uncertainties": [
    "Storey heights of the outer wall (10.5, 11.8, 11.6 m and a 14.6 m attic) shared from the 48.5 m total.",
    "80 bays per ring; arches, columns and attic simplified.",
    "Seating raked in one slope; the timber upper gallery and its fire of 217 are not shown.",
    "Underground galleries drawn as parallel walls, not their real plan.",
-   "Which end dates from 1807 and which from 1827 is not stated in the sources used; the wedge (east) and the stepped arches (west) follow photos."
+   "Which end dates from 1807 and which from 1827 is not stated in the sources used; the wedge (east) and the stepped arches (west) follow photos.",
+   "Stone weathering, black crusts and clamp pits not drawn; arches, cornices, attic windows and corbels simplified.",
+   "The 1807 wedge: the east photo shows it on the other side of the wall's cut end; drawn as a stepped slope."
+  ],
+  "plan": {
+   "source": "OpenStreetMap relation 1834818 (building parts with heights)",
+   "url": "https://www.openstreetmap.org/relation/1834818",
+   "outline": "colosseum.evidence/outline.json"
+  },
+  "size": "building",
+  "comparisons": [
+   {
+    "pass": 1,
+    "captures": [
+     "colosseum.evidence/compare/pass-1/ref-0.jpg",
+     "colosseum.evidence/compare/pass-1/ref-1.jpg",
+     "colosseum.evidence/compare/pass-1/ref-2.jpg",
+     "colosseum.evidence/compare/pass-1/ref-3.jpg"
+    ],
+    "phases": [
+     "colosseum.evidence/compare/pass-1/phase-0.jpg",
+     "colosseum.evidence/compare/pass-1/phase-1.jpg",
+     "colosseum.evidence/compare/pass-1/phase-2.jpg",
+     "colosseum.evidence/compare/pass-1/phase-3.jpg",
+     "colosseum.evidence/compare/pass-1/phase-4.jpg",
+     "colosseum.evidence/compare/pass-1/phase-5.jpg",
+     "colosseum.evidence/compare/pass-1/phase-6.jpg",
+     "colosseum.evidence/compare/pass-1/phase-7.jpg"
+    ],
+    "gaps": [
+     "Refs 0 (north) and 2 (south) are wide-angle shots that take in the whole length of the amphitheatre from 99–132 m; the captures, at 48° and 62°, showed only a stretch of wall.",
+     "Ref 1 (east) is framed on the east end of the standing wall and its brick wedge; the capture looked at the centre and missed the end.",
+     "The north and east faces came out blue-violet: they are in shade under the low golden sun and its blue back light, while the photos show warm travertine in the shade.",
+     "On the south and west, the photos show the inner ring with two storeys of large arches and a top storey of square openings, broken along its top edge; the model had three clean storeys of arches.",
+     "Ref 3 (west) agrees on the layout: the 48 m north wall appears only on the left, the 36 m inner ring fills the rest of the view."
+    ],
+    "fixed": [
+     "Ref 0 at 88° and ref 2 at 72° to take in the whole length; ref 1 aimed at the east end of the standing wall; ref 3 aimed slightly north-west of the centre, as framed in the photo.",
+     "Daylight (view.light = day) instead of the low golden sun, so the shaded faces keep the colour of the stone.",
+     "The inner ring's top storey is a wall with square openings, and its top edge is broken during the quarrying phase (ruin of 40% of the top 30%)."
+    ]
+   },
+   {
+    "pass": 2,
+    "captures": [
+     "colosseum.evidence/compare/pass-2/ref-0.jpg",
+     "colosseum.evidence/compare/pass-2/ref-1.jpg",
+     "colosseum.evidence/compare/pass-2/ref-2.jpg",
+     "colosseum.evidence/compare/pass-2/ref-3.jpg"
+    ],
+    "phases": [
+     "colosseum.evidence/compare/pass-2/phase-0.jpg",
+     "colosseum.evidence/compare/pass-2/phase-1.jpg",
+     "colosseum.evidence/compare/pass-2/phase-2.jpg",
+     "colosseum.evidence/compare/pass-2/phase-3.jpg",
+     "colosseum.evidence/compare/pass-2/phase-4.jpg",
+     "colosseum.evidence/compare/pass-2/phase-5.jpg",
+     "colosseum.evidence/compare/pass-2/phase-6.jpg",
+     "colosseum.evidence/compare/pass-2/phase-7.jpg"
+    ],
+    "gaps": [
+     "Ref 3 (west) now matches the photo: the tall north wall with its stepped end on the left, the inner ring with a top storey of square openings and a broken edge across the rest.",
+     "Under daylight the travertine reads grey; in all four photos it is a warm beige, darker where weathered.",
+     "Ref 0 (north) at 88° shows the whole building small in the frame; the photo is a tighter crop of the same view.",
+     "Ref 2 (south) still shows a close stretch of the inner ring: the photo's framing, with the whole south side in view, cannot come from the 99 m camera location given on Commons.",
+     "Ref 1 (east): the brick wedge stands at the east end of the standing wall in both, but on the photo it rises on the right of the wall's end, in the model on its left.",
+     "The phase strip, taken from the north, does not show the changes, which happen on the south side and inside."
+    ],
+    "fixed": [
+     "Warmer travertine (#dcc39b outer wall, #cfb894 inner ring).",
+     "Ref 0 at 62°; ref 2 placed 170 m from the centre to match its framing, as noted on the reference.",
+     "compare.mjs now draws the phase strip from the monument's overall view."
+    ]
+   },
+   {
+    "pass": 3,
+    "captures": [
+     "colosseum.evidence/compare/pass-3/ref-0.jpg",
+     "colosseum.evidence/compare/pass-3/ref-1.jpg",
+     "colosseum.evidence/compare/pass-3/ref-2.jpg",
+     "colosseum.evidence/compare/pass-3/ref-3.jpg"
+    ],
+    "phases": [
+     "colosseum.evidence/compare/pass-3/phase-0.jpg",
+     "colosseum.evidence/compare/pass-3/phase-1.jpg",
+     "colosseum.evidence/compare/pass-3/phase-2.jpg",
+     "colosseum.evidence/compare/pass-3/phase-3.jpg",
+     "colosseum.evidence/compare/pass-3/phase-4.jpg",
+     "colosseum.evidence/compare/pass-3/phase-5.jpg",
+     "colosseum.evidence/compare/pass-3/phase-6.jpg",
+     "colosseum.evidence/compare/pass-3/phase-7.jpg"
+    ],
+    "gaps": [
+     "Ref 0 (north) now frames the whole north wall as the photo does: three storeys of arches under the attic with its windows; the shaded north face reads darker than in the photo.",
+     "Ref 2 (south) shows the whole south side as in the photo: the inner ring with its broken top, the tall end of the outer wall on the east with its brick wedge.",
+     "Ref 3 (west) matches: the tall north wall with its stepped end on the left, the inner ring across the rest.",
+     "The phase strip now reads: the full ellipse, the attic in 80, the south side gone in 1349, the seats gone after the quarrying, the brick props.",
+     "The photos show weathered, blackened and pitted stone, restoration scaffolding and, from the east, the brick wedge rising on the right of the wall's end; the model has clean stone and the wedge on the left of the end."
+    ],
+    "remaining": [
+     "Stone weathering, black crusts and the pits left by the iron clamps are not drawn.",
+     "Arches, cornices and the attic's windows and corbels are simplified; 80 equal bays.",
+     "The side of the cut on which the 1807 wedge stands differs from the east photo; the wedge is drawn as a stepped slope.",
+     "Restoration scaffolding seen in some photos is not shown."
+    ]
+   }
   ]
  },
  "phases": [
@@ -98,9 +288,9 @@
      "title": "Stone without mortar",
      "text": "Over 100,000 m³ of travertine are set without mortar, held together by 300 tonnes of iron clamps.",
      "anchor": [
-      24.9,
+      24.4,
       16,
-      -73.9
+      -71.2
      ],
      "source": "https://en.wikipedia.org/wiki/Colosseum"
     }
@@ -119,9 +309,9 @@
      "title": "An awning for 50,000",
      "text": "240 mast corbels round the top of the attic hold the velarium, a retractable awning worked by sailors from Misenum that shades two thirds of the arena.",
      "anchor": [
-      24.9,
+      24.4,
       46,
-      -73.9
+      -71.2
      ],
      "source": "https://en.wikipedia.org/wiki/Colosseum"
     }
@@ -140,9 +330,9 @@
      "title": "A machine under the sand",
      "text": "From the hypogeum, animals and scenery could be brought up into the arena without being seen.",
      "anchor": [
-      0,
+      -0.94,
       1,
-      0
+      -0.43
      ],
      "source": "https://en.wikipedia.org/wiki/Colosseum"
     }
@@ -161,9 +351,9 @@
      "title": "Twenty years of repairs",
      "text": "The 217 fire closes the upper levels for two decades: the repairs are only complete around 240.",
      "anchor": [
-      24.9,
+      24.4,
       40,
-      -73.9
+      -71.2
      ],
      "source": "https://en.wikipedia.org/wiki/Colosseum"
     }
@@ -182,9 +372,9 @@
      "title": "Built on two grounds",
      "text": "The south side stood on alluvial ground, less stable than the north: that is the side that collapsed in 1349.",
      "anchor": [
-      -20.5,
+      -22.3,
       20,
-      61.0
+      59.2
      ],
      "source": "https://en.wikipedia.org/wiki/Colosseum"
     }
@@ -203,9 +393,9 @@
      "title": "Why the walls are pitted",
      "text": "The iron clamps holding the stones were pried and hacked out, leaving the pockmarks that still scar the building.",
      "anchor": [
-      -7.3,
+      -7,
       20,
-      -79.8
+      -77.7
      ],
      "source": "https://en.wikipedia.org/wiki/Colosseum"
     }
@@ -224,9 +414,9 @@
      "title": "Holding the broken ends",
      "text": "Where the outer ring stops, one end leans on a brick wedge; at the other, new brick arches step down like a staircase of the old ones.",
      "anchor": [
-      -90.4,
+      -87.5,
       14,
-      -27.5
+      -34.2
      ],
      "source": "https://en.wikipedia.org/wiki/Colosseum"
     }
@@ -245,9 +435,9 @@
      "title": "€25 million",
      "text": "Diego Della Valle agrees to fund a €25 million restoration; the cleaning of the façade ends on 1 July 2016.",
      "anchor": [
-      32.6,
+      32,
       25,
-      -71.0
+      -68.2
      ],
      "source": "https://en.wikipedia.org/wiki/Colosseum"
     }
@@ -258,19 +448,19 @@
   {
    "type": "amphitheatre",
    "center": [
-    0,
-    0
+    -0.94,
+    -0.43
    ],
-   "rot": -0.3243,
+   "rot": -0.3442,
    "bays": 80,
    "part": "facade",
    "phase": "vespasian",
    "radii": [
-    94.5,
-    78
+    92.9,
+    75.2
    ],
    "arc": [
-    184.5,
+    198,
     355.5
    ],
    "storeys": [
@@ -286,25 +476,26 @@
      "height": 11.6,
      "column": true
     }
-   ]
+   ],
+   "color": "#dcc39b"
   },
   {
    "type": "amphitheatre",
    "center": [
-    0,
-    0
+    -0.94,
+    -0.43
    ],
-   "rot": -0.3243,
+   "rot": -0.3442,
    "bays": 80,
    "part": "facade",
    "phase": "vespasian",
    "radii": [
-    94.5,
-    78
+    92.9,
+    75.2
    ],
    "arc": [
     355.5,
-    184.5
+    198
    ],
    "storeys": [
     {
@@ -320,24 +511,25 @@
      "column": true
     }
    ],
-   "until": "earthquake"
+   "until": "earthquake",
+   "color": "#dcc39b"
   },
   {
    "type": "amphitheatre",
    "center": [
-    0,
-    0
+    -0.94,
+    -0.43
    ],
-   "rot": -0.3243,
+   "rot": -0.3442,
    "bays": 80,
    "part": "facade",
    "phase": "titus",
    "radii": [
-    94.5,
-    78
+    92.9,
+    75.2
    ],
    "arc": [
-    184.5,
+    198,
     355.5
    ],
    "y0": 33.9,
@@ -346,25 +538,26 @@
      "kind": "attic",
      "height": 14.6
     }
-   ]
+   ],
+   "color": "#dcc39b"
   },
   {
    "type": "amphitheatre",
    "center": [
-    0,
-    0
+    -0.94,
+    -0.43
    ],
-   "rot": -0.3243,
+   "rot": -0.3442,
    "bays": 80,
    "part": "facade",
    "phase": "titus",
    "radii": [
-    94.5,
-    78
+    92.9,
+    75.2
    ],
    "arc": [
     355.5,
-    184.5
+    198
    ],
    "y0": 33.9,
    "storeys": [
@@ -373,21 +566,22 @@
      "height": 14.6
     }
    ],
-   "until": "earthquake"
+   "until": "earthquake",
+   "color": "#dcc39b"
   },
   {
    "type": "amphitheatre",
    "center": [
-    0,
-    0
+    -0.94,
+    -0.43
    ],
-   "rot": -0.3243,
+   "rot": -0.3442,
    "bays": 80,
    "part": "facade",
    "phase": "vespasian",
    "radii": [
-    81.1,
-    64.4
+    80,
+    63.3
    ],
    "storeys": [
     {
@@ -397,25 +591,32 @@
      "height": 12
     },
     {
+     "kind": "attic",
      "height": 12
     }
    ],
-   "color": "#cdbb9b"
+   "color": "#cfb894",
+   "height": 36,
+   "ruin": {
+    "phase": "quarry",
+    "share": 0.4,
+    "depth": 0.3
+   }
   },
   {
    "type": "amphitheatre",
    "center": [
-    0,
-    0
+    -0.94,
+    -0.43
    ],
-   "rot": -0.3243,
+   "rot": -0.3442,
    "bays": 80,
    "part": "cavea",
    "phase": "vespasian",
    "from": {
     "radii": [
-     78.2,
-     57.8
+     74,
+     55.2
     ],
     "height": 24
    },
@@ -432,44 +633,45 @@
    "rings": [
     {
      "radii": [
-      65.6,
-      49.3
+      65.5,
+      49.6
      ],
      "height": 12,
      "width": 2.4
     },
     {
      "radii": [
-      72,
-      54
+      69.8,
+      52.4
      ],
      "height": 18,
      "width": 2
     },
     {
      "radii": [
-      78.2,
-      57.8
+      74,
+      55.2
      ],
      "height": 24,
      "width": 2.4
     }
-   ]
+   ],
+   "color": "#d5bf98"
   },
   {
    "type": "amphitheatre",
    "center": [
-    0,
-    0
+    -0.94,
+    -0.43
    ],
-   "rot": -0.3243,
+   "rot": -0.3442,
    "bays": 80,
    "part": "cavea",
    "phase": "vespasian",
    "from": {
     "radii": [
-     80,
-     62.5
+     78.8,
+     62
     ],
     "height": 36
    },
@@ -482,15 +684,16 @@
    },
    "rows": 26,
    "walls": false,
-   "until": "quarry"
+   "until": "quarry",
+   "color": "#d5bf98"
   },
   {
    "type": "amphitheatre",
    "center": [
-    0,
-    0
+    -0.94,
+    -0.43
    ],
-   "rot": -0.3243,
+   "rot": -0.3442,
    "bays": 80,
    "part": "arena",
    "phase": "vespasian",
@@ -498,15 +701,16 @@
     43.5,
     27.5
    ],
-   "podium": 4
+   "podium": 4,
+   "color": "#d5bf98"
   },
   {
    "type": "amphitheatre",
    "center": [
-    0,
-    0
+    -0.94,
+    -0.43
    ],
-   "rot": -0.3243,
+   "rot": -0.3442,
    "bays": 80,
    "part": "arena",
    "phase": "domitian",
@@ -516,26 +720,40 @@
    ],
    "podium": 0,
    "hypogeum": true,
-   "brick": "#93634b"
+   "brick": "#93634b",
+   "color": "#d5bf98"
+  },
+  {
+   "type": "buttress",
+   "phase": "buttresses",
+   "at": [
+    88.2,
+    25.3
+   ],
+   "rot": -1.8181,
+   "height": 36,
+   "length": 15,
+   "width": 4.8,
+   "color": "#9c6c52"
   },
   {
    "type": "amphitheatre",
    "center": [
-    0,
-    0
+    -0.94,
+    -0.43
    ],
-   "rot": -0.3243,
+   "rot": -0.3442,
    "bays": 80,
    "part": "facade",
    "phase": "buttresses",
    "radii": [
-    94.5,
-    78
+    92.9,
+    75.2
    ],
    "color": "#c29b75",
    "arc": [
-    180,
-    184.5
+    193.5,
+    198
    ],
    "storeys": [
     {
@@ -555,21 +773,21 @@
   {
    "type": "amphitheatre",
    "center": [
-    0,
-    0
+    -0.94,
+    -0.43
    ],
-   "rot": -0.3243,
+   "rot": -0.3442,
    "bays": 80,
    "part": "facade",
    "phase": "buttresses",
    "radii": [
-    94.5,
-    78
+    92.9,
+    75.2
    ],
    "color": "#c29b75",
    "arc": [
-    175.5,
-    180
+    189,
+    193.5
    ],
    "storeys": [
     {
@@ -581,45 +799,6 @@
      "column": true
     }
    ]
-  },
-  {
-   "type": "amphitheatre",
-   "center": [
-    0,
-    0
-   ],
-   "rot": -0.3243,
-   "bays": 80,
-   "part": "facade",
-   "phase": "buttresses",
-   "radii": [
-    94.5,
-    78
-   ],
-   "color": "#c29b75",
-   "arc": [
-    171,
-    175.5
-   ],
-   "storeys": [
-    {
-     "height": 10.5,
-     "column": true
-    }
-   ]
-  },
-  {
-   "type": "buttress",
-   "phase": "buttresses",
-   "at": [
-    91.2,
-    24.2
-   ],
-   "rot": -1.8,
-   "height": 36,
-   "length": 15,
-   "width": 4.8,
-   "color": "#9c6c52"
   }
  ]
 }

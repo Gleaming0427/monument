@@ -20,7 +20,7 @@ jobs:
         with:
           node-version: 22
       - name: Check every monument
-        run: node scripts/validate.mjs
+        run: node scripts/validate.mjs --strict
       - name: Build the site (community monuments are photographed with Chrome)
         run: CAPTURE=1 CHROME="$(command -v google-chrome || command -v chromium)" node scripts/build-site.mjs
       - uses: actions/configure-pages@v5

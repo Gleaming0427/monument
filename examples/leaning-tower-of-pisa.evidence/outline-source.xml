@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<osm version="0.6" generator="openstreetmap-cgimap 2.1.0 (1330 spike-07.openstreetmap.org)" copyright="OpenStreetMap and contributors" attribution="http://www.openstreetmap.org/copyright" license="http://opendatacommons.org/licenses/odbl/1-0/">
+ <node id="417641718" visible="true" version="5" changeset="8289825" timestamp="2011-05-30T08:50:27Z" user="marek kleciak" uid="338611" lat="43.7230809" lon="10.3966244"/>
+ <node id="417641719" visible="true" version="5" changeset="8289825" timestamp="2011-05-30T08:50:27Z" user="marek kleciak" uid="338611" lat="43.7230630" lon="10.3965651"/>
+ <node id="417641720" visible="true" version="5" changeset="8289825" timestamp="2011-05-30T08:50:27Z" user="marek kleciak" uid="338611" lat="43.7230261" lon="10.3965330"/>
+ <node id="417641721" visible="true" version="5" changeset="8289825" timestamp="2011-05-30T08:50:27Z" user="marek kleciak" uid="338611" lat="43.7229864" lon="10.3965333"/>
+ <node id="417641722" visible="true" version="5" changeset="8289825" timestamp="2011-05-30T08:50:28Z" user="marek kleciak" uid="338611" lat="43.7229538" lon="10.3965599"/>
+ <node id="417641723" visible="true" version="5" changeset="8289825" timestamp="2011-05-30T08:50:19Z" user="marek kleciak" uid="338611" lat="43.7229407" lon="10.3965847"/>
+ <node id="417641724" visible="true" version="5" changeset="8289825" timestamp="2011-05-30T08:50:20Z" user="marek kleciak" uid="338611" lat="43.7229323" lon="10.3966305"/>
+ <node id="417641725" visible="true" version="5" changeset="8289825" timestamp="2011-05-30T08:50:20Z" user="marek kleciak" uid="338611" lat="43.7229412" lon="10.3966814"/>
+ <node id="417641726" visible="true" version="5" changeset="8289825" timestamp="2011-05-30T08:50:21Z" user="marek kleciak" uid="338611" lat="43.7229662" lon="10.3967188"/>
+ <node id="417641727" visible="true" version="5" changeset="8289825" timestamp="2011-05-30T08:50:21Z" user="marek kleciak" uid="338611" lat="43.7230042" lon="10.3967353"/>
+ <node id="417641728" visible="true" version="5" changeset="8289825" timestamp="2011-05-30T08:50:21Z" user="marek kleciak" uid="338611" lat="43.7230460" lon="10.3967198"/>
+ <node id="417641729" visible="true" version="7" changeset="56466091" timestamp="2018-02-18T15:34:02Z" user="Constable" uid="527535" lat="43.7230738" lon="10.3966768"/>
+ <node id="1305605955" visible="true" version="1" changeset="8289825" timestamp="2011-05-30T08:50:08Z" user="marek kleciak" uid="338611" lat="43.7230281" lon="10.3967310"/>
+ <node id="1305605960" visible="true" version="1" changeset="8289825" timestamp="2011-05-30T08:50:08Z" user="marek kleciak" uid="338611" lat="43.7229515" lon="10.3967015"/>
+ <node id="1305605970" visible="true" version="1" changeset="8289825" timestamp="2011-05-30T08:50:09Z" user="marek kleciak" uid="338611" lat="43.7229340" lon="10.3966546"/>
+ <node id="1305605973" visible="true" version="1" changeset="8289825" timestamp="2011-05-30T08:50:09Z" user="marek kleciak" uid="338611" lat="43.7229347" lon="10.3966062"/>
+ <node id="1305605976" visible="true" version="1" changeset="8289825" timestamp="2011-05-30T08:50:09Z" user="marek kleciak" uid="338611" lat="43.7229840" lon="10.3967305"/>
+ <node id="1305606014" visible="true" version="1" changeset="8289825" timestamp="2011-05-30T08:50:11Z" user="marek kleciak" uid="338611" lat="43.7230604" lon="10.3967036"/>
+ <node id="1305606036" visible="true" version="1" changeset="8289825" timestamp="2011-05-30T08:50:12Z" user="marek kleciak" uid="338611" lat="43.7230796" lon="10.3966527"/>
+ <node id="1305606054" visible="true" version="1" changeset="8289825" timestamp="2011-05-30T08:50:13Z" user="marek kleciak" uid="338611" lat="43.7230746" lon="10.3965904"/>
+ <node id="1305606056" visible="true" version="1" changeset="8289825" timestamp="2011-05-30T08:50:13Z" user="marek kleciak" uid="338611" lat="43.7230454" lon="10.3965445"/>
+ <node id="1305606063" visible="true" version="1" changeset="8289825" timestamp="2011-05-30T08:50:13Z" user="marek kleciak" uid="338611" lat="43.7229665" lon="10.3965457"/>
+ <node id="1305606090" visible="true" version="1" changeset="8289825" timestamp="2011-05-30T08:50:14Z" user="marek kleciak" uid="338611" lat="43.7230057" lon="10.3965294"/>
+ <way id="35667218" visible="true" version="57" changeset="184356721" timestamp="2026-06-20T15:06:45Z" user="U42" uid="12752888">
+  <nd ref="417641718"/>
+  <nd ref="1305606054"/>
+  <nd ref="417641719"/>
+  <nd ref="1305606056"/>
+  <nd ref="417641720"/>
+  <nd ref="1305606090"/>
+  <nd ref="417641721"/>
+  <nd ref="1305606063"/>
+  <nd ref="417641722"/>
+  <nd ref="417641723"/>
+  <nd ref="1305605973"/>
+  <nd ref="417641724"/>
+  <nd ref="1305605970"/>
+  <nd ref="417641725"/>
+  <nd ref="1305605960"/>
+  <nd ref="417641726"/>
+  <nd ref="1305605976"/>
+  <nd ref="417641727"/>
+  <nd ref="1305605955"/>
+  <nd ref="417641728"/>
+  <nd ref="1305606014"/>
+  <nd ref="417641729"/>
+  <nd ref="1305606036"/>
+  <nd ref="417641718"/>
+  <tag k="building:colour" v="lightgrey"/>
+  <tag k="building:material" v="marble"/>
+  <tag k="building:part" v="yes"/>
+  <tag k="height" v="0.1"/>
+  <tag k="note" v="Do not add tags for the Leaning Tower of Pisa to this feature, instead add them to the Multipolygon relation for the tower this feature is member of!"/>
+ </way>
+ <relation id="12982355" visible="true" version="29" changeset="180309855" timestamp="2026-03-23T15:04:21Z" user="Tordanik" uid="27223">
+  <member type="way" ref="35667218" role="outer"/>
+  <tag k="addr:city" v="Pisa"/>
+  <tag k="addr:postcode" v="56126"/>
+  <tag k="addr:street" v="Piazza del Duomo"/>
+  <tag k="bell_tower" v="campanile"/>
+  <tag k="building" v="yes"/>
+  <tag k="building:colour" v="white"/>
+  <tag k="building:material" v="stone"/>
+  <tag k="charge" v="8 EUR"/>
+  <tag k="discount:children" v="no"/>
+  <tag k="discount:disabled" v="no"/>
+  <tag k="fee" v="yes"/>
+  <tag k="height" v="56"/>
+  <tag k="historic" v="yes"/>
+  <tag k="int_name" v="Leaning Tower of Pisa"/>
+  <tag k="landmark" v="2"/>
+  <tag k="man_made" v="tower"/>
+  <tag k="material" v="stone"/>
+  <tag k="name" v="Torre di Pisa"/>
+  <tag k="name:af" v="Skewe Toring van Pisa"/>
+  <tag k="name:ar" v="برج بيزا المائل"/>
+  <tag k="name:be" v="Пізанская вежа"/>
+  <tag k="name:ca" v="Torre de Pisa"/>
+  <tag k="name:ckb" v="تاوەری لاری پیزا"/>
+  <tag k="name:cs" v="Šikmá věž v Pise"/>
+  <tag k="name:da" v="Det skæve tårn i Pisa"/>
+  <tag k="name:de" v="Schiefer Turm von Pisa"/>
+  <tag k="name:en" v="Leaning Tower of Pisa"/>
+  <tag k="name:es" v="Torre de Pisa"/>
+  <tag k="name:et" v="Pisa torn"/>
+  <tag k="name:fr" v="Tour de Pise"/>
+  <tag k="name:he" v="מגדל פיזה"/>
+  <tag k="name:hi" v="पीसा की मीनार"/>
+  <tag k="name:hu" v="Pisai ferde torony"/>
+  <tag k="name:is" v="Skakki turninn í Písa"/>
+  <tag k="name:it" v="Torre pendente di Pisa"/>
+  <tag k="name:ko" v="피사의 사탑"/>
+  <tag k="name:nl" v="Toren van pisa"/>
+  <tag k="name:pl" v="Krzywa wieża w Pizie"/>
+  <tag k="name:pt" v="Torre de Pisa"/>
+  <tag k="name:ru" v="Пизанская башня"/>
+  <tag k="name:sk" v="Šikmá veža v Pise"/>
+  <tag k="name:sv" v="Lutande tornet i Pisa"/>
+  <tag k="name:uk" v="Пізанська вежа"/>
+  <tag k="name:zh" v="比萨斜塔"/>
+  <tag k="opening_hours" v="Dec-Jan: 10:00-17:00; Dec 22-Jan 06: 09:00-19:00; Nov,Feb: 09:40-17:40; Nov 01: 09:00-18:00; Mar: 09:00-18:00; Mar 23-29: 10:00-19:00; Mar 30-31: 09:00-20:00; Apr-Sep: 09:00-20:00; Jun 17-Aug 31: 08:30-22:00; Jun 16: 08:30-17:30; Oct: 09:00-19:00"/>
+  <tag k="opening_hours_1" v="Oct 27-Nov 1 09:00-18:00"/>
+  <tag k="roof:colour" v="white"/>
+  <tag k="roof:material" v="stone"/>
+  <tag k="short_name:pl" v="Krzywa wieża"/>
+  <tag k="source:opening_hours" v="http://www.opapisa.it/it/organizza-la-tua-visita/informazioni-pratiche/orari.html"/>
+  <tag k="tourism" v="attraction"/>
+  <tag k="tower:type" v="bell_tower"/>
+  <tag k="type" v="multipolygon"/>
+  <tag k="website" v="https://www.opapisa.it/visita/torre-pendente/"/>
+  <tag k="wheelchair" v="no"/>
+  <tag k="wikidata" v="Q39054"/>
+  <tag k="wikimedia_commons" v="File:Leaning tower of pisa 2.jpg"/>
+  <tag k="wikipedia" v="it:Torre di Pisa"/>
+ </relation>
+</osm>

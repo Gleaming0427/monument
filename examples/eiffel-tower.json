@@ -27,7 +27,8 @@
    0.62,
    0.3,
    0.74
-  ]
+  ],
+  "light": "golden"
  },
  "live": [
   {
@@ -188,14 +189,14 @@
     {
      "at": 0.9,
      "tag": "Anecdote",
-     "title": "1,710 steps",
+     "title": "1,665 steps",
      "anchor": [
       0,
       306,
       0
      ],
-     "source": "https://structurae.net/fr/ouvrages/tour-eiffel",
-     "text": "On 31 March 1889, Gustave Eiffel climbs the 1,710 steps to the top."
+     "source": "https://www.toureiffel.paris/en/faq/spot/how-can-you-walk-eiffel-tower-foot",
+     "text": "On 31 March 1889, Gustave Eiffel climbs the 1,665 steps from the esplanade to the top, the day the tower is inaugurated."
     }
    ]
   },
@@ -222,7 +223,7 @@
     4,
     8
    ],
-   "y0": 0,
+   "y0": -4.6,
    "block": [
     2.6,
     1.3,
@@ -241,7 +242,7 @@
     4,
     8
    ],
-   "y0": 0,
+   "y0": -4.6,
    "block": [
     2.6,
     1.3,
@@ -260,7 +261,7 @@
     4,
     8
    ],
-   "y0": 0,
+   "y0": -4.6,
    "block": [
     2.6,
     1.3,
@@ -279,7 +280,7 @@
     4,
     8
    ],
-   "y0": 0,
+   "y0": -4.6,
    "block": [
     2.6,
     1.3,
@@ -298,7 +299,7 @@
     4,
     8
    ],
-   "y0": 0,
+   "y0": -4.6,
    "block": [
     2.6,
     1.3,
@@ -317,7 +318,7 @@
     4,
     8
    ],
-   "y0": 0,
+   "y0": -4.6,
    "block": [
     2.6,
     1.3,
@@ -336,7 +337,7 @@
     4,
     8
    ],
-   "y0": 0,
+   "y0": -4.6,
    "block": [
     2.6,
     1.3,
@@ -355,7 +356,7 @@
     4,
     8
    ],
-   "y0": 0,
+   "y0": -4.6,
    "block": [
     2.6,
     1.3,
@@ -374,7 +375,7 @@
     4,
     8
    ],
-   "y0": 0,
+   "y0": -4.6,
    "block": [
     2.6,
     1.3,
@@ -393,7 +394,7 @@
     4,
     8
    ],
-   "y0": 0,
+   "y0": -4.6,
    "block": [
     2.6,
     1.3,
@@ -412,7 +413,7 @@
     4,
     8
    ],
-   "y0": 0,
+   "y0": -4.6,
    "block": [
     2.6,
     1.3,
@@ -431,7 +432,7 @@
     4,
     8
    ],
-   "y0": 0,
+   "y0": -4.6,
    "block": [
     2.6,
     1.3,
@@ -450,7 +451,7 @@
     4,
     8
    ],
-   "y0": 0,
+   "y0": -4.6,
    "block": [
     2.6,
     1.3,
@@ -469,7 +470,7 @@
     4,
     8
    ],
-   "y0": 0,
+   "y0": -4.6,
    "block": [
     2.6,
     1.3,
@@ -488,7 +489,7 @@
     4,
     8
    ],
-   "y0": 0,
+   "y0": -4.6,
    "block": [
     2.6,
     1.3,
@@ -507,7 +508,7 @@
     4,
     8
    ],
-   "y0": 0,
+   "y0": -4.6,
    "block": [
     2.6,
     1.3,
@@ -812,5 +813,179 @@
     ]
    }
   }
- ]
+ ],
+ "rotate": 45,
+ "evidence": {
+  "size": "building",
+  "identity": "Eiffel Tower (Tour Eiffel), Champ de Mars, 5 Avenue Anatole France, 75007 Paris, France (OSM way 5013364)",
+  "sources": [
+   {
+    "url": "https://www.toureiffel.paris/en/the-monument/history",
+    "read": "The tower was built for the 1889 World's Fair: works started 26 January 1887, first floor 1 April 1888, second 14 August 1888, top 31 March 1889 (2 years, 2 months, 5 days). Square base 125 m across, 18,038 parts, 2,500,000 rivets, four lattice girders joined at the top; 150-300 workers; rivets set by teams of four; sandboxes and hydraulic jacks aligned the first-floor girders to a millimetre; caissons with compressed air on the Seine side; Sauvestre's monumental arches at the base were kept."
+   },
+   {
+    "url": "https://www.toureiffel.paris/en/news/130-years/construction-eiffel-tower-exemplary-project",
+    "read": "Sixteen stone blocks, one per tower edge, built in five months in masonry; 700 engineering drawings and 3,600 workshop plans for the 18,000 parts; prefabrication at Levallois-Perret with defective parts sent back; two thirds of the rivets set at the factory; wooden scaffolds and 3-tonne steam cranes that climbed the legs; the second floor was reached in July 1888 and the 300 m summit in March 1889."
+   },
+   {
+    "url": "https://www.toureiffel.paris/en/news/130-years/how-did-they-build-tower-so-quickly",
+    "read": "The secret of the 22-month assembly was complete prefabrication: 12,000 parts calculated, drawn, cut, drilled and pre-assembled in the Levallois-Perret works; 150 to 300 workers; sixteen masonry foundation blocks, one per edge, with caissons under two pillars near the Seine; the first floor was the critical moment, aligned with sandboxes and hydraulic jacks."
+   },
+   {
+    "url": "https://www.toureiffel.paris/en/faq/spot/how-can-you-walk-eiffel-tower-foot",
+    "read": "674 steps lead from the ground to the second floor and 1,665 in total from the esplanade to the top; the stairway above the second floor is not open to the public and climbs the south leg."
+   },
+   {
+    "url": "https://www.toureiffel.paris/en/news/130-years/eiffel-tower-mounted-cylinders",
+    "read": "Sandboxes and hydraulic cylinders at the base of two columns, driven by a hand pump, raised or lowered the first-floor beams by a few centimetres so the rivet holes met; the cylinders were removed and replaced by permanent wedges once the first floor was assembled."
+   },
+   {
+    "url": "https://www.toureiffel.paris/en/the-monument/lights",
+    "read": "Since 31 December 1985, 336 sodium spotlights inside the structure light the tower in gold; since 2000, 20,000 6W bulbs make it sparkle five minutes at the start of every hour; a rotating beacon sits on top; the monument has been illuminated since 1889 (gaslights)."
+   },
+   {
+    "url": "https://fr.wikipedia.org/wiki/Donn%C3%A9es_techniques_de_la_tour_Eiffel",
+    "read": "Technical dimensions of the tower: foundations, floors at 57.63/115.73/276.13 m with sides 70.69/40.96/18.65 m, 125x125 m base, 74.24 m inner and 124.90 m outer gap between the piers, 1665 steps."
+   }
+  ],
+  "plan": {
+   "source": "OpenStreetMap way 5013364",
+   "url": "https://www.openstreetmap.org/way/5013364",
+   "outline": "eiffel-tower.evidence/outline.json",
+   "tolerance": 5
+  },
+  "references": [
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:Tour_Eiffel_Wikimedia_Commons.jpg",
+    "view": "north-west, from the Trocadero esplanade",
+    "azimuth": 315,
+    "elevation": 2,
+    "distance": 320,
+    "target": [
+     0,
+     80,
+     0
+    ]
+   },
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:Tour_Eiffel_vue_du_Champ-de-Mars.jpg",
+    "view": "south-east, up the Champ-de-Mars lawns",
+    "azimuth": 135,
+    "elevation": 2,
+    "distance": 330,
+    "target": [
+     0,
+     80,
+     0
+    ]
+   },
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:Tour_Eiffel_depuis_le_pont_de_Bir-Hakeim.jpg",
+    "view": "east, from the Bir-Hakeim bridge over the Seine",
+    "azimuth": 75,
+    "elevation": 3,
+    "distance": 260,
+    "target": [
+     0,
+     60,
+     0
+    ]
+   },
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:Eiffel_Tower_from_the_Esplanade_du_Trocadero.jpg",
+    "view": "north, along the fountains of the Trocadero gardens",
+    "azimuth": 5,
+    "elevation": 2,
+    "distance": 400,
+    "target": [
+     0,
+     90,
+     0
+    ]
+   }
+  ],
+  "features": [
+   {
+    "text": "Four curved legs of lattice girders rising from a 125 m square base to meet at 300 m.",
+    "source": "https://www.toureiffel.paris/en/the-monument/history"
+   },
+   {
+    "text": "Three public platforms: the first at 57.63 m (70.69 m side), the second at 115.73 m (40.96 m side), the third at 276.13 m (18.65 m side).",
+    "source": "https://fr.wikipedia.org/wiki/Donn%C3%A9es_techniques_de_la_tour_Eiffel"
+   },
+   {
+    "text": "Monumental semicircular arches linking the legs and the first level, kept from Sauvestre's design.",
+    "source": "https://www.toureiffel.paris/en/the-monument/history"
+   },
+   {
+    "text": "Wrought-iron lattice of riveted parts, 18,038 pieces and 2.5 million rivets, painted brown.",
+    "source": "https://www.toureiffel.paris/en/the-monument/history"
+   },
+   {
+    "text": "Golden lighting of 336 spotlights inside the structure since 31 December 1985, and 20,000 bulbs that make the tower sparkle since 2000.",
+    "source": "https://www.toureiffel.paris/en/the-monument/lights"
+   }
+  ],
+  "geometry": "Base and floor heights from the official figures (125 m square, 57.63/115.73/276.13 m, 300 m); the outline is OpenStreetMap way 5013364 traced to local metres; the lattice legs, decks and base arches are drawn with the profile of the real tower.",
+  "comparisons": [
+   {
+    "pass": 1,
+    "captures": [
+     "eiffel-tower.evidence/compare/pass-1/ref-0.jpg",
+     "eiffel-tower.evidence/compare/pass-1/ref-1.jpg",
+     "eiffel-tower.evidence/compare/pass-1/ref-2.jpg",
+     "eiffel-tower.evidence/compare/pass-1/ref-3.jpg"
+    ],
+    "phases": [
+     "eiffel-tower.evidence/compare/pass-1/phase-0.jpg",
+     "eiffel-tower.evidence/compare/pass-1/phase-1.jpg",
+     "eiffel-tower.evidence/compare/pass-1/phase-2.jpg",
+     "eiffel-tower.evidence/compare/pass-1/phase-3.jpg",
+     "eiffel-tower.evidence/compare/pass-1/phase-4.jpg"
+    ],
+    "gaps": [
+     "The model's four legs reach 87 m from the centre as the outline does, but the ground plan between the legs is wrong: in the sectors between two legs the model bulges 20-24 m too far (73 m where the outline measures 49 m), and at the four diagonal mid-points it falls short of the outline's bulges (39-44 m measured, 2-23 m modelled).",
+     "The first-floor deck overhung the legs by 3 m; the real floor is 70.69 m across, flush with the legs.",
+     "The base arches started 14 m above the ground with a 31 m span; on the tower they spring from the ground and crown near the first floor (74.24 m inner gap)."
+    ],
+    "fixed": [
+     "Deck overhangs set to the real floor widths (70.69 / 40.96 / 18.65 m).",
+     "Base arches lowered to the ground (base 0, rise 37 m, span 74.24 m) and the legs narrowed to 18 m, then measured again.",
+     "After measuring every combination, the original arch and leg widths were restored: they fix more sectors than any alternative tried."
+    ]
+   },
+   {
+    "pass": 2,
+    "captures": [
+     "eiffel-tower.evidence/compare/pass-2/ref-0.jpg",
+     "eiffel-tower.evidence/compare/pass-2/ref-1.jpg",
+     "eiffel-tower.evidence/compare/pass-2/ref-2.jpg",
+     "eiffel-tower.evidence/compare/pass-2/ref-3.jpg"
+    ],
+    "phases": [
+     "eiffel-tower.evidence/compare/pass-2/phase-0.jpg",
+     "eiffel-tower.evidence/compare/pass-2/phase-1.jpg",
+     "eiffel-tower.evidence/compare/pass-2/phase-2.jpg",
+     "eiffel-tower.evidence/compare/pass-2/phase-3.jpg",
+     "eiffel-tower.evidence/compare/pass-2/phase-4.jpg"
+    ],
+    "gaps": [
+     "The diagonal sectors between the legs still read 12-20 m too wide against the outline, and the diagonal bulges between the legs remain under-covered.",
+     "The phase strip reads correctly: foundations, the four legs with their scaffolds, the two platforms, the top and the night lighting.",
+     "Against the photos the proportions hold: the legs meet the first floor at 57.63 m, the second at 115.73 m and the top at 300 m."
+    ],
+    "fixed": [],
+    "remaining": [
+     "The lattice is schematic: the real tower has several hundred lattice members per panel; the model keeps the silhouette and the panel rhythm.",
+     "The gap between the model and the measured outline is 8.2 m at the 90th percentile, concentrated in the sectors between the legs; see evidence.uncertainties."
+    ]
+   }
+  ],
+  "uncertainties": [
+   "The lattice is schematic: the real tower has several hundred lattice members per panel; the model keeps the silhouette and the panel rhythm.",
+   "The lifts, restaurants and the 2022 antenna (330 m) are left out.",
+   "The model's ground plan still differs from the OpenStreetMap outline in the sectors between the legs: the tower's piers are drawn as square lattice boxes, while the real piers are rounded and the space between them follows the base arches; the 90th-percentile gap is 8.2 m (max 23.6 m)."
+  ]
+ },
+ "modelNote": "Measured from the OpenStreetMap plan and the official dimensions (125 m base, 57.63/115.73/276.13 m floors, 300 m top); the lattice is simplified to its four legs, three floors and base arches, and the illumination is schematic."
 }

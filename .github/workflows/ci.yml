@@ -10,7 +10,7 @@ jobs:
         with:
           node-version: 22
       - name: Check every monument
-        run: node scripts/validate.mjs
+        run: node scripts/validate.mjs --strict
       - name: Check the scripts and the kit
         run: for f in kit/*.js scripts/*.mjs; do node --check "$f"; done
       - name: Build the site

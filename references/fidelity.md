@@ -17,11 +17,10 @@ Someone who knows the building should recognise it at first glance, find its pro
 
 ## Compare, fix, repeat
 
-1. For each reference photo, capture the finished model from the same viewpoint, with no interface:
-   `http://127.0.0.1:4173/?t=<number of phases>&cam=<azimuth>,<elevation>,<distance>,<x>,<y>,<z>&clean#<id>`
-   (azimuth in degrees from north, 180 = seen from the south; a negative elevation looks up from the foot of the building; `x,y,z` is the point looked at). `node scripts/capture.mjs` does it with a local Chrome; browser tools work too.
-2. Look at the photo and the capture one after the other; list the gaps: silhouette, proportions, number of elements, roof shapes, openings, colours, ornaments. A photo taken from the foot of a building flattens its upper roofs: match the viewpoint before judging proportions.
-3. Fix and capture again. At least two passes; stop when only deliberate, named simplifications remain, listed in `evidence.uncertainties`.
+1. Give each reference photo its viewpoint in `evidence.references`: `azimuth` (degrees from north, 180 = seen from the south), `elevation` (negative looks up from the foot of the building), `distance` and `target`.
+2. Run `node scripts/compare.mjs monuments/<id>.json --pass 1`. It photographs the finished model from every reference viewpoint, and the end of every phase, into `<id>.evidence/compare/pass-1/`, and records the pass in `evidence.comparisons`.
+3. Open each photo and its capture, one after the other. Write in that pass's `gaps` what differs: silhouette, proportions, number of elements, roof shapes, openings, colours, ornaments, and whether every phase reads. A photo taken from the foot of a building flattens its upper roofs: match the viewpoint before judging proportions.
+4. Fix the model, write what you changed in `fixed`, and run `--pass 2`. Repeat until only deliberate, named simplifications remain; write them in the last pass's `remaining` and in `evidence.uncertainties`.
 
 ## Beautiful
 

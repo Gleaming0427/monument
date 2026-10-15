@@ -8,7 +8,7 @@ import {OutputPass} from 'three/addons/postprocessing/OutputPass.js';
 // Construction engine: a monument file (phases + elements) becomes thousands of instanced pieces.
 // Each piece is born (and sometimes removed) on the timeline; the shader drops it into place and
 // lights it as it lands. One phase = one unit of time.
-const PIXEL_RATIO = Math.min(2, Math.max(1.5, devicePixelRatio));
+const PIXEL_RATIO = Math.min(2, Math.max(1.5, globalThis.devicePixelRatio ?? 1));
 const FLY = 0.06;
 const UP = new T.Vector3(0, 1, 0);
 const KINDS = {
@@ -734,6 +734,31 @@ export const generators = {
 };
 
 // ——— Scene ———
+// Builds every piece of a monument (with its phase, removal and lean) without any scene, so that scripts
+// can measure the model too: scripts/plan.mjs compares its footprint with the measured outline.
+export function buildPieces(data) {
+  const index = Object.fromEntries(data.phases.map((p, i) => [p.id, i]));
+  const P = id => { if (!(id in index)) throw new Error(`Unknown phase: ${id}`); return index[id]; };
+  const k = kit(random(data.seed ?? 7));
+  for (const element of data.elements) {
+    const before = k.pieces.length;
+    if(!generators[element.type])throw new Error(`Unknown brick: ${element.type}. Add a generator before loading this monument.`);
+    generators[element.type](k, element, P);
+    if(element.type === "timberFrame")for(const piece of k.pieces.slice(before))piece.structural=true;
+    if(element.until)for(const piece of k.pieces.slice(before))piece.until=P(element.until);
+    if(element.lean)for(const piece of k.pieces.slice(before))piece.lean=1;
+    if (element.ruin) {
+      const fresh = k.pieces.slice(before), cut = (element.y0 ?? 0) + (element.height ?? 0) * (1 - (element.ruin.depth ?? .3));
+      for (const piece of fresh) if (piece.phase < P(element.ruin.phase) && (piece.crown || piece.top > cut) && k.rand() < element.ruin.share) {
+        piece.until = P(element.ruin.phase);
+        if (element.ruin.restore) k.pieces.push({...piece, matrix: piece.matrix.clone(), phase: P(element.ruin.restore), until: undefined});
+      }
+    }
+  }
+  if (data.rotate) { const turn = new T.Matrix4().makeRotationY(data.rotate * Math.PI / 180); for (const piece of k.pieces) piece.matrix.premultiply(turn); }
+  return {pieces: k.pieces, P, index};
+}
+
 export function createStage(host) {
   const renderer = new T.WebGLRenderer({antialias: true, powerPreference: 'high-performance'});
   renderer.setPixelRatio(PIXEL_RATIO);
@@ -862,24 +887,7 @@ export function createStage(host) {
       uniforms.uLeanPivot.value.set(...(leaning.pivot ?? [0, 0, 0]));
       uniforms.uLeanAxis.value.crossVectors(UP, new T.Vector3(...(leaning.toward ?? [0, 0, 1])).normalize()).normalize();
     }
-    const index = Object.fromEntries(data.phases.map((p, i) => [p.id, i]));
-    const P = id => { if (!(id in index)) throw new Error(`Unknown phase: ${id}`); return index[id]; };
-    const k = kit(random(data.seed ?? 7));
-    for (const element of data.elements) {
-      const before = k.pieces.length;
-      if(!generators[element.type])throw new Error(`Unknown brick: ${element.type}. Add a generator before loading this monument.`);
-      generators[element.type](k, element, P);
-      if(element.type === "timberFrame")for(const piece of k.pieces.slice(before))piece.structural=true;
-      if(element.until)for(const piece of k.pieces.slice(before))piece.until=P(element.until);
-      if(element.lean)for(const piece of k.pieces.slice(before))piece.lean=1;
-      if (element.ruin) {
-        const fresh = k.pieces.slice(before), cut = (element.y0 ?? 0) + (element.height ?? 0) * (1 - (element.ruin.depth ?? .3));
-        for (const piece of fresh) if (piece.phase < P(element.ruin.phase) && (piece.crown || piece.top > cut) && k.rand() < element.ruin.share) {
-          piece.until = P(element.ruin.phase);
-          if (element.ruin.restore) k.pieces.push({...piece, matrix: piece.matrix.clone(), phase: P(element.ruin.restore), until: undefined});
-        }
-      }
-    }
+    const {pieces: built, P} = buildPieces(data), k = {pieces: built, rand: random((data.seed ?? 7) + 1)};
     total = data.phases.length;
     // Within each phase, pieces are laid from the bottom up.
     const byPhase = data.phases.map(() => []);

@@ -3,7 +3,7 @@
 //   node scripts/publish.mjs monuments/<id>.json --author <github name> --model "<model>" --prompt "<the request>" [--title "<title>"] [--yes]
 // Without --yes it only prints what would be sent. With --yes it forks the gallery repository with the
 // GitHub CLI (gh), adds community/<id>/ on a branch and opens the pull request.
-import {readFile, writeFile, mkdir, mkdtemp, copyFile, rm} from 'node:fs/promises';
+import {readFile, writeFile, mkdir, mkdtemp, copyFile, rm, cp} from 'node:fs/promises';
 import {execFileSync} from 'node:child_process';
 import {join, dirname, basename, resolve} from 'node:path';
 import {tmpdir} from 'node:os';
@@ -23,15 +23,18 @@ const taken = await readFile(join(skill, 'examples', `${id}.json`)).then(() => t
 if (taken) { console.error(`“${id}” is already in the collection. Rename the file (and its "id") to send your own version, e.g. ${id}-${author}.json.`); process.exit(1); }
 
 // The monument must pass the same checks as the gallery's CI before it leaves.
-try { run('node', [join(skill, 'scripts', 'validate.mjs'), resolve(file)]); }
-catch (error) { console.error(error.stdout + error.stderr); console.error('Fix these problems before publishing.'); process.exit(1); }
+try { run('node', [join(skill, 'scripts', 'validate.mjs'), '--strict', resolve(file)]); }
+catch (error) { console.error(error.stdout + error.stderr); console.error('This monument is still a draft: every step of SKILL.md must leave its evidence before it can be published.'); process.exit(1); }
 
 const meta = {title: flag('title') ?? monument.name, id, author, model, prompt, date: new Date().toISOString().slice(0, 10)};
 const files = [['monument.json', resolve(file)]];
 if (monument.bricks) files.push([monument.bricks, resolve(dirname(file), monument.bricks)]);
+// The evidence folder (outline, control plan, comparison captures) travels with the monument.
+const evidenceDir = resolve(dirname(file), `${id}.evidence`);
 console.log(`Monument: ${monument.name} (${monument.place})`);
 console.log(`Gallery entry: community/${id}/ in ${REPO}`);
 for (const [name] of files) console.log(`  ${name}`);
+console.log(`  ${id}.evidence/ (outline, plan, comparison captures)`);
 console.log(`  meta.json ${JSON.stringify(meta)}`);
 if (monument.bricks) console.log('This monument brings its own bricks (code): a maintainer reviews them before they go live.');
 if (!args.includes('--yes')) { console.log('\nNothing sent. Run again with --yes to open the pull request.'); process.exit(0); }
@@ -52,6 +55,7 @@ try {
   const target = join(work, 'community', id);
   await mkdir(target, {recursive: true});
   for (const [name, source] of files) await copyFile(source, join(target, name));
+  await cp(evidenceDir, join(target, `${id}.evidence`), {recursive: true});
   await writeFile(join(target, 'meta.json'), JSON.stringify(meta, null, 2) + '\n');
   run('git', ['add', '.'], {cwd: work});
   run('git', ['commit', '-m', `Community: ${meta.title}`], {cwd: work});
