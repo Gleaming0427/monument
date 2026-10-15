@@ -24,7 +24,8 @@ Units are metres. `x` points east, `z` points south, `y` up; the ground (or wate
 | `timberFrame` | A timber frame of setback floors | `center`, `size`, `levels` (floor heights), `plans` (width, depth per level, in ken), `ken`, `y0`, `rot`, `pillars` (`offsets`, `height`, `width`: masts through every floor) |
 | `tieredKeep` | A Japanese castle keep: plastered tiers, curved hip roofs with white tile joints, gables face by face | `center`, `rot`, `y0`, `ken`, `pitch`, `tile`, `joint`, `wall`, `tiers` (per tier: `plan` in ken, `height` eave to eave, `eave`, `brackets`, `bays`, `windowPitch`, `lattice`, `posts`, `gables` with `face` s/n/e/w, `kind` kara/chidori/irimoya, `width`, `height`, `at`, `slope`; top tier: `ridge`, `hip`) |
 | `arcadedTower` | A round campanile of superposed arcades (Pisa type) | `center`, `radius`, `y0`, `color`, `shade`, `storeys` (per storey: `kind` blind/loggia/belfry, `height`, `phase`, `arches` or `columns`, `core`, belfry `radius`) |
-| `amphitheatre` | An elliptical amphitheatre (Colosseum type) | `center`, `radii`, `rot`, `bays`, `part` (`facade`, `inner`, `cavea`, `arena`), `arc` (degrees kept, for a ruined side), facade `storeys` (`height`, `column`, `kind: attic`), `ring`, cavea `from`/`to` (`ring`, `height`), `rows`, `arena`, `podium`, `color`, `brick` |
+| `amphitheatre` | An elliptical amphitheatre (Colosseum type), one ring per element | `center`, `rot`, `bays`, `part` (`facade`, `cavea`, `arena`), `arc` (degrees kept: 0 = east end of the major axis, 90 = south), facade `radii` and `storeys` (`height`, `column`, `kind: attic`), cavea `from`/`to` (`radii`, `height`), `rows`, `seats`, `walls`, `wallWidth`, `rings` (`radii`, `height`, `width`: corridor walls), arena `arena`, `podium`, `hypogeum`, `color`, `brick` |
+| `buttress` | A sloping masonry buttress propping the end of a wall | `at`, `rot`, `height`, `length`, `width`, `course`, `color` |
 
 ## Change over time
 

@@ -67,11 +67,9 @@ One rule sits at the top of [`SKILL.md`](SKILL.md): **the building is the eviden
 
 The world's most recognised monuments, built one by one. Each animation is recorded from the live viewer with `scripts/record.mjs`.
 
-| | |
-|---|---|
-| <a href="https://gleaming0427.github.io/monument/view/#leaning-tower-of-pisa"><img src=".github/assets/leaning-tower-of-pisa.gif" alt="The Leaning Tower of Pisa being built"></a><br><b>Leaning Tower of Pisa</b>, Italy | <a href="https://gleaming0427.github.io/monument/view/#eiffel-tower"><img src=".github/assets/eiffel-tower.gif" alt="The Eiffel Tower being built"></a><br><b>Eiffel Tower</b>, Paris |
-
-Coming next, following a survey in which people from six continents were asked to name fifty landmarks ([AllClear, via Time Out](https://www.timeout.com/sydney/news/the-sydney-opera-house-just-ranked-among-the-worlds-top-10-most-recognisable-landmarks-110124)), with the Great Wall in place of the White House: the Statue of Liberty, the Taj Mahal, the Colosseum, the Great Wall, the Sydney Opera House, Big Ben, the Great Pyramid of Giza and Stonehenge.
+| | | |
+|---|---|---|
+| <a href="https://gleaming0427.github.io/monument/view/#colosseum"><img src=".github/assets/colosseum.gif" alt="The Colosseum being built, then ruined"></a><br><b>Colosseum</b>, Rome | <a href="https://gleaming0427.github.io/monument/view/#leaning-tower-of-pisa"><img src=".github/assets/leaning-tower-of-pisa.gif" alt="The Leaning Tower of Pisa being built"></a><br><b>Leaning Tower of Pisa</b>, Italy | <a href="https://gleaming0427.github.io/monument/view/#eiffel-tower"><img src=".github/assets/eiffel-tower.gif" alt="The Eiffel Tower being built"></a><br><b>Eiffel Tower</b>, Paris |
 
 Every one is live on the [website](https://gleaming0427.github.io/monument/collection/).
 

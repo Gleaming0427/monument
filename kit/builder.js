@@ -328,73 +328,95 @@ export const generators = {
     }
   },
 
-  // Elliptical amphitheatre (Colosseum type): an outer façade of superposed arcades framed by engaged
-  // columns and topped by an attic with pilasters, an inner ring, raked seating down to the arena wall,
-  // and the arena's underground walls. `arc` keeps only the bays between two angles (degrees), so a
-  // ruined side can be its own element with `until`.
+  // Elliptical amphitheatre (Colosseum type), one part per element so each ring can have its own size,
+  // phase and fate: `facade` (superposed arcades, optional engaged columns, an attic with pilasters,
+  // windows and mast corbels), `cavea` (raked seating carried by radial walls) and `arena` (podium wall and
+  // underground galleries). `arc` keeps only the bays between two angles in degrees (0 = east end of the
+  // major axis, 90 = south), so a side that fell can be its own element with `until`.
   amphitheatre(k, e, P) {
-    const {center:[cx,cz], radii:[A,B], rot=0, bays=80, color='#d9c9a8', brick='#b07a55', part='facade'} = e, ph = P(e.phase);
+    const {center:[cx,cz], rot=0, bays=80, color='#d8ccb3', brick='#a8724f', part='facade'} = e, ph = P(e.phase);
     const co = Math.cos(rot), si = Math.sin(rot), up = new T.Vector3(0, 1, 0);
     const world = (x, y, z) => new T.Vector3(cx + x * co + z * si, y, cz - x * si + z * co);
-    // Point, tangent and outward normal on an ellipse grown by d metres.
-    const at = (th, d = 0) => { const ct = Math.cos(th), st = Math.sin(th), n = new T.Vector3(B * ct, 0, A * st).normalize(); return {p: new T.Vector3(A * ct, 0, B * st).addScaledVector(n, d), n, t: new T.Vector3(-A * st, 0, B * ct).normalize()}; };
-    const inArc = th => { if (!e.arc) return true; const deg = (th * 180 / Math.PI + 360) % 360, [a0, a1] = e.arc; return a0 <= a1 ? deg >= a0 && deg < a1 : deg >= a0 || deg < a1; };
+    const ell = (th, [a, b]) => ({p: new T.Vector3(a * Math.cos(th), 0, b * Math.sin(th)), n: new T.Vector3(b * Math.cos(th), 0, a * Math.sin(th)).normalize(), t: new T.Vector3(-a * Math.sin(th), 0, b * Math.cos(th)).normalize()});
+    const inArc = th => { if (!e.arc) return true; const deg = (th * 180 / Math.PI % 360 + 360) % 360, [a0, a1] = e.arc; return a0 <= a1 ? deg >= a0 && deg <= a1 : deg >= a0 || deg <= a1; };
     const yaw = t => rot + Math.atan2(-t.z, t.x);
-    const put = (p, y, size, t, hex, kind = 'stone') => { const w = world(p.x, y, p.z); k.box(kind, [w.x, w.y, w.z], size, yaw(t), k.tint(hex, .05), ph, w.y); };
+    const put = (p, y, size, t, hex) => { const w = world(p.x, y, p.z); k.box('stone', [w.x, w.y, w.z], size, yaw(t), k.tint(hex, .05), ph, w.y); };
+    const turn = v => new T.Vector3(v.x * co + v.z * si, 0, -v.x * si + v.z * co);
     const arch = (p0, p1, spring, depth, hex) => {
       const mid = p0.clone().add(p1).multiplyScalar(.5), dir = p1.clone().sub(p0), ra = dir.length() / 2; dir.normalize();
-      const rad = new T.Vector3(dir.z, 0, -dir.x);
+      const y = turn(new T.Vector3(dir.z, 0, -dir.x)), along = turn(dir);
       for (let j = 0; j < 7; j++) {
         const th = Math.PI * (j + .5) / 7, q = mid.clone().addScaledVector(dir, -ra * Math.cos(th)), w = world(q.x, spring + ra * Math.sin(th), q.z);
-        const x = new T.Vector3(dir.x * co + dir.z * si, 0, -dir.x * si + dir.z * co).multiplyScalar(Math.sin(th)).addScaledVector(up, Math.cos(th)).normalize();
-        const y = new T.Vector3(rad.x * co + rad.z * si, 0, -rad.x * si + rad.z * co);
-        k.oriented('stone', w, x, y, new T.Vector3().crossVectors(x, y), [Math.PI * ra / 7 * 1.1, depth, .7], k.tint(hex, .05), ph, w.y);
+        const x = along.clone().multiplyScalar(Math.sin(th)).addScaledVector(up, Math.cos(th)).normalize();
+        k.oriented('stone', w, x, y, new T.Vector3().crossVectors(x, y), [Math.PI * ra / 7 * 1.12, depth, .75], k.tint(hex, .05), ph, w.y);
       }
     };
     const step = 2 * Math.PI / bays;
-    if (part === 'facade' || part === 'inner') {
-      // Superposed arcades: each storey has piers, engaged columns, arches and an entablature band.
-      const d = part === 'inner' ? -(e.ring ?? 10) : 0;
+    if (part === 'facade') {
+      const radii = e.radii;
       let y = e.y0 ?? 0;
       for (const s of e.storeys) {
         for (let i = 0; i < bays; i++) {
           const th = i * step; if (!inArc(th) || !inArc(th + step)) continue;
-          const {p, t} = at(th, d), next = at(th + step, d).p, bay = p.distanceTo(next), spring = y + s.height * .62, open = bay * .62;
+          const {p, n, t} = ell(th, radii), next = ell(th + step, radii).p, m = ell(th + step / 2, radii), bay = p.distanceTo(next);
           if (s.kind === 'attic') {
-            const m = at(th + step / 2, d);
             put(m.p, y + s.height / 2, [bay * 1.03, s.height, 1.6], m.t, color);
-            put(p, y + s.height / 2, [.8, s.height - .4, 2.1], t, color);
-            if (i % 2 === 0) put(m.p.clone().addScaledVector(m.n, .55), y + s.height * .55, [1.1, 1.7, .6], m.t, '#4a4037');
-            put(p.clone().addScaledVector(at(th, d).n, .9), y + s.height - .6, [.5, .8, 1.2], t, color);
+            put(p.clone().addScaledVector(n, .5), y + s.height / 2, [.85, s.height - .5, .5], t, color);
+            if (i % 2 === 0) put(m.p.clone().addScaledVector(m.n, .8), y + s.height * .5, [1.2, 1.9, .2], m.t, '#3f362e');
+            for (const f of [.25, .75]) { const c = ell(th + step * f, radii); put(c.p.clone().addScaledVector(c.n, .95), y + s.height - 1.9, [.55, .7, .5], c.t, color); }
+            put(m.p.clone().addScaledVector(m.n, .3), y + s.height - .35, [bay * 1.05, .7, 2.3], m.t, color);
             continue;
           }
+          const open = bay * .62, spring = y + s.height * .6;
           put(p, y + (spring - y) / 2, [bay - open, spring - y, 2.4], t, color);
-          if (s.column) put(p.clone().addScaledVector(at(th, d).n, 1.3), y + (s.height - 1.4) / 2 + .2, [.95, s.height - 1.4, .5], t, color);
+          if (s.column) put(p.clone().addScaledVector(n, 1.25), y + (s.height - 1.3) / 2, [.95, s.height - 1.3, .5], t, color);
           arch(p.clone().addScaledVector(t, (bay - open) / 2), next.clone().addScaledVector(t, -(bay - open) / 2), spring, 2.4, color);
-          const m = at(th + step / 2, d);
-          put(m.p, spring + open / 2 + (y + s.height - 1.2 - spring - open / 2) / 2, [bay * 1.03, y + s.height - 1.2 - spring - open / 2 + .4, 2.3], m.t, color);
-          put(m.p.clone().addScaledVector(m.n, .4), y + s.height - .6, [bay * 1.05, 1.2, 3.2], m.t, color);
+          const top = y + s.height - 1.2, from = spring + open * .35;
+          put(m.p, (from + top) / 2, [bay * 1.03, top - from, 2.2], m.t, color);
+          put(p, spring + open * .2, [bay - open + .6, open * .4, 2.3], t, color);
+          put(m.p.clone().addScaledVector(m.n, .35), y + s.height - .6, [bay * 1.05, 1.2, 3.1], m.t, color);
         }
         y += s.height;
       }
     } else if (part === 'cavea') {
-      // Seating raked from the inner ring down to the podium round the arena; radial walls carry it.
-      const {from, to, rows = 24} = e;
-      for (let r = 0; r < rows; r++) {
-        const f = (r + .5) / rows, d = -from.ring - (to.ring - from.ring) * f, y = from.height + (to.height - from.height) * f;
+      // Seats raked from the upper ring down to the podium round the arena, carried by radial walls.
+      const {from, to, rows = 24} = e, lerp2 = (a, b, f) => [a[0] + (b[0] - a[0]) * f, a[1] + (b[1] - a[1]) * f];
+      if (e.seats !== false) for (let r = 0; r < rows; r++) {
+        const f = (r + .5) / rows, radii = lerp2(from.radii, to.radii, f), y = from.height + (to.height - from.height) * f, depth = Math.hypot(from.radii[0] - to.radii[0], from.radii[1] - to.radii[1]) / Math.SQRT2 / rows;
         for (let i = 0; i < bays * 2; i++) {
           const th = (i + .5) * step / 2; if (!inArc(th)) continue;
-          const {p, t} = at(th, d), len = p.distanceTo(at(th + step / 2, d).p);
-          put(p, y - .45, [len * 1.04, .9, (to.ring - from.ring) / rows * 1.15], t, r % 6 === 5 ? '#c9b994' : color);
+          const {p, t} = ell(th, radii), len = p.distanceTo(ell(th + step / 2, radii).p);
+          put(p, y - .45, [len * 1.05, .9, depth * 1.2], t, r % 6 === 5 ? '#c6b796' : color);
         }
       }
-      for (let i = 0; i < bays; i += 2) { const th = i * step; if (!inArc(th)) continue; const a = world(at(th, -from.ring).p.x, from.height - 1, at(th, -from.ring).p.z), b = world(at(th, -to.ring).p.x, to.height - 1, at(th, -to.ring).p.z); k.beam('stone', a, b, 1.1, k.tint(brick, .06), ph); }
+      if (e.walls !== false) for (let i = 0; i < bays; i++) {
+        const th = i * step; if (!inArc(th)) continue;
+        const a = ell(th, from.radii).p, b = ell(th, to.radii).p;
+        const w = e.wallWidth ?? 1.2;
+        k.beam('stone', world(a.x, from.height - 2, a.z), world(b.x, to.height - 1, b.z), w, k.tint(brick, .07), ph);
+        const c = a.clone().lerp(b, .5); put(c, (from.height + to.height) / 4, [w * .85, (from.height + to.height) / 2, a.distanceTo(b) * .9], new T.Vector3(b.z - a.z, 0, a.x - b.x).normalize(), brick);
+      }
+      // Ring walls of the vaulted corridors under the seats (what a ruined cavea shows).
+      for (const ring of e.rings ?? []) for (let i = 0; i < bays * 2; i++) {
+        const th = (i + .5) * step / 2; if (!inArc(th)) continue;
+        const {p, t} = ell(th, ring.radii), len = p.distanceTo(ell(th + step / 2, ring.radii).p);
+        put(p, ring.height / 2, [len * 1.05, ring.height, ring.width ?? 2], t, brick);
+      }
     } else if (part === 'arena') {
       // The podium wall round the arena, and the underground galleries (hypogeum) below its floor.
-      const [a, b] = e.arena;
-      for (let i = 0; i < bays * 2; i++) { const th = (i + .5) * step / 2, q = new T.Vector3(a * Math.cos(th), 0, b * Math.sin(th)), t = new T.Vector3(-a * Math.sin(th), 0, b * Math.cos(th)).normalize(); put(q, (e.podium ?? 4) / 2, [Math.PI * (a + b) / (bays * 2) * 1.05, e.podium ?? 4, 1.2], t, color); }
-      for (let x = -a * .82; x <= a * .82; x += 3.2) { const half = b * Math.sqrt(Math.max(0, 1 - (x / a) ** 2)) * .86; put(new T.Vector3(x, 0, 0), .9, [.7, 1.8, half * 2], new T.Vector3(1, 0, 0), brick); }
-      put(new T.Vector3(0, 0, 0), 1.9, [a * 1.7, .25, 1.1], new T.Vector3(1, 0, 0), brick);
+      const [a, b] = e.arena, podium = e.podium ?? 4;
+      if (podium > 0) for (let i = 0; i < bays * 2; i++) { const th = (i + .5) * step / 2, {p, t} = ell(th, [a, b]), len = p.distanceTo(ell(th + step / 2, [a, b]).p); put(p, podium / 2, [len * 1.05, podium, 1.2], t, color); }
+      if (e.hypogeum) for (let z = -b * .78; z <= b * .78 + .01; z += 3.4) { const half = a * Math.sqrt(Math.max(0, 1 - (z / b) ** 2)) * .88; put(new T.Vector3(0, 0, z), 1.1, [half * 2, 2.2, .7], new T.Vector3(1, 0, 0), brick); }
+    }
+  },
+
+  // A sloping masonry buttress propping the end of a wall: courses shorten as they rise. `rot` turns it
+  // so that it runs along `length` from the wall face (at its centre) outwards.
+  buttress(k, e, P) {
+    const {at:[x, z], rot=0, height, length, width=4, course=1.2, color='#a8724f'} = e, co = Math.cos(rot), si = Math.sin(rot);
+    for (let y = 0; y < height - .05; y += course) {
+      const l = length * (1 - y / height) + .8, c = l / 2;
+      k.box('stone', [x + c * co, y + course / 2, z - c * si], [l, course * .94, width], rot, k.tint(color, .06), P(e.phase), y * 1e4);
     }
   },
 

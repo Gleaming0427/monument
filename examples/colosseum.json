@@ -1,0 +1,625 @@
+{
+ "id": "colosseum",
+ "name": "Colosseum",
+ "place": "Rome · Italy",
+ "seed": 80,
+ "view": {
+  "target": [
+   0,
+   16,
+   0
+  ],
+  "distance": 290,
+  "width": 230,
+  "radius": 140,
+  "height": 48.5,
+  "dots": 2.4,
+  "drop": 8,
+  "direction": [
+   0.45,
+   0.62,
+   0.64
+  ],
+  "start": {
+   "target": [
+    0,
+    4,
+    30
+   ],
+   "distance": 160
+  }
+ },
+ "live": [
+  {
+   "label": "Height",
+   "kind": "height",
+   "unit": "m"
+  }
+ ],
+ "facts": [
+  {
+   "value": "189 × 156 m",
+   "label": "ellipse"
+  },
+  {
+   "value": "100,000 m³",
+   "label": "of travertine, set without mortar"
+  },
+  {
+   "value": "300 t",
+   "label": "of iron clamps"
+  }
+ ],
+ "modelNote": "Rings, heights and the standing arc of the outer wall from OpenStreetMap’s 3D outline; dimensions and dates from the sources. Seating, underground galleries and decoration are schematic.",
+ "evidence": {
+  "identity": "Colosseo (Flavian Amphitheatre), Piazza del Colosseo, Rome, Italy (OSM relation 1834818)",
+  "origin": [
+   41.8902015,
+   12.4923303
+  ],
+  "sources": [
+   "https://en.wikipedia.org/wiki/Colosseum",
+   "https://www.openstreetmap.org/relation/1834818"
+  ],
+  "references": [
+   {
+    "view": "north-west",
+    "azimuth": 292,
+    "url": "https://commons.wikimedia.org/wiki/File:Colosseum_in_Rome,_Italy_-_April_2007.jpg"
+   }
+  ],
+  "features": [
+   "An ellipse of 189 × 156 m, outer wall 48 m high (Wikipedia).",
+   "Three storeys of arcades framed by engaged columns, and a tall attic with pilasters and windows (Wikipedia).",
+   "240 mast corbels round the top of the attic for the velarium (Wikipedia).",
+   "The outer wall stands only on the north side; on the south side the inner ring is exposed (OpenStreetMap 3D outline: outer part 48.5 m, inner ring 36 m, cavea 24 and 12 m).",
+   "Two 19th-century props at the ends of the standing outer wall (1807 and 1827): a sloping brick wedge at one end, brick arches rebuilt in steps at the other (Wikipedia; shapes read from photos)."
+  ],
+  "geometry": "Ellipse centre, axis (18.6° from east towards south) and ring sizes fitted to the OpenStreetMap building parts: outer wall 94.5 × 78 m semi-axes, inner ring 81.1 × 64.4 m, cavea steps at 78.2 × 57.8 m (24 m) and 65.6 × 49.3 m (12 m). The standing outer wall runs from about 184° to 356° (north side). Arena 87 × 55 m (Wikipedia).",
+  "uncertainties": [
+   "Storey heights of the outer wall (10.5, 11.8, 11.6 m and a 14.6 m attic) shared from the 48.5 m total.",
+   "80 bays per ring; arches, columns and attic simplified.",
+   "Seating raked in one slope; the timber upper gallery and its fire of 217 are not shown.",
+   "Underground galleries drawn as parallel walls, not their real plan.",
+   "Which end dates from 1807 and which from 1827 is not stated in the sources used; the wedge (east) and the stepped arches (west) follow photos."
+  ]
+ },
+ "phases": [
+  {
+   "id": "vespasian",
+   "when": "c. 70–79",
+   "title": "Vespasian’s amphitheatre",
+   "source": "https://en.wikipedia.org/wiki/Colosseum",
+   "text": "Vespasian starts the amphitheatre around 70–72. By his death in 79, three storeys of arcades ring the arena and the seating rises inside.",
+   "moments": [
+    {
+     "at": 0.6,
+     "tag": "Figure",
+     "title": "Stone without mortar",
+     "text": "Over 100,000 m³ of travertine are set without mortar, held together by 300 tonnes of iron clamps.",
+     "anchor": [
+      24.9,
+      16,
+      -73.9
+     ],
+     "source": "https://en.wikipedia.org/wiki/Colosseum"
+    }
+   ]
+  },
+  {
+   "id": "titus",
+   "when": "80",
+   "title": "Titus opens it",
+   "source": "https://en.wikipedia.org/wiki/Colosseum",
+   "text": "His son Titus finishes the top level in 80 and opens the amphitheatre with games in which, according to Dio Cassius, over 9,000 wild animals are killed.",
+   "moments": [
+    {
+     "at": 0.6,
+     "tag": "Technique",
+     "title": "An awning for 50,000",
+     "text": "240 mast corbels round the top of the attic hold the velarium, a retractable awning worked by sailors from Misenum that shades two thirds of the arena.",
+     "anchor": [
+      24.9,
+      46,
+      -73.9
+     ],
+     "source": "https://en.wikipedia.org/wiki/Colosseum"
+    }
+   ]
+  },
+  {
+   "id": "domitian",
+   "when": "81–96",
+   "title": "Under the arena",
+   "source": "https://en.wikipedia.org/wiki/Colosseum",
+   "text": "Domitian adds the hypogeum, a network of tunnels below the arena floor for animals and slaves, and a gallery at the top for more seats.",
+   "moments": [
+    {
+     "at": 0.6,
+     "tag": "Technique",
+     "title": "A machine under the sand",
+     "text": "From the hypogeum, animals and scenery could be brought up into the arena without being seen.",
+     "anchor": [
+      0,
+      1,
+      0
+     ],
+     "source": "https://en.wikipedia.org/wiki/Colosseum"
+    }
+   ]
+  },
+  {
+   "id": "fire",
+   "when": "217",
+   "title": "Struck by lightning",
+   "source": "https://en.wikipedia.org/wiki/Colosseum",
+   "text": "A fire started by lightning, says Dio Cassius, destroys the wooden upper levels. Repairs are not finished until about 240.",
+   "moments": [
+    {
+     "at": 0.5,
+     "tag": "Anecdote",
+     "title": "Twenty years of repairs",
+     "text": "The 217 fire closes the upper levels for two decades: the repairs are only complete around 240.",
+     "anchor": [
+      24.9,
+      40,
+      -73.9
+     ],
+     "source": "https://en.wikipedia.org/wiki/Colosseum"
+    }
+   ]
+  },
+  {
+   "id": "earthquake",
+   "when": "1349",
+   "title": "The south side falls",
+   "source": "https://en.wikipedia.org/wiki/Colosseum",
+   "text": "An earthquake brings down the outer wall on the south side, which stood on less stable alluvial ground. The inner ring is left exposed.",
+   "moments": [
+    {
+     "at": 0.6,
+     "tag": "Plan",
+     "title": "Built on two grounds",
+     "text": "The south side stood on alluvial ground, less stable than the north: that is the side that collapsed in 1349.",
+     "anchor": [
+      -20.5,
+      20,
+      61.0
+     ],
+     "source": "https://en.wikipedia.org/wiki/Colosseum"
+    }
+   ]
+  },
+  {
+   "id": "quarry",
+   "when": "After 1349",
+   "title": "A quarry for Rome",
+   "source": "https://en.wikipedia.org/wiki/Colosseum",
+   "text": "The fallen stone is carted off for palaces, churches and hospitals, and marble is burned for quicklime. The seats disappear; the vaults that carried them remain.",
+   "moments": [
+    {
+     "at": 0.6,
+     "tag": "Anecdote",
+     "title": "Why the walls are pitted",
+     "text": "The iron clamps holding the stones were pried and hacked out, leaving the pockmarks that still scar the building.",
+     "anchor": [
+      -7.3,
+      20,
+      -79.8
+     ],
+     "source": "https://en.wikipedia.org/wiki/Colosseum"
+    }
+   ]
+  },
+  {
+   "id": "buttresses",
+   "when": "1807 · 1827",
+   "title": "Brick wedges",
+   "source": "https://en.wikipedia.org/wiki/Colosseum",
+   "text": "In 1807 and 1827 the cut ends of the standing outer wall are propped up: on one side a sloping brick spur, on the other brick arches rebuilt in steps, in the shape of the originals.",
+   "moments": [
+    {
+     "at": 0.6,
+     "tag": "Restoration",
+     "title": "Holding the broken ends",
+     "text": "Where the outer ring stops, one end leans on a brick wedge; at the other, new brick arches step down like a staircase of the old ones.",
+     "anchor": [
+      -90.4,
+      14,
+      -27.5
+     ],
+     "source": "https://en.wikipedia.org/wiki/Colosseum"
+    }
+   ]
+  },
+  {
+   "id": "today",
+   "when": "2013–2016",
+   "title": "Cleaned",
+   "source": "https://en.wikipedia.org/wiki/Colosseum",
+   "text": "A restoration sponsored by Diego Della Valle cleans the façade from 2013; the work is finished on 1 July 2016.",
+   "moments": [
+    {
+     "at": 0.6,
+     "tag": "Figure",
+     "title": "€25 million",
+     "text": "Diego Della Valle agrees to fund a €25 million restoration; the cleaning of the façade ends on 1 July 2016.",
+     "anchor": [
+      32.6,
+      25,
+      -71.0
+     ],
+     "source": "https://en.wikipedia.org/wiki/Colosseum"
+    }
+   ]
+  }
+ ],
+ "elements": [
+  {
+   "type": "amphitheatre",
+   "center": [
+    0,
+    0
+   ],
+   "rot": -0.3243,
+   "bays": 80,
+   "part": "facade",
+   "phase": "vespasian",
+   "radii": [
+    94.5,
+    78
+   ],
+   "arc": [
+    184.5,
+    355.5
+   ],
+   "storeys": [
+    {
+     "height": 10.5,
+     "column": true
+    },
+    {
+     "height": 11.8,
+     "column": true
+    },
+    {
+     "height": 11.6,
+     "column": true
+    }
+   ]
+  },
+  {
+   "type": "amphitheatre",
+   "center": [
+    0,
+    0
+   ],
+   "rot": -0.3243,
+   "bays": 80,
+   "part": "facade",
+   "phase": "vespasian",
+   "radii": [
+    94.5,
+    78
+   ],
+   "arc": [
+    355.5,
+    184.5
+   ],
+   "storeys": [
+    {
+     "height": 10.5,
+     "column": true
+    },
+    {
+     "height": 11.8,
+     "column": true
+    },
+    {
+     "height": 11.6,
+     "column": true
+    }
+   ],
+   "until": "earthquake"
+  },
+  {
+   "type": "amphitheatre",
+   "center": [
+    0,
+    0
+   ],
+   "rot": -0.3243,
+   "bays": 80,
+   "part": "facade",
+   "phase": "titus",
+   "radii": [
+    94.5,
+    78
+   ],
+   "arc": [
+    184.5,
+    355.5
+   ],
+   "y0": 33.9,
+   "storeys": [
+    {
+     "kind": "attic",
+     "height": 14.6
+    }
+   ]
+  },
+  {
+   "type": "amphitheatre",
+   "center": [
+    0,
+    0
+   ],
+   "rot": -0.3243,
+   "bays": 80,
+   "part": "facade",
+   "phase": "titus",
+   "radii": [
+    94.5,
+    78
+   ],
+   "arc": [
+    355.5,
+    184.5
+   ],
+   "y0": 33.9,
+   "storeys": [
+    {
+     "kind": "attic",
+     "height": 14.6
+    }
+   ],
+   "until": "earthquake"
+  },
+  {
+   "type": "amphitheatre",
+   "center": [
+    0,
+    0
+   ],
+   "rot": -0.3243,
+   "bays": 80,
+   "part": "facade",
+   "phase": "vespasian",
+   "radii": [
+    81.1,
+    64.4
+   ],
+   "storeys": [
+    {
+     "height": 12
+    },
+    {
+     "height": 12
+    },
+    {
+     "height": 12
+    }
+   ],
+   "color": "#cdbb9b"
+  },
+  {
+   "type": "amphitheatre",
+   "center": [
+    0,
+    0
+   ],
+   "rot": -0.3243,
+   "bays": 80,
+   "part": "cavea",
+   "phase": "vespasian",
+   "from": {
+    "radii": [
+     78.2,
+     57.8
+    ],
+    "height": 24
+   },
+   "to": {
+    "radii": [
+     46,
+     30
+    ],
+    "height": 3
+   },
+   "seats": false,
+   "wallWidth": 2.2,
+   "brick": "#93634b",
+   "rings": [
+    {
+     "radii": [
+      65.6,
+      49.3
+     ],
+     "height": 12,
+     "width": 2.4
+    },
+    {
+     "radii": [
+      72,
+      54
+     ],
+     "height": 18,
+     "width": 2
+    },
+    {
+     "radii": [
+      78.2,
+      57.8
+     ],
+     "height": 24,
+     "width": 2.4
+    }
+   ]
+  },
+  {
+   "type": "amphitheatre",
+   "center": [
+    0,
+    0
+   ],
+   "rot": -0.3243,
+   "bays": 80,
+   "part": "cavea",
+   "phase": "vespasian",
+   "from": {
+    "radii": [
+     80,
+     62.5
+    ],
+    "height": 36
+   },
+   "to": {
+    "radii": [
+     46,
+     30
+    ],
+    "height": 4.5
+   },
+   "rows": 26,
+   "walls": false,
+   "until": "quarry"
+  },
+  {
+   "type": "amphitheatre",
+   "center": [
+    0,
+    0
+   ],
+   "rot": -0.3243,
+   "bays": 80,
+   "part": "arena",
+   "phase": "vespasian",
+   "arena": [
+    43.5,
+    27.5
+   ],
+   "podium": 4
+  },
+  {
+   "type": "amphitheatre",
+   "center": [
+    0,
+    0
+   ],
+   "rot": -0.3243,
+   "bays": 80,
+   "part": "arena",
+   "phase": "domitian",
+   "arena": [
+    43.5,
+    27.5
+   ],
+   "podium": 0,
+   "hypogeum": true,
+   "brick": "#93634b"
+  },
+  {
+   "type": "amphitheatre",
+   "center": [
+    0,
+    0
+   ],
+   "rot": -0.3243,
+   "bays": 80,
+   "part": "facade",
+   "phase": "buttresses",
+   "radii": [
+    94.5,
+    78
+   ],
+   "color": "#c29b75",
+   "arc": [
+    180,
+    184.5
+   ],
+   "storeys": [
+    {
+     "height": 10.5,
+     "column": true
+    },
+    {
+     "height": 11.8,
+     "column": true
+    },
+    {
+     "height": 11.6,
+     "column": true
+    }
+   ]
+  },
+  {
+   "type": "amphitheatre",
+   "center": [
+    0,
+    0
+   ],
+   "rot": -0.3243,
+   "bays": 80,
+   "part": "facade",
+   "phase": "buttresses",
+   "radii": [
+    94.5,
+    78
+   ],
+   "color": "#c29b75",
+   "arc": [
+    175.5,
+    180
+   ],
+   "storeys": [
+    {
+     "height": 10.5,
+     "column": true
+    },
+    {
+     "height": 11.8,
+     "column": true
+    }
+   ]
+  },
+  {
+   "type": "amphitheatre",
+   "center": [
+    0,
+    0
+   ],
+   "rot": -0.3243,
+   "bays": 80,
+   "part": "facade",
+   "phase": "buttresses",
+   "radii": [
+    94.5,
+    78
+   ],
+   "color": "#c29b75",
+   "arc": [
+    171,
+    175.5
+   ],
+   "storeys": [
+    {
+     "height": 10.5,
+     "column": true
+    }
+   ]
+  },
+  {
+   "type": "buttress",
+   "phase": "buttresses",
+   "at": [
+    91.2,
+    24.2
+   ],
+   "rot": -1.8,
+   "height": 36,
+   "length": 15,
+   "width": 4.8,
+   "color": "#9c6c52"
+  }
+ ]
+}

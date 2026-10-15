@@ -54,6 +54,6 @@ Without a terminal or the GitHub CLI, point them to the "Submit a monument" form
 
 ## The collection
 
-`<skill>/examples/` holds the world's most recognised monuments built with the skill so far: `eiffel-tower` and `leaning-tower-of-pisa` (a campanile built in three campaigns, with its lean over time). Open the closest one before you start: it shows the level of detail and evidence expected.
+`<skill>/examples/` holds world-famous monuments built with the skill: `colosseum` (rings fitted to OpenStreetMap's 3D outline, built, then ruined), `leaning-tower-of-pisa` (three campaigns, with its lean over time) and `eiffel-tower`. Open the closest one before you start: it shows the level of detail and evidence expected.
 
 To share a construction as an animation, `node <skill>/scripts/record.mjs <id> --cam <azimuth>,<elevation>,<distance>,<x>,<y>,<z>` records it from the first piece to the last phase as a GIF and an MP4 (it needs Chrome and ffmpeg).
