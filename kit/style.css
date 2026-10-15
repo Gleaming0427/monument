@@ -8,7 +8,11 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 :focus-visible{outline:3px solid var(--gold);outline-offset:3px;border-radius:8px}
 #stage{position:fixed;inset:0}
 #stage canvas{display:block;width:100%;height:100%;touch-action:none;cursor:grab}
-#fallback{position:absolute;z-index:5;inset:38% 20px auto;max-width:520px;margin:auto;padding:18px 20px;border-radius:14px;text-align:center;color:var(--ink);background:var(--glass);border:1px solid var(--line)}
+#fallback{position:absolute;z-index:5;inset:0 16px;height:fit-content;max-width:560px;margin:auto;padding:18px 20px;border-radius:14px;text-align:center;color:var(--ink);background:var(--glass);border:1px solid var(--line)}
+#fallback b{display:block;margin-bottom:6px}
+#fallback span{display:block;font-size:13px;line-height:1.5;color:var(--muted)}
+#fallback video{display:block;width:100%;border-radius:10px;margin-bottom:14px}
+body.failed :is(.building,.story,.timeline,.live,#moment,#pin,#leader,#labels){display:none!important}
 #fallback a{color:var(--gold)}
 [hidden]{display:none!important}
 

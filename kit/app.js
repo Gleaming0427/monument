@@ -221,6 +221,27 @@ $('phases').addEventListener('pointerup', () => { scrubbing = false; });
 $('phases').addEventListener('pointercancel', () => { scrubbing = false; });
 addEventListener('keydown', event => { if (event.code === 'Space' && event.target === document.body) { event.preventDefault(); play(!playing); } });
 
+// When the 3D scene cannot start, say why and how to fix it, and play the recorded construction instead
+// (the website keeps one per monument in ../media/<id>.mp4).
+function fallback(error) {
+  console.error('3D rendering unavailable', error);
+  let webgl2 = false;
+  try { webgl2 = Boolean(document.createElement('canvas').getContext('webgl2')); } catch {}
+  const box = $('fallback'), title = document.createElement('b'), help = document.createElement('span');
+  title.textContent = webgl2 ? 'The 3D scene could not start.' : 'This browser has WebGL 2 turned off, and the 3D scene needs it.';
+  help.textContent = webgl2 ? String(error?.message ?? error)
+    : 'In Chrome or Edge, turn on Settings › System › Use graphics acceleration, then restart the browser. In Firefox, webgl.disabled must be false in about:config. Privacy extensions that block WebGL do this too. Safari 15 and later support it.';
+  box.replaceChildren(title, help);
+  const id = decodeURIComponent(location.hash.slice(1));
+  if (id) {
+    const video = Object.assign(document.createElement('video'), {src: `../media/${encodeURIComponent(id)}.mp4`, autoplay: true, muted: true, loop: true, playsInline: true});
+    video.onerror = () => video.remove();
+    box.prepend(video);
+  }
+  box.hidden = false;
+  document.body.classList.add('failed');
+}
+
 const clean = params.has('clean'), embed = params.has('embed');
 document.body.classList.toggle('clean', clean);
 document.body.classList.toggle('embed', embed);
@@ -234,8 +255,7 @@ try {
   document.fonts.ready.then(fitTimeline);
   requestAnimationFrame(frame);
 } catch (error) {
-  $('fallback').hidden = false;
-  console.error('3D rendering unavailable', error);
+  fallback(error);
 }
 
 // Recording tools (scripts/record.mjs) drive the timeline frame by frame through this hook.
@@ -248,5 +268,5 @@ window.monument = {
 // Direct links can change only the fragment without reloading the document.
 addEventListener('hashchange', () => {
   const id = decodeURIComponent(location.hash.slice(1));
-  if (stage && id !== data?.id) open(id).then(layout).catch(error => { console.error(error); $('fallback').hidden = false; });
+  if (stage && id !== data?.id) open(id).then(layout).catch(fallback);
 });
