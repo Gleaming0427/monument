@@ -21,18 +21,19 @@ The standard build needs web pages you can open and read, images you can inspect
 
 `/monument <building, city, country>` in Claude Code, OpenCode or Antigravity, `$monument …` in Codex, or any request to see how a building was built.
 
-### Standard build: detailed, focused, 10–20 minutes
+### Standard build: detailed, focused, usually 8–15 minutes
 
 Use this mode for one named structure. Spend the time on the building itself: its silhouette, exact storey and bay counts, roof profile, openings, structure, materials and at least six distinctive details. **Do not add neighbouring houses, streets or map labels unless the user asks for context or it is essential to understand the building.** Context is not part of the default result.
 
 1. **Scope it.** Build the named structure only. For an ensemble or whole site, state the larger scope and propose the main structure first.
-2. **Reuse before researching.** Open the closest existing example and the brick table. Reuse its measured structure and generators when they fit; do not repeat solved geometry.
-3. **Research in one batch.** Open at least two authoritative pages from different sites and three useful photos from at least two sides. Extract identity, dimensions, dated phases and the six or more features that make this building recognisable. A search result is not a source.
-4. **Fit the target footprint.** Fetch only the requested structure's outline, save it beside the monument, and run `plan.mjs`. Do not collect the surrounding block unless context was requested ([references/real-plan.md](references/real-plan.md)).
-5. **Model coarse to fine.** Lock footprint, height and silhouette first; then openings, roof and signature details. Give every feature in `evidence.features` a visible counterpart. Write a new architecture brick only for the detail the existing bricks cannot express ([references/fidelity.md](references/fidelity.md), [references/bricks.md](references/bricks.md)).
-6. **Write and open it.** Create `monuments/<id>.json`, run the viewer, and play the complete timeline ([references/format.md](references/format.md)).
-7. **One focused comparison.** Run `compare.mjs ... --pass 1 --quick`, inspect the three reference views, fix the visible gaps, rerun the same command to refresh the captures, and record `gaps`, `fixed` and `remaining`. The quick comparison skips redundant phase screenshots; play the timeline once instead.
-8. **Validate.** Run `node <skill>/scripts/validate.mjs --standard monuments/<id>.json`, then report what is measured, documented and interpreted.
+2. **Generate the measured skeleton first.** Run `node <skill>/scripts/scaffold.mjs "<building>, <city>, <country>" --out monuments`. It resolves the named feature, downloads only its OpenStreetMap outline, chooses a conservative architecture family, writes the JSON and plan evidence, and produces a detailed present-day shell with openings. Open this result immediately. If the resolver finds no closed outline, do not substitute a nearby building: use an address, cadastral plan or user-supplied outline ([references/scaffold.md](references/scaffold.md)).
+3. **Reuse before researching.** Open the closest existing example and the brick table. Reuse its measured structure and generators when they fit; do not repeat solved geometry.
+4. **Research in one batch.** Open at least two authoritative pages from different sites and three useful photos from at least two sides. Extract identity, dimensions, dated phases and the six or more features that make this building recognisable. A search result is not a source.
+5. **Replace the skeleton's estimates.** Check height, storeys, roof and massing against the sources. Keep the downloaded outline, rerun `plan.mjs`, and remove the scaffold warnings only when their uncertainty is resolved. Do not collect the surrounding block unless context was requested ([references/real-plan.md](references/real-plan.md)).
+6. **Model coarse to fine.** The footprint, orientation, openings and base mass already exist; spend the manual work on the true roof profile, structural system and signature details. Give every feature in `evidence.features` a visible counterpart. Write a new architecture brick only for the detail the existing bricks cannot express ([references/fidelity.md](references/fidelity.md), [references/bricks.md](references/bricks.md)).
+7. **Write and open it.** Refine `monuments/<id>.json`, run the viewer, and play the complete timeline ([references/format.md](references/format.md)).
+8. **One focused comparison.** Run `compare.mjs ... --pass 1 --quick`, inspect the three reference views, fix the visible gaps, rerun the same command to refresh the captures, and record `gaps`, `fixed` and `remaining`. The quick comparison skips redundant phase screenshots; play the timeline once instead.
+9. **Validate.** Run `node <skill>/scripts/validate.mjs --standard monuments/<id>.json`, then report what is measured, documented and interpreted.
 
 If the architecture needs a brand-new complex brick, say that the first build can take 20–35 minutes. Do not spend that time on decorative context.
 
@@ -49,7 +50,8 @@ Use this only when the user asks for maximum documentation or wants to publish. 
 - **Daylight.** No night scene unless night lighting is itself the subject, and sourced.
 - **No look-alikes.** Never replace the requested building with a generic house, a variant of another monument, or its name on an existing model.
 - **Details beat scenery.** Use the detail budget on the requested building. Neighbours, roads and labels are opt-in context, never a completion requirement.
-- **Do not claim** a universal geometry generator, exhaustive historical coverage, or an "exact" model.
+- **The scaffold is a start, not evidence of history.** It automates mapped geometry for buildings that have a usable outline; it does not infer dates, architects, hidden structure or past states.
+- **Do not claim** exhaustive historical coverage or an "exact" model.
 
 ## Publish to the community gallery
 

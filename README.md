@@ -50,14 +50,22 @@ Claude writes `monuments/<id>.json` in your folder, starts the local viewer and 
 node ~/.claude/skills/monument/scripts/serve.mjs monuments
 ```
 
+The first measured draft can also be generated directly:
+
+```sh
+node ~/.claude/skills/monument/scripts/scaffold.mjs "Palais consulaire de Toulouse, Toulouse, France" --out monuments
+```
+
+This downloads the named building's OpenStreetMap footprint, selects an architecture family and writes an oriented, detailed base shell plus its control plan. It stops instead of substituting a nearby building when no usable footprint can be found.
+
 ## How it works
 
 One rule sits at the top of [`SKILL.md`](SKILL.md): **the building is the evidence.**
 
 1. **Size it**: a building, an ensemble or a whole site, with a time estimate. A whole site never starts without you.
 2. **Identify it**: name, address, historic names, sources in the local language.
-3. **Place it on the real plan**: footprints and heights from the land registry or OpenStreetMap ([references/real-plan.md](references/real-plan.md)).
-4. **Read the architecture**: three useful views and the details that make it recognisable ([references/fidelity.md](references/fidelity.md)).
+3. **Generate its measured skeleton**: `scaffold.mjs` resolves and downloads the footprint, converts it to metres, chooses a broad family and produces detailed base volumes in seconds ([references/scaffold.md](references/scaffold.md)).
+4. **Read the architecture**: replace its explicit estimates using three useful views and the details that make it recognisable ([references/fidelity.md](references/fidelity.md)).
 5. **Write the timeline**: dated, sourced phases and construction moments ([references/format.md](references/format.md)).
 6. **Build it from bricks**: generators that turn each element into small solid pieces ([references/bricks.md](references/bricks.md)). A new kind of architecture gets a new brick.
 7. **Compare with the photos**: a standard build uses one focused capture pass; publication adds the complete second pass.
@@ -101,7 +109,7 @@ Monument is a standard [Agent Skill](https://agentskills.io): this repository is
 SKILL.md            the skill: what Claude does when you ask for a building
 references/         monument file format, real-plan method, fidelity loop, bricks
 kit/                the viewer: engine (builder.js), interface, Three.js and fonts, vendored
-scripts/            serve, validate, capture, record (GIF and MP4), publish, build-site
+scripts/            scaffold, serve, validate, capture, compare, record, publish, build-site
 examples/           the collection
 community/          the community gallery, one folder per monument
 site/               the website, deployed to GitHub Pages
@@ -112,7 +120,7 @@ site/               the website, deployed to GitHub Pages
 ## Limits
 
 - **It is only as good as the record.** A documented history and good photos give a good model; a thin record gives a short timeline, labelled as such.
-- **A focused building is fast.** The standard workflow targets 10–20 minutes by omitting unrequested streets, neighbours and repeated publication evidence. A new complex brick may take 20–35 minutes.
+- **A focused building starts immediately.** The automatic scaffold produces a measured, viewable base in seconds; a researched standard result usually targets 8–15 minutes by spending manual work on the building's real history and distinctive details. A new complex signature brick may still take 20–35 minutes.
 - **Shapes come from bricks.** A new kind of architecture needs a new brick; the first version states its deliberate simplifications.
 - **It is a model, not a survey.** Footprints and heights are measured; facades, roofs and the split between periods are read from sources and photos.
 

@@ -14,6 +14,7 @@ Units are metres. `x` points east, `z` points south, `y` up; the ground (or wate
 | `tower` | A round tower | `at`, `radius`, `height`, `y0`, `crenel`, `roof` (cone), `tag` |
 | `enceinte` | An oval enclosure with its towers | `center`, `radii`, `segments`, `skip` (openings, in degrees), `wall`, `towers` |
 | `building` | A house, hall or church with a pitched roof | `center`, `size`, `height`, `rot`, `roof` |
+| `footprintBuilding` | A detailed present-day shell fitted to any measured polygon, with automatic bays and a flat roof | `points`, `height`, `floors`, `floorHeight`, `thickness`, `door`, `windowRatio`, `color`, `trim`, `roof`, `crenel` |
 | `village` | Houses packed in an oval | `center`, `radii`, `count`, `avoid`, `roof` |
 | `cone` | A pointed roof | `center`, `radius`, `height` |
 | `slab` | A solid foundation mass | `center`, `size`, `y0` |

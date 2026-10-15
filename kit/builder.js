@@ -569,6 +569,41 @@ export const generators = {
     }
   },
 
+  // Building mass fitted to an arbitrary measured footprint. It gives generated drafts a useful
+  // present-day shell (masonry, openings and flat roof) before photograph-specific details are added.
+  footprintBuilding(k, e, P) {
+    const {points, height, floors = Math.max(1, Math.round(height / 3.6)), floorHeight = height / floors,
+      thickness = 1, color = '#b9a58b', trim = '#ded0b9', y0 = 0} = e;
+    generators.wall(k, {...e, points, closed: true, thickness, height, block: e.block ?? [1.8, .9]}, P);
+    const center = points.reduce((sum, [x, z]) => [sum[0] + x / points.length, sum[1] + z / points.length], [0, 0]);
+    const edges = points.map((a, i) => {
+      const b = points[(i + 1) % points.length], dx = b[0] - a[0], dz = b[1] - a[1], length = Math.hypot(dx, dz), ux = dx / length, uz = dz / length;
+      const mid = [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2], n0 = [-uz, ux], sign = n0[0] * (mid[0] - center[0]) + n0[1] * (mid[1] - center[1]) >= 0 ? 1 : -1;
+      return {a, length, ux, uz, nx: n0[0] * sign, nz: n0[1] * sign, rot: Math.atan2(-uz, ux)};
+    }).filter(edge => edge.length > 1.8);
+    const longest = Math.max(...edges.map(edge => edge.length));
+    for (const edge of edges) {
+      const bays = Math.max(1, Math.min(40, Math.round(edge.length / 3.4))), bay = edge.length / bays;
+      for (let floor = 0; floor < floors; floor++) for (let i = 0; i < bays; i++) {
+        const door = e.door !== false && edge.length === longest && floor === 0 && i === Math.floor(bays / 2);
+        const w = Math.min(bay * (e.windowRatio ?? .48), door ? 1.8 : 1.55), h = door ? Math.max(2.2, floorHeight - .45) : Math.max(1.25, floorHeight * .5);
+        const along = (i + .5) * bay, x = edge.a[0] + edge.ux * along + edge.nx * (thickness / 2 + .08), z = edge.a[1] + edge.uz * along + edge.nz * (thickness / 2 + .08), y = y0 + floor * floorHeight + (door ? h / 2 : floorHeight * .56);
+        k.box(door ? 'wood' : 'metal', [x, y, z], [w, h, .12], edge.rot, k.tint(door ? '#5e4435' : '#304552', .04), P(e.phase), y * 1e4 + along);
+        for (const side of [-1, 1]) k.box('stone', [x + edge.ux * side * (w / 2 + .08), y, z + edge.uz * side * (w / 2 + .08)], [.13, h + .25, .18], edge.rot, k.tint(trim, .03), P(e.phase), y * 1e4 + along + side);
+        for (const dy of [-h / 2 - .08, h / 2 + .08]) k.box('stone', [x, y + dy, z], [w + .3, .14, .18], edge.rot, k.tint(trim, .03), P(e.phase), y * 1e4 + along + dy);
+      }
+      for (let floor = 1; floor <= floors; floor++) {
+        const x = edge.a[0] + edge.ux * edge.length / 2 + edge.nx * (thickness / 2 + .1), z = edge.a[1] + edge.uz * edge.length / 2 + edge.nz * (thickness / 2 + .1);
+        k.box('stone', [x, y0 + floor * floorHeight, z], [edge.length, .16, .18], edge.rot, k.tint(trim, .03), P(e.phase), (y0 + floor * floorHeight) * 1e4);
+      }
+    }
+    if (!e.roof) return;
+    const xs = points.map(point => point[0]), zs = points.map(point => point[1]), area = Math.max(1, (Math.max(...xs) - Math.min(...xs)) * (Math.max(...zs) - Math.min(...zs)));
+    const step = Math.max(1.4, Math.sqrt(area / 3500)), inside = (x, z) => { let hit = false; for (let i = 0, j = points.length - 1; i < points.length; j = i++) { const [xi, zi] = points[i], [xj, zj] = points[j]; if ((zi > z) !== (zj > z) && x < (xj - xi) * (z - zi) / (zj - zi) + xi) hit = !hit; } return hit; };
+    for (let x = Math.min(...xs) + step / 2; x < Math.max(...xs); x += step) for (let z = Math.min(...zs) + step / 2; z < Math.max(...zs); z += step) if (inside(x, z))
+      k.box(e.roof.kind === 'flat' ? 'stone' : (e.roof.kind ?? 'slate'), [x, y0 + height + .18, z], [step * .98, .32, step * .98], 0, k.tint(e.roof.color ?? '#716d68', .04), P(e.roof.phase ?? e.phase), (y0 + height) * 1e4 + x + z);
+  },
+
   // Oval enclosure: continuous wall with towers at its vertices, and openings (`skip`, in degrees).
   enceinte(k, e, P) {
     const {center: [cx, cz], radii: [rx, rz], segments, wobble = 0, rotate = 0, skip = []} = e;

@@ -13,5 +13,7 @@ jobs:
         run: node scripts/validate.mjs --strict
       - name: Check the scripts and the kit
         run: for f in kit/*.js scripts/*.mjs; do node --check "$f"; done
+      - name: Check the automatic scaffold generator
+        run: node scripts/scaffold.test.mjs
       - name: Build the site
         run: node scripts/build-site.mjs
