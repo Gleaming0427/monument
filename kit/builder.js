@@ -4,6 +4,7 @@ import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
 import {RenderPass} from 'three/addons/postprocessing/RenderPass.js';
 import {UnrealBloomPass} from 'three/addons/postprocessing/UnrealBloomPass.js';
 import {OutputPass} from 'three/addons/postprocessing/OutputPass.js';
+import {resolveVisualStyle, pbrOptions, groundOptions, createEnvironment, disposeEnvironment} from './visuals.js';
 
 // Construction engine: a monument file (phases + elements) becomes thousands of instanced pieces.
 // Each piece is born (and sometimes removed) on the timeline; the shader drops it into place and
@@ -828,23 +829,25 @@ export function createStage(host) {
     uLeanPivot: {value: new T.Vector3()}, uLeanAxis: {value: new T.Vector3(1, 0, 0)}, uLeanAngle: {value: 0}};
   // Sky, distant ground and fog share one horizon colour: no visible seam.
   const DUSK = new T.Color().setRGB(.15, .105, .13), NIGHT = new T.Color().setRGB(.03, .042, .085);
-  const horizon = {value: DUSK.clone()};
+  const horizon = {value: DUSK.clone()}, zenith = {value: new T.Color('#1b213d')}, sunGlow = {value: new T.Color('#9d4e24')};
+  let dayHorizon = DUSK.clone(), fogFactor = .4;
 
   // Sky: dusk gradient, darker at night.
   const sky = new T.Mesh(new T.SphereGeometry(4000, 32, 16), new T.ShaderMaterial({
-    side: T.BackSide, depthWrite: false, uniforms: {uNight: uniforms.uNight, uHorizon: horizon},
+    side: T.BackSide, depthWrite: false, uniforms: {uNight: uniforms.uNight, uHorizon: horizon, uZenith: zenith, uSunGlow: sunGlow},
     vertexShader: 'varying vec3 vDir;void main(){vDir=normalize(position);gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}',
-    fragmentShader: `uniform float uNight;uniform vec3 uHorizon;varying vec3 vDir;void main(){
-      float h=max(vDir.y,0.);vec3 zen=mix(vec3(.012,.016,.04),vec3(.004,.006,.016),uNight);
+    fragmentShader: `uniform float uNight;uniform vec3 uHorizon,uZenith,uSunGlow;varying vec3 vDir;void main(){
+      float h=max(vDir.y,0.);vec3 zen=mix(uZenith,vec3(.004,.006,.016),uNight);
       vec3 c=mix(uHorizon,zen,smoothstep(0.,.55,h));
-      c+=vec3(.42,.2,.08)*pow(max(dot(vDir,normalize(vec3(-.6,.12,.5))),0.),18.)*(1.-uNight);
+      c+=uSunGlow*pow(max(dot(vDir,normalize(vec3(-.6,.12,.5))),0.),18.)*(1.-uNight);
       gl_FragColor=vec4(c,1.);}`,
   }));
   scene.add(sky);
   scene.fog = new T.FogExp2(DUSK.clone(), .0011);
 
   // Sol : mosaïque de losanges, comme un plan qui devient monument.
-  const ground = new T.Mesh(new T.PlaneGeometry(1, 1), new T.ShaderMaterial({
+  const groundGeometry = new T.PlaneGeometry(1, 1); groundGeometry.setAttribute('uv1', groundGeometry.attributes.uv);
+  const planGroundMaterial = new T.ShaderMaterial({
     uniforms: {uStep: {value: 4}, uRadius: {value: 600}, uNight: uniforms.uNight, uHorizon: horizon, uWater: {value: 0}},
     vertexShader: 'varying vec2 vXZ;void main(){vec4 w=modelMatrix*vec4(position,1.);vXZ=w.xz;gl_Position=projectionMatrix*viewMatrix*w;}',
     fragmentShader: `uniform float uStep,uRadius,uNight,uWater;uniform vec3 uHorizon;varying vec2 vXZ;
@@ -855,18 +858,27 @@ export function createStage(host) {
       base=mix(base,vec3(.012,.026,.05),uWater);dot=mix(dot,vec3(.16,.32,.52)*.32,uWater);
       vec3 c=base+dot*shape*fall*fall;
       gl_FragColor=vec4(mix(c,uHorizon,smoothstep(uRadius*.5,uRadius*2.4,r)),1.);}`,
-  }));
+  });
+  const ground = new T.Mesh(groundGeometry, planGroundMaterial);
   ground.rotation.x = -Math.PI / 2;
   scene.add(ground);
 
   const hemi = new T.HemisphereLight('#9fb4e0', '#3a2a1c', .7);
   const sun = new T.DirectionalLight('#ffcf9a', 3.1);
   const rim = new T.DirectionalLight('#5c7cff', .9);
-  scene.add(hemi, sun, rim);
+  const ambient = new T.AmbientLight('#dbe6ef', 0);
+  scene.add(hemi, sun, rim, ambient);
   // Low golden sun by default; view.light = "day" gives a higher, neutral daylight for buildings whose
   // whiteness is a feature (plaster, marble) and that golden light would turn beige.
-  const LIGHTS = {golden: {sun: '#ffcf9a', sunI: 3.1, sky: '#9fb4e0', hemiI: .7, dir: [-1.2, .55, .9]}, day: {sun: '#fff4e8', sunI: 2.5, sky: '#c4d6f6', hemiI: 1.15, dir: [.5, 1.1, 1], rimI: .3}};
+  const LIGHTS = {
+    golden: {sun: '#ffcf9a', sunI: 3.1, sky: '#9fb4e0', hemiI: .7, dir: [-1.2, .55, .9]},
+    day: {sun: '#fff4e8', sunI: 2.5, sky: '#c4d6f6', hemiI: 1.15, dir: [.5, 1.1, 1], rimI: .3},
+    'cool-day': {sun: '#fff5e8', sunI: 3.05, sky: '#c4d9ee', hemiI: 1.72, dir: [-.65, 1.15, .7], rimI: .22},
+    'clear-day': {sun: '#fff0d2', sunI: 3.2, sky: '#c3dcf1', hemiI: 1.58, dir: [-.9, 1.05, .55], rimI: .28},
+    'warm-day': {sun: '#ffe0b8', sunI: 3.35, sky: '#c8dced', hemiI: 1.62, dir: [-1.1, .92, .6], rimI: .42},
+  };
   let light = LIGHTS.golden;
+  let visual = resolveVisualStyle({quality: 'basic'}), realisticGroundMaterial = null, environmentGroup = null, environmentTimed = [], baseBloom = .5, ambientBase = 0;
 
   const meshes = [];
   // Human-scale construction tableaux, described and sourced per phase. They are deliberately kept
@@ -889,7 +901,7 @@ export function createStage(host) {
 
   function makeWorker(parent, x, z, turn, palette, role, offset) {
     const actor = new T.Group(); actor.position.set(x, 0, z); actor.rotation.y = turn; parent.add(actor);
-    const cloth = siteMaterial(palette[offset % palette.length]), skin = siteMaterial('#9a6949'), dark = siteMaterial('#3c342d'), stone = siteMaterial('#a89a83');
+    const cloth = siteMaterial(palette[Math.floor(offset) % palette.length]), skin = siteMaterial('#9a6949'), dark = siteMaterial('#3c342d'), stone = siteMaterial('#a89a83');
     siteMesh(actor, siteCylinder, cloth, [0, 1.14, 0], [.19, .58, .19]);
     siteMesh(actor, siteHead, skin, [0, 1.59, 0], [.14, .16, .14]);
     siteMesh(actor, siteBox, dark, [0, 1.72, 0], [.22, .07, .2]);
@@ -1029,16 +1041,21 @@ export function createStage(host) {
   let monument = null, total = 1, heightTrack = [], tagTrack = {}, leaning = null;
 
   function material(kind) {
-    const mat = new T.MeshStandardMaterial({color: '#ffffff', ...KINDS[kind]});
+    const {pbr, ...surface} = pbrOptions(kind, visual, renderer), mat = new T.MeshStandardMaterial({color: '#ffffff', ...KINDS[kind], ...surface});
     mat.onBeforeCompile = shader => {
       Object.assign(shader.uniforms, uniforms);
       shader.uniforms.uGlow = {value: new T.Color(kind === 'metal' ? '#ffb15c' : kind === 'wood' ? '#ffcf8a' : '#ffd9a8')};
       shader.uniforms.uKind = {value: kind === 'metal' ? 1 : kind === 'stone' ? 0 : -1};
+      if (pbr) Object.assign(shader.uniforms, {
+        uPbrAlbedo: {value: pbr.albedo}, uPbrNormal: {value: pbr.normal ?? pbr.albedo}, uPbrRoughness: {value: pbr.roughness ?? pbr.albedo}, uPbrAo: {value: pbr.ao ?? pbr.albedo},
+        uPbrScale: {value: pbr.scale}, uPbrNormalScale: {value: pbr.normal ? pbr.normalScale : 0},
+      });
       shader.vertexShader = shader.vertexShader
         .replace('#include <common>', `#include <common>
           attribute vec2 aLife; attribute float aSeed; attribute float aLean;
           uniform float uTime,uFly,uDrop,uLeanAngle; uniform vec3 uLeanPivot,uLeanAxis;
-          varying float vGlow; varying float vWorldY; varying float vSeed;`)
+          varying float vGlow; varying float vWorldY; varying float vSeed;
+          ${pbr ? 'varying vec3 vPbrPosition; varying vec3 vPbrNormal;' : ''}`)
         .replace('#include <begin_vertex>', `#include <begin_vertex>
           float kIn=clamp((uTime-aLife.x)/uFly,0.,1.);
           float kOut=clamp((uTime-aLife.y)/uFly,0.,1.);
@@ -1049,19 +1066,36 @@ export function createStage(host) {
           float drop=(1.-eIn)*uDrop-kOut*uDrop*.4;
           vSeed=aSeed;`)
         .replace('#include <project_vertex>', `vec4 mvPosition=vec4(transformed,1.);
+          ${pbr ? 'vec3 pbrObjectNormal=objectNormal;' : ''}
           #ifdef USE_INSTANCING
             mvPosition=instanceMatrix*mvPosition;
+            ${pbr ? 'pbrObjectNormal=mat3(instanceMatrix)*pbrObjectNormal;' : ''}
           #endif
           mvPosition.y+=drop;
           if(aLean>.5){vec3 p=mvPosition.xyz-uLeanPivot;float c=cos(uLeanAngle),s=sin(uLeanAngle);
-            mvPosition.xyz=uLeanPivot+p*c+cross(uLeanAxis,p)*s+uLeanAxis*dot(uLeanAxis,p)*(1.-c);}
+            mvPosition.xyz=uLeanPivot+p*c+cross(uLeanAxis,p)*s+uLeanAxis*dot(uLeanAxis,p)*(1.-c);
+            ${pbr ? 'pbrObjectNormal=pbrObjectNormal*c+cross(uLeanAxis,pbrObjectNormal)*s+uLeanAxis*dot(uLeanAxis,pbrObjectNormal)*(1.-c);' : ''}}
+          ${pbr ? 'vPbrPosition=(modelMatrix*mvPosition).xyz;vPbrNormal=normalize(mat3(modelMatrix)*pbrObjectNormal);' : ''}
           vWorldY=(modelMatrix*mvPosition).y;
           mvPosition=modelViewMatrix*mvPosition;
           gl_Position=projectionMatrix*mvPosition;`);
       shader.fragmentShader = shader.fragmentShader
         .replace('#include <common>', `#include <common>
           uniform vec3 uGlow,uNightColor; uniform float uNight,uSparkle,uClock,uHeight,uKind;
-          varying float vGlow; varying float vWorldY; varying float vSeed;`)
+          varying float vGlow; varying float vWorldY; varying float vSeed;
+          ${pbr ? `uniform sampler2D uPbrAlbedo,uPbrNormal,uPbrRoughness,uPbrAo;
+          uniform float uPbrScale,uPbrNormalScale; varying vec3 vPbrPosition,vPbrNormal;
+          vec3 pbrWeights(){vec3 w=pow(abs(vPbrNormal),vec3(5.));return w/(w.x+w.y+w.z+.0001);}
+          vec4 pbrSample(sampler2D tex,vec3 w){return texture2D(tex,vPbrPosition.zy*uPbrScale)*w.x+texture2D(tex,vPbrPosition.xz*uPbrScale)*w.y+texture2D(tex,vPbrPosition.xy*uPbrScale)*w.z;}` : ''}`)
+        .replace('#include <map_fragment>', pbr ? `vec3 pbrW=pbrWeights();vec4 pbrColor=pbrSample(uPbrAlbedo,pbrW);diffuseColor.rgb*=mix(vec3(1.),pbrColor.rgb,.7);diffuseColor.a*=pbrColor.a;` : '#include <map_fragment>')
+        .replace('#include <roughnessmap_fragment>', pbr?.roughness ? `#include <roughnessmap_fragment>\n          roughnessFactor*=pbrSample(uPbrRoughness,pbrWeights()).r;` : '#include <roughnessmap_fragment>')
+        .replace('#include <normal_fragment_maps>', pbr?.normal ? `#include <normal_fragment_maps>
+          vec3 pbrWn=pbrWeights(),baseN=normalize(vPbrNormal);
+          vec3 tx=texture2D(uPbrNormal,vPbrPosition.zy*uPbrScale).xyz*2.-1.,ty=texture2D(uPbrNormal,vPbrPosition.xz*uPbrScale).xyz*2.-1.,tz=texture2D(uPbrNormal,vPbrPosition.xy*uPbrScale).xyz*2.-1.;
+          vec3 nx=vec3(tx.z*sign(baseN.x),tx.y,tx.x),ny=vec3(ty.x,ty.z*sign(baseN.y),ty.y),nz=vec3(tz.x,tz.y,tz.z*sign(baseN.z));
+          vec3 pbrMapped=normalize(nx*pbrWn.x+ny*pbrWn.y+nz*pbrWn.z);normal=normalize(mix(normal,normalize(mat3(viewMatrix)*pbrMapped),min(.5,uPbrNormalScale*.45)));` : '#include <normal_fragment_maps>')
+        .replace('#include <aomap_fragment>', pbr?.ao ? `#include <aomap_fragment>
+          reflectedLight.indirectDiffuse*=mix(1.,pbrSample(uPbrAo,pbrWeights()).r,.65);` : '#include <aomap_fragment>')
         .replace('#include <emissivemap_fragment>', `#include <emissivemap_fragment>
           totalEmissiveRadiance+=uGlow*vGlow*1.3;
           // At night: stone lit from the foot of the walls, golden metal, roofs in shadow.
@@ -1079,11 +1113,21 @@ export function createStage(host) {
     meshes.length = 0;
     for (const {group} of siteGroups) scene.remove(group);
     siteGroups.length = 0; siteActors.length = 0; siteDust.length = 0; siteRigs.length = 0;
+    if (environmentGroup) { scene.remove(environmentGroup); disposeEnvironment(environmentGroup); environmentGroup = null; environmentTimed = []; }
+    if (realisticGroundMaterial) { for (const key of ['map', 'normalMap', 'roughnessMap', 'aoMap']) realisticGroundMaterial[key]?.dispose(); realisticGroundMaterial.dispose(); realisticGroundMaterial = null; }
+    ground.material = planGroundMaterial; ground.receiveShadow = false;
   }
 
   function load(data) {
     clear();
     monument = data; moved = false;
+    visual = resolveVisualStyle(data.visualStyle ?? {quality: 'basic'});
+    renderer.setPixelRatio(Math.min(PIXEL_RATIO, visual.quality.pixelRatio));
+    renderer.toneMappingExposure = visual.qualityName === 'basic' ? 1.05 : visual.qualityName === 'cinematic' ? 1.18 : 1.24;
+    renderer.shadowMap.enabled = Boolean(visual.quality.shadows); renderer.shadowMap.type = T.PCFShadowMap;
+    sun.castShadow = Boolean(visual.quality.shadows); sun.shadow.mapSize.setScalar(visual.quality.shadows || 512);
+    baseBloom = visual.qualityName === 'basic' ? .5 : visual.qualityName === 'cinematic' ? .28 : .18;
+    ambientBase = visual.qualityName === 'basic' ? 0 : visual.qualityName === 'cinematic' ? .5 : .44;
     // An element with `lean` tilts with all its pieces: angle (degrees) over time from `track`, towards `toward`.
     leaning = data.elements.find(element => element.lean)?.lean ?? null;
     uniforms.uLeanAngle.value = 0;
@@ -1091,7 +1135,7 @@ export function createStage(host) {
       uniforms.uLeanPivot.value.set(...(leaning.pivot ?? [0, 0, 0]));
       uniforms.uLeanAxis.value.crossVectors(UP, new T.Vector3(...(leaning.toward ?? [0, 0, 1])).normalize()).normalize();
     }
-    const {pieces: built, P} = buildPieces(data), k = {pieces: built, rand: random((data.seed ?? 7) + 1)};
+    const {pieces: built, P, index} = buildPieces(data), k = {pieces: built, rand: random((data.seed ?? 7) + 1)};
     total = data.phases.length;
     // Within each phase, pieces are laid from the bottom up.
     const byPhase = data.phases.map(() => []);
@@ -1105,6 +1149,7 @@ export function createStage(host) {
     for (const piece of k.pieces) (groups[piece.kind] ??= []).push(piece);
     for (const [kind, list] of Object.entries(groups)) {
       const geometry = new T.BoxGeometry(1, 1, 1), life = new Float32Array(list.length * 2), seed = new Float32Array(list.length), lean = new Float32Array(list.length);
+      geometry.setAttribute('uv1', geometry.attributes.uv);
       const mesh = new T.InstancedMesh(geometry, material(kind), list.length);
       list.forEach((piece, i) => {
         mesh.setMatrixAt(i, piece.matrix); mesh.setColorAt(i, piece.color);
@@ -1114,6 +1159,7 @@ export function createStage(host) {
       geometry.setAttribute('aSeed', new T.InstancedBufferAttribute(seed, 1));
       geometry.setAttribute('aLean', new T.InstancedBufferAttribute(lean, 1));
       mesh.frustumCulled = false;
+      mesh.castShadow = mesh.receiveShadow = Boolean(visual.quality.shadows);
       scene.add(mesh); meshes.push(mesh);
     }
     // Optional real context. The app hides this layer by default so it cannot compete with the monument.
@@ -1152,13 +1198,19 @@ export function createStage(host) {
     uniforms.uHeight.value = data.view.height ?? radius;
     uniforms.uNightColor.value.set(data.view.night ?? '#ff9a2e');
     ground.scale.set(radius * 40, radius * 40, 1);
-    ground.material.uniforms.uStep.value = data.view.dots ?? radius / 60;
-    ground.material.uniforms.uRadius.value = radius * 3.2;
-    ground.material.uniforms.uWater.value = data.view.water ? 1 : 0;
-    light = LIGHTS[data.view.light] ?? LIGHTS.golden;
-    sun.color.set(light.sun); hemi.color.set(light.sky);
+    const realisticGround = !data.view.water && groundOptions(visual, renderer, radius);
+    if (realisticGround) { realisticGroundMaterial = new T.MeshStandardMaterial(realisticGround); realisticGroundMaterial.fog = true; ground.material = realisticGroundMaterial; ground.receiveShadow = Boolean(visual.quality.shadows); }
+    else { ground.material = planGroundMaterial; planGroundMaterial.uniforms.uStep.value = data.view.dots ?? radius / 60; planGroundMaterial.uniforms.uRadius.value = radius * 3.2; planGroundMaterial.uniforms.uWater.value = data.view.water ? 1 : 0; }
+    const environment = visual.environment;
+    dayHorizon = new T.Color(environment?.horizon ?? DUSK); horizon.value.copy(dayHorizon); zenith.value.set(environment?.zenith ?? '#1b213d'); sunGlow.value.set(environment ? '#6b3a20' : '#9d4e24'); fogFactor = environment?.fog ?? .4;
+    light = LIGHTS[environment?.light ?? data.view.light] ?? LIGHTS.golden;
+    sun.color.set(light.sun); hemi.color.set(light.sky); hemi.groundColor.set(environment?.groundLight ?? '#3a2a1c');
     sun.position.set(...light.dir.map(v => v * radius));
     rim.position.set(radius, radius * .4, -radius);
+    if (visual.quality.shadows) {
+      const shadow = sun.shadow.camera; shadow.left = shadow.bottom = -radius * 1.45; shadow.right = shadow.top = radius * 1.45; shadow.near = 1; shadow.far = radius * 5; shadow.updateProjectionMatrix(); sun.shadow.bias = -.00015;
+    }
+    const builtEnvironment = createEnvironment(visual, data.view, data.seed ?? 7, index); environmentGroup = builtEnvironment.group; environmentTimed = builtEnvironment.timed; scene.add(environmentGroup);
     home();
     if (data.view.start) {
       const dir = camera.position.clone().sub(controls.target).normalize();
@@ -1184,7 +1236,7 @@ export function createStage(host) {
     const dir = new T.Vector3(...(monument.view.direction ?? [.55, .32, .78])).normalize(), d = fit();
     camera.position.copy(controls.target).addScaledVector(dir, d);
     controls.minDistance = d * .35; controls.maxDistance = d * 2.2;
-    scene.fog.density = .4 / d;
+    scene.fog.density = fogFactor / d;
     controls.update();
   }
 
@@ -1240,10 +1292,11 @@ export function createStage(host) {
       const night = phase?.mood === 'night' ? Math.min(1, (t - Math.floor(t)) * 3 + (t >= total ? 1 : 0)) : 0;
       uniforms.uNight.value = night;
       uniforms.uSparkle.value = phase?.sparkle ? night : 0;
-      sun.intensity = light.sunI * (1 - night * .92); hemi.intensity = light.hemiI * (1 - night * .75); rim.intensity = (light.rimI ?? .9) - night * .3;
-      bloom.strength = .5 + night * .35;
-      horizon.value.copy(DUSK).lerp(NIGHT, night);
+      sun.intensity = light.sunI * (1 - night * .92); hemi.intensity = light.hemiI * (1 - night * .75); ambient.intensity = ambientBase * (1 - night * .7); rim.intensity = (light.rimI ?? .9) - night * .3;
+      bloom.strength = baseBloom + night * .35;
+      horizon.value.copy(dayHorizon).lerp(NIGHT, night);
       scene.fog.color.copy(horizon.value);
+      for (const item of environmentTimed) item.object.visible = t >= item.from && t < item.until;
       const phaseIndex = Math.min(total - 1, Math.floor(t));
       for (const site of siteGroups) {
         site.group.visible = site.phase === phaseIndex;

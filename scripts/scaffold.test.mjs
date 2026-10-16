@@ -24,6 +24,8 @@ const draft = createDraft({query: 'Palais consulaire de Toulouse, Toulouse, Fran
 assert.equal(draft.id, 'palais-consulaire-de-toulouse');
 assert.equal(draft.evidence.generated.family, 'civic');
 assert.equal(draft.view.height, 21);
+assert.equal(draft.visualStyle.quality, 'standard');
+assert.equal(draft.visualStyle.materialPreset, 'historic-masonry');
 assert.ok(draft.elements.some(element => element.type === 'footprintBuilding'));
 
 const xml = `<?xml version="1.0"?><osm>

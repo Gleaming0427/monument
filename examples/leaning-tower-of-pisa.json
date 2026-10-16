@@ -30,6 +30,13 @@
   },
   "light": "day"
  },
+ "visualStyle": {
+  "quality": "standard",
+  "materialPreset": "marble-italian",
+  "environmentPreset": "mediterranean-lawn",
+  "vegetation": true,
+  "environment": {"from": "saved", "count": 5, "exclusion": 0.68}
+ },
  "live": [
   {
    "label": "Height",

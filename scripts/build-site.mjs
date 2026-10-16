@@ -24,6 +24,7 @@ const version = (process.env.GITHUB_SHA ?? (() => { try { return execFileSync('g
 const stamp = async (file, pairs) => { let text = await readFile(file, 'utf8'); for (const [from, to] of pairs) { if (!text.includes(from)) throw new Error(`${from} not found in ${file}`); text = text.replaceAll(from, to); } await writeFile(file, text); };
 await stamp(join(out, 'view', 'index.html'), [['href="kit/style.css"', `href="kit/style.css?v=${version}"`], ['src="kit/app.js"', `src="kit/app.js?v=${version}"`]]);
 await stamp(join(out, 'view', 'kit', 'app.js'), [["from './builder.js'", `from './builder.js?v=${version}'`]]);
+await stamp(join(out, 'view', 'kit', 'builder.js'), [["from './visuals.js'", `from './visuals.js?v=${version}'`]]);
 await rm(join(out, 'collection.json'));
 const monuments = join(out, 'view', 'monuments');
 await mkdir(monuments, {recursive: true});

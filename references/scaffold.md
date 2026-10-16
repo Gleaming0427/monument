@@ -31,6 +31,8 @@ It normally completes in one map lookup plus one local build. No browser automat
 
 Every family keeps the measured polygon. The `footprintBuilding` brick then generates masonry courses, storey bands, framed openings with mullions, panelled doors, cornices, a parapet and a roof fitted to that polygon. The family changes conservative base massing and proportions: religious buildings narrow their openings, towers become taller and more vertical, amphitheatres get an arcaded ellipse, fortified buildings get a crenellated shell, and modern buildings get a flatter glazed rhythm.
 
+The family also selects a restrained `visualStyle`: PBR materials and a ground/sky preset are ready immediately. Vegetation stays off in the automatic draft because a map outline does not prove which trees belong to a historical phase. Enable and date it only after checking the references ([visual-style.md](visual-style.md)).
+
 These choices are working geometry. The JSON records the reason for the family, whether height and storeys came from map tags or defaults, and every unresolved estimate in `evidence.uncertainties`. Research must replace those estimates before standard validation.
 
 ## Resolution and safe failure

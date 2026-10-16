@@ -229,6 +229,14 @@ function seedOf(value) {
   return hash >>> 0;
 }
 
+function visualStyleForFamily(family) {
+  if (family === 'religious') return {quality: 'standard', materialPreset: 'gothic-limestone', environmentPreset: 'gothic-urban', vegetation: false};
+  if (family === 'amphitheatre') return {quality: 'standard', materialPreset: 'roman-weathered', environmentPreset: 'roman-ruins', vegetation: false};
+  if (family === 'modern' || family === 'bridge') return {quality: 'standard', materialPreset: 'industrial-iron', environmentPreset: 'museum-neutral', vegetation: false};
+  if (family === 'tower') return {quality: 'standard', materialPreset: 'historic-masonry', environmentPreset: 'museum-neutral', vegetation: false};
+  return {quality: 'standard', materialPreset: 'historic-masonry', environmentPreset: 'gothic-urban', vegetation: false};
+}
+
 export function createDraft({query, result, ring, requestedFamily = 'auto', id, height, floors}) {
   const local = toLocalRing(ring), rect = orientedRectangle(local.points);
   if (Math.max(rect.width, rect.depth) > 2500) throw new Error(`The selected map object spans ${Math.round(rect.width)} × ${Math.round(rect.depth)} m, so it is not a plausible single building. Add a more precise name or address.`);
@@ -250,6 +258,7 @@ export function createDraft({query, result, ring, requestedFamily = 'auto', id, 
     place: placeOf(result),
     seed: seedOf(monumentId),
     view: {target: [round(rect.center[0]), round(dims.height * .42), round(rect.center[1])], distance: round(Math.max(dims.height * 2.2, radius * 3.4, 32)), width: round(rect.width), radius: round(radius), height: dims.height, light: 'day'},
+    visualStyle: visualStyleForFamily(choice.family),
     live: [{label: 'draft height', kind: 'height', unit: 'm'}],
     facts: [{value: `${rect.width} × ${rect.depth} m`, label: 'oriented footprint box'}, {value: choice.family, label: 'automatic architecture family'}],
     modelNote: `Automatic starting volume fitted to the mapped outline. The footprint is measured from OpenStreetMap; the family choice is ${choice.reason}. Height, facades, roof and construction history must be verified before this draft is presented as a reconstruction.`,

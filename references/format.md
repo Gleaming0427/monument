@@ -7,6 +7,7 @@ One building = one JSON file, `monuments/<id>.json` in the user's project (`exam
   "id": "golden-gate", "name": "Golden Gate Bridge", "place": "San Francisco · California · USA", "seed": 1937,
   "view": {"target": [0, 95, 0], "distance": 1500, "width": 2100, "radius": 1100, "height": 227,
            "start": {"target": [640, 40, 0], "distance": 420}, "water": true},
+  "visualStyle": {"quality": "standard", "materialPreset": "historic-masonry", "environmentPreset": "museum-neutral", "vegetation": false},
   "live": [{"label": "Height", "kind": "height", "unit": "m"}],
   "facts": [{"value": "1,280 m", "label": "main span"}],
   "modelNote": "What is measured, what is read from photos, what is simplified.",
@@ -57,6 +58,10 @@ At least two construction phases in a standard build carry `scene`, unless the w
 - `water`: the ground becomes water.
 - `light`: `"day"` for a higher, neutral daylight when whiteness is a feature (plaster, marble); the default is a low golden sun.
 - `night`: colour of the metal's illumination, used only with a `"mood": "night"` phase.
+
+## visualStyle
+
+Standard builds use the bundled semi-realistic PBR library. Set `quality`, `materialPreset` and `environmentPreset`; add dated vegetation or props only when useful. The complete catalog and schema are in [visual-style.md](visual-style.md).
 
 ## live and facts
 

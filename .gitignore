@@ -3,3 +3,4 @@ node_modules/
 .DS_Store
 *.png
 !site/**/*.png
+!kit/assets/materials/**/*.png

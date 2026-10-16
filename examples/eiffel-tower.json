@@ -30,6 +30,15 @@
   ],
   "light": "golden"
  },
+ "visualStyle": {
+  "quality": "standard",
+  "materialPreset": "industrial-iron",
+  "environmentPreset": "exposition-grounds",
+  "vegetation": false,
+  "decor": [
+   {"type": "stone-blocks", "at": [58, 44], "scale": 1.5, "from": "fondations", "until": "piliers"}
+  ]
+ },
  "live": [
   {
    "label": "Height",
