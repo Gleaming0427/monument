@@ -19,6 +19,7 @@ const KINDS = {
   tile: {roughness: .75, metalness: 0},
   wood: {roughness: .92, metalness: 0},
   cloth: {roughness: .9, metalness: 0},
+  glass: {roughness: .1, metalness: .4},
 };
 
 function random(seed) {
@@ -753,11 +754,12 @@ export const generators = {
     const ring = h => [[1, 1], [1, -1], [-1, -1], [-1, 1]].map(([a, b]) => V(a * W(h), h, b * W(h)));
     for (let h = e.merge; h < e.shaft; h += step) panel(ring(h), ring(Math.min(e.shaft, h + step)));
     for (let h = e.shaft; h < e.height - 4; h += 3) panel(ring(h), ring(h + 3));
-    // Decorative arches between the legs, in the plane of each face.
+    // Decorative arches between the legs: in the sloping plane of each face, or in a vertical plane at
+    // arch.at metres from the axis (hung under the first floor's edge girders).
     for (const [axis, sign] of [['x', 1], ['x', -1], ['z', 1], ['z', -1]]) {
       const pts = [];
       for (let i = 0; i <= 28; i++) {
-        const t = i / 28 * Math.PI, y = e.arch.base + e.arch.rise * Math.sin(t), u = e.arch.span * Math.cos(t), f = sign * (W(y) - .8);
+        const t = i / 28 * Math.PI, y = e.arch.base + e.arch.rise * Math.sin(t), u = e.arch.span * Math.cos(t), f = sign * (e.arch.at ?? W(y) - .8);
         pts.push(axis === 'z' ? V(u, y, f) : V(f, y, u));
       }
       for (let i = 0; i < pts.length - 1; i++) {
@@ -766,11 +768,35 @@ export const generators = {
       }
     }
     for (const deck of e.decks) {
-      const h = deck.y, half = W(h) + deck.overhang, c = [[1, 1], [1, -1], [-1, -1], [-1, 1]].map(([a, b]) => V(a * half, h, b * half));
+      const h = deck.y, edge = W(h), half = edge + deck.overhang, ph = phaseAt(h), c = [[1, 1], [1, -1], [-1, -1], [-1, 1]].map(([a, b]) => V(a * half, h, b * half));
       for (let q = 0; q < 4; q++) {
         const a = c[q], b = c[(q + 1) % 4], n = Math.max(2, Math.round(a.distanceTo(b) / 4));
         beam(a, b, 1); beam(a.clone().setY(h + deck.gallery), b.clone().setY(h + deck.gallery), .6);
         for (let i = 0; i <= n; i++) { const p = a.clone().lerp(b, i / n); beam(p, p.clone().setY(h + deck.gallery), .35); }
+      }
+      // One side of the floor: u runs along it, d is the distance from the axis.
+      const side = (axis, sign, kind, u, d, y, [len, height, thick], color, phase = ph) => k.box(kind, axis === 'x' ? [sign * d, y, u] : [u, y, sign * d], axis === 'x' ? [thick, height, len] : [len, height, thick], 0, color, phase);
+      for (const [axis, sign] of [['x', 1], ['x', -1], ['z', 1], ['z', -1]]) {
+        // The balcony floor, outside the edge girder.
+        if (deck.overhang > .4) side(axis, sign, 'metal', 0, edge + deck.overhang / 2, h - .2, [2 * half, .4, deck.overhang], k.tint(color, .04));
+        // frieze: the continuous girder below the floor, its consoles under the balcony and, between them,
+        // the inscriptions (names: how many per side, in gold letters).
+        if (deck.frieze) {
+          const bays = deck.names ?? Math.max(2, Math.round(2 * edge / 4)), step = 2 * edge / bays;
+          side(axis, sign, 'metal', 0, edge, h - deck.frieze / 2, [2 * edge, deck.frieze, .6], k.tint(color, .05));
+          side(axis, sign, 'metal', 0, edge + .2, h - deck.frieze + .3, [2 * edge, .6, .7], k.tint(color, .05));
+          for (let i = 0; i <= bays; i++) side(axis, sign, 'metal', -edge + i * step, edge + deck.overhang / 2, h - 1.1, [.6, 1.8, deck.overhang], k.tint(color, .05));
+          if (deck.names) for (let i = 0; i < bays; i++) side(axis, sign, 'metal', -edge + (i + .5) * step, edge + .35, h - deck.frieze / 2, [step * .62, .6, .1], k.tint(deck.letters ?? '#c9a24a', .05));
+        }
+        // pavilions: glazed buildings along each side, between the legs, built in their own phase.
+        if (deck.pavilions) {
+          const pv = deck.pavilions, room = edge - L(h) - (pv.gap ?? 1), out = edge - (pv.setback ?? 1.5), inner = out - pv.depth, built = pv.phase ? P(pv.phase) : ph;
+          if (room > 2) {
+            side(axis, sign, 'glass', 0, (out + inner) / 2, h + pv.height / 2, [2 * room, pv.height, pv.depth], k.tint(pv.glass ?? '#53626c', .05), built);
+            side(axis, sign, 'metal', 0, (out + inner) / 2, h + pv.height + .25, [2 * room + .6, .5, pv.depth + .6], k.tint(pv.roof ?? color, .05), built);
+            for (let u = -room; u <= room + .01; u += pv.mullion ?? 3) side(axis, sign, 'metal', u, out + .1, h + pv.height / 2, [.18, pv.height, .2], k.tint(color, .04), built);
+          }
+        }
       }
     }
     const top = e.height;
@@ -1040,6 +1066,40 @@ export function createStage(host) {
 
   let monument = null, total = 1, heightTrack = [], tagTrack = {}, leaning = null;
 
+  // Pieces grow into place, drop from above, are taken down and lean, in the colour pass and in the shadow
+  // pass alike: a piece that is not built yet casts no shadow.
+  function growVertex(shader, pbr) {
+    shader.vertexShader = shader.vertexShader
+      .replace('#include <common>', `#include <common>
+        attribute vec2 aLife; attribute float aSeed; attribute float aLean;
+        uniform float uTime,uFly,uDrop,uLeanAngle; uniform vec3 uLeanPivot,uLeanAxis;
+        varying float vGlow; varying float vWorldY; varying float vSeed;
+        ${pbr ? 'varying vec3 vPbrPosition; varying vec3 vPbrNormal;' : ''}`)
+      .replace('#include <begin_vertex>', `#include <begin_vertex>
+        float kIn=clamp((uTime-aLife.x)/uFly,0.,1.);
+        float kOut=clamp((uTime-aLife.y)/uFly,0.,1.);
+        float eIn=1.-pow(1.-kIn,3.);
+        float alive=step(aLife.x,uTime)*(1.-kOut);
+        transformed*=alive*mix(.55,1.,eIn);
+        vGlow=step(aLife.x,uTime)*(1.-smoothstep(0.,1.,(uTime-aLife.x)/(uFly*2.)));
+        float drop=(1.-eIn)*uDrop-kOut*uDrop*.4;
+        vSeed=aSeed;`)
+      .replace('#include <project_vertex>', `vec4 mvPosition=vec4(transformed,1.);
+        ${pbr ? 'vec3 pbrObjectNormal=objectNormal;' : ''}
+        #ifdef USE_INSTANCING
+          mvPosition=instanceMatrix*mvPosition;
+          ${pbr ? 'pbrObjectNormal=mat3(instanceMatrix)*pbrObjectNormal;' : ''}
+        #endif
+        mvPosition.y+=drop;
+        if(aLean>.5){vec3 p=mvPosition.xyz-uLeanPivot;float c=cos(uLeanAngle),s=sin(uLeanAngle);
+          mvPosition.xyz=uLeanPivot+p*c+cross(uLeanAxis,p)*s+uLeanAxis*dot(uLeanAxis,p)*(1.-c);
+          ${pbr ? 'pbrObjectNormal=pbrObjectNormal*c+cross(uLeanAxis,pbrObjectNormal)*s+uLeanAxis*dot(uLeanAxis,pbrObjectNormal)*(1.-c);' : ''}}
+        ${pbr ? 'vPbrPosition=(modelMatrix*mvPosition).xyz;vPbrNormal=normalize(mat3(modelMatrix)*pbrObjectNormal);' : ''}
+        vWorldY=(modelMatrix*mvPosition).y;
+        mvPosition=modelViewMatrix*mvPosition;
+        gl_Position=projectionMatrix*mvPosition;`);
+  }
+
   function material(kind) {
     const {pbr, ...surface} = pbrOptions(kind, visual, renderer), mat = new T.MeshStandardMaterial({color: '#ffffff', ...KINDS[kind], ...surface});
     mat.onBeforeCompile = shader => {
@@ -1050,35 +1110,7 @@ export function createStage(host) {
         uPbrAlbedo: {value: pbr.albedo}, uPbrNormal: {value: pbr.normal ?? pbr.albedo}, uPbrRoughness: {value: pbr.roughness ?? pbr.albedo}, uPbrAo: {value: pbr.ao ?? pbr.albedo},
         uPbrScale: {value: pbr.scale}, uPbrNormalScale: {value: pbr.normal ? pbr.normalScale : 0},
       });
-      shader.vertexShader = shader.vertexShader
-        .replace('#include <common>', `#include <common>
-          attribute vec2 aLife; attribute float aSeed; attribute float aLean;
-          uniform float uTime,uFly,uDrop,uLeanAngle; uniform vec3 uLeanPivot,uLeanAxis;
-          varying float vGlow; varying float vWorldY; varying float vSeed;
-          ${pbr ? 'varying vec3 vPbrPosition; varying vec3 vPbrNormal;' : ''}`)
-        .replace('#include <begin_vertex>', `#include <begin_vertex>
-          float kIn=clamp((uTime-aLife.x)/uFly,0.,1.);
-          float kOut=clamp((uTime-aLife.y)/uFly,0.,1.);
-          float eIn=1.-pow(1.-kIn,3.);
-          float alive=step(aLife.x,uTime)*(1.-kOut);
-          transformed*=alive*mix(.55,1.,eIn);
-          vGlow=step(aLife.x,uTime)*(1.-smoothstep(0.,1.,(uTime-aLife.x)/(uFly*2.)));
-          float drop=(1.-eIn)*uDrop-kOut*uDrop*.4;
-          vSeed=aSeed;`)
-        .replace('#include <project_vertex>', `vec4 mvPosition=vec4(transformed,1.);
-          ${pbr ? 'vec3 pbrObjectNormal=objectNormal;' : ''}
-          #ifdef USE_INSTANCING
-            mvPosition=instanceMatrix*mvPosition;
-            ${pbr ? 'pbrObjectNormal=mat3(instanceMatrix)*pbrObjectNormal;' : ''}
-          #endif
-          mvPosition.y+=drop;
-          if(aLean>.5){vec3 p=mvPosition.xyz-uLeanPivot;float c=cos(uLeanAngle),s=sin(uLeanAngle);
-            mvPosition.xyz=uLeanPivot+p*c+cross(uLeanAxis,p)*s+uLeanAxis*dot(uLeanAxis,p)*(1.-c);
-            ${pbr ? 'pbrObjectNormal=pbrObjectNormal*c+cross(uLeanAxis,pbrObjectNormal)*s+uLeanAxis*dot(uLeanAxis,pbrObjectNormal)*(1.-c);' : ''}}
-          ${pbr ? 'vPbrPosition=(modelMatrix*mvPosition).xyz;vPbrNormal=normalize(mat3(modelMatrix)*pbrObjectNormal);' : ''}
-          vWorldY=(modelMatrix*mvPosition).y;
-          mvPosition=modelViewMatrix*mvPosition;
-          gl_Position=projectionMatrix*mvPosition;`);
+      growVertex(shader, pbr);
       shader.fragmentShader = shader.fragmentShader
         .replace('#include <common>', `#include <common>
           uniform vec3 uGlow,uNightColor; uniform float uNight,uSparkle,uClock,uHeight,uKind;
@@ -1108,8 +1140,14 @@ export function createStage(host) {
     return mat;
   }
 
+  function shadowMaterial() {
+    const mat = new T.MeshDepthMaterial({depthPacking: T.RGBADepthPacking});
+    mat.onBeforeCompile = shader => { Object.assign(shader.uniforms, uniforms); growVertex(shader, null); };
+    return mat;
+  }
+
   function clear() {
-    for (const mesh of meshes) { scene.remove(mesh); mesh.geometry.dispose(); mesh.material.dispose(); }
+    for (const mesh of meshes) { scene.remove(mesh); mesh.geometry.dispose(); mesh.material.dispose(); mesh.customDepthMaterial?.dispose(); }
     meshes.length = 0;
     for (const {group} of siteGroups) scene.remove(group);
     siteGroups.length = 0; siteActors.length = 0; siteDust.length = 0; siteRigs.length = 0;
@@ -1160,6 +1198,7 @@ export function createStage(host) {
       geometry.setAttribute('aLean', new T.InstancedBufferAttribute(lean, 1));
       mesh.frustumCulled = false;
       mesh.castShadow = mesh.receiveShadow = Boolean(visual.quality.shadows);
+      mesh.customDepthMaterial = shadowMaterial();
       scene.add(mesh); meshes.push(mesh);
     }
     // Optional real context. The app hides this layer by default so it cannot compete with the monument.
@@ -1321,6 +1360,8 @@ export function createStage(host) {
       camera.position.copy(controls.target).add(new T.Vector3(Math.sin(az) * Math.cos(el), Math.sin(el), -Math.cos(az) * Math.cos(el)).multiplyScalar(distance));
       controls.update();
     },
+    // Vertical field of view of a reference photo's lens, in degrees.
+    fov(degrees) { camera.fov = degrees; camera.updateProjectionMatrix(); },
     autoRotate(on) { controls.autoRotate = on; },
     render(clock) {
       uniforms.uClock.value = clock;

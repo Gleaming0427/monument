@@ -36,7 +36,16 @@
   "environmentPreset": "exposition-grounds",
   "vegetation": false,
   "decor": [
-   {"type": "stone-blocks", "at": [58, 44], "scale": 1.5, "from": "fondations", "until": "piliers"}
+   {
+    "type": "stone-blocks",
+    "at": [
+     58,
+     44
+    ],
+    "scale": 1.5,
+    "from": "fondations",
+    "until": "piliers"
+   }
   ]
  },
  "live": [
@@ -70,8 +79,15 @@
    "source": "https://www.toureiffel.paris/en/the-monument/history",
    "scene": {
     "craft": "earth",
-    "at": [50, 50],
-    "focus": [50, 4, 50],
+    "at": [
+     50,
+     50
+    ],
+    "focus": [
+     50,
+     4,
+     50
+    ],
     "distance": 42,
     "radius": 18,
     "height": 7,
@@ -117,15 +133,36 @@
    "source": "https://www.toureiffel.paris/en/the-monument/history",
    "scene": {
     "craft": "metal",
-    "at": [44, 44],
-    "focus": [44, 28, 44],
+    "at": [
+     44,
+     44
+    ],
+    "focus": [
+     44,
+     28,
+     44
+    ],
     "distance": 58,
     "radius": 22,
     "height": 48,
     "workers": 14,
     "materials": true,
-    "scaffold": {"kind": "tower", "width": 20, "depth": 20, "height": 32},
-    "hoist": {"kind": "steam-crane", "offset": [8, 8], "height": 9, "from": 4, "to": 39},
+    "scaffold": {
+     "kind": "tower",
+     "width": 20,
+     "depth": 20,
+     "height": 32
+    },
+    "hoist": {
+     "kind": "steam-crane",
+     "offset": [
+      8,
+      8
+     ],
+     "height": 9,
+     "from": 4,
+     "to": 39
+    },
     "dust": 0.7,
     "source": "https://www.toureiffel.paris/en/news/130-years/how-did-they-build-tower-so-quickly"
    },
@@ -245,6 +282,27 @@
    "sparkle": true,
    "text": "Since 31 December 1985, 336 lamps set inside the structure light it in gold. Since 2000, 20,000 bulbs make it sparkle.",
    "source": "https://www.toureiffel.paris/en/the-monument/lights"
+  },
+  {
+   "id": "premier-2015",
+   "when": "2015",
+   "title": "The first floor in glass",
+   "text": "Reopened on 4 September 2015 after the most ambitious refurbishment in nearly 30 years: rebuilt pavilions with wider glazing, a transparent floor and glass balustrades around the central void.",
+   "source": "https://sete.toureiffel.paris/en/press/press-releases/official-opening-totally-refurbish-1st-floor-eiffel-tower",
+   "moments": [
+    {
+     "at": 0.6,
+     "tag": "Works",
+     "title": "Two pavilions rebuilt",
+     "text": "Rather than refurbish them, the Eiffel and Ferrié pavilions were rebuilt; the Ferrié pavilion got 10 m² of solar panels on its roof.",
+     "anchor": [
+      0,
+      64,
+      30
+     ],
+     "source": "https://sete.toureiffel.paris/en/press/press-releases/official-opening-totally-refurbish-1st-floor-eiffel-tower"
+    }
+   ]
   }
  ],
  "elements": [
@@ -722,35 +780,35 @@
    "profile": [
     [
      0,
-     62.5
+     62.45
     ],
     [
      15,
-     55.5
+     53.85
     ],
     [
      30,
-     49
+     46.4
     ],
     [
      45,
-     42
+     40
     ],
     [
-     57,
-     36.5
+     57.6,
+     35.35
     ],
     [
      75,
-     30.5
+     29.8
     ],
     [
      95,
-     25
+     24.5
     ],
     [
-     115,
-     20
+     115.7,
+     20.45
     ],
     [
      140,
@@ -788,15 +846,23 @@
    "legWidth": [
     [
      0,
-     25
+     25.3
     ],
     [
-     57,
-     23
+     10,
+     21
     ],
     [
-     115,
-     20
+     30,
+     17
+    ],
+    [
+     57.6,
+     15
+    ],
+    [
+     115.7,
+     9
     ]
    ],
    "merge": 115,
@@ -805,11 +871,11 @@
    "ring": 4,
    "bands": [
     {
-     "to": 57.5,
+     "to": 58.5,
      "phase": "piliers"
     },
     {
-     "to": 115.5,
+     "to": 116.5,
      "phase": "deuxieme"
     },
     {
@@ -818,25 +884,35 @@
     }
    ],
    "arch": {
-    "base": 14,
-    "rise": 30,
-    "span": 31,
+    "base": 1,
+    "rise": 47,
+    "span": 37.1,
     "depth": 2.5
    },
    "decks": [
     {
-     "y": 57,
-     "overhang": 3,
-     "gallery": 4.5
+     "y": 57.6,
+     "overhang": 1.85,
+     "gallery": 2.2,
+     "frieze": 7,
+     "names": 18,
+     "pavilions": {
+      "height": 6,
+      "depth": 9,
+      "setback": 2.5,
+      "gap": 1.5,
+      "phase": "premier-2015"
+     }
     },
     {
-     "y": 115,
-     "overhang": 2.5,
-     "gallery": 3
+     "y": 115.7,
+     "overhang": 0.5,
+     "gallery": 2.2,
+     "frieze": 4
     },
     {
-     "y": 276,
-     "overhang": 2,
+     "y": 276.1,
+     "overhang": 2.9,
      "gallery": 3
     }
    ],
@@ -883,61 +959,92 @@
    {
     "url": "https://fr.wikipedia.org/wiki/Donn%C3%A9es_techniques_de_la_tour_Eiffel",
     "read": "Technical dimensions of the tower: foundations, floors at 57.63/115.73/276.13 m with sides 70.69/40.96/18.65 m, 125x125 m base, 74.24 m inner and 124.90 m outer gap between the piers, 1665 steps."
+   },
+   {
+    "url": "https://www.toureiffel.paris/en/news/130-years/whose-are-72-names-inscribed-eiffel-tower-and-why-are-they-there",
+    "read": "Bertrand Lemoine: the first floor is encircled by a large continuous beam punctuated by consoles that support the balcony; between them, the names of 72 French scholars in golden capital letters 60 cm high, eighteen on each side, at most twelve letters each."
+   },
+   {
+    "url": "https://sete.toureiffel.paris/en/press/press-releases/official-opening-totally-refurbish-1st-floor-eiffel-tower",
+    "read": "Press release of 4 September 2015: the first floor was entirely refurbished, with a transparent floor and glass balustrading around a central void; the Eiffel and Ferrié pavilions were rebuilt and the 58 Tour Eiffel restaurant given new glazed facades."
+   },
+   {
+    "url": "https://data.geopf.fr/wfs/ows?SERVICE=WFS&VERSION=2.0.0&REQUEST=GetFeature&TYPENAMES=BDTOPO_V3:batiment&BBOX=48.8570,2.2925,48.8595,2.2965,urn:ogc:def:crs:EPSG::4326&outputFormat=application/json",
+    "read": "IGN BD TOPO building parts of the tower (nature 'Tour, donjon'): a 41.9 m part whose outer ring reaches 86.8 m from the centre at the leg tips and 37.6 m between the legs, a 62 m first-floor part, a 116.4 m second-floor part and a 286.4 m top part; the outer ring matches OpenStreetMap way 5013364."
    }
   ],
   "plan": {
    "source": "OpenStreetMap way 5013364",
    "url": "https://www.openstreetmap.org/way/5013364",
-   "outline": "eiffel-tower.evidence/outline.json",
-   "tolerance": 9
+   "outline": "eiffel-tower.evidence/outline.json"
   },
   "references": [
    {
-    "url": "https://commons.wikimedia.org/wiki/File:Tour_Eiffel_Wikimedia_Commons.jpg",
-    "view": "north-west, from the Trocadero esplanade",
-    "azimuth": 315,
-    "elevation": 2,
-    "distance": 320,
-    "target": [
-     0,
-     80,
-     0
-    ]
-   },
-   {
     "url": "https://commons.wikimedia.org/wiki/File:Tour_Eiffel_vue_du_Champ-de-Mars.jpg",
-    "view": "south-east, up the Champ-de-Mars lawns",
-    "azimuth": 135,
-    "elevation": 2,
-    "distance": 330,
+    "view": "south-east, from the Champ-de-Mars lawns (Jebulon, 2011, CC0)",
+    "azimuth": 136,
+    "elevation": -32.9,
+    "distance": 273,
     "target": [
      0,
-     80,
+     150,
      0
+    ],
+    "fov": 68,
+    "camera": [
+     48.85677778,
+     2.29669444
     ]
    },
    {
-    "url": "https://commons.wikimedia.org/wiki/File:Tour_Eiffel_depuis_le_pont_de_Bir-Hakeim.jpg",
-    "view": "east, from the Bir-Hakeim bridge over the Seine",
-    "azimuth": 75,
-    "elevation": 3,
-    "distance": 260,
+    "url": "https://commons.wikimedia.org/wiki/File:Eiffel_Tower_from_the_northwest,_20_January_2013.jpg",
+    "view": "north-west, from the Seine bank below the Pont d'Iéna (Yann Caradec, 2013, CC BY-SA 2.0)",
+    "azimuth": 319,
+    "elevation": -26.7,
+    "distance": 343,
     "target": [
      0,
-     60,
+     150,
      0
+    ],
+    "fov": 56,
+    "camera": [
+     48.860347,
+     2.291755
     ]
    },
    {
-    "url": "https://commons.wikimedia.org/wiki/File:Eiffel_Tower_from_the_Esplanade_du_Trocadero.jpg",
-    "view": "north, along the fountains of the Trocadero gardens",
-    "azimuth": 5,
-    "elevation": 2,
-    "distance": 400,
+    "url": "https://commons.wikimedia.org/wiki/File:Tour_Eiffel_et_Seine_durant_la_crue_de_2018.jpg",
+    "view": "west, from the Seine downstream during the 2018 flood (Ibex73, CC BY-SA 4.0)",
+    "azimuth": 268,
+    "elevation": -19.8,
+    "distance": 453,
     "target": [
      0,
-     90,
+     150,
      0
+    ],
+    "fov": 42,
+    "camera": [
+     48.858161,
+     2.288703
+    ]
+   },
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:Tour_Eiffel,_Oct_2022,_Paris,_France.jpg",
+    "view": "north, telephoto on the legs, the arches and the first floor from across the Seine (dconvertini, 2022, CC BY-SA 2.0)",
+    "azimuth": 1,
+    "elevation": -7.6,
+    "distance": 506,
+    "target": [
+     0,
+     75,
+     0
+    ],
+    "fov": 22,
+    "camera": [
+     48.862809,
+     2.294597
     ]
    }
   ],
@@ -961,10 +1068,10 @@
    {
     "text": "Golden lighting of 336 spotlights inside the structure since 31 December 1985, and 20,000 bulbs that make the tower sparkle since 2000.",
     "source": "https://www.toureiffel.paris/en/the-monument/lights"
-    },
-    {
-      "text": "Sixteen masonry foundation blocks, one below each edge of the four iron piers.",
-      "source": "https://www.toureiffel.paris/en/news/130-years/construction-eiffel-tower-exemplary-project"
+   },
+   {
+    "text": "Sixteen masonry foundation blocks, one below each edge of the four iron piers.",
+    "source": "https://www.toureiffel.paris/en/news/130-years/construction-eiffel-tower-exemplary-project"
    },
    {
     "text": "Every iron part was calculated, cut, drilled and pre-assembled at Levallois-Perret before reaching the site.",
@@ -973,9 +1080,21 @@
    {
     "text": "Twelve timber scaffolds first held the leaning legs, followed by four 45 m scaffold towers below the first floor.",
     "source": "https://www.toureiffel.paris/en/the-monument/history"
+   },
+   {
+    "text": "A deep continuous girder encircles the first floor, its consoles carrying the balcony, with 72 scientists' names in 60 cm gold letters, eighteen per side.",
+    "source": "https://www.toureiffel.paris/en/news/130-years/whose-are-72-names-inscribed-eiffel-tower-and-why-are-they-there"
+   },
+   {
+    "text": "Glazed pavilions and glass balustrades stand on the first floor around its central void since the 2015 refurbishment.",
+    "source": "https://sete.toureiffel.paris/en/press/press-releases/official-opening-totally-refurbish-1st-floor-eiffel-tower"
+   },
+   {
+    "text": "Seen from above, each leg narrows quickly from its 25 m foot and the arches between the legs draw a curved star-shaped footprint.",
+    "source": "https://data.geopf.fr/wfs/ows?SERVICE=WFS&VERSION=2.0.0&REQUEST=GetFeature&TYPENAMES=BDTOPO_V3:batiment&BBOX=48.8570,2.2925,48.8595,2.2965,urn:ogc:def:crs:EPSG::4326&outputFormat=application/json"
    }
   ],
-  "geometry": "Base and floor heights from the official figures (125 m square, 57.63/115.73/276.13 m, 300 m); the outline is OpenStreetMap way 5013364 traced to local metres; the lattice legs, decks and base arches are drawn with the profile of the real tower.",
+  "geometry": "Base and floor heights and widths from the official figures (124.90 m base, 74.24 m inner gap, floors at 57.63/115.73/276.13 m, 70.69/40.96/18.65 m wide, 300 m); the footprint is measured against OpenStreetMap way 5013364, confirmed by IGN BD TOPO; the leg taper between the foot and the first floor is fitted to that footprint.",
   "comparisons": [
    {
     "pass": 1,
@@ -1023,19 +1142,83 @@
      "The phase strip reads correctly: foundations, the four legs with their scaffolds, the two platforms, the top and the night lighting.",
      "Against the photos the proportions hold: the legs meet the first floor at 57.63 m, the second at 115.73 m and the top at 300 m."
     ],
-    "fixed": [],
+    "fixed": [
+     "Nothing was changed after this pass at the time: the plan gap was accepted with an 8 m tolerance. It was taken up in pass 3, with the measurement made edge to edge and the tolerance back to 3 m."
+    ],
     "remaining": [
      "The lattice is schematic: the real tower has several hundred lattice members per panel; the model keeps the silhouette and the panel rhythm.",
      "The gap between the model and the measured outline is 8.2 m at the 90th percentile, concentrated in the sectors between the legs; see evidence.uncertainties."
+    ]
+   },
+   {
+    "pass": 3,
+    "captures": [
+     "eiffel-tower.evidence/compare/pass-3/ref-0.jpg",
+     "eiffel-tower.evidence/compare/pass-3/ref-1.jpg",
+     "eiffel-tower.evidence/compare/pass-3/ref-2.jpg",
+     "eiffel-tower.evidence/compare/pass-3/ref-3.jpg"
+    ],
+    "phases": [
+     "eiffel-tower.evidence/compare/pass-3/phase-0.jpg",
+     "eiffel-tower.evidence/compare/pass-3/phase-1.jpg",
+     "eiffel-tower.evidence/compare/pass-3/phase-2.jpg",
+     "eiffel-tower.evidence/compare/pass-3/phase-3.jpg",
+     "eiffel-tower.evidence/compare/pass-3/phase-4.jpg"
+    ],
+    "gaps": [
+     "Reference check: two of the four earlier reference photos (Bir-Hakeim bridge, Trocadero fountains) do not exist on Wikimedia Commons, and the third, said to be taken from the north-west, was taken from the south-east (Commons camera location 135°, 300 m). The comparison was replaced by four photos whose camera locations are recorded on Commons: south-east 136° at 229 m, north-west 319° at 306 m, west 268° at 426 m, north 1° at 502 m.",
+     "The earlier captures showed the night-lighting finale against daytime photos; references are now captured at the end of the last daylight phase.",
+     "Plan, measured edge to edge against OpenStreetMap way 5013364 (confirmed by IGN BD TOPO): the legs were 25 to 20 m wide all the way up and the base arches stood 14 m above the ground with a 31 m span, so the footprint bulged 5-8 m beyond the curved outline between the legs.",
+     "North telephoto photo (2022) against its capture: the first floor reads as a deep band (balcony, glazed pavilions, girder with the scientists' names), the second floor as a narrower band; in the model both floors were thin railings. The arches spring from the ground at the legs' inner edges and crown just under the first-floor girder; in the model they floated 14 m up."
+    ],
+    "fixed": [
+     "Leg outline fitted to the official sizes (exponential profile through the 125 m base, 70.69 m first floor and 40.96 m second floor) and leg width narrowing from 25.3 m at the foot to 15 m at the first floor: edge gap to the measured outline 2.5 m at the 90th percentile (was 5.9 m measured the same way), max 4.7 m.",
+     "Base arches spring from the ground (span 74.2 m, the inner gap between the piers) and rise 47 m to the underside of the first-floor girder.",
+     "First floor: 7 m edge girder with 19 consoles and 18 gold name panels per side, balcony floor, glazed pavilions between the legs; second floor: 4 m edge girder; floors at 57.6, 115.7 and 276.1 m with the official widths.",
+     "Captures retaken after these fixes; the viewer's fov parameter, missing since an earlier change, was restored so wide-angle and telephoto references frame like their photos."
+    ]
+   },
+   {
+    "pass": 4,
+    "captures": [
+     "eiffel-tower.evidence/compare/pass-4/ref-0.jpg",
+     "eiffel-tower.evidence/compare/pass-4/ref-1.jpg",
+     "eiffel-tower.evidence/compare/pass-4/ref-2.jpg",
+     "eiffel-tower.evidence/compare/pass-4/ref-3.jpg"
+    ],
+    "phases": [
+     "eiffel-tower.evidence/compare/pass-4/phase-0.jpg",
+     "eiffel-tower.evidence/compare/pass-4/phase-1.jpg",
+     "eiffel-tower.evidence/compare/pass-4/phase-2.jpg",
+     "eiffel-tower.evidence/compare/pass-4/phase-3.jpg",
+     "eiffel-tower.evidence/compare/pass-4/phase-4.jpg",
+     "eiffel-tower.evidence/compare/pass-4/phase-5.jpg"
+    ],
+    "gaps": [
+     "First look: the 2015 glazed pavilions appeared on the first floor in March 1888, and the whole tower's shadow lay on the ground from the foundations on (the shadow pass ignored the build animation).",
+     "North telephoto (2022): the legs, the arches springing from the ground and the first-floor band now read as in the photo; the photo's girder band is deeper in the light, with its consoles and balcony, and the pavilion glazing reflects the sky where the model's is dark.",
+     "South-east (Champ-de-Mars), north-west and west views: silhouette, leg curve, floor heights and widths match; the photos end with the antennas above the lantern, the model with the 1889 lantern and flag.",
+     "Colour: the photos show the bronze-brown paint; under the iron material the model's brown reads slightly redder."
+    ],
+    "fixed": [
+     "The pavilions now belong to a sourced 2015 phase (first floor refurbished, reopened 4 September 2015).",
+     "Pieces cast shadows only once built: the shadow pass uses the same growth shader as the colour pass, for every monument.",
+     "Captures retaken after both fixes: the phase strip reads foundations, legs with their scaffolds, second floor, top, lighting, then the glazed first floor."
+    ],
+    "remaining": [
+     "The lattice is schematic: the real tower has several hundred lattice members per panel; the model keeps the silhouette and the panel rhythm.",
+     "The antennas (330 m since 2022), lifts and restaurants of the second floor are left out.",
+     "The first-floor pavilions are one glazed block per side; the second-floor girder depth is read from the photos."
     ]
    }
   ],
   "uncertainties": [
    "The lattice is schematic: the real tower has several hundred lattice members per panel; the model keeps the silhouette and the panel rhythm.",
-   "The lifts, restaurants and the 2022 antenna (330 m) are left out.",
    "The climbing steam crane and scaffold cage follow the documented construction method, while their exact position within the selected leg is interpretive.",
-   "The model's ground plan still differs from the OpenStreetMap outline in the sectors between the legs: the tower's piers are drawn as square lattice boxes, while the real piers are rounded and the space between them follows the base arches; the 90th-percentile gap is 8.2 m (max 23.6 m)."
+   "The leg width between the foot and the first floor is fitted to the measured outline (OpenStreetMap and IGN BD TOPO agree); no published section of the piers was found.",
+   "The first-floor pavilions are drawn as one glazed block between the legs on every side; their exact plans are not in the sources used. The second-floor girder depth is read from the photos.",
+   "The antennas above the lantern (330 m since 2022), the lifts and the second-floor restaurant are left out."
   ]
  },
- "modelNote": "Measured from the OpenStreetMap plan and the official dimensions (125 m base, 57.63/115.73/276.13 m floors, 300 m top); the lattice is simplified to its four legs, three floors and base arches, and the illumination is schematic."
+ "modelNote": "Measured from the official dimensions and the OpenStreetMap and IGN footprints (edge gap 2.5 m at the 90th percentile); the lattice is simplified to its four legs, arches and three floors, the pavilions and the lighting are schematic."
 }

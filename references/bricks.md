@@ -19,7 +19,7 @@ Units are metres. `x` points east, `z` points south, `y` up; the ground (or wate
 | `cone` | A pointed roof | `center`, `radius`, `height` |
 | `slab` | A solid foundation mass | `center`, `size`, `y0` |
 | `scaffold` | A temporary timber scaffold | `at`, `height`, `until` (phase when it comes down) |
-| `lattice` | A four-legged iron lattice tower | `profile`, `legWidth`, `bands`, `arch`, `decks`, `flag` |
+| `lattice` | A four-legged iron lattice tower | `profile` (outer corner half-width by height), `legWidth` (leg section by height), `merge`, `shaft`, `bands`, `arch` (`base`, `rise`, `span`, `depth`, `at`: vertical plane at that distance from the axis; omitted, the arch follows the sloping face), `decks` (`y`, `overhang` (balcony), `gallery` (railing height), `frieze` (depth of the edge girder below the floor), `names` (inscriptions per side, `letters` colour), `pavilions` (`height`, `depth`, `setback`, `gap`, `mullion`, `glass`, `roof`, `phase`)), `flag` |
 | `suspension` | A suspension bridge | `span`, `side`, `tower`, `deck`, `width`, `portals`, `braces`, `phases` |
 | `batteredBase` | A stone base with sloping walls | `center`, `size` (foot), `top` (top), `height`, `rot`, `curve` (> 1: fan-shaped profile, flared at the foot), `colors` |
 | `timberFrame` | A timber frame of setback floors | `center`, `size`, `levels` (floor heights), `plans` (width, depth per level, in ken), `ken`, `y0`, `rot`, `pillars` (`offsets`, `height`, `width`: masts through every floor) |

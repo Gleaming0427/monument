@@ -44,6 +44,34 @@ const MATERIAL_PRESETS = new Set(['gothic-limestone', 'roman-weathered', 'marble
 const ENVIRONMENT_PRESETS = new Set(['gothic-urban', 'mediterranean-lawn', 'roman-ruins', 'exposition-grounds', 'museum-neutral']);
 const SURFACE_MATERIALS = new Set(['limestone-paris', 'limestone-weathered', 'marble-white', 'sandstone-warm', 'granite-grey', 'brick-roman', 'oak-aged', 'slate-aged', 'terracotta-aged']);
 const DECOR_TYPES = new Set(['tree-oak', 'tree-cypress', 'tree-olive', 'stone-blocks', 'cart-medieval', 'amphora']);
+// Links are opened, not trusted: a page cited must answer, a reference photo must exist on Wikimedia
+// Commons and, when Commons records where it was taken, the declared viewpoint must match that place.
+const UA = {'User-Agent': 'monument-skill/1.0 (+https://github.com/Gleaming0427/monument)'};
+const opened = new Map();
+const open = link => {
+  if (!opened.has(link)) opened.set(link, (async () => {
+    for (const method of ['HEAD', 'GET']) {
+      try {
+        const response = await fetch(link, {method, headers: UA, redirect: 'follow', signal: AbortSignal.timeout(20000)});
+        response.body?.cancel();
+        if (response.status < 400) return 'ok';
+        if ([404, 410].includes(response.status)) return `answers ${response.status}`;
+        if (method === 'GET') return [401, 403, 429, 503].includes(response.status) ? 'ok' : `answers ${response.status}`;
+      } catch (error) { if (method === 'GET') return `cannot be opened (${error.cause?.code ?? error.name})`; }
+    }
+  })());
+  return opened.get(link);
+};
+async function commons(titles) {
+  const pages = new Map();
+  for (let i = 0; i < titles.length; i += 40) {
+    const query = new URLSearchParams({action: 'query', format: 'json', prop: 'coordinates|imageinfo', coprop: 'type', colimit: 'max', titles: titles.slice(i, i + 40).join('|')});
+    const response = await fetch(`https://commons.wikimedia.org/w/api.php?${query}`, {headers: UA, signal: AbortSignal.timeout(30000)});
+    const data = await response.json(), names = new Map((data.query.normalized ?? []).map(n => [n.to, n.from]));
+    for (const page of Object.values(data.query.pages)) pages.set(names.get(page.title) ?? page.title, page);
+  }
+  return pages;
+}
 const seen = new Map();
 for (const file of (await Promise.all(targets.map(files))).flat()) {
   let d, text;
@@ -147,6 +175,7 @@ async function evidence(d, text, file, id, at, strict) {
   check(sources.length >= sourceMinimum && sources.every(s => s && url(s.url) && typeof s.read === 'string' && s.read.length >= 20), `${at} evidence.sources needs at least ${sourceMinimum} pages read, each {"url", "read": "what this page says"}`);
   check(new Set(sources.map(s => { try { return new URL(s.url).hostname; } catch { return ''; } })).size >= 2, `${at} evidence.sources must come from at least 2 different sites`);
   const read = new Set(sources.map(s => s?.url));
+  for (const link of [...read].filter(url)) { const state = await open(link); check(state === 'ok', `${at} source ${link} ${state}`); }
   const scenes = d.phases.filter(phase => phase.scene);
   check(scenes.length >= Math.min(2, d.phases.length), `${at} show a sourced human-scale worksite in at least ${Math.min(2, d.phases.length)} phases with phase.scene`);
   for (const p of d.phases) {
@@ -159,9 +188,12 @@ async function evidence(d, text, file, id, at, strict) {
   check(plan.source && url(plan.url) && typeof plan.outline === 'string', `${at} evidence.plan needs "source", "url" and "outline" (the measured outline file, step 4)`);
   if (typeof plan.outline === 'string') {
     try {
-      const {result} = await measurePlan(file), tolerance = Math.min(10, plan.tolerance ?? 3);
-      check(result.p90 !== null && result.p90 <= tolerance, `${at} the model is ${result.p90} m off its measured outline (90% of sectors; max ${result.max} m); fit it within ${tolerance} m`);
-      check(result.coverage >= .5, `${at} the model covers only ${Math.round(result.coverage * 100)}% of the measured outline`);
+      // A tolerance above 3 m (at most 5 m) must be argued in evidence.plan.toleranceReason.
+      const {result} = await measurePlan(file), tolerance = result.tolerance;
+      check(result.p90 <= tolerance, `${at} the model's edges are ${result.p90} m off the measured outline (90% of the edges; max ${result.max} m); fit them within ${tolerance} m, the red marks in plan.svg show where`);
+      check(result.coverage >= .85, `${at} the model covers only ${Math.round(result.coverage * 100)}% of the measured outline (85% needed)`);
+      check(result.overflow <= .2, `${at} the model spreads ${Math.round(result.overflow * 100)}% beyond the measured outline (20% at most): check its scale and orientation`);
+      check(!(plan.tolerance > 3) || (typeof plan.toleranceReason === 'string' && plan.toleranceReason.length >= 30), `${at} evidence.plan.tolerance is above 3 m: say why in evidence.plan.toleranceReason`);
     } catch (error) { check(false, `${at} cannot measure the plan: ${error.message}`); }
     check(await exists(join(dir, `${id}.evidence`, 'plan.svg')), `${at} ${id}.evidence/plan.svg is missing: run node scripts/plan.mjs`);
   }
@@ -170,8 +202,29 @@ async function evidence(d, text, file, id, at, strict) {
   const photoMinimum = strict ? 4 : 3, sideMinimum = strict ? 3 : 2;
   check(photos.length >= photoMinimum, `${at} evidence.references needs at least ${photoMinimum} reference photos`);
   for (const [i, r] of photos.entries()) check(url(r?.url) && typeof r.view === 'string' && [r.azimuth, r.elevation, r.distance].every(Number.isFinite), `${at} reference ${i} needs "url", "view", "azimuth", "elevation" and "distance"`);
+  for (const [i, r] of photos.entries()) check(r?.phase === undefined || phases.has(r.phase), `${at} reference ${i}: "phase" names unknown phase "${r?.phase}"`);
   const sides = new Set(photos.filter(r => Number.isFinite(r?.azimuth)).map(r => Math.floor((((r.azimuth % 360) + 360) % 360) / 90)));
   check(sides.size >= sideMinimum, `${at} the reference photos must be taken from at least ${sideMinimum} sides (azimuths in different quadrants)`);
+  // Every reference photo exists, and its viewpoint is where Commons says it was taken.
+  try {
+    const title = r => { const m = /commons\.wikimedia\.org\/wiki\/(File:[^?#]+)/.exec(r?.url ?? ''); return m ? decodeURIComponent(m[1]).replaceAll('_', ' ') : null; };
+    const pages = await commons(photos.map(title).filter(Boolean));
+    const origin = await readFile(join(dir, ev.plan?.outline ?? ''), 'utf8').then(text => JSON.parse(text).origin, () => null);
+    for (const [i, r] of photos.entries()) {
+      const name = title(r);
+      if (!name) { const state = await open(r.url); check(state === 'ok', `${at} reference ${i}: ${r.url} ${state}`); continue; }
+      const page = pages.get(name);
+      check(page && !('missing' in page) && !('invalid' in page), `${at} reference ${i}: ${name} does not exist on Wikimedia Commons`);
+      const camera = page?.coordinates?.find(c => c.type === 'camera') ?? page?.coordinates?.[0];
+      if (camera && origin?.length === 2 && Number.isFinite(r.azimuth)) {
+        const x = (camera.lon - origin[1]) * 111320 * Math.cos(origin[0] * Math.PI / 180), z = -(camera.lat - origin[0]) * 110540;
+        const azimuth = (Math.atan2(x, -z) * 180 / Math.PI + 360) % 360, off = Math.abs(((r.azimuth - azimuth) % 360 + 540) % 360 - 180), far = Math.hypot(x, z);
+        check(off <= 30 || far < 20, `${at} reference ${i}: Commons records the camera at azimuth ${Math.round(azimuth)}°, ${Math.round(far)} m away; the reference says ${r.azimuth}°`);
+        const ground = r.distance * Math.cos((r.elevation ?? 0) * Math.PI / 180);
+        check(far < 20 || (ground > far / 2.5 && ground < far * 2.5), `${at} reference ${i}: Commons records the camera ${Math.round(far)} m away; the reference puts it ${Math.round(ground)} m away (put the camera where the photographer stood, and use fov for the lens)`);
+      }
+    }
+  } catch (error) { check(false, `${at} cannot verify the reference photos on Wikimedia Commons: ${error.message}`); }
   const features = Array.isArray(ev.features) ? ev.features : [];
   check(features.length >= 8 && features.every(f => f && typeof f.text === 'string' && url(f.source)), `${at} evidence.features needs at least 8 recognisable features, including close details, each {"text", "source"}`);
   // Standard: one focused final-view pass. Publication: two passes and phase captures.
@@ -182,7 +235,8 @@ async function evidence(d, text, file, id, at, strict) {
     check(Array.isArray(c.captures) && c.captures.length >= photos.length, `${at} pass ${c.pass}: one capture per reference photo (run compare.mjs again)`);
     for (const capture of c.captures ?? []) check(await exists(join(dir, capture)), `${at} pass ${c.pass}: capture ${capture} not found`);
     check(Array.isArray(c.gaps) && c.gaps.length > 0 && c.gaps.every(g => typeof g === 'string' && g.length > 10), `${at} pass ${c.pass}: write in "gaps" what differs between each photo and its capture`);
-    if (strict) check(Array.isArray(c.phases) && c.phases.length >= d.phases.length, `${at} pass ${c.pass}: publication needs one capture per phase (run compare.mjs without --quick)`);
+    // The last pass shows the current timeline: one capture per phase. Earlier passes keep the phases of their day.
+    if (strict) check(Array.isArray(c.phases) && c.phases.length >= (c === passes.at(-1) ? d.phases.length : 1), `${at} pass ${c.pass}: publication needs one capture per phase (run compare.mjs without --quick)`);
   }
   for (const c of strict ? passes.slice(0, -1) : passes.slice(0, 1)) check(Array.isArray(c.fixed) && c.fixed.length > 0, `${at} pass ${c.pass}: write in "fixed" what was changed after it`);
   const last = passes.at(-1);

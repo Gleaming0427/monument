@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 // One pass of the photo comparison: node scripts/compare.mjs monuments/<id>.json --pass <n> [--quick]
 // For every reference photo in evidence.references (azimuth, elevation, distance, target), photographs the
-// finished model from the same viewpoint. Publication mode also captures every phase; --quick skips those.
+// model from the same viewpoint, in the state the photo shows (its "phase", by default the last daylight
+// one). Publication mode also captures every phase; --quick skips those.
 // The pass is recorded in evidence.comparisons with its captures; the gaps seen between each photo and its
 // capture, and what was fixed, are then written there by whoever looks at them.
 import {readFile, writeFile, mkdir} from 'node:fs/promises';
@@ -21,10 +22,14 @@ const folder = join(dir, `${id}.evidence`, 'compare', `pass-${pass}`);
 await mkdir(folder, {recursive: true});
 const viewer = await startViewer(dir, Number(flag('port') ?? 4196)), browser = await openBrowser({width: 960, height: 600});
 const cam = r => [r.azimuth, r.elevation, r.distance, ...(r.target ?? d.view.target)].join(',');
+// A photo shows one state of the building: the end of its "phase", or by default the last daylight phase
+// (a night-lighting finale is not what a daytime photo shows).
+const daylight = d.phases.findLastIndex(p => p.mood !== 'night');
+const state = r => { const i = r.phase ? d.phases.findIndex(p => p.id === r.phase) : daylight; return i < 0 ? 99 : i + .97; };
 const captures = [], phases = [];
 try {
   for (const [i, r] of refs.entries()) {
-    await browser.open(`${viewer.base}?t=99&cam=${cam(r)}${r.fov ? `&fov=${r.fov}` : ''}&clean#${id}`);
+    await browser.open(`${viewer.base}?t=${state(r)}&cam=${cam(r)}${r.fov ? `&fov=${r.fov}` : ''}&clean#${id}`);
     const out = join(folder, `ref-${i}.jpg`);
     await writeFile(out, await browser.shot('jpeg'));
     captures.push(relative(dir, out));

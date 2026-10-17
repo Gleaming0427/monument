@@ -152,7 +152,7 @@ async function main() {
     url: draft.evidence.plan.url,
     attribution: '© OpenStreetMap contributors, ODbL',
     query: options.query,
-    origin: draft._scaffold.origin,
+    origin: [draft._scaffold.origin[1], draft._scaffold.origin[0]],
     polygons: [draft.elements.find(element => Array.isArray(element.points))?.points ?? []],
   };
   delete draft._scaffold;

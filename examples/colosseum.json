@@ -184,7 +184,8 @@
    "The timber facade scaffold and gin-pole hoists explain the masonry sequence; their exact Roman site layout is interpretive.",
    "Which end dates from 1807 and which from 1827 is not stated in the sources used; the wedge (east) and the stepped arches (west) follow photos.",
    "Stone weathering, black crusts and clamp pits not drawn; arches, cornices, attic windows and corbels simplified.",
-   "The 1807 wedge: the east photo shows it on the other side of the wall's cut end; drawn as a stepped slope."
+   "The 1807 wedge: the east photo shows it on the other side of the wall's cut end; drawn as a stepped slope.",
+   "The OpenStreetMap outline stops at the cut end of the outer wall and leaves out the 1807 brick buttress: the buttress alone makes the 14.7 m maximum edge gap of the control plan (90% of the edges are within 1.5 m)."
   ],
   "plan": {
    "source": "OpenStreetMap relation 1834818 (building parts with heights)",

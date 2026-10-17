@@ -18,7 +18,7 @@ Someone who knows the building should recognise it at first glance, find its pro
 
 ## Compare, fix, repeat
 
-1. Give each reference photo its viewpoint in `evidence.references`: `azimuth` (degrees from north, 180 = seen from the south), `elevation` (negative looks up from the foot of the building), `distance` and `target`.
+1. Give each reference photo its viewpoint in `evidence.references`: `azimuth` (degrees from north, 180 = seen from the south), `elevation` (negative looks up from the foot of the building), `distance` and `target`, from the camera location Commons records for the photo (validation checks them against it), `fov` for the lens, and `phase` when the photo shows an earlier state (by default the model is photographed at the end of the last daylight phase).
 2. For a standard build, run `node scripts/compare.mjs monuments/<id>.json --pass 1 --quick`. It photographs the finished model from every reference viewpoint and skips phase screenshots. Play the timeline once, fix the visible gaps, then rerun the same command to refresh the captures. Publication runs the command without `--quick` for two passes.
 3. Open each photo and its capture, one after the other. Write in that pass's `gaps` what differs: silhouette, proportions, number of elements, roof shapes, openings, colours, ornaments, and whether every phase reads. A photo taken from the foot of a building flattens its upper roofs: match the viewpoint before judging proportions.
 4. Write what you changed in `fixed`. Standard mode finishes after the refreshed first pass when only deliberate, named simplifications remain. Publication adds a second pass. Write remaining simplifications in the last pass's `remaining` and in `evidence.uncertainties`.
