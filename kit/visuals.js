@@ -35,9 +35,9 @@ export const ENVIRONMENT_PRESETS = {
 };
 
 export const QUALITY = {
-  basic: {maps: 0, shadows: 0, density: .45, pixelRatio: 1.5},
-  standard: {maps: 3, shadows: 1024, density: 1, pixelRatio: 1.75},
-  cinematic: {maps: 4, shadows: 2048, density: 1.65, pixelRatio: 2},
+  basic: {maps: 0, shadows: 0, density: .45, pixelRatio: 1.5, ao: 0},
+  standard: {maps: 3, shadows: 1024, density: 1, pixelRatio: 1.75, ao: 1},
+  cinematic: {maps: 4, shadows: 2048, density: 1.65, pixelRatio: 2, ao: 1},
 };
 
 const textureCache = new Map(), loader = new T.TextureLoader();

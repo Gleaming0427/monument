@@ -281,16 +281,10 @@
     "scaffold": {
      "kind": "ring",
      "radius": 8.5,
-     "depth": 1.6,
-     "height": 17,
-     "segments": 24
+     "height": 17
     },
     "hoist": {
      "kind": "treadwheel",
-     "offset": [
-      11.5,
-      1
-     ],
      "height": 10,
      "from": 0,
      "to": 7
@@ -360,16 +354,10 @@
     "scaffold": {
      "kind": "ring",
      "radius": 8.6,
-     "depth": 1.6,
-     "height": 34,
-     "segments": 24
+     "height": 34
     },
     "hoist": {
      "kind": "treadwheel",
-     "offset": [
-      11.5,
-      1
-     ],
      "height": 10,
      "from": 9,
      "to": 27

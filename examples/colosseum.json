@@ -61,7 +61,10 @@
     "from": "domitian",
     "until": "fire"
    }
-  ]
+  ],
+  "surfaces": {
+   "stone": "limestone-paris"
+  }
  },
  "live": [
   {
@@ -214,10 +217,10 @@
    "url": "https://www.openstreetmap.org/relation/1834818",
    "outline": "colosseum.evidence/outline.json",
    "fit": {
-    "p90": 1.5,
-    "max": 14.71,
+    "p90": 1.8,
+    "max": 14.56,
     "coverage": 1,
-    "overflow": 0.04
+    "overflow": 0.06
    }
   },
   "size": "building",
@@ -344,20 +347,10 @@
     "materials": true,
     "scaffold": {
      "kind": "facade",
-     "width": 34,
-     "depth": 1.8,
-     "height": 26,
-     "offset": [
-      0,
-      -8
-     ]
+     "width": 34
     },
     "hoist": {
      "kind": "gin-pole",
-     "offset": [
-      11,
-      -3
-     ],
      "height": 14,
      "from": 0,
      "to": 12
@@ -416,10 +409,10 @@
     ],
     "focus": [
      -0.94,
-     3,
+     6,
      -0.43
     ],
-    "distance": 58,
+    "distance": 80,
     "radius": 30,
     "height": 11,
     "workers": 12,
@@ -580,19 +573,25 @@
    "storeys": [
     {
      "height": 10.5,
-     "column": true
+     "column": true,
+     "arch": 7.05
     },
     {
      "height": 11.8,
-     "column": true
+     "column": true,
+     "arch": 7.8,
+     "sill": 1.2
     },
     {
      "height": 11.6,
-     "column": true
+     "column": true,
+     "arch": 7.7,
+     "sill": 1.2
     }
    ],
-   "color": "#dcc39b",
-   "provenance": "measured"
+   "color": "#dcd0b4",
+   "provenance": "measured",
+   "pits": 3
   },
   {
    "type": "amphitheatre",
@@ -615,20 +614,26 @@
    "storeys": [
     {
      "height": 10.5,
-     "column": true
+     "column": true,
+     "arch": 7.05
     },
     {
      "height": 11.8,
-     "column": true
+     "column": true,
+     "arch": 7.8,
+     "sill": 1.2
     },
     {
      "height": 11.6,
-     "column": true
+     "column": true,
+     "arch": 7.7,
+     "sill": 1.2
     }
    ],
    "until": "earthquake",
-   "color": "#dcc39b",
-   "provenance": "measured"
+   "color": "#dcd0b4",
+   "provenance": "measured",
+   "pits": 3
   },
   {
    "type": "amphitheatre",
@@ -652,11 +657,18 @@
    "storeys": [
     {
      "kind": "attic",
-     "height": 14.6
+     "height": 14.6,
+     "window": [
+      1.7,
+      2.3
+     ],
+     "windowAt": 5.2,
+     "every": 2
     }
    ],
-   "color": "#dcc39b",
-   "provenance": "measured"
+   "color": "#dcd0b4",
+   "provenance": "measured",
+   "pits": 3
   },
   {
    "type": "amphitheatre",
@@ -680,12 +692,19 @@
    "storeys": [
     {
      "kind": "attic",
-     "height": 14.6
+     "height": 14.6,
+     "window": [
+      1.7,
+      2.3
+     ],
+     "windowAt": 5.2,
+     "every": 2
     }
    ],
    "until": "earthquake",
-   "color": "#dcc39b",
-   "provenance": "measured"
+   "color": "#dcd0b4",
+   "provenance": "measured",
+   "pits": 3
   },
   {
    "type": "amphitheatre",
@@ -703,24 +722,112 @@
    ],
    "storeys": [
     {
-     "height": 12
+     "height": 10.5,
+     "arch": 7.05
     },
     {
-     "height": 12
+     "height": 11.8,
+     "arch": 7.8,
+     "sill": 1.2
     },
     {
-     "kind": "attic",
-     "height": 12
+     "height": 7.7,
+     "arch": 6.1,
+     "sill": 0.6
+    },
+    {
+     "kind": "brick",
+     "height": 6,
+     "window": [
+      1.8,
+      2.4
+     ],
+     "windowAt": 3.2,
+     "every": 2
     }
    ],
-   "color": "#cfb894",
+   "color": "#cbbfa3",
    "height": 36,
    "ruin": {
     "phase": "quarry",
-    "share": 0.4,
-    "depth": 0.3
+    "share": 0.12,
+    "depth": 0.12
    },
-   "provenance": "measured"
+   "provenance": "measured",
+   "brick": "#a5664a",
+   "stubs": true,
+   "pits": 4,
+   "vaults": [
+    74,
+    55.2
+   ],
+   "vaultColor": "#a99c82",
+   "arc": [
+    355.5,
+    198
+   ]
+  },
+  {
+   "type": "amphitheatre",
+   "center": [
+    -0.94,
+    -0.43
+   ],
+   "rot": -0.3442,
+   "bays": 80,
+   "part": "facade",
+   "phase": "vespasian",
+   "radii": [
+    80,
+    63.3
+   ],
+   "storeys": [
+    {
+     "height": 10.5,
+     "arch": 7.05
+    },
+    {
+     "height": 11.8,
+     "arch": 7.8,
+     "sill": 1.2
+    },
+    {
+     "height": 7.7,
+     "arch": 6.1,
+     "sill": 0.6
+    },
+    {
+     "kind": "brick",
+     "height": 6,
+     "window": [
+      1.8,
+      2.4
+     ],
+     "windowAt": 3.2,
+     "every": 2
+    }
+   ],
+   "color": "#9a8f79",
+   "height": 36,
+   "ruin": {
+    "phase": "quarry",
+    "share": 0.12,
+    "depth": 0.12
+   },
+   "provenance": "measured",
+   "brick": "#7e5240",
+   "stubs": true,
+   "pits": 4,
+   "vaults": [
+    74,
+    55.2
+   ],
+   "vaultColor": "#6f6656",
+   "arc": [
+    198,
+    355.5
+   ],
+   "note": "Behind the standing outer wall: tinted as the gallery's shade, which the renderer does not compute."
   },
   {
    "type": "amphitheatre",
@@ -748,7 +855,7 @@
    },
    "seats": false,
    "wallWidth": 2.2,
-   "brick": "#93634b",
+   "brick": "#6f4b3b",
    "rings": [
     {
      "radii": [
@@ -842,7 +949,7 @@
    ],
    "podium": 0,
    "hypogeum": true,
-   "brick": "#93634b",
+   "brick": "#7a5442",
    "color": "#d5bf98",
    "provenance": "documented"
   },
@@ -857,7 +964,7 @@
    "height": 36,
    "length": 15,
    "width": 4.8,
-   "color": "#9c6c52",
+   "color": "#8f5d48",
    "provenance": "documented"
   },
   {
@@ -874,7 +981,7 @@
     92.9,
     75.2
    ],
-   "color": "#c29b75",
+   "color": "#c39a74",
    "arc": [
     193.5,
     198
@@ -882,18 +989,25 @@
    "storeys": [
     {
      "height": 10.5,
-     "column": true
+     "column": true,
+     "arch": 7.05
     },
     {
      "height": 11.8,
-     "column": true
+     "column": true,
+     "arch": 7.8,
+     "sill": 1.2
     },
     {
      "height": 11.6,
-     "column": true
+     "column": true,
+     "arch": 7.7,
+     "sill": 1.2
     }
    ],
-   "provenance": "documented"
+   "provenance": "documented",
+   "pits": 0,
+   "worn": 0.08
   },
   {
    "type": "amphitheatre",
@@ -909,7 +1023,7 @@
     92.9,
     75.2
    ],
-   "color": "#c29b75",
+   "color": "#c39a74",
    "arc": [
     189,
     193.5
@@ -917,14 +1031,19 @@
    "storeys": [
     {
      "height": 10.5,
-     "column": true
+     "column": true,
+     "arch": 7.05
     },
     {
      "height": 11.8,
-     "column": true
+     "column": true,
+     "arch": 7.8,
+     "sill": 1.2
     }
    ],
-   "provenance": "documented"
+   "provenance": "documented",
+   "pits": 0,
+   "worn": 0.08
   }
  ]
 }

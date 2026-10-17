@@ -147,17 +147,11 @@
     "height": 48,
     "workers": 14,
     "materials": true,
-    "scaffold": {
-     "kind": "tower",
-     "width": 20,
-     "depth": 20,
-     "height": 32
-    },
     "hoist": {
      "kind": "steam-crane",
      "offset": [
-      8,
-      8
+      -7,
+      -7
      ],
      "height": 9,
      "from": 4,

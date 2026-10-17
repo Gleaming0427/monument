@@ -4,6 +4,7 @@ import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
 import {RenderPass} from 'three/addons/postprocessing/RenderPass.js';
 import {UnrealBloomPass} from 'three/addons/postprocessing/UnrealBloomPass.js';
 import {OutputPass} from 'three/addons/postprocessing/OutputPass.js';
+import {GTAOPass} from 'three/addons/postprocessing/GTAOPass.js';
 import {resolveVisualStyle, pbrOptions, groundOptions, createEnvironment, disposeEnvironment} from './visuals.js';
 
 // Construction engine: a monument file (phases + elements) becomes thousands of instanced pieces.
@@ -539,30 +540,75 @@ export const generators = {
     };
     const step = 2 * Math.PI / bays;
     if (part === 'facade') {
-      const radii = e.radii;
+      // One ring of the facade, storey by storey, in coursed stone: piers and round arches with their imposts,
+      // engaged half-columns with bases and capitals (pilasters on an attic), an entablature and a projecting
+      // cornice; on an attic, windows in alternate bays and the corbels of the awning masts; a brick storey
+      // with windows; vaults over the ring's gallery (`vaults`: the radii of the wall it spans to), the stubs
+      // of lost vaults (`stubs`), and the pits left by the iron clamps (`pits`).
+      const radii = e.radii, T2 = e.thick ?? 2.4, course = e.course ?? .72, worn = e.worn ?? .18, pits = e.pits ?? 0;
+      const stone = (hex, j = .07) => { const c = k.tint(hex, j); return k.rand() < worn ? c.multiplyScalar(.8 + .1 * k.rand()) : c; };
+      const block = (p, y, size, t, hex) => { const w = world(p.x, y, p.z); k.box('stone', [w.x, w.y, w.z], size, yaw(t), stone(hex), ph, w.y); };
+      const ringPoint = (th, out = 0) => { const q = ell(th, radii); return q.p.clone().addScaledVector(q.n, out); };
       let y = e.y0 ?? 0;
       for (const s of e.storeys) {
+        const H = s.height, E = s.kind === 'brick' ? 0 : s.entablature ?? Math.min(2.2, H * .17), wallHex = s.kind === 'brick' ? brick : color;
         for (let i = 0; i < bays; i++) {
           const th = i * step; if (!inArc(th) || !inArc(th + step)) continue;
-          const {p, n, t} = ell(th, radii), next = ell(th + step, radii).p, m = ell(th + step / 2, radii), bay = p.distanceTo(next);
-          if (s.kind === 'attic') {
-            put(m.p, y + s.height / 2, [bay * 1.03, s.height, 1.6], m.t, color);
-            put(p.clone().addScaledVector(n, .5), y + s.height / 2, [.85, s.height - .5, .5], t, color);
-            if (i % 2 === 0) put(m.p.clone().addScaledVector(m.n, .8), y + s.height * .5, [1.2, 1.9, .2], m.t, '#3f362e');
-            for (const f of [.25, .75]) { const c = ell(th + step * f, radii); put(c.p.clone().addScaledVector(c.n, .95), y + s.height - 1.9, [.55, .7, .5], c.t, color); }
-            put(m.p.clone().addScaledVector(m.n, .3), y + s.height - .35, [bay * 1.05, .7, 2.3], m.t, color);
-            continue;
+          const a = ell(th, radii), b = ell(th + step, radii), m = ell(th + step / 2, radii), bay = a.p.distanceTo(b.p), t = b.p.clone().sub(a.p).normalize();
+          const at = (u, out = 0) => m.p.clone().addScaledVector(t, u).addScaledVector(m.n, out);
+          const O = s.kind === 'brick' || s.kind === 'attic' ? 0 : bay * (s.open ?? .62), spring = y + (s.arch ?? H * .62) - O / 2;
+          const win = s.kind === 'attic' || s.kind === 'brick' ? (i % (s.every ?? 2) === 0 ? {w: s.window?.[0] ?? 1.6, h: s.window?.[1] ?? 2.2, y: y + (s.windowAt ?? H * .45)} : null) : null;
+          // The wall of the bay, course by course, cut round its arch or its window.
+          for (let yc = y, row = 0; yc < y + H - E - .05; row++) {
+            const h = Math.min(course, y + H - E - yc), ym = yc + h / 2;
+            let hw = -1;
+            if (O && ym > y + (s.sill ?? 0)) hw = ym < spring ? O / 2 : (O / 2) ** 2 - (ym - spring) ** 2 > 0 ? Math.sqrt((O / 2) ** 2 - (ym - spring) ** 2) : -1;
+            if (win && ym > win.y - win.h / 2 && ym < win.y + win.h / 2) hw = win.w / 2;
+            const spans = hw > 0 ? [[-bay / 2, -hw], [hw, bay / 2]] : [[-bay / 2, bay / 2]];
+            for (const [u0, u1] of spans) {
+              // Long courses split into two or three blocks, joints staggered.
+              const n = Math.max(1, Math.round((u1 - u0) / 1.6)), w = (u1 - u0) / n, shift = row % 2 ? w / 2 : 0;
+              for (let j = 0; j < n + (shift ? 1 : 0); j++) {
+                const v0 = Math.max(u0, u0 + j * w - shift), v1 = Math.min(u1, u0 + (j + 1) * w - shift);
+                if (v1 - v0 > .08) block(at((v0 + v1) / 2), ym, [v1 - v0 - .03, h * .95, T2], t, wallHex);
+              }
+            }
+            yc += h;
           }
-          const open = bay * .62, spring = y + s.height * .6;
-          put(p, y + (spring - y) / 2, [bay - open, spring - y, 2.4], t, color);
-          if (s.column) put(p.clone().addScaledVector(n, 1.25), y + (s.height - 1.3) / 2, [.95, s.height - 1.3, .5], t, color);
-          arch(p.clone().addScaledVector(t, (bay - open) / 2), next.clone().addScaledVector(t, -(bay - open) / 2), spring, 2.4, color);
-          const top = y + s.height - 1.2, from = spring + open * .35;
-          put(m.p, (from + top) / 2, [bay * 1.03, top - from, 2.2], m.t, color);
-          put(p, spring + open * .2, [bay - open + .6, open * .4, 2.3], t, color);
-          put(m.p.clone().addScaledVector(m.n, .35), y + s.height - .6, [bay * 1.05, 1.2, 3.1], m.t, color);
+          if (O) {
+            arch(at(-O / 2 - .05), at(O / 2 + .05), spring, T2 + .1, color);
+            for (const side of [-1, 1]) block(at(side * (O / 2 + .25), T2 / 2 + .08), spring - .2, [.7, .4, .35], t, color);
+          }
+          if (win) {
+            block(at(0, T2 / 2 - .3), win.y + win.h / 2 + .2, [win.w + .5, .4, .7], t, wallHex);
+            block(at(0, T2 / 2 - .3), win.y - win.h / 2 - .15, [win.w + .5, .3, .8], t, wallHex);
+          }
+          // Orders: engaged half-columns with base and capital between the arches, pilasters on an attic.
+          if (s.column || s.kind === 'attic') {
+            const p = ringPoint(th, 0), n = a.n, shaft = H - E - (s.kind === 'attic' ? 1.2 : .9);
+            const dd = s.kind === 'attic' ? .35 : .75, wd = s.kind === 'attic' ? .8 : .95;
+            const col = (yy, hh, w2, d2) => { const q = p.clone().addScaledVector(n, T2 / 2 + d2 / 2 - .1), wq = world(q.x, yy, q.z); k.box('stone', [wq.x, wq.y, wq.z], [w2, hh, d2], yaw(a.t), stone(color, .05), ph, wq.y); };
+            col(y + .2, .4, wd + .35, dd + .3);
+            for (let yc = y + .4; yc < y + .4 + shaft - .05; yc += 1.4) { const hh = Math.min(1.4, y + .4 + shaft - yc); col(yc + hh / 2, hh * .97, wd, dd); }
+            col(y + .4 + shaft + .25, .5, wd + .4, dd + .35);
+          }
+          // Entablature and cornice; on an attic, three corbels per bay for the awning masts.
+          if (E) {
+            block(at(0, .25), y + H - E + (E - .55) / 2, [bay * 1.02, E - .55, T2 + .5], t, color);
+            block(at(0, .55), y + H - .27, [bay * 1.04, .55, T2 + 1.3], t, color);
+          }
+          if (s.kind === 'attic') for (const f of [-1 / 3, 0, 1 / 3]) block(at(f * bay, T2 / 2 + .45), y + H - E - 1.4, [.55, .75, .9], t, color);
+          // Pits where the iron clamps were hacked out of the joints.
+          for (let j = 0; j < pits; j++) { const u = (k.rand() - .5) * bay, yy = y + k.rand() * (H - E); if (O && Math.abs(u) < O / 2 + .1 && yy < spring + O / 2) continue; block(at(u, T2 / 2 + .02), yy, [.22, .2, .08], t, '#4f473e'); }
+          // The stubs of the gallery vaults that once leaned on this wall.
+          if (e.stubs) block(ringPoint(th, T2 / 2 + .6), y + H - .9, [1.1, .9, 1.3], a.t, color);
+          // The vault over the gallery behind this storey.
+          if (e.vaults && s.kind !== 'attic' && s.kind !== 'brick') {
+            const inner = ell(th + step / 2, e.vaults), from = m.p.clone().addScaledVector(m.n, -T2 / 2), to = inner.p, d = from.distanceTo(to);
+            if (d > 1) { const c2 = from.clone().lerp(to, .5), wq = world(c2.x, y + H - .45, c2.z); k.box('stone', [wq.x, wq.y, wq.z], [bay * (1 - .1 * d / Math.max(radii[0], 1)), .9, d], yaw(m.t), stone(e.vaultColor ?? color), ph, wq.y); }
+          }
         }
-        y += s.height;
+        y += H;
       }
     } else if (part === 'cavea') {
       // Seats raked from the upper ring down to the podium round the arena, carried by radial walls.
@@ -1257,6 +1303,13 @@ export function createStage(host) {
   controls.addEventListener('start', () => { moved = true; });
   const composer = new EffectComposer(renderer, new T.WebGLRenderTarget(1, 1, {type: T.HalfFloatType, samples: 4}));
   composer.addPass(new RenderPass(scene, camera));
+  // Ambient occlusion: deep arcades, galleries and portals darken as they do in daylight. Its normal pass
+  // shares the pieces' growth shader, so a piece casts no occlusion before it is laid.
+  const ao = new GTAOPass(scene, camera, 1, 1);
+  ao.enabled = false;
+  ao.normalMaterial.customProgramCacheKey = () => 'piece:ao-normal';
+  ao.normalMaterial.onBeforeCompile = shader => { Object.assign(shader.uniforms, uniforms); growVertex(shader, null); };
+  composer.addPass(ao);
   const bloom = new UnrealBloomPass(new T.Vector2(1, 1), .55, .5, .82);
   composer.addPass(bloom);
   composer.addPass(new OutputPass());
@@ -1355,9 +1408,137 @@ export function createStage(host) {
     actor.userData = {baseY: 0, baseTurn: turn, offset, arms, role}; siteActors.push(actor);
   }
 
+  // ——— Scaffolds fitted to the work ———
+  // A scaffold stands where the masonry of its phase rises. Its line follows the outermost face of the pieces
+  // laid during the phase (or, if the phase lays none there, of those standing) at a constant gap: around the
+  // monument's centre for a facade (`facade`, over `width` metres of wall centred on the scene), around the
+  // scene's centre for a ring, an apse, a tower or a spire (`ring`, `tower`; from `base` metres up, `arc` and
+  // `start` in degrees). It is raised lift by lift: each lift appears when the masonry beside it reaches its
+  // foot, and it comes down when the phase ends. Timber poles with putlogs into the wall before the industrial
+  // age (`material: "timber"`), steel tubes on two rows of standards with guard rails after (`"steel"`).
+  const ZERO = new T.Matrix4().makeScale(0, 0, 0);
+  function fitScaffold(group, site, spec, phase) {
+    const cfg = typeof spec.scaffold === 'object' ? spec.scaffold : {}, kind = cfg.kind ?? 'facade', steel = cfg.material === 'steel';
+    const lift = cfg.levelHeight ?? 2, gap = cfg.gap ?? .45, depth = cfg.depth ?? (steel ? 1.1 : 1.3), base = cfg.base ?? 0, ceiling = cfg.height !== undefined ? base + cfg.height : Infinity;
+    const o = group.position, c = Math.cos(turnY), s = Math.sin(turnY);
+    const local = (x, z) => { const dx = x - o.x, dz = z - o.z; return [dx * c - dz * s, dx * s + dz * c]; };
+    const pc = kind === 'facade' ? local(monument.view.target[0], monument.view.target[2]) : (cfg.offset ?? [0, 0]);
+    let mid, half;
+    if (kind === 'facade') { mid = Math.atan2(-pc[1], -pc[0]); half = Math.min(Math.PI * .9, (cfg.width ?? (spec.radius ?? 14) * 1.45) / 2 / Math.max(4, Math.hypot(...pc))); }
+    else if (cfg.arc && cfg.arc < 360) { const a0 = (cfg.start ?? -90) * Math.PI / 180, a1 = a0 + cfg.arc * Math.PI / 180; mid = (a0 + a1) / 2; half = (a1 - a0) / 2; }
+    else { mid = 0; half = Math.PI; }
+    const full = half >= Math.PI - 1e-6;
+    const reach = cfg.reach ?? (kind === 'facade' ? (cfg.width ?? 20) / 2 + 8 : (cfg.radius ?? (cfg.width ?? spec.radius ?? 14) / 2) + 8);
+    const angleOf = (x, z) => Math.atan2(Math.sin(Math.atan2(z - pc[1], x - pc[0]) - mid), Math.cos(Math.atan2(z - pc[1], x - pc[0]) - mid));
+    const corners = [];
+    for (const x of [-.5, .5]) for (const y of [-.5, .5]) for (const z of [-.5, .5]) corners.push(new T.Vector3(x, y, z));
+    const gather = test => {
+      const out = [], v = new T.Vector3();
+      for (const piece of builtPieces) {
+        if (!test(piece)) continue;
+        const pts = corners.map(corner => { v.copy(corner).applyMatrix4(piece.matrix); const [x, z] = local(v.x, v.z); return [x, v.y, z]; });
+        const topY = Math.max(...pts.map(p => p[1]));
+        if (topY < base + .3 || Math.min(...pts.map(p => p[1])) > ceiling) continue;
+        const near = pts.filter(([x, , z]) => Math.hypot(x, z) <= reach && Math.abs(angleOf(x, z)) <= half);
+        if (near.length) out.push({birth: piece.birth, top: Math.min(topY, ceiling), pts: near});
+      }
+      return out;
+    };
+    let found = gather(p => p.phase === phase);
+    if (found.length < 8) found = gather(p => p.birth < phase + 1 && p.death > phase);
+    if (!found.length) return;
+    // Angular bins about one bay (2.2 m) long on the face; the outermost face and the masonry's rise in each.
+    const radii = found.flatMap(f => f.pts.map(([x, , z]) => Math.hypot(x - pc[0], z - pc[1]))).sort((a, b) => a - b), rRef = radii[Math.floor(radii.length * .9)];
+    const bays = Math.max(full ? 8 : 3, Math.round(2 * half * rRef / 2.2)), width = 2 * half / bays;
+    const bins = Array.from({length: bays}, () => ({r: 0, events: []})), binOf = (x, z) => Math.min(bays - 1, Math.max(0, Math.floor((angleOf(x, z) + half) / width)));
+    for (const f of found) for (const [x, , z] of f.pts) { const i = binOf(x, z); bins[i].r = Math.max(bins[i].r, Math.hypot(x - pc[0], z - pc[1])); }
+    // Only the outer face counts for the scaffold's rise: pieces within `zone` metres of it (3 by default).
+    const zone = cfg.zone ?? 3;
+    for (const f of found) {
+      const hit = new Set();
+      for (const [x, , z] of f.pts) { const i = binOf(x, z); if (Math.hypot(x - pc[0], z - pc[1]) >= bins[i].r - zone) hit.add(i); }
+      for (const i of hit) bins[i].events.push(f);
+    }
+    for (const bin of bins) {
+      bin.events.sort((a, b) => a.birth - b.birth);
+      let rise = -Infinity; bin.rise = bin.events.map(e => (rise = Math.max(rise, e.top), [e.birth - phase, rise]));
+      bin.top = bin.events.length ? Math.min(ceiling, bin.rise.at(-1)[1]) : 0;
+    }
+    // When the masonry of bin i first reaches height y (phase progress 0..1), or null if it never does. A
+    // scaffold put up before the work (`rise: "first"`, for a restoration or a spire built inside its cage)
+    // goes up lift by lift in the first tenth of the phase instead.
+    const finalTop = Math.max(...bins.map(b => b.top));
+    const reaches = cfg.rise === 'first'
+      ? (i, y) => y <= bins[i].top ? .01 + .1 * (y - base) / Math.max(1, finalTop - base) : null
+      : (i, y) => { for (const [t, h] of bins[i].rise) if (h >= y) return Math.max(.02, Math.min(.97, t)); return null; };
+    const ring = i => full ? (i + bays) % bays : i, edge = j => { const a = [bins[ring(j - 1)], bins[ring(j)]].filter(b => b?.events.length); return a.length ? Math.max(...a.map(b => b.r)) : 0; };
+    const P = (j, r, y) => { const a = mid - half + j * width; return new T.Vector3(pc[0] + Math.cos(a) * r, y, pc[1] + Math.sin(a) * r); };
+    // Parts are instanced by material and shown when their lift is raised.
+    const kinds = steel ? {tube: siteMaterial('#a3abb2', 'metal'), board: siteMaterial('#a5814f'), toe: siteMaterial('#b8955f')} : {tube: siteMaterial('#8a7254'), board: siteMaterial('#9d8263'), toe: siteMaterial('#6f5a43')};
+    const parts = {tube: [], board: [], toe: []}, m = new T.Matrix4(), q = new T.Quaternion();
+    const pole = (a, b, r, reveal, mat = 'tube') => { const d = b.clone().sub(a), len = d.length(); if (len < .05) return; q.setFromUnitVectors(UP, d.normalize()); parts[mat].push({matrix: m.compose(a.clone().add(b).multiplyScalar(.5), q, new T.Vector3(r, len, r)).clone(), reveal}); };
+    const slab = (a, b, w, h, y, reveal, mat = 'board') => { const d = b.clone().sub(a); d.y = 0; const len = d.length(); if (len < .05) return; q.setFromAxisAngle(UP, Math.atan2(-d.z, d.x)); parts[mat].push({matrix: m.compose(a.clone().add(b).multiplyScalar(.5).setY(y), q, new T.Vector3(len, h, w)).clone(), reveal}); };
+    const raised = (i, y) => bins[i]?.events.length ? reaches(i, y) : null;
+    const span = bays, decks = [];
+    for (let i = 0; i < span; i++) {
+      if (!bins[i].events.length) continue;
+      const j0 = i, j1 = i + 1, r0 = edge(j0), r1 = edge(j1), top = Math.max(bins[i].top, bins[ring(i - 1)]?.top ?? 0, bins[ring(i + 1)]?.top ?? 0);
+      const rows = steel ? [gap, gap + depth] : [gap + depth];
+      for (let y0 = base, level = 0; y0 < top - .2; y0 += lift, level++) {
+        const reveal = raised(i, y0 + .3);
+        if (reveal === null) break;
+        const y1 = y0 + lift;
+        // Standards at both ends of the bay (the next bay shares the far one), ledgers along it.
+        for (const off of rows) {
+          pole(P(j0, r0 + off, y0), P(j0, r0 + off, y1), steel ? .045 : .085, reveal);
+          if ((!full && i === span - 1) || !bins[ring(i + 1)]?.events.length) pole(P(j1, r1 + off, y0), P(j1, r1 + off, y1), steel ? .045 : .085, reveal);
+          pole(P(j0, r0 + off, y1 - .05), P(j1, r1 + off, y1 - .05), steel ? .04 : .065, reveal);
+        }
+        // Putlogs set into the wall (timber) or transoms between the two rows (steel), then the deck.
+        if (steel) pole(P(j0, r0 + gap, y1 - .02), P(j0, r0 + gap + depth, y1 - .02), .035, reveal);
+        else pole(P(j0, r0 - .3, y1 + .02), P(j0, r0 + gap + depth + .18, y1 + .02), .06, reveal);
+        const boards = steel ? 4 : 3, bw = depth / boards;
+        for (let b = 0; b < boards; b++) { const r = gap + bw * (b + .5); slab(P(j0, r0 + r, 0), P(j1, r1 + r, 0), bw * .92, .05, y1 + .08, reveal); }
+        decks.push({i, y: y1, reveal});
+        // Bracing on the outer face, one bay in two, and a ladder every sixth bay.
+        const out = gap + depth;
+        if ((i + level) % 2 === 0) pole(P(j0, r0 + out, (i % 4 < 2) ? y0 : y1), P(j1, r1 + out, (i % 4 < 2) ? y1 : y0), steel ? .03 : .05, reveal);
+        if (steel) {
+          for (const h of [.5, 1]) pole(P(j0, r0 + out, y1 + h), P(j1, r1 + out, y1 + h), .03, reveal);
+          slab(P(j0, r0 + out - .02, 0), P(j1, r1 + out - .02, 0), .03, .15, y1 + .15, reveal, 'toe');
+        }
+        if (i % 6 === 3) {
+          const lr = r0 + (steel ? gap + depth / 2 : out + .3);
+          for (const side of [-.25, .25]) { const a = P(j0, lr, y0), b = P(j0, lr, y1 + .9), t = P(j1, lr, 0).sub(P(j0, lr, 0)).setY(0).normalize().multiplyScalar(side + .6); pole(a.clone().add(t), b.clone().add(t), .03, reveal, 'toe'); }
+          for (let y = y0 + .3; y < y1 + .8; y += .32) { const a = P(j0, lr, y), t = P(j1, lr, 0).sub(P(j0, lr, 0)).setY(0).normalize(); slab(a.clone().add(t.clone().multiplyScalar(.35)), a.clone().add(t.clone().multiplyScalar(.85)), .05, .04, y, reveal, 'toe'); }
+        }
+      }
+    }
+    for (const [name, list] of Object.entries(parts)) {
+      if (!list.length) continue;
+      const mesh = new T.InstancedMesh(name === 'tube' ? siteCylinder : siteBox, kinds[name], list.length);
+      list.forEach((part, i) => mesh.setMatrixAt(i, ZERO));
+      mesh.frustumCulled = false; mesh.castShadow = mesh.receiveShadow = Boolean(visual.quality.shadows);
+      group.add(mesh); site.scaffoldSets.push({mesh, list, shown: new Uint8Array(list.length)});
+    }
+    // Where a hoist can stand: just outside the scaffold, in its middle bay, facing the wall.
+    const centreBay = Math.floor(bays / 2), outside = P(centreBay + .5, edge(centreBay) + gap + depth + 2.5, 0);
+    site.hoistAt = [outside.x, outside.z]; site.hoistTurn = -(mid - half + (centreBay + .5) * width);
+    // Masons on the top deck of a few bays, moving up as the scaffold rises.
+    const palette = spec.clothes ?? ['#9a5b38', '#5c6f7b', '#7c6943', '#6d4c45'];
+    for (const [n, deck] of decks.entries()) {
+      if (deck.i % 5 !== 2) continue;
+      const next = decks.find(d => d.i === deck.i && d.y > deck.y), pos = P(deck.i + .5, edge(deck.i) + gap + depth * .45, deck.y + .1);
+      const before = siteActors.length;
+      makeWorker(group, pos.x, pos.z, -(mid - half + (deck.i + .5) * width) + Math.PI / 2, palette, n % 2 ? 'mason' : 'lift', n * 1.3);
+      const actor = siteActors[before];
+      if (actor) { actor.userData.baseY = deck.y + .1; actor.userData.siteReveal = deck.reveal; actor.userData.siteHide = next?.reveal ?? 1.01; site.scaffoldParts.push(actor); }
+    }
+  }
+
   function makeWorksite(spec, phase, seed) {
     const group = new T.Group(), rand = random(seed), [cx, cz] = spec.at ?? [0, 0], radius = Math.max(4, spec.radius ?? 14), height = Math.max(3, spec.height ?? 9);
-    const site = {group, phase, spec, scaffoldParts: [], progress: 0};
+    const site = {group, phase, spec, scaffoldParts: [], scaffoldSets: [], progress: 0};
     // Worksites are written in the monument's own frame: they turn with it ("rotate").
     group.position.copy(toWorld([cx, 0, cz])); group.rotation.y = turnY; group.visible = false; scene.add(group); siteGroups.push(site);
     const fill = new T.PointLight('#ffd3a0', 24, radius * 3.5, 1.7); fill.position.set(0, Math.min(height, 12) * .75, 0); group.add(fill);
@@ -1374,64 +1555,12 @@ export function createStage(host) {
       }
     }
 
-    if (spec.scaffold) {
-      const cfg = typeof spec.scaffold === 'object' ? spec.scaffold : {kind: 'facade'}, kind = cfg.kind ?? 'facade';
-      const scaffold = new T.Group(), [ox, oz] = cfg.offset ?? [0, kind === 'facade' ? -radius * .32 : 0];
-      scaffold.position.set(ox, 0, oz); scaffold.rotation.y = cfg.rot ?? 0; group.add(scaffold);
-      const levelHeight = cfg.levelHeight ?? 2.3, levels = Math.max(2, Math.ceil((cfg.height ?? height) / levelHeight));
-      const add = (mesh, level) => { mesh.userData.siteReveal = .04 + .88 * level / levels; site.scaffoldParts.push(mesh); return mesh; };
-      const beam = (a, b, r, level) => add(siteBeam(scaffold, a, b, r, wood), level);
-      const plank = (position, scale, turn, level) => { const mesh = add(siteMesh(scaffold, siteBox, wood, position, scale), level); mesh.rotation.y = turn; return mesh; };
-
-      if (kind === 'ring') {
-        const inner = Math.max(.8, cfg.radius ?? radius * .52), depth = cfg.depth ?? 1.55, outer = inner + depth;
-        const segments = Math.max(8, Math.round(cfg.segments ?? Math.PI * 2 * outer / 2.4));
-        const arc = (cfg.arc ?? 360) * Math.PI / 180, start = (cfg.start ?? -90) * Math.PI / 180;
-        const closed = Math.abs(arc - Math.PI * 2) < .001, bays = closed ? segments : Math.max(1, segments - 1), point = (r, a, y) => [Math.cos(a) * r, y, Math.sin(a) * r];
-        for (let level = 1; level <= levels; level++) {
-          const y0 = (level - 1) * levelHeight, y1 = level * levelHeight;
-          for (let i = 0; i < segments; i++) {
-            const a = start + arc * i / (closed ? segments : segments - 1);
-            for (const r of [inner, outer]) beam(point(r, a, y0), point(r, a, y1), .06, level);
-          }
-          for (let i = 0; i < bays; i++) {
-            const a = start + arc * i / (closed ? segments : segments - 1), b = start + arc * (i + 1) / (closed ? segments : segments - 1), mid = (a + b) / 2;
-            for (const r of [inner, outer]) beam(point(r, a, y1), point(r, b, y1), .05, level);
-            beam(point(inner, a, y1), point(outer, a, y1), .045, level);
-            beam(point(outer, a, level % 2 ? y0 : y1), point(outer, b, level % 2 ? y1 : y0), .035, level);
-            plank(point((inner + outer) / 2, mid, y1 + .05), [Math.max(.4, 2 * outer * Math.sin(Math.abs(b - a) / 2) * .9), .08, depth * .78], Math.PI / 2 - mid, level);
-          }
-        }
-      } else if (kind === 'tower') {
-        const width = cfg.width ?? radius * .8, depth = cfg.depth ?? width, corners = [[-width / 2, -depth / 2], [width / 2, -depth / 2], [width / 2, depth / 2], [-width / 2, depth / 2]];
-        for (let level = 1; level <= levels; level++) {
-          const y0 = (level - 1) * levelHeight, y1 = level * levelHeight;
-          for (const [x, z] of corners) beam([x, y0, z], [x, y1, z], .065, level);
-          for (let i = 0; i < 4; i++) {
-            const a = corners[i], b = corners[(i + 1) % 4];
-            beam([a[0], y1, a[1]], [b[0], y1, b[1]], .055, level);
-            beam([a[0], level % 2 ? y0 : y1, a[1]], [b[0], level % 2 ? y1 : y0, b[1]], .038, level);
-          }
-          for (let x = -width / 2 + .6; x < width / 2; x += 1.2) plank([x, y1 + .05, 0], [1.05, .08, depth * .86], 0, level);
-        }
-      } else {
-        const width = cfg.width ?? radius * 1.45, depth = cfg.depth ?? 1.55, bays = Math.max(1, Math.ceil(width / 2.4)), step = width / bays, z = 0;
-        for (let level = 1; level <= levels; level++) {
-          const y0 = (level - 1) * levelHeight, y1 = level * levelHeight;
-          for (let i = 0; i <= bays; i++) for (const d of [0, depth]) beam([-width / 2 + i * step, y0, z + d], [-width / 2 + i * step, y1, z + d], .065, level);
-          for (let i = 0; i < bays; i++) {
-            const x0 = -width / 2 + i * step, x1 = x0 + step;
-            for (const d of [0, depth]) beam([x0, y1, z + d], [x1, y1, z + d], .055, level);
-            beam([x0, level % 2 ? y0 : y1, z], [x1, level % 2 ? y1 : y0, z], .04, level);
-            plank([(x0 + x1) / 2, y1 + .05, z + depth / 2], [step * .92, .09, depth * .86], 0, level);
-          }
-        }
-      }
-    }
+    if (spec.scaffold) fitScaffold(group, site, spec, phase);
 
     if (spec.hoist) {
-      const cfg = typeof spec.hoist === 'object' ? spec.hoist : {kind: 'gin-pole'}, kind = cfg.kind ?? 'gin-pole', [hx, hz] = cfg.offset ?? [radius * .35, -radius * .08];
-      const rig = new T.Group(); rig.position.set(hx, 0, hz); group.add(rig);
+      // Without an offset, a hoist stands just outside the scaffold, its boom over the wall.
+      const cfg = typeof spec.hoist === 'object' ? spec.hoist : {kind: 'gin-pole'}, kind = cfg.kind ?? 'gin-pole', [hx, hz] = cfg.offset ?? site.hoistAt ?? [radius * .35, -radius * .08];
+      const rig = new T.Group(); rig.position.set(hx, 0, hz); if (!cfg.offset && site.hoistTurn !== undefined) rig.rotation.y = site.hoistTurn + Math.PI / 2; group.add(rig);
       const rigWood = kind === 'steam-crane' ? siteMaterial('#59636a', 'metal') : wood, hh = cfg.height ?? Math.min(kind === 'steam-crane' ? 11 : 18, height + 3);
       let load, boom, wheel;
       if (kind === 'treadwheel') {
@@ -1476,7 +1605,7 @@ export function createStage(host) {
     }
   }
 
-  let monument = null, total = 1, heightTrack = [], tagTrack = {}, leaning = null, turnY = 0, outlineGroup = null;
+  let monument = null, total = 1, heightTrack = [], tagTrack = {}, leaning = null, turnY = 0, outlineGroup = null, builtPieces = [];
   // A point of the monument file ([x, y, z] or [x, z]) in the scene, after the monument's "rotate".
   const toWorld = p => {
     if (!p) return p;
@@ -1494,12 +1623,13 @@ export function createStage(host) {
         varying float vGlow; varying float vWorldY; varying float vSeed;
         ${pbr ? 'varying vec3 vPbrPosition; varying vec3 vPbrNormal;' : ''}`)
       .replace('#include <begin_vertex>', `#include <begin_vertex>
-        float kIn=clamp((uTime-aLife.x)/uFly,0.,1.);
-        float kOut=clamp((uTime-aLife.y)/uFly,0.,1.);
+        bool piece=aLife.y>0.;
+        float kIn=piece?clamp((uTime-aLife.x)/uFly,0.,1.):1.;
+        float kOut=piece?clamp((uTime-aLife.y)/uFly,0.,1.):0.;
         float eIn=1.-pow(1.-kIn,3.);
-        float alive=step(aLife.x,uTime)*(1.-kOut);
+        float alive=piece?step(aLife.x,uTime)*(1.-kOut):1.;
         transformed*=alive*mix(.55,1.,eIn);
-        vGlow=step(aLife.x,uTime)*(1.-smoothstep(0.,1.,(uTime-aLife.x)/(uFly*2.)));
+        vGlow=piece?step(aLife.x,uTime)*(1.-smoothstep(0.,1.,(uTime-aLife.x)/(uFly*2.))):0.;
         float drop=(1.-eIn)*uDrop-kOut*uDrop*.4;
         vSeed=aSeed;`)
       .replace('#include <project_vertex>', `vec4 mvPosition=vec4(transformed,1.);
@@ -1562,7 +1692,7 @@ export function createStage(host) {
         .replace('#include <aomap_fragment>', pbr?.ao ? `#include <aomap_fragment>
           reflectedLight.indirectDiffuse*=mix(1.,pbrSample(uPbrAo,pbrWeights()).r,.65);` : '#include <aomap_fragment>')
         .replace('#include <emissivemap_fragment>', `#include <emissivemap_fragment>
-          totalEmissiveRadiance+=uGlow*vGlow*1.3;
+          totalEmissiveRadiance+=uGlow*vGlow*.25;
           // At night: stone lit from the foot of the walls, golden metal, roofs in shadow.
           float up=1.-smoothstep(0.,uHeight,vWorldY);
           if(uKind>.5)totalEmissiveRadiance+=uNight*uNightColor*.55;
@@ -1584,7 +1714,7 @@ export function createStage(host) {
     for (const mesh of meshes) { scene.remove(mesh); mesh.geometry.dispose(); mesh.material.dispose(); mesh.customDepthMaterial?.dispose(); }
     meshes.length = 0;
     if (outlineGroup) { scene.remove(outlineGroup); outlineGroup.traverse(o => { o.geometry?.dispose(); o.material?.dispose(); }); outlineGroup = null; }
-    for (const {group} of siteGroups) scene.remove(group);
+    for (const {group, scaffoldSets} of siteGroups) { scene.remove(group); for (const set of scaffoldSets) set.mesh.dispose(); }
     siteGroups.length = 0; siteActors.length = 0; siteDust.length = 0; siteRigs.length = 0;
     if (environmentGroup) { scene.remove(environmentGroup); disposeEnvironment(environmentGroup); environmentGroup = null; environmentTimed = []; }
     if (realisticGroundMaterial) { for (const key of ['map', 'normalMap', 'roughnessMap', 'aoMap']) realisticGroundMaterial[key]?.dispose(); realisticGroundMaterial.dispose(); realisticGroundMaterial = null; }
@@ -1599,6 +1729,13 @@ export function createStage(host) {
     renderer.setPixelRatio(Math.min(PIXEL_RATIO, visual.quality.pixelRatio));
     renderer.toneMappingExposure = visual.qualityName === 'basic' ? 1.05 : visual.qualityName === 'cinematic' ? 1.18 : 1.24;
     renderer.shadowMap.enabled = Boolean(visual.quality.shadows); renderer.shadowMap.type = T.PCFShadowMap;
+    ao.enabled = Boolean(visual.quality.ao);
+    if (ao.enabled) {
+      const reach = Math.max(1.5, Math.min(5, (data.view.radius ?? 60) * .025));
+      ao.updateGtaoMaterial({radius: reach, thickness: reach, distanceExponent: 1.3, scale: 1.15, samples: 16});
+      ao.updatePdMaterial({radius: 5, rings: 2, samples: 16});
+      ao.blendIntensity = .95;
+    }
     sun.castShadow = Boolean(visual.quality.shadows); sun.shadow.mapSize.setScalar(visual.quality.shadows || 512);
     baseBloom = visual.qualityName === 'basic' ? .5 : visual.qualityName === 'cinematic' ? .28 : .18;
     ambientBase = visual.qualityName === 'basic' ? 0 : visual.qualityName === 'cinematic' ? .5 : .44;
@@ -1610,6 +1747,7 @@ export function createStage(host) {
       uniforms.uLeanAxis.value.crossVectors(UP, new T.Vector3(...(leaning.toward ?? [0, 0, 1])).normalize()).normalize();
     }
     const {pieces: built, P, index} = buildPieces(data), k = {pieces: built, rand: random((data.seed ?? 7) + 1)};
+    builtPieces = built;
     total = data.phases.length;
     // Within each phase, pieces are laid from the bottom up.
     const byPhase = data.phases.map(() => []);
@@ -1781,7 +1919,12 @@ export function createStage(host) {
         site.group.visible = site.phase === phaseIndex && t < total;
         site.progress = Math.max(0, Math.min(1, t - site.phase));
         if (t >= total && site.phase === total - 1) site.progress = 1;
-        for (const part of site.scaffoldParts) part.visible = part.userData.siteReveal <= site.progress;
+        for (const part of site.scaffoldParts) part.visible = part.userData.siteReveal <= site.progress && site.progress < (part.userData.siteHide ?? Infinity);
+        for (const set of site.scaffoldSets) {
+          let dirty = false;
+          set.list.forEach((part, i) => { const on = site.group.visible && part.reveal <= site.progress ? 1 : 0; if (on !== set.shown[i]) { set.mesh.setMatrixAt(i, on ? part.matrix : ZERO); set.shown[i] = on; dirty = true; } });
+          if (dirty) set.mesh.instanceMatrix.needsUpdate = true;
+        }
       }
       for (const rig of siteRigs) {
         const u = rig.userData, raw = Math.max(0, Math.min(1, (u.site.progress - u.start) / Math.max(.01, u.end - u.start))), eased = raw * raw * (3 - 2 * raw);

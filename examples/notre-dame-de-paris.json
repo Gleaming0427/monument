@@ -340,7 +340,6 @@
     "scaffold": {
      "kind": "ring",
      "radius": 19,
-     "height": 24,
      "arc": 200,
      "start": -100
     },
@@ -465,8 +464,7 @@
     "scaffold": {
      "kind": "tower",
      "width": 18,
-     "depth": 18,
-     "height": 70
+     "base": 33
     },
     "dust": 0.25,
     "source": "https://eduscol.education.gouv.fr/sites/default/files/document/notre-dame-de-paris-histoire-des-arts-2019-100842.pdf"
@@ -642,9 +640,10 @@
     "materials": true,
     "scaffold": {
      "kind": "tower",
-     "width": 12,
-     "depth": 12,
-     "height": 98
+     "width": 10,
+     "base": 43,
+     "material": "steel",
+     "rise": "first"
     },
     "dust": 0.15,
     "source": "https://www.rebatirnotredamedeparis.fr/en/restoration"

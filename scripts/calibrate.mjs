@@ -3,6 +3,9 @@
 //   node scripts/calibrate.mjs monuments/<id>.json --ref <n> --photo <width>,<height> --points '[[x, y, z, px, py], …]' [--frame] [--move] [--write]
 // Each point is a place on the building (x east, y up, z south, in metres; with --frame, in the monument's own
 // frame before "rotate") and where it appears in the photo (pixels in an image of the given size). The camera
+// A point may also lie anywhere on a known line: {"ellipse": {"center": [x, z], "radii": [a, b], "rot": radians,
+// "y": height, "arc": [from, to] degrees}, "at": [px, py]}, for a curved facade whose bays cannot be told
+// apart (a cornice, the top of a wall); only the side of the line facing the camera counts. The camera
 // stays where the reference puts it (the place Commons records) and its direction and field of view are
 // fitted so the model's points land on the photo's; with --move (six points or more), its position is fitted
 // too, since a phone's recorded position can be tens of metres off. With --write, the reference's azimuth, elevation, target and fov
@@ -36,14 +39,36 @@ const project = ([psi, theta, phi, dx = 0, dy = 0, dz = 0], P) => {
   const q = [P[0] - C2[0], P[1] - C2[1], P[2] - C2[2]], depth = dot(q, f), F = .5 / Math.tan(phi / 2);
   return [F * dot(q, r) / depth, -F * dot(q, u) / depth];
 };
-const seen = points.map(([x, y, z, px, py]) => ({P: world([x, y, z]), at: [(px - W / 2) / H, (py - H / 2) / H]}));
+const seen = points.map(p => Array.isArray(p) ? {P: world(p.slice(0, 3)), at: [(p[3] - W / 2) / H, (p[4] - H / 2) / H]} : {curve: p.ellipse, at: [(p.at[0] - W / 2) / H, (p.at[1] - H / 2) / H]});
+// Points along an ellipse (amphitheatre convention: angle 0 at the end of the first axis, turned by rot).
+const along = ({center: [cx, cz], radii: [a, b], rot = 0, y, arc}) => {
+  const out = [], co = Math.cos(rot), si = Math.sin(rot);
+  for (let d = 0; d < 360; d += .25) {
+    if (arc && !(arc[0] <= arc[1] ? d >= arc[0] && d <= arc[1] : d >= arc[0] || d <= arc[1])) continue;
+    const t = d * rad, x = a * Math.cos(t), z = b * Math.sin(t), nx = b * Math.cos(t), nz = a * Math.sin(t);
+    out.push({P: [cx + x * co + z * si, y, cz - x * si + z * co], n: [nx * co + nz * si, 0, -nx * si + nz * co]});
+  }
+  return out;
+};
+for (const s of seen) if (s.curve) s.samples = along(s.curve);
+// Image distance from a seen point to where the model puts it (the nearest visible point of a line).
+const miss = (p, s) => {
+  if (!s.curve) { const [a, b] = project(p, s.P); return (a - s.at[0]) ** 2 + (b - s.at[1]) ** 2; }
+  const C2 = [C[0] + (p[3] ?? 0), C[1] + (p[4] ?? 0), C[2] + (p[5] ?? 0)];
+  let best = Infinity;
+  for (const {P, n} of s.samples) {
+    if (n[0] * (C2[0] - P[0]) + n[2] * (C2[2] - P[2]) <= 0) continue;
+    const [a, b] = project(p, P); best = Math.min(best, (a - s.at[0]) ** 2 + (b - s.at[1]) ** 2);
+  }
+  return best === Infinity ? 1 : best;
+};
 // Points on one facade cannot tell a long lens far away from a short one close by: the recorded position is
 // kept as a prior. A move of 15% of the distance on the ground (20 m at least) or 3% in height (2 m at least)
 // costs as much as a 1% gap at every point: a phone's position is rougher for a far shot.
 const sg = Math.max(20, .15 * ref.distance), sh = Math.max(2, .03 * ref.distance);
 const prior = p => move ? seen.length * 1e-4 * (((p[3] ?? 0) ** 2 + (p[5] ?? 0) ** 2) / sg ** 2 + (p[4] ?? 0) ** 2 / sh ** 2) : 0;
-const cost = p => p[2] < 5 * rad || p[2] > 120 * rad ? 1e9 : prior(p) + seen.reduce((s, {P, at}) => { const [a, b] = project(p, P); return s + (a - at[0]) ** 2 + (b - at[1]) ** 2; }, 0);
-const gap = p => Math.sqrt(seen.reduce((s, {P, at}) => { const [a, b] = project(p, P); return s + (a - at[0]) ** 2 + (b - at[1]) ** 2; }, 0) / seen.length) * 100;
+const cost = p => p[2] < 5 * rad || p[2] > 120 * rad ? 1e9 : prior(p) + seen.reduce((sum, s) => sum + miss(p, s), 0);
+const gap = p => Math.sqrt(seen.reduce((sum, s) => sum + miss(p, s), 0) / seen.length) * 100;
 // Nelder-Mead from the reference's current aim and lens.
 const look = unit([target[0] - C[0], target[1] - C[1], target[2] - C[2]]);
 if (move && seen.length < 6) { console.error('--move fits six unknowns: give at least six points.'); process.exit(1); }
@@ -72,7 +97,7 @@ const T = Cm.map((v, j) => +(v + f[j] * D).toFixed(1)), back = [Cm[0] - T[0], Cm
 if (move) console.log(`camera moved by ${Math.hypot(dx, dz).toFixed(1)} m on the ground and ${dy.toFixed(1)} m in height`);
 const next = {azimuth: +((Math.atan2(back[0], -back[2]) / rad + 360) % 360).toFixed(1), elevation: +(Math.asin(back[1] / Math.hypot(...back)) / rad).toFixed(1), distance: +Math.hypot(...back).toFixed(1), target: T, fov: +(phi / rad).toFixed(1)};
 console.log(`reference ${n}: ${ref.view ?? ref.url}`);
-for (const [i, {P, at}] of seen.entries()) { const [a, b] = project(simplex[0], P); console.log(`  point ${i}: off by ${(Math.hypot(a - at[0], b - at[1]) * 100).toFixed(1)}% of the photo's height`); }
+for (const [i, s] of seen.entries()) console.log(`  point ${i}: off by ${(Math.sqrt(miss(simplex[0], s)) * 100).toFixed(1)}% of the photo's height`);
 console.log(`aim ${next.azimuth}°, ${next.elevation}°, fov ${next.fov}° · rms ${rms.toFixed(1)}% of the photo's height`);
 if (args.includes('--write')) {
   Object.assign(ref, next, {calibration: {points: seen.length, rms: +rms.toFixed(1)}});
