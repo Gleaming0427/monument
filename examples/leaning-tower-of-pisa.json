@@ -35,7 +35,11 @@
   "materialPreset": "marble-italian",
   "environmentPreset": "mediterranean-lawn",
   "vegetation": true,
-  "environment": {"from": "saved", "count": 5, "exclusion": 0.68}
+  "environment": {
+   "from": "saved",
+   "count": 5,
+   "exclusion": 0.68
+  }
  },
  "live": [
   {
@@ -180,7 +184,13 @@
   "plan": {
    "source": "OpenStreetMap relation 12982355 (outer way 35667218)",
    "url": "https://www.openstreetmap.org/relation/12982355",
-   "outline": "leaning-tower-of-pisa.evidence/outline.json"
+   "outline": "leaning-tower-of-pisa.evidence/outline.json",
+   "fit": {
+    "p90": 0.5,
+    "max": 0.71,
+    "coverage": 0.95,
+    "overflow": 0.01
+   }
   },
   "comparisons": [
    {
@@ -254,15 +264,37 @@
    "text": "Foundations are laid on 9 August 1173. When the masons reach the second floor in 1178, the soft ground gives way and the tower begins to sink. Work stops.",
    "scene": {
     "craft": "masonry",
-    "at": [0, 0],
-    "focus": [0, 7, 8],
+    "at": [
+     0,
+     0
+    ],
+    "focus": [
+     0,
+     7,
+     8
+    ],
     "distance": 38,
     "radius": 18,
     "height": 20,
     "workers": 10,
     "materials": true,
-    "scaffold": {"kind": "ring", "radius": 8.5, "depth": 1.6, "height": 17, "segments": 24},
-    "hoist": {"kind": "treadwheel", "offset": [11.5, 1], "height": 10, "from": 0, "to": 7},
+    "scaffold": {
+     "kind": "ring",
+     "radius": 8.5,
+     "depth": 1.6,
+     "height": 17,
+     "segments": 24
+    },
+    "hoist": {
+     "kind": "treadwheel",
+     "offset": [
+      11.5,
+      1
+     ],
+     "height": 10,
+     "from": 0,
+     "to": 7
+    },
     "dust": 0.45,
     "source": "https://en.wikipedia.org/wiki/Leaning_Tower_of_Pisa"
    },
@@ -311,15 +343,37 @@
    "text": "Work resumes in 1272 under Giovanni di Simone. To make up for the tilt, the upper floors are built with one side taller than the other.",
    "scene": {
     "craft": "masonry",
-    "at": [0, 0],
-    "focus": [0, 31, 8],
+    "at": [
+     0,
+     0
+    ],
+    "focus": [
+     0,
+     31,
+     8
+    ],
     "distance": 44,
     "radius": 19,
     "height": 39,
     "workers": 8,
     "materials": true,
-    "scaffold": {"kind": "ring", "radius": 8.6, "depth": 1.6, "height": 34, "segments": 24},
-    "hoist": {"kind": "treadwheel", "offset": [11.5, 1], "height": 10, "from": 9, "to": 27},
+    "scaffold": {
+     "kind": "ring",
+     "radius": 8.6,
+     "depth": 1.6,
+     "height": 34,
+     "segments": 24
+    },
+    "hoist": {
+     "kind": "treadwheel",
+     "offset": [
+      11.5,
+      1
+     ],
+     "height": 10,
+     "from": 9,
+     "to": 27
+    },
     "dust": 0.4,
     "source": "https://en.wikipedia.org/wiki/Leaning_Tower_of_Pisa"
    },
@@ -546,7 +600,8 @@
      ]
     ]
    },
-   "shadow": "#837d73"
+   "shadow": "#837d73",
+   "provenance": "measured"
   }
  ]
 }

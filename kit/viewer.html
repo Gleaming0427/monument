@@ -5,7 +5,15 @@ for(const key of ["embed","clean","caption"])if(new URLSearchParams(location.sea
 <header class="top">
  <a href="../" class="brand">Monument</a>
  <div class="building"><b id="name"></b><span id="place"></span></div>
+ <button id="proof-toggle" class="chip" aria-pressed="false" title="Where every piece comes from">Evidence</button>
 </header>
+<aside id="proof" hidden aria-label="Evidence"></aside>
+<div id="pick" hidden role="status"></div>
+<div id="photo" hidden>
+ <div class="photo-clip"><img alt=""></div>
+ <i class="photo-split" aria-hidden="true"></i>
+ <div class="photo-bar"><span class="photo-caption"></span><button class="chip photo-fade" aria-pressed="false">Fade</button><button class="chip photo-close">Back to the model</button></div>
+</div>
 <section id="empty">
  <h1 id="empty-title"></h1>
  <p>Ask your agent for it. It researches the building, places it on the real plan, models it and opens it here:</p>

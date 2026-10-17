@@ -194,15 +194,21 @@ async function evidence(d, text, file, id, at, strict) {
       check(result.coverage >= .85, `${at} the model covers only ${Math.round(result.coverage * 100)}% of the measured outline (85% needed)`);
       check(result.overflow <= .2, `${at} the model spreads ${Math.round(result.overflow * 100)}% beyond the measured outline (20% at most): check its scale and orientation`);
       check(!(plan.tolerance > 3) || (typeof plan.toleranceReason === 'string' && plan.toleranceReason.length >= 30), `${at} evidence.plan.tolerance is above 3 m: say why in evidence.plan.toleranceReason`);
+      check(plan.fit && Math.abs(plan.fit.p90 - result.p90) < .06 && Math.abs(plan.fit.max - result.max) < .06, `${at} evidence.plan.fit is missing or out of date (measured now: p90 ${result.p90} m, max ${result.max} m): run node scripts/plan.mjs`);
     } catch (error) { check(false, `${at} cannot measure the plan: ${error.message}`); }
     check(await exists(join(dir, `${id}.evidence`, 'plan.svg')), `${at} ${id}.evidence/plan.svg is missing: run node scripts/plan.mjs`);
+  }
+  // Every element says where it comes from: measured, documented or interpreted (shown in the evidence mode).
+  for (const [i, element] of d.elements.entries()) {
+    check(['measured', 'documented', 'interpreted'].includes(element.provenance), `${at} element ${i} (${element.type}) needs "provenance": "measured", "documented" or "interpreted"`);
+    if (element.provenance === 'interpreted') check(typeof element.note === 'string' && element.note.length >= 20, `${at} element ${i} is interpreted: say how in its "note"`);
   }
   // Step 5: reference photos from several sides, and the features that make the building recognisable.
   const photos = Array.isArray(ev.references) ? ev.references : [];
   const photoMinimum = strict ? 4 : 3, sideMinimum = strict ? 3 : 2;
   check(photos.length >= photoMinimum, `${at} evidence.references needs at least ${photoMinimum} reference photos`);
   for (const [i, r] of photos.entries()) check(url(r?.url) && typeof r.view === 'string' && [r.azimuth, r.elevation, r.distance].every(Number.isFinite), `${at} reference ${i} needs "url", "view", "azimuth", "elevation" and "distance"`);
-  for (const [i, r] of photos.entries()) check(r?.phase === undefined || phases.has(r.phase), `${at} reference ${i}: "phase" names unknown phase "${r?.phase}"`);
+  for (const [i, r] of photos.entries()) check(r?.phase === undefined || d.phases.some(p => p.id === r.phase), `${at} reference ${i}: "phase" names unknown phase "${r?.phase}"`);
   const sides = new Set(photos.filter(r => Number.isFinite(r?.azimuth)).map(r => Math.floor((((r.azimuth % 360) + 360) % 360) / 90)));
   check(sides.size >= sideMinimum, `${at} the reference photos must be taken from at least ${sideMinimum} sides (azimuths in different quadrants)`);
   // Every reference photo exists, and its viewpoint is where Commons says it was taken.

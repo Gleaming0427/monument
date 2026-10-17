@@ -21,6 +21,18 @@ One building = one JSON file, `monuments/<id>.json` in the user's project (`exam
 }
 ```
 
+## Provenance of the elements
+
+Every element says where it comes from, so the viewer's evidence mode can colour each piece and readers can tell a measurement from a guess:
+
+- `"provenance": "measured"`: placed on the measured plan and sized from published dimensions;
+- `"documented"`: read in the sources and the reference photos, without a measurement;
+- `"interpreted"`: not documented, a reasoned reconstruction; it then needs a `"note"` saying what was interpreted and why.
+
+## Orientation
+
+Model a building in the frame that suits it (its axis along x, say), then set `"rotate"` (degrees, counter-clockwise seen from above) to turn it onto its real orientation. `rotate` turns the elements, the moment `anchor`s, the worksite scenes and the `visualStyle.decor`; `view` and the reference viewpoints stay geographic (x east, z south), like the measured outline.
+
 ## Phases
 
 - In chronological order. As many as the evidence supports, no fixed number.
@@ -91,8 +103,8 @@ Everything a reader needs to trust the model. `validate.mjs --standard` checks t
 
 - `size`: building, ensemble or site (step 1).
 - `sources`: pages that were opened and read, with what each says. Every phase and moment `source` must be one of them. Search results are not sources.
-- `plan.outline`: the measured outline as `{"source", "url", "origin": [lat, lon], "polygons": [[[x, z], …]], "lines": [[[x, z], …]]}` (closed polygons, and open lines for rings split into several ways) in local metres around `origin` (x east, z south, same origin as the model). `scripts/plan.mjs` fills both the outline and the model seen from above to their outer envelope (gaps under 3 m closed, as an aerial trace would) and measures the distance between their edges both ways; it draws `<id>.evidence/plan.svg` with the edges further apart than the tolerance in red. The tolerance is 3 m at the 90th percentile; `plan.tolerance` may raise it to 5 m at most, with the reason in `plan.toleranceReason`. The model must also cover 85% of the outline and add no more than 20% outside it.
-- `references`: standard mode uses at least three photos from two sides; publication uses four from three sides. `azimuth` is the direction of the photographer seen from the building, in degrees from north; `elevation` (negative looks up) and `distance` place the camera, `target` is the point it looks at, and `fov` (optional, degrees) matches a wide-angle lens: put the camera where the photographer stood rather than moving it back. `phase` (optional) names the state the photo shows, for an old photo or a state since changed; by default the model is captured at the end of the last daylight phase.
+- `plan.outline`: the measured outline as `{"source", "url", "origin": [lat, lon], "polygons": [[[x, z], …]], "lines": [[[x, z], …]]}` (closed polygons, and open lines for rings split into several ways) in local metres around `origin` (x east, z south, same origin as the model). `scripts/plan.mjs` fills both the outline and the model seen from above to their outer envelope (gaps under 3 m closed, as an aerial trace would) and measures the distance between their edges both ways; it draws `<id>.evidence/plan.svg` with the edges further apart than the tolerance in red. It records the result in `plan.fit` (`p90`, `max`, `coverage`, `overflow`), which the viewer shows and validation checks against a fresh measurement. The tolerance is 3 m at the 90th percentile; `plan.tolerance` may raise it to 5 m at most, with the reason in `plan.toleranceReason`. The model must also cover 85% of the outline and add no more than 20% outside it.
+- `references`: standard mode uses at least three photos from two sides; publication uses four from three sides. `azimuth` is the direction of the photographer seen from the building, in degrees from north; `elevation` (negative looks up) and `distance` place the camera, `target` is the point it looks at, and `fov` (optional, degrees) matches a wide-angle lens: put the camera where the photographer stood rather than moving it back. `phase` (optional) names the state the photo shows, for an old photo or a state since changed; by default the model is captured at the end of the last daylight phase. `calibration` (`points`, `rms`) is written by `scripts/calibrate.mjs`: the viewpoint fitted on points recognised in the photo, and the remaining gap in percent of the photo's height.
 - `features`: what makes the building recognisable, each with the page that says so.
 - `comparisons`: written by `scripts/compare.mjs` (captures) and by you (gaps, fixed, remaining).
 

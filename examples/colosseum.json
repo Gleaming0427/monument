@@ -35,10 +35,32 @@
   "materialPreset": "roman-weathered",
   "environmentPreset": "roman-ruins",
   "vegetation": true,
-  "environment": {"from": "today", "count": 6, "exclusion": 0.78},
+  "environment": {
+   "from": "today",
+   "count": 6,
+   "exclusion": 0.78
+  },
   "decor": [
-   {"type": "stone-blocks", "at": [63, 56], "scale": 1.2, "from": "vespasian", "until": "titus"},
-   {"type": "amphora", "at": [-18, 22], "scale": 1.1, "from": "domitian", "until": "fire"}
+   {
+    "type": "stone-blocks",
+    "at": [
+     63,
+     56
+    ],
+    "scale": 1.2,
+    "from": "vespasian",
+    "until": "titus"
+   },
+   {
+    "type": "amphora",
+    "at": [
+     -18,
+     22
+    ],
+    "scale": 1.1,
+    "from": "domitian",
+    "until": "fire"
+   }
   ]
  },
  "live": [
@@ -190,7 +212,13 @@
   "plan": {
    "source": "OpenStreetMap relation 1834818 (building parts with heights)",
    "url": "https://www.openstreetmap.org/relation/1834818",
-   "outline": "colosseum.evidence/outline.json"
+   "outline": "colosseum.evidence/outline.json",
+   "fit": {
+    "p90": 1.5,
+    "max": 14.71,
+    "coverage": 1,
+    "overflow": 0.04
+   }
   },
   "size": "building",
   "comparisons": [
@@ -300,15 +328,40 @@
    "text": "Vespasian starts the amphitheatre around 70–72. By his death in 79, three storeys of arcades ring the arena and the seating rises inside.",
    "scene": {
     "craft": "masonry",
-    "at": [24.4, -71.2],
-    "focus": [24.4, 16, -71.2],
+    "at": [
+     24.4,
+     -71.2
+    ],
+    "focus": [
+     24.4,
+     16,
+     -71.2
+    ],
     "distance": 54,
     "radius": 23,
     "height": 34,
     "workers": 16,
     "materials": true,
-    "scaffold": {"kind": "facade", "width": 34, "depth": 1.8, "height": 26, "offset": [0, -8]},
-    "hoist": {"kind": "gin-pole", "offset": [11, -3], "height": 14, "from": 0, "to": 12},
+    "scaffold": {
+     "kind": "facade",
+     "width": 34,
+     "depth": 1.8,
+     "height": 26,
+     "offset": [
+      0,
+      -8
+     ]
+    },
+    "hoist": {
+     "kind": "gin-pole",
+     "offset": [
+      11,
+      -3
+     ],
+     "height": 14,
+     "from": 0,
+     "to": 12
+    },
     "dust": 0.55,
     "source": "https://en.wikipedia.org/wiki/Colosseum"
    },
@@ -357,14 +410,30 @@
    "text": "Domitian adds the hypogeum, a network of tunnels below the arena floor for animals and slaves, and a gallery at the top for more seats.",
    "scene": {
     "craft": "mixed",
-    "at": [-0.94, -0.43],
-    "focus": [-0.94, 3, -0.43],
+    "at": [
+     -0.94,
+     -0.43
+    ],
+    "focus": [
+     -0.94,
+     3,
+     -0.43
+    ],
     "distance": 58,
     "radius": 30,
     "height": 11,
     "workers": 12,
     "materials": true,
-    "hoist": {"kind": "gin-pole", "offset": [10, -2], "height": 10, "from": 0, "to": 2},
+    "hoist": {
+     "kind": "gin-pole",
+     "offset": [
+      10,
+      -2
+     ],
+     "height": 10,
+     "from": 0,
+     "to": 2
+    },
     "dust": 0.5,
     "source": "https://en.wikipedia.org/wiki/Colosseum"
    },
@@ -522,7 +591,8 @@
      "column": true
     }
    ],
-   "color": "#dcc39b"
+   "color": "#dcc39b",
+   "provenance": "measured"
   },
   {
    "type": "amphitheatre",
@@ -557,7 +627,8 @@
     }
    ],
    "until": "earthquake",
-   "color": "#dcc39b"
+   "color": "#dcc39b",
+   "provenance": "measured"
   },
   {
    "type": "amphitheatre",
@@ -584,7 +655,8 @@
      "height": 14.6
     }
    ],
-   "color": "#dcc39b"
+   "color": "#dcc39b",
+   "provenance": "measured"
   },
   {
    "type": "amphitheatre",
@@ -612,7 +684,8 @@
     }
    ],
    "until": "earthquake",
-   "color": "#dcc39b"
+   "color": "#dcc39b",
+   "provenance": "measured"
   },
   {
    "type": "amphitheatre",
@@ -646,7 +719,8 @@
     "phase": "quarry",
     "share": 0.4,
     "depth": 0.3
-   }
+   },
+   "provenance": "measured"
   },
   {
    "type": "amphitheatre",
@@ -701,7 +775,8 @@
      "width": 2.4
     }
    ],
-   "color": "#d5bf98"
+   "color": "#d5bf98",
+   "provenance": "documented"
   },
   {
    "type": "amphitheatre",
@@ -730,7 +805,8 @@
    "rows": 26,
    "walls": false,
    "until": "quarry",
-   "color": "#d5bf98"
+   "color": "#d5bf98",
+   "provenance": "documented"
   },
   {
    "type": "amphitheatre",
@@ -747,7 +823,8 @@
     27.5
    ],
    "podium": 4,
-   "color": "#d5bf98"
+   "color": "#d5bf98",
+   "provenance": "documented"
   },
   {
    "type": "amphitheatre",
@@ -766,7 +843,8 @@
    "podium": 0,
    "hypogeum": true,
    "brick": "#93634b",
-   "color": "#d5bf98"
+   "color": "#d5bf98",
+   "provenance": "documented"
   },
   {
    "type": "buttress",
@@ -779,7 +857,8 @@
    "height": 36,
    "length": 15,
    "width": 4.8,
-   "color": "#9c6c52"
+   "color": "#9c6c52",
+   "provenance": "documented"
   },
   {
    "type": "amphitheatre",
@@ -813,7 +892,8 @@
      "height": 11.6,
      "column": true
     }
-   ]
+   ],
+   "provenance": "documented"
   },
   {
    "type": "amphitheatre",
@@ -843,7 +923,8 @@
      "height": 11.8,
      "column": true
     }
-   ]
+   ],
+   "provenance": "documented"
   }
  ]
 }

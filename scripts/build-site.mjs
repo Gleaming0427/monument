@@ -29,12 +29,21 @@ await rm(join(out, 'collection.json'));
 const monuments = join(out, 'view', 'monuments');
 await mkdir(monuments, {recursive: true});
 
+// The viewer's evidence mode draws the measured outline: it travels with the monument file.
+async function copyEvidence(dir, d, id) {
+  const outline = d.evidence?.plan?.outline;
+  if (typeof outline !== 'string' || !/^[a-z0-9-]+\.evidence\/outline\.json$/.test(outline) || !(await exists(join(dir, outline)))) return;
+  await mkdir(join(monuments, `${id}.evidence`), {recursive: true});
+  await copyFile(join(dir, outline), join(monuments, `${id}.evidence`, 'outline.json'));
+}
+
 // Collection: curated order and one line each.
 const curated = await json(join(root, 'site', 'collection.json'));
 const collection = [];
 for (const {id, blurb} of curated) {
   const d = await json(join(root, 'examples', `${id}.json`));
   await copyFile(join(root, 'examples', `${id}.json`), join(monuments, `${id}.json`));
+  await copyEvidence(join(root, 'examples'), d, id);
   collection.push({id, name: d.name, place: d.place, blurb, video: await exists(join(root, 'site', 'media', `${id}.mp4`))});
 }
 
@@ -46,6 +55,7 @@ for (const id of (await readdir(join(root, 'community')).catch(() => [])).sort()
   const d = await json(join(dir, 'monument.json')), meta = await json(join(dir, 'meta.json')).catch(() => ({}));
   if (d.bricks && !/^[a-z0-9-]+\.bricks\.js$/.test(d.bricks)) throw new Error(`${id}: "bricks" must be a plain file name`);
   await copyFile(join(dir, 'monument.json'), join(monuments, `${id}.json`));
+  await copyEvidence(dir, d, id);
   if (d.bricks) await copyFile(join(dir, d.bricks), join(monuments, d.bricks));
   let thumb = await exists(join(root, 'site', 'thumbs', `${id}.jpg`)) ? `${id}.jpg` : null;
   if (!thumb && process.env.CAPTURE) {

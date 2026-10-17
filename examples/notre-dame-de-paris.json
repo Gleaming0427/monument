@@ -1,0 +1,1270 @@
+{
+ "id": "notre-dame-de-paris",
+ "name": "Notre-Dame de Paris",
+ "place": "Paris · France",
+ "seed": 1163,
+ "rotate": -25.6,
+ "view": {
+  "target": [
+   3.5,
+   30,
+   -7.3
+  ],
+  "distance": 250,
+  "width": 150,
+  "radius": 95,
+  "height": 96,
+  "dots": 2.2,
+  "drop": 10,
+  "direction": [
+   -0.66,
+   0.42,
+   0.62
+  ],
+  "start": {
+   "target": [
+    27.8,
+    10,
+    4.4
+   ],
+   "distance": 120
+  },
+  "light": "day"
+ },
+ "visualStyle": {
+  "quality": "standard",
+  "materialPreset": "gothic-limestone",
+  "environmentPreset": "gothic-urban",
+  "vegetation": false
+ },
+ "live": [
+  {
+   "label": "Height",
+   "kind": "height",
+   "unit": "m"
+  }
+ ],
+ "facts": [
+  {
+   "value": "127 m",
+   "label": "long"
+  },
+  {
+   "value": "69 m",
+   "label": "towers"
+  },
+  {
+   "value": "96 m",
+   "label": "spire"
+  }
+ ],
+ "modelNote": "Placed on the OpenStreetMap footprint and the published dimensions (127 m long, 48 m wide, vaults at 33 m, roofs at 43 m, towers 69 m, spire 96 m); bays, roses and portals are read from photos, sculpture and tracery are simplified, and the first spire's form is interpreted.",
+ "evidence": {
+  "size": "building",
+  "identity": "Cathédrale Notre-Dame de Paris, 6 parvis Notre-Dame – place Jean-Paul-II, 75004 Paris, France (OpenStreetMap way 201611261; Mérimée PA00086250)",
+  "sources": [
+   {
+    "url": "https://fr.wikipedia.org/wiki/Cath%C3%A9drale_Notre-Dame_de_Paris",
+    "read": "Dimensions (127 × 48 m, nave 60 m long, central vessel 13 m wide, vaults at 33 m, roofs at 43 m, transept 48 × 14 m, ten nave bays and five choir bays, towers 69 m, spire 96 m, façade 43.5 × 45 m, roses 9.70 m and 13.10 m) and the campaigns: choir 1163–1182 (altar consecrated 19 May 1182), nave 1182–1225, façade from 1208 with the rose level 1220–1225, towers 1240 and 1250, chapels from 1235, transept by Jehan de Chelles and Pierre de Montreuil, chevet buttresses by Jean Ravy 1318–1344, end in 1345; 21 of the 28 kings' heads found in 1977; the fire of 15 April 2019; reopening on 7 December 2024."
+   },
+   {
+    "url": "https://pop.culture.gouv.fr/notice/merimee/PA00086250",
+    "read": "Mérimée notice: first stone laid by Maurice de Sully in 1163; choir, nave and aisles 1163–1225; high galleries, spire and towers 1225–1250; transept, roses and chapels later in the Middle Ages; under the Revolution the spire is pulled down and the kings' statues removed, Temple of Reason in 1793; restoration decided in 1844 and given to Viollet-le-Duc and Lassus, who rebuild the spire, invent the chimeras, remake the kings and build a new sacristy; works end on 3 January 1865."
+   },
+   {
+    "url": "https://eduscol.education.gouv.fr/sites/default/files/document/notre-dame-de-paris-histoire-des-arts-2019-100842.pdf",
+    "read": "Éduscol (Ministry of Education, April 2019): the choir finished with its frame in 1177 while the old cathedral was pulled down; stone cutters, setters and mortar makers, wood in every structure, lead for cramps and glass; the towers completed in 1245; Jean Ravy's 14th-century flying buttresses; Lassus and Viollet-le-Duc restore the 28 kings, design a new spire of oak covered with lead and replace Soufflot's sacristy; the spire falls on the evening of 15 April 2019, its copper statues removed beforehand."
+   },
+   {
+    "url": "https://www.rebatirnotredamedeparis.fr/en/restoration",
+    "read": "Rebuilding authority: a thousand oaks for the spire and transept frames, nearly 1,300 m3 of stone; the golden cock set on 16 December 2023, some 96 m above the ground, completing the structural work; the scaffolding of the spire removed in September 2025, revealing the sixteen restored copper statues."
+   },
+   {
+    "url": "https://en.wikipedia.org/wiki/Spire_of_Notre-Dame_de_Paris",
+    "read": "The first spire, built 1220–1230, rose 78 m above the floor and was taken down 1786–1792; Viollet-le-Duc's spire is 96 m high, 18 m more, with about 250 t of lead; sixteen statues (twelve apostles and four evangelist symbols) in four groups, one per roof, facing the cardinal directions, removed four days before the fire; the spire fell at about 7:45 pm on 15 April 2019; the cock was set on the new spire on 16 December 2023."
+   }
+  ],
+  "plan": {
+   "source": "OpenStreetMap way 201611261",
+   "url": "https://www.openstreetmap.org/way/201611261",
+   "outline": "notre-dame-de-paris.evidence/outline.json",
+   "fit": {
+    "p90": 2.24,
+    "max": 8.63,
+    "coverage": 0.99,
+    "overflow": 0.06
+   }
+  },
+  "references": [
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:Notre-Dame_de_Paris_West_front_2015-07-27.jpg",
+    "view": "west front from the parvis (Haech, 2015, CC BY-SA 4.0)",
+    "azimuth": 310.6,
+    "elevation": -11.2,
+    "distance": 113.5,
+    "target": [
+     -80.4,
+     24.1,
+     -18
+    ],
+    "fov": 46.8,
+    "phase": "restauration",
+    "calibration": {
+     "points": 6,
+     "rms": 2.4
+    }
+   },
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:Notre-Dame_from_the_square_Viviani.jpg",
+    "view": "south-west, from the square René-Viviani (Tangopaso, 2011, public domain)",
+    "azimuth": 235.1,
+    "elevation": -6.1,
+    "distance": 185.6,
+    "target": [
+     -20.2,
+     21.5,
+     -28.6
+    ],
+    "fov": 52.5,
+    "phase": "restauration",
+    "calibration": {
+     "points": 5,
+     "rms": 1.1
+    }
+   },
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:Notre-Dame_from_right_bank.jpg",
+    "view": "north-east, from the right bank of the Seine (Tangopaso, 2011, public domain)",
+    "azimuth": 51,
+    "elevation": -4.3,
+    "distance": 302.8,
+    "target": [
+     -0.8,
+     27.9,
+     -10.4
+    ],
+    "fov": 25.8,
+    "phase": "restauration",
+    "calibration": {
+     "points": 5,
+     "rms": 5
+    }
+   },
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:Notre_Dame_de_Paris,_East_View_140207_1.jpg",
+    "view": "east, the chevet from the Seine (DXR, 2014, CC BY-SA 3.0)",
+    "azimuth": 121.4,
+    "elevation": -7.1,
+    "distance": 285,
+    "target": [
+     56.9,
+     43.3,
+     25
+    ],
+    "fov": 16.3,
+    "phase": "restauration",
+    "calibration": {
+     "points": 6,
+     "rms": 3.3
+    }
+   }
+  ],
+  "features": [
+   {
+    "text": "Harmonic west front: three portals, a gallery of 28 kings, the 9.70 m rose between two tall windows, an open high gallery and two square towers 69 m high.",
+    "source": "https://fr.wikipedia.org/wiki/Cath%C3%A9drale_Notre-Dame_de_Paris"
+   },
+   {
+    "text": "Two transept fronts, each with a rose 13.10 m across, a glazed gallery, a portal and a gable between slender turrets.",
+    "source": "https://fr.wikipedia.org/wiki/Cath%C3%A9drale_Notre-Dame_de_Paris"
+   },
+   {
+    "text": "Long single-span flying buttresses around the chevet, built by Jean Ravy in the early 14th century.",
+    "source": "https://eduscol.education.gouv.fr/sites/default/files/document/notre-dame-de-paris-histoire-des-arts-2019-100842.pdf"
+   },
+   {
+    "text": "Chapels filling the spaces between the buttresses along the nave and around the choir, under small gables.",
+    "source": "https://fr.wikipedia.org/wiki/Cath%C3%A9drale_Notre-Dame_de_Paris"
+   },
+   {
+    "text": "A steep lead roof on an oak frame, its ridge 43 m above the ground, with a half cone over the apse.",
+    "source": "https://fr.wikipedia.org/wiki/Cath%C3%A9drale_Notre-Dame_de_Paris"
+   },
+   {
+    "text": "A spire of oak covered with lead, 96 m high, with sixteen copper statues in four groups on the roofs.",
+    "source": "https://en.wikipedia.org/wiki/Spire_of_Notre-Dame_de_Paris"
+   },
+   {
+    "text": "Twin lancets under an oculus in the clerestory, above buttress piers crowned with pinnacles.",
+    "source": "https://commons.wikimedia.org/wiki/File:Notre_Dame_de_Paris,_East_View_140207_1.jpg"
+   },
+   {
+    "text": "Two tall louvred openings on each face of the towers, corner buttresses and a balustrade at the top; a stair turret on the north tower.",
+    "source": "https://commons.wikimedia.org/wiki/File:Notre-Dame_de_Paris_West_front_2015-07-27.jpg"
+   },
+   {
+    "text": "Viollet-le-Duc's sacristy south of the choir, in the cathedral's style.",
+    "source": "https://eduscol.education.gouv.fr/sites/default/files/document/notre-dame-de-paris-histoire-des-arts-2019-100842.pdf"
+   }
+  ],
+  "geometry": "Footprint, orientation (axis at azimuth 115.6°) and the positions of the buttresses, transept fronts and apse are measured on OpenStreetMap way 201611261; heights come from the published dimensions; bay counts, roses, portals and the levels of the west front are read from the reference photos.",
+  "uncertainties": [
+   "The first spire (1220–1230, 78 m) is drawn like Viollet-le-Duc's, smaller: its exact form is not documented in the sources used.",
+   "The 12th-century flying buttresses, replaced in the 13th and 14th centuries, and the original transept fronts are not modelled in detail; the transept arms show plain ends until the 1250s fronts.",
+   "Sculpture is reduced to simple figures; the portals' archivolts, the chimeras and the crockets are simplified.",
+   "The sacristy is drawn as three plain blocks on its OpenStreetMap footprint; its height is estimated. Soufflot's earlier sacristy is not shown.",
+   "Interior vaults, the 2019 collapse of part of the vaults and their rebuilding are not shown from outside.",
+   "Seen from the north-east, the model and the photo still differ by about 5% of the photo's height after fitting the viewpoint; the cause (the photo's recorded position or the towers' plan) is not settled."
+  ],
+  "comparisons": [
+   {
+    "pass": 1,
+    "captures": [
+     "notre-dame-de-paris.evidence/compare/pass-1/ref-0.jpg",
+     "notre-dame-de-paris.evidence/compare/pass-1/ref-1.jpg",
+     "notre-dame-de-paris.evidence/compare/pass-1/ref-2.jpg",
+     "notre-dame-de-paris.evidence/compare/pass-1/ref-3.jpg"
+    ],
+    "phases": [
+     "notre-dame-de-paris.evidence/compare/pass-1/phase-0.jpg",
+     "notre-dame-de-paris.evidence/compare/pass-1/phase-1.jpg",
+     "notre-dame-de-paris.evidence/compare/pass-1/phase-2.jpg",
+     "notre-dame-de-paris.evidence/compare/pass-1/phase-3.jpg",
+     "notre-dame-de-paris.evidence/compare/pass-1/phase-4.jpg",
+     "notre-dame-de-paris.evidence/compare/pass-1/phase-5.jpg",
+     "notre-dame-de-paris.evidence/compare/pass-1/phase-6.jpg",
+     "notre-dame-de-paris.evidence/compare/pass-1/phase-7.jpg",
+     "notre-dame-de-paris.evidence/compare/pass-1/phase-8.jpg"
+    ],
+    "gaps": [
+     "All four captures show the 2019–2025 state, with the spire hidden in its scaffold, while the photos (2011–2015) show the cathedral restored by Lassus and Viollet-le-Duc: the references must be captured at the end of that phase.",
+     "West front (parvis, 2015): the levels match (portals, gallery of kings, rose between two twin windows, open high gallery, towers with two tall louvred openings per face); the photo's portals are deeper, with statues in the jambs, a trumeau and carved tympana, where the first capture showed flat recesses.",
+     "South-west (square Viviani, 2011): the tower, the nave's flying buttresses and pinnacles, the chapel gables, the south rose and the spire line up as in the photo; the capture is framed wider than the photo.",
+     "North-east (right bank, 2011) and east (2014): the north rose and its gable, the chevet's radiating flying buttresses, the half-cone roof of the apse and the towers behind read as in the photos.",
+     "Roofs and the spire first rendered pink and green: the plain materials reused the textured stone shader."
+    ],
+    "fixed": [
+     "References captured at the end of the restoration phase (\"phase\": \"restauration\").",
+     "South-west reference framed with a 38° lens instead of 46°.",
+     "Portals: five archivolts through the wall, three jamb statues a side, a trumeau with its statue, doors and a tympanum in registers.",
+     "Each material now compiles its own shader program, so lead and glass are no longer tinted by a stray texture; lead darkened to the photos' blue-grey."
+    ]
+   },
+   {
+    "pass": 2,
+    "captures": [
+     "notre-dame-de-paris.evidence/compare/pass-2/ref-0.jpg",
+     "notre-dame-de-paris.evidence/compare/pass-2/ref-1.jpg",
+     "notre-dame-de-paris.evidence/compare/pass-2/ref-2.jpg",
+     "notre-dame-de-paris.evidence/compare/pass-2/ref-3.jpg"
+    ],
+    "phases": [
+     "notre-dame-de-paris.evidence/compare/pass-2/phase-0.jpg",
+     "notre-dame-de-paris.evidence/compare/pass-2/phase-1.jpg",
+     "notre-dame-de-paris.evidence/compare/pass-2/phase-2.jpg",
+     "notre-dame-de-paris.evidence/compare/pass-2/phase-3.jpg",
+     "notre-dame-de-paris.evidence/compare/pass-2/phase-4.jpg",
+     "notre-dame-de-paris.evidence/compare/pass-2/phase-5.jpg",
+     "notre-dame-de-paris.evidence/compare/pass-2/phase-6.jpg",
+     "notre-dame-de-paris.evidence/compare/pass-2/phase-7.jpg",
+     "notre-dame-de-paris.evidence/compare/pass-2/phase-8.jpg"
+    ],
+    "gaps": [
+     "West front: portals, gallery of kings, rose level, high gallery and towers now read level by level as in the photo; the photo's sculpture (jamb statues, tympana, the Virgin and angels before the rose, chimeras) is far richer than the model's simple figures.",
+     "South-west (Viviani): tower, flying buttresses, pinnacles, chapel gables, south rose, transept turrets and spire match the photo's composition; the photo's flyers are more slender and the chapel gables sharper.",
+     "North-east and east: the north front, the chevet with its radiating flyers and the apse roof read as in the photos; the real chevet flyers leap about 15 m in one span, the model's about 10 m.",
+     "The sacristy, hidden by trees and buildings in every photo, cannot be checked against them."
+    ],
+    "fixed": [
+     "Each reference viewpoint fitted with calibrate.mjs on points recognised in its photo (tower corners, rose centres, the spire's tip, gable apexes, portal apex): the overlays showed the earlier viewpoints framed too tight and aimed too high."
+    ]
+   },
+   {
+    "pass": 3,
+    "captures": [
+     "notre-dame-de-paris.evidence/compare/pass-3/ref-0.jpg",
+     "notre-dame-de-paris.evidence/compare/pass-3/ref-1.jpg",
+     "notre-dame-de-paris.evidence/compare/pass-3/ref-2.jpg",
+     "notre-dame-de-paris.evidence/compare/pass-3/ref-3.jpg"
+    ],
+    "phases": [
+     "notre-dame-de-paris.evidence/compare/pass-3/phase-0.jpg",
+     "notre-dame-de-paris.evidence/compare/pass-3/phase-1.jpg",
+     "notre-dame-de-paris.evidence/compare/pass-3/phase-2.jpg",
+     "notre-dame-de-paris.evidence/compare/pass-3/phase-3.jpg",
+     "notre-dame-de-paris.evidence/compare/pass-3/phase-4.jpg",
+     "notre-dame-de-paris.evidence/compare/pass-3/phase-5.jpg",
+     "notre-dame-de-paris.evidence/compare/pass-3/phase-6.jpg",
+     "notre-dame-de-paris.evidence/compare/pass-3/phase-7.jpg",
+     "notre-dame-de-paris.evidence/compare/pass-3/phase-8.jpg"
+    ],
+    "gaps": [
+     "West front: with the viewpoint fitted on six points (camera moved 12 m from the recorded position), the model stays within 2.4% of the photo's height; its towers are slightly wider at the top than the real ones, whose balustrades sit inside the corner buttresses.",
+     "South-west (Viviani): fitted on five points, within 1.1%; tower, flyers, south rose and spire overlay the photo.",
+     "North-east: fitted on five points, the gap stays at 5%: the spire and the north tower land left of the photo's while the gable and the south tower fit, so either the photo's recorded position is far off or the towers' plan near the crossing differs.",
+     "East: fitted on six points with the camera moved, within 3.3%; the chevet, its flyers and the apse roof overlay the photo, the towers behind are slightly offset."
+    ],
+    "fixed": [],
+    "remaining": [
+     "Sculpture is reduced to simple figures; tracery is schematic (twin lancets and an oculus per bay, spoked roses).",
+     "The chevet's flying buttresses are shorter than the real 15 m spans.",
+     "The north-east view keeps a 5% gap after fitting: to be resolved with a better located photo or a measured plan of the towers.",
+     "The first spire is interpreted, and the sacristy's height is estimated."
+    ]
+   }
+  ]
+ },
+ "phases": [
+  {
+   "id": "choeur",
+   "when": "1163–1182",
+   "title": "The choir",
+   "text": "Bishop Maurice de Sully lays the first stone in 1163. The choir and its double ambulatory are finished with their roof in 1177, and the high altar is consecrated on 19 May 1182.",
+   "source": "https://fr.wikipedia.org/wiki/Cath%C3%A9drale_Notre-Dame_de_Paris",
+   "scene": {
+    "craft": "masonry",
+    "at": [
+     44,
+     -8.1
+    ],
+    "focus": [
+     44,
+     12,
+     -8.1
+    ],
+    "distance": 60,
+    "radius": 20,
+    "height": 22,
+    "workers": 12,
+    "materials": true,
+    "scaffold": {
+     "kind": "ring",
+     "radius": 19,
+     "height": 24,
+     "arc": 200,
+     "start": -100
+    },
+    "dust": 0.3,
+    "source": "https://eduscol.education.gouv.fr/sites/default/files/document/notre-dame-de-paris-histoire-des-arts-2019-100842.pdf"
+   },
+   "moments": [
+    {
+     "at": 0.3,
+     "tag": "Start",
+     "title": "The first stone",
+     "text": "Maurice de Sully lays the first stone in 1163, in the presence of Pope Alexander III.",
+     "anchor": [
+      40,
+      3,
+      -8.1
+     ],
+     "source": "https://pop.culture.gouv.fr/notice/merimee/PA00086250"
+    },
+    {
+     "at": 0.75,
+     "tag": "Trades",
+     "title": "Cutters, setters, mortar makers",
+     "text": "Stone cutters, setters and mortar makers share the walls; wood frames every structure on site, and lead seals the iron cramps.",
+     "anchor": [
+      30,
+      14,
+      -26.1
+     ],
+     "source": "https://eduscol.education.gouv.fr/sites/default/files/document/notre-dame-de-paris-histoire-des-arts-2019-100842.pdf"
+    }
+   ]
+  },
+  {
+   "id": "nef",
+   "when": "1182–1225",
+   "title": "The nave",
+   "text": "The four eastern bays of the nave rise with their aisles and galleries from 1182, then the western bays. The old cathedral is pulled down as the new one goes up.",
+   "source": "https://fr.wikipedia.org/wiki/Cath%C3%A9drale_Notre-Dame_de_Paris",
+   "moments": [
+    {
+     "at": 0.5,
+     "tag": "Site",
+     "title": "One cathedral replaces another",
+     "text": "The earlier cathedral, dedicated to Saint Stephen, is pulled down bit by bit as the new one is built.",
+     "anchor": [
+      -30,
+      12,
+      -8.1
+     ],
+     "source": "https://eduscol.education.gouv.fr/sites/default/files/document/notre-dame-de-paris-histoire-des-arts-2019-100842.pdf"
+    },
+    {
+     "at": 0.85,
+     "tag": "Size",
+     "title": "Vaults 33 m high",
+     "text": "The nave is 60 m long; its central vessel is 13 m wide under vaults 33 m high.",
+     "anchor": [
+      -25,
+      34,
+      -8.1
+     ],
+     "source": "https://fr.wikipedia.org/wiki/Cath%C3%A9drale_Notre-Dame_de_Paris"
+    }
+   ]
+  },
+  {
+   "id": "facade",
+   "when": "1208–1225",
+   "title": "The west front",
+   "text": "From 1208 the three portals rise, then the gallery of kings and, around 1220–1225, the level of the rose, 9.70 m across.",
+   "source": "https://fr.wikipedia.org/wiki/Cath%C3%A9drale_Notre-Dame_de_Paris",
+   "moments": [
+    {
+     "at": 0.55,
+     "tag": "Sculpture",
+     "title": "Twenty-eight kings",
+     "text": "A gallery of 28 statues of kings runs right across the front above the portals.",
+     "anchor": [
+      -67.3,
+      17.5,
+      -7.85
+     ],
+     "source": "https://eduscol.education.gouv.fr/sites/default/files/document/notre-dame-de-paris-histoire-des-arts-2019-100842.pdf"
+    },
+    {
+     "at": 0.9,
+     "tag": "Glass",
+     "title": "The west rose",
+     "text": "The rose of the west front measures 9.70 m across.",
+     "anchor": [
+      -67.3,
+      27,
+      -7.35
+     ],
+     "source": "https://fr.wikipedia.org/wiki/Cath%C3%A9drale_Notre-Dame_de_Paris"
+    }
+   ]
+  },
+  {
+   "id": "tours",
+   "when": "1225–1250",
+   "title": "Towers and chapels",
+   "text": "The high gallery and the two 69 m towers are finished by 1250. Chapels fill the spaces between the nave's buttresses, new flying buttresses carry the vaults and a first spire rises over the crossing.",
+   "source": "https://pop.culture.gouv.fr/notice/merimee/PA00086250",
+   "scene": {
+    "craft": "masonry",
+    "at": [
+     -58.7,
+     -19.25
+    ],
+    "focus": [
+     -58.7,
+     50,
+     -19.25
+    ],
+    "distance": 75,
+    "radius": 14,
+    "height": 60,
+    "workers": 8,
+    "materials": true,
+    "scaffold": {
+     "kind": "tower",
+     "width": 18,
+     "depth": 18,
+     "height": 70
+    },
+    "dust": 0.25,
+    "source": "https://eduscol.education.gouv.fr/sites/default/files/document/notre-dame-de-paris-histoire-des-arts-2019-100842.pdf"
+   },
+   "moments": [
+    {
+     "at": 0.4,
+     "tag": "Towers",
+     "title": "North 1240, south 1250",
+     "text": "The north tower is finished in 1240 and the south tower in 1250.",
+     "anchor": [
+      -58.7,
+      66,
+      -19.25
+     ],
+     "source": "https://fr.wikipedia.org/wiki/Cath%C3%A9drale_Notre-Dame_de_Paris"
+    },
+    {
+     "at": 0.75,
+     "tag": "Spire",
+     "title": "A first spire, 78 m",
+     "text": "Built from 1220 to 1230, the first spire reaches 78 m above the floor and also serves as a bell tower.",
+     "anchor": [
+      2.85,
+      70,
+      -8.1
+     ],
+     "source": "https://en.wikipedia.org/wiki/Spire_of_Notre-Dame_de_Paris"
+    }
+   ]
+  },
+  {
+   "id": "transept",
+   "when": "1250–1345",
+   "title": "Roses and flying buttresses",
+   "text": "Jehan de Chelles, then Pierre de Montreuil, lengthen the transept and give it two roses 13.10 m across. Chapels ring the choir, and Jean Ravy builds the chevet's flying buttresses; the works end in 1345.",
+   "source": "https://fr.wikipedia.org/wiki/Cath%C3%A9drale_Notre-Dame_de_Paris",
+   "moments": [
+    {
+     "at": 0.3,
+     "tag": "Rose",
+     "title": "The north rose",
+     "text": "Jehan de Chelles lengthens the transept around 1250 and builds the north front and its rose.",
+     "anchor": [
+      2.85,
+      28.6,
+      -34.7
+     ],
+     "source": "https://fr.wikipedia.org/wiki/Cath%C3%A9drale_Notre-Dame_de_Paris"
+    },
+    {
+     "at": 0.8,
+     "tag": "Structure",
+     "title": "Jean Ravy's flying buttresses",
+     "text": "Early in the 14th century Jean Ravy builds the flying buttresses that still draw the cathedral's outline.",
+     "anchor": [
+      55,
+      28,
+      5.9
+     ],
+     "source": "https://eduscol.education.gouv.fr/sites/default/files/document/notre-dame-de-paris-histoire-des-arts-2019-100842.pdf"
+    }
+   ]
+  },
+  {
+   "id": "revolution",
+   "when": "1786–1793",
+   "title": "Spire down, kings removed",
+   "text": "The decaying 13th-century spire is taken down from 1786 to 1792. Under the Revolution the statues of the gallery of kings are removed and the cathedral becomes a Temple of Reason in 1793.",
+   "source": "https://pop.culture.gouv.fr/notice/merimee/PA00086250",
+   "moments": [
+    {
+     "at": 0.7,
+     "tag": "Find",
+     "title": "Heads found in 1977",
+     "text": "Of the 28 original heads of the kings, 21 were found in 1977; they are kept at the Musée de Cluny.",
+     "anchor": [
+      -67.3,
+      18.5,
+      -7.85
+     ],
+     "source": "https://fr.wikipedia.org/wiki/Cath%C3%A9drale_Notre-Dame_de_Paris"
+    }
+   ]
+  },
+  {
+   "id": "restauration",
+   "when": "1844–1865",
+   "title": "Lassus and Viollet-le-Duc",
+   "text": "Restoration is decided in 1844: the kings are carved again, chimeras invented and a new sacristy built. Viollet-le-Duc's oak and lead spire, 96 m high, is inaugurated on 15 August 1859; the works end on 3 January 1865.",
+   "source": "https://pop.culture.gouv.fr/notice/merimee/PA00086250",
+   "moments": [
+    {
+     "at": 0.3,
+     "tag": "Sacristy",
+     "title": "A sacristy in the cathedral's style",
+     "text": "Viollet-le-Duc pulls down Soufflot's sacristy and builds a new one imitating the cathedral's architecture.",
+     "anchor": [
+      28.8,
+      14,
+      31
+     ],
+     "source": "https://eduscol.education.gouv.fr/sites/default/files/document/notre-dame-de-paris-histoire-des-arts-2019-100842.pdf"
+    },
+    {
+     "at": 0.65,
+     "tag": "Spire",
+     "title": "18 m taller",
+     "text": "The new spire rises to 96 m, 18 m higher than the first; its lead covering weighs some 250 tonnes.",
+     "anchor": [
+      2.85,
+      80,
+      -8.1
+     ],
+     "source": "https://en.wikipedia.org/wiki/Spire_of_Notre-Dame_de_Paris"
+    },
+    {
+     "at": 0.9,
+     "tag": "Statues",
+     "title": "Sixteen copper statues",
+     "text": "The twelve apostles and the four symbols of the evangelists stand in four groups on the roofs, each facing a cardinal direction.",
+     "anchor": [
+      10,
+      40,
+      -8.1
+     ],
+     "source": "https://en.wikipedia.org/wiki/Spire_of_Notre-Dame_de_Paris"
+    }
+   ]
+  },
+  {
+   "id": "incendie",
+   "when": "15 April 2019",
+   "title": "The fire",
+   "text": "Fire breaks out in the roof at about 6:18 pm. The spire falls at 7:45 pm, breaking part of the vaults; the oak frame and the lead roofs are lost. The sixteen statues had been taken down four days earlier.",
+   "source": "https://en.wikipedia.org/wiki/Spire_of_Notre-Dame_de_Paris",
+   "moments": [
+    {
+     "at": 0.5,
+     "tag": "Fire",
+     "title": "The spire falls",
+     "text": "The upper part of the spire collapses around 7:45 pm; its fall destroys part of the nave vaults and the crossing.",
+     "anchor": [
+      2.85,
+      50,
+      -8.1
+     ],
+     "source": "https://en.wikipedia.org/wiki/Spire_of_Notre-Dame_de_Paris"
+    }
+   ]
+  },
+  {
+   "id": "renaissance",
+   "when": "2019–2025",
+   "title": "Rebuilt as it was",
+   "text": "Frames and spire are rebuilt to the same design with a thousand oaks; the gilded cock crowns the 96 m spire on 16 December 2023. The cathedral reopens on 7 December 2024.",
+   "source": "https://www.rebatirnotredamedeparis.fr/en/restoration",
+   "scene": {
+    "craft": "timber",
+    "at": [
+     2.85,
+     -8.1
+    ],
+    "focus": [
+     2.85,
+     58,
+     -8.1
+    ],
+    "distance": 70,
+    "radius": 12,
+    "height": 55,
+    "workers": 8,
+    "materials": true,
+    "scaffold": {
+     "kind": "tower",
+     "width": 12,
+     "depth": 12,
+     "height": 98
+    },
+    "dust": 0.15,
+    "source": "https://www.rebatirnotredamedeparis.fr/en/restoration"
+   },
+   "moments": [
+    {
+     "at": 0.55,
+     "tag": "Spire",
+     "title": "The golden cock",
+     "text": "On 16 December 2023 the golden cock is set on the spire, some 96 m above the ground, completing the structural work.",
+     "anchor": [
+      2.85,
+      95,
+      -8.1
+     ],
+     "source": "https://www.rebatirnotredamedeparis.fr/en/restoration"
+    },
+    {
+     "at": 0.8,
+     "tag": "Reopening",
+     "title": "7 December 2024",
+     "text": "The cathedral reopens with an official ceremony on 7 December 2024, and to the public the next day.",
+     "anchor": [
+      -66.8,
+      8,
+      -7.85
+     ],
+     "source": "https://fr.wikipedia.org/wiki/Cath%C3%A9drale_Notre-Dame_de_Paris"
+    },
+    {
+     "at": 0.95,
+     "tag": "Statues",
+     "title": "The statues return",
+     "text": "When the spire's scaffolding comes down in September 2025, the sixteen restored copper statues are back in place.",
+     "anchor": [
+      10,
+      40,
+      -8.1
+     ],
+     "source": "https://www.rebatirnotredamedeparis.fr/en/restoration"
+    }
+   ]
+  }
+ ],
+ "elements": [
+  {
+   "type": "basilica",
+   "provenance": "measured",
+   "center": [
+    0,
+    -8.1
+   ],
+   "color": "#d8cba9",
+   "glass": "#34404f",
+   "lead": "#7d868e",
+   "vessel": {
+    "half": 6.6,
+    "eave": 34.5,
+    "ridge": 43,
+    "thick": 1.2,
+    "windows": {
+     "width": 4.2,
+     "sill": 25,
+     "spring": 30.1,
+     "margin": 1.2
+    }
+   },
+   "roof": {
+    "until": "incendie",
+    "rebuild": "renaissance"
+   },
+   "phase": "choeur",
+   "from": 10.6,
+   "to": 43.5,
+   "bays": 6,
+   "aisles": {
+    "half": 17.4,
+    "wall": 10,
+    "top": 23.5,
+    "windows": {
+     "width": 3,
+     "sill": 3.5,
+     "spring": 7
+    }
+   },
+   "chapels": {
+    "half": 24,
+    "wall": 12.5,
+    "phase": "transept",
+    "windows": {
+     "width": 3.4,
+     "sill": 3,
+     "spring": 9
+    },
+    "gables": {
+     "width": 4,
+     "height": 3.6
+    }
+   },
+   "buttresses": {
+    "half": 24.7,
+    "width": 1.6,
+    "top": 25,
+    "step": 1.8,
+    "pinnacle": 6.5,
+    "ends": false
+   },
+   "flyers": {
+    "from": 24,
+    "to": 31,
+    "thick": 0.9,
+    "drop": 4.5,
+    "phase": "transept"
+   }
+  },
+  {
+   "type": "basilica",
+   "provenance": "measured",
+   "center": [
+    43.5,
+    -8.1
+   ],
+   "color": "#d8cba9",
+   "glass": "#34404f",
+   "lead": "#7d868e",
+   "vessel": {
+    "half": 6.6,
+    "eave": 34.5,
+    "ridge": 43,
+    "thick": 1.2,
+    "windows": {
+     "width": 4.2,
+     "sill": 25,
+     "spring": 30.1,
+     "margin": 1.2
+    }
+   },
+   "roof": {
+    "until": "incendie",
+    "rebuild": "renaissance"
+   },
+   "phase": "choeur",
+   "apse": {
+    "sides": 7,
+    "start": -90,
+    "end": 90
+   },
+   "aisles": {
+    "half": 17.4,
+    "wall": 10,
+    "top": 23.5,
+    "windows": {
+     "width": 3,
+     "sill": 3.5,
+     "spring": 7
+    }
+   },
+   "chapels": {
+    "half": 23.2,
+    "wall": 12.5,
+    "phase": "transept",
+    "windows": {
+     "width": 3.2,
+     "sill": 3,
+     "spring": 9
+    },
+    "gables": {
+     "width": 3.6,
+     "height": 3.4
+    }
+   },
+   "buttresses": {
+    "half": 24.9,
+    "width": 1.6,
+    "top": 25,
+    "step": 1.8,
+    "pinnacle": 6.5
+   },
+   "flyers": {
+    "from": 24,
+    "to": 31,
+    "thick": 0.9,
+    "drop": 4.5,
+    "phase": "transept"
+   }
+  },
+  {
+   "type": "basilica",
+   "provenance": "measured",
+   "center": [
+    2.85,
+    -8.1
+   ],
+   "color": "#d8cba9",
+   "glass": "#34404f",
+   "lead": "#7d868e",
+   "vessel": {
+    "half": 7,
+    "eave": 34.5,
+    "ridge": 43,
+    "thick": 1.2,
+    "windows": {
+     "width": 4.2,
+     "sill": 25,
+     "spring": 30.1,
+     "margin": 1.2
+    }
+   },
+   "roof": {
+    "until": "incendie",
+    "rebuild": "renaissance"
+   },
+   "phase": "nef",
+   "rot": 1.5708,
+   "from": -24.6,
+   "to": 24.6,
+   "bays": 8,
+   "ends": {
+    "until": "transept"
+   }
+  },
+  {
+   "type": "basilica",
+   "provenance": "measured",
+   "center": [
+    0,
+    -8.1
+   ],
+   "color": "#d8cba9",
+   "glass": "#34404f",
+   "lead": "#7d868e",
+   "vessel": {
+    "half": 6.6,
+    "eave": 34.5,
+    "ridge": 43,
+    "thick": 1.2,
+    "windows": {
+     "width": 4.2,
+     "sill": 25,
+     "spring": 30.1,
+     "margin": 1.2
+    }
+   },
+   "roof": {
+    "until": "incendie",
+    "rebuild": "renaissance"
+   },
+   "phase": "nef",
+   "from": -50.2,
+   "to": -4.15,
+   "bays": 8,
+   "aisles": {
+    "half": 17.4,
+    "wall": 10,
+    "top": 23.5,
+    "windows": {
+     "width": 3,
+     "sill": 3.5,
+     "spring": 7
+    }
+   },
+   "chapels": {
+    "half": 24.2,
+    "wall": 12.5,
+    "phase": "tours",
+    "windows": {
+     "width": 3.4,
+     "sill": 3,
+     "spring": 9
+    },
+    "gables": {
+     "width": 4,
+     "height": 3.6
+    }
+   },
+   "buttresses": {
+    "half": 24.7,
+    "width": 1.6,
+    "top": 25,
+    "step": 1.8,
+    "pinnacle": 6.5,
+    "ends": false
+   },
+   "flyers": {
+    "from": 24,
+    "to": 31,
+    "thick": 0.9,
+    "drop": 4.5,
+    "phase": "tours"
+   }
+  },
+  {
+   "type": "twinTowerFront",
+   "provenance": "measured",
+   "phase": "facade",
+   "center": [
+    -66.8,
+    -7.85
+   ],
+   "color": "#e0d4b8",
+   "glass": "#34404f",
+   "bands": [
+    {
+     "to": 33,
+     "phase": "facade"
+    },
+    {
+     "to": 999,
+     "phase": "tours"
+    }
+   ],
+   "width": 41.7,
+   "depth": 16.6,
+   "thick": 2.6,
+   "levels": {
+    "kings": 15,
+    "rose": 20.6,
+    "gallery": 33.2,
+    "top": 45
+   },
+   "towerTop": 69,
+   "portals": [
+    {
+     "v": -13.1,
+     "w": 8.4,
+     "spring": 6.6
+    },
+    {
+     "v": 0.5,
+     "w": 9.6,
+     "spring": 6.1
+    },
+    {
+     "v": 13.65,
+     "w": 8.4,
+     "spring": 6.6
+    }
+   ],
+   "kings": {
+    "count": 28,
+    "until": "revolution",
+    "rebuild": "restauration"
+   },
+   "rose": {
+    "v": 0.5,
+    "y": 27,
+    "r": 4.85,
+    "colors": [
+     "#202a48",
+     "#26335a",
+     "#4a2230",
+     "#35264a",
+     "#1f3440"
+    ]
+   },
+   "windowWidth": 5.2,
+   "towers": [
+    {
+     "v": -11.4,
+     "w": 15.4,
+     "depth": 15,
+     "turret": [
+      "back",
+      "left"
+     ]
+    },
+    {
+     "v": 11.6,
+     "w": 14.4,
+     "depth": 15
+    }
+   ],
+   "opening": {
+    "width": 2.6,
+    "sill": 2,
+    "top": 3.2
+   },
+   "buttresses": [
+    -19.75,
+    -6.5,
+    7.55,
+    19.75
+   ],
+   "sideButtresses": [
+    3.8,
+    9.6,
+    14.6
+   ],
+   "sideWindows": [
+    {
+     "s": 6.5,
+     "w": 3.2,
+     "sill": 24,
+     "spring": 29.5
+    },
+    {
+     "s": 12,
+     "w": 3.2,
+     "sill": 24,
+     "spring": 29.5
+    }
+   ],
+   "gable": {
+    "half": 7.6,
+    "eave": 34.5,
+    "ridge": 43
+   },
+   "lead": "#7d868e",
+   "tympanum": "#cdbf9f"
+  },
+  {
+   "type": "roseFront",
+   "provenance": "documented",
+   "phase": "transept",
+   "center": [
+    2.85,
+    -34
+   ],
+   "rot": 1.5708,
+   "color": "#d8cba9",
+   "glass": "#34404f",
+   "width": 14.6,
+   "thick": 2.2,
+   "eave": 36.5,
+   "apex": 48.5,
+   "rose": {
+    "y": 28.6,
+    "r": 6.55,
+    "spokes": 24,
+    "colors": [
+     "#202a48",
+     "#26335a",
+     "#4a2230",
+     "#35264a",
+     "#1f3440"
+    ]
+   },
+   "gallery": {
+    "count": 9,
+    "sill": 17.5,
+    "spring": 20
+   },
+   "portal": {
+    "w": 6.4,
+    "spring": 7.2
+   },
+   "oculus": {
+    "r": 1.6,
+    "y": 41.5
+   },
+   "turrets": {
+    "width": 2.8,
+    "top": 46,
+    "pinnacle": 8
+   }
+  },
+  {
+   "type": "roseFront",
+   "provenance": "documented",
+   "phase": "transept",
+   "center": [
+    2.85,
+    17.799999999999997
+   ],
+   "rot": -1.5708,
+   "color": "#d8cba9",
+   "glass": "#34404f",
+   "width": 14.6,
+   "thick": 2.2,
+   "eave": 36.5,
+   "apex": 48.5,
+   "rose": {
+    "y": 28.6,
+    "r": 6.55,
+    "spokes": 24,
+    "colors": [
+     "#202a48",
+     "#26335a",
+     "#4a2230",
+     "#35264a",
+     "#1f3440"
+    ]
+   },
+   "gallery": {
+    "count": 9,
+    "sill": 17.5,
+    "spring": 20
+   },
+   "portal": {
+    "w": 6.4,
+    "spring": 7.2
+   },
+   "oculus": {
+    "r": 1.6,
+    "y": 41.5
+   },
+   "turrets": {
+    "width": 2.8,
+    "top": 46,
+    "pinnacle": 8
+   }
+  },
+  {
+   "type": "spire",
+   "provenance": "interpreted",
+   "note": "The first spire (1220–1230) rose 78 m above the floor; its form is not documented in the sources used, so it is drawn like its successor, smaller.",
+   "lead": "#59606a",
+   "phase": "tours",
+   "until": "revolution",
+   "center": [
+    2.85,
+    -8.1
+   ],
+   "base": 43,
+   "top": 78,
+   "radius": 2.6,
+   "lantern": 9
+  },
+  {
+   "type": "spire",
+   "provenance": "documented",
+   "phase": "restauration",
+   "until": "incendie",
+   "center": [
+    2.85,
+    -8.1
+   ],
+   "base": 43,
+   "top": 96,
+   "radius": 3.1,
+   "lantern": 12,
+   "statues": {
+    "count": 16,
+    "ridge": 43,
+    "slope": 1.2,
+    "phase": "restauration",
+    "until": "incendie"
+   }
+  },
+  {
+   "type": "spire",
+   "provenance": "documented",
+   "phase": "renaissance",
+   "center": [
+    2.85,
+    -8.1
+   ],
+   "base": 43,
+   "top": 96,
+   "radius": 3.1,
+   "lantern": 12,
+   "statues": {
+    "count": 16,
+    "ridge": 43,
+    "slope": 1.2,
+    "phase": "renaissance"
+   }
+  },
+  {
+   "type": "building",
+   "provenance": "interpreted",
+   "note": "Viollet-le-Duc's sacristy on its OpenStreetMap footprint; drawn as plain blocks with an estimated height, as no photo used shows it.",
+   "phase": "restauration",
+   "center": [
+    26.65,
+    20.25
+   ],
+   "size": [
+    7.5,
+    15.7
+   ],
+   "height": 8,
+   "rot": 1.5708,
+   "color": "#ddd0b4",
+   "roof": {
+    "height": 3,
+    "color": "#5d6670"
+   }
+  },
+  {
+   "type": "building",
+   "provenance": "interpreted",
+   "note": "Viollet-le-Duc's sacristy on its OpenStreetMap footprint; drawn as plain blocks with an estimated height, as no photo used shows it.",
+   "phase": "restauration",
+   "center": [
+    28.8,
+    31
+   ],
+   "size": [
+    14,
+    31.6
+   ],
+   "height": 13,
+   "rot": 1.5708,
+   "color": "#ddd0b4",
+   "roof": {
+    "height": 6,
+    "color": "#5d6670"
+   }
+  },
+  {
+   "type": "building",
+   "provenance": "interpreted",
+   "note": "Viollet-le-Duc's sacristy on its OpenStreetMap footprint; drawn as plain blocks with an estimated height, as no photo used shows it.",
+   "phase": "restauration",
+   "center": [
+    32.5,
+    41.5
+   ],
+   "size": [
+    7,
+    8
+   ],
+   "height": 12,
+   "rot": 1.5708,
+   "color": "#ddd0b4",
+   "roof": {
+    "height": 5,
+    "color": "#5d6670"
+   }
+  }
+ ]
+}

@@ -1,4 +1,4 @@
-import {createStage, generators} from './builder.js';
+import {createStage, generators, PROVENANCE} from './builder.js';
 
 const $ = id => document.getElementById(id);
 // One page = one building (#<id>). Its file, monuments/<id>.json (dated, sourced phases and the
@@ -91,6 +91,8 @@ async function open(id) {
     span.textContent = label.text; span.dataset.at = JSON.stringify(label.at);
     $('labels').append(span);
   }
+  buildProof();
+  if (proofOn) setProof(true);
   history.replaceState(null, '', `${location.search}#${id}`);
   shown = ''; touched = false;
   // ?t=2.5 opens the construction at a given instant (in phases), paused.
@@ -171,7 +173,9 @@ function pinMoment() {
   const p = stage.project(moment.anchor), w = card.offsetWidth, h = card.offsetHeight;
   const minX = innerWidth > 1100 ? document.querySelector('.story').getBoundingClientRect().right + 16 : 12;
   const maxY = document.querySelector(innerWidth > 1100 || embed ? '.timeline' : '.story').getBoundingClientRect().top - h - 12;
-  const x = Math.min(innerWidth - w - 12, Math.max(minX, p.x + 40));
+  // Clear of the evidence panel when it is open.
+  const right = proofOn && innerWidth > 1100 ? $('proof').getBoundingClientRect().left - 12 : innerWidth - 12;
+  const x = Math.min(right - w, Math.max(minX, p.x + 40));
   // Below the figures panel when it shares the same column.
   const live = document.querySelector('.live').getBoundingClientRect(), top = x + w > live.left - 12 ? live.bottom + 12 : 72;
   const y = Math.min(maxY, Math.max(top, p.y - h - 40));
@@ -217,7 +221,7 @@ function fitTimeline() {
 // ?embed keeps only the scene and the timeline, for a live preview inside another page.
 function layout() {
   fitTimeline();
-  if (clean || document.body.classList.contains('empty')) return stage.setInsets({left: 0, top: 0, bottom: 0});
+  if (clean || photoRef || document.body.classList.contains('empty')) return stage.setInsets({left: 0, top: 0, bottom: 0});
   if (embed) return stage.setInsets({left: 0, top: 0, bottom: Math.round(innerHeight - document.querySelector('.timeline').getBoundingClientRect().top)});
   const story = document.querySelector('.story').getBoundingClientRect(), bar = document.querySelector('.timeline').getBoundingClientRect();
   const wide = innerWidth > 1100;
@@ -263,6 +267,121 @@ addEventListener('keydown', event => {
   if ((event.key === '+' || event.key === '=') && i < order.length - 1) setSpeed(order[i + 1]);
 });
 
+// ——— Evidence mode ———
+// Every piece takes the colour of where its element comes from (element.provenance). The panel gives the
+// measured outline and how closely the model fits it, the reference photos (each one laid over the model
+// from its own viewpoint, with a sliding divider), the pages read and what remains uncertain. Clicking a
+// piece names its phase and the page that dates it.
+const PROOF_LABELS = {measured: ['Measured', 'Placed on the measured plan and the published dimensions'], documented: ['Documented', 'Read in the sources and the reference photos'], interpreted: ['Interpreted', 'Not documented: a reasoned reconstruction, said as such'], unstated: ['Not stated', 'No provenance given in the monument file']};
+let proofOn = false, photoRef = null, outlineFor = '';
+const host = url => { try { return new URL(url).hostname.replace(/^www\./, ''); } catch { return url; } };
+const commonsImage = (url, width) => { const m = /commons\.wikimedia\.org\/wiki\/(File:[^?#]+)/.exec(url ?? ''); return m ? `https://commons.wikimedia.org/wiki/Special:FilePath/${m[1].slice(5)}?width=${width}` : null; };
+const el = (tag, props = {}, ...children) => { const node = Object.assign(document.createElement(tag), props); node.append(...children); return node; };
+const link = (href, text) => el('a', {href, textContent: text, target: '_blank', rel: 'noreferrer'});
+
+function buildProof() {
+  const panel = $('proof'), ev = data.evidence ?? {};
+  panel.replaceChildren();
+  panel.append(el('h2', {textContent: 'Where every piece comes from'}), el('p', {textContent: 'Each piece of the model takes the colour of its source. Click a piece to see when it was built and which page says so.'}));
+  const legend = el('div', {className: 'legend'});
+  panel.append(legend);
+  if (ev.plan) {
+    const fit = ev.plan.fit, box = el('input', {type: 'checkbox', checked: true});
+    box.onchange = () => stage.showOutline(box.checked);
+    panel.append(el('h3', {textContent: 'Measured plan'}),
+      el('p', {}, 'Footprint from ', link(ev.plan.url, ev.plan.source), fit ? `. The model's edges seen from above lie within ${fit.p90} m of it along 90% of their length (largest gap ${fit.max} m).` : '.'),
+      el('label', {}, box, 'Draw it on the ground (gold)'));
+  }
+  const refs = (ev.references ?? []).filter(r => Number.isFinite(r.azimuth));
+  if (refs.length) {
+    const grid = el('div', {className: 'photos'});
+    for (const r of refs) {
+      const thumb = commonsImage(r.url, 360), button = el('button', {title: `Lay this photo over the model: ${r.view ?? ''}`});
+      if (thumb) button.append(el('img', {src: thumb, alt: '', loading: 'lazy'}));
+      button.append(el('span', {textContent: `${r.view ?? ''}${r.calibration ? ` · within ${r.calibration.rms}%` : ''}`}));
+      button.onclick = () => showPhoto(r);
+      grid.append(button);
+    }
+    panel.append(el('h3', {textContent: 'Reference photos'}), el('p', {textContent: 'Each one opens over the model, seen from the photographer\'s place. Drag the divider to compare.'}), grid);
+  }
+  if (ev.sources?.length) panel.append(el('h3', {textContent: 'Pages read'}), ...ev.sources.map(s => el('details', {}, el('summary', {}, link(s.url, host(s.url))), el('p', {textContent: s.read ?? ''}))));
+  if (ev.uncertainties?.length) panel.append(el('h3', {textContent: 'Interpreted or simplified'}), el('ul', {}, ...ev.uncertainties.map(u => el('li', {textContent: u}))));
+  if (data.modelNote) panel.append(el('h3', {textContent: 'In one line'}), el('p', {textContent: data.modelNote}));
+}
+
+async function setProof(on) {
+  proofOn = on;
+  document.body.classList.toggle('proof', on);
+  $('proof').hidden = !on; $('pick').hidden = true;
+  $('proof-toggle').setAttribute('aria-pressed', String(on));
+  stage.proof(on);
+  if (on) {
+    const counts = stage.provenance(), total = counts.reduce((a, b) => a + b, 0) || 1;
+    $('proof').querySelector('.legend').replaceChildren(...[...PROVENANCE, 'unstated'].flatMap((key, i) => counts[i] || i < 3 ? [el('div', {}, el('i', {}), el('b', {textContent: PROOF_LABELS[key][0]}), el('span', {textContent: `${Math.round(counts[i] / total * 100)}%`}), el('small', {textContent: PROOF_LABELS[key][1]}))] : []));
+    [...$('proof').querySelectorAll('.legend > div')].forEach((row, i) => { row.dataset.p = [...PROVENANCE, 'unstated'][i]; });
+    // The measured outline, loaded once per monument from <id>.evidence/.
+    if (outlineFor !== data.id && data.evidence?.plan?.outline) {
+      outlineFor = data.id;
+      const outline = await fetch(`monuments/${data.evidence.plan.outline}${version}`).then(r => r.ok ? r.json() : null).catch(() => null);
+      if (outline) stage.outline([...(outline.polygons ?? []).map(p => [p, true]), ...(outline.lines ?? []).map(l => [l, false])]);
+    }
+    stage.showOutline($('proof').querySelector('input[type=checkbox]')?.checked ?? true);
+  } else stage.showOutline(false);
+}
+$('proof-toggle').onclick = () => setProof(!proofOn);
+
+// A click (not a drag) on the scene, in evidence mode, names the piece under it.
+let downAt = null;
+$('stage').addEventListener('pointerdown', event => { downAt = [event.clientX, event.clientY]; });
+$('stage').addEventListener('pointerup', event => {
+  if (!proofOn || !downAt || Math.hypot(event.clientX - downAt[0], event.clientY - downAt[1]) > 5) return;
+  const hit = stage.pick(event.clientX, event.clientY, time), pick = $('pick');
+  if (!hit) { pick.hidden = true; return; }
+  const element = data.elements[hit.element] ?? {}, phase = data.phases[hit.phase], key = PROVENANCE.includes(element.provenance) ? element.provenance : 'unstated';
+  pick.replaceChildren(el('b', {textContent: `${short(phase)} · ${phase.title}`}), el('span', {className: 'prov', textContent: PROOF_LABELS[key][0]}));
+  pick.lastChild.dataset.p = key;
+  if (element.note) pick.append(el('p', {textContent: element.note}));
+  pick.append(el('br'), link(phase.source, `Source: ${host(phase.source)}`));
+  pick.hidden = false;
+  pick.style.left = `${Math.min(innerWidth - pick.offsetWidth - 12, event.clientX + 14)}px`;
+  pick.style.top = `${Math.min(innerHeight - pick.offsetHeight - 12, event.clientY + 14)}px`;
+});
+
+// A reference photo over the model: the camera goes where the photographer stood, with the same lens, in the
+// state the photo shows; a divider slides between photo and model.
+function showPhoto(ref) {
+  photoRef = ref; play(false); touched = true; stage.autoRotate(false);
+  const i = ref.phase ? data.phases.findIndex(p => p.id === ref.phase) : data.phases.findLastIndex(p => p.mood !== 'night');
+  time = i < 0 ? stage.duration : i + .97;
+  document.body.classList.add('photo');
+  stage.proof(false);
+  layout();
+  stage.look(ref.azimuth, ref.elevation, ref.distance, ...(ref.target ?? data.view.target));
+  stage.fov(ref.fov ?? 38);
+  const box = $('photo'), image = box.querySelector('img');
+  image.src = commonsImage(ref.url, 1800) ?? ref.url;
+  const fit = ref.calibration ? ` · viewpoint fitted on ${ref.calibration.points} points, model within ${ref.calibration.rms}% of the photo's height` : ' · viewpoint from the photo\'s recorded position, not fitted';
+  box.querySelector('.photo-caption').replaceChildren(`${ref.view ?? 'Reference photo'} · `, link(ref.url, 'the photo'), fit);
+  box.style.setProperty('--split', '50%'); box.classList.remove('fade'); box.querySelector('.photo-fade').setAttribute('aria-pressed', 'false');
+  box.hidden = false;
+}
+function hidePhoto() {
+  photoRef = null; $('photo').hidden = true;
+  document.body.classList.remove('photo');
+  stage.proof(proofOn); stage.fov(); layout();
+}
+{
+  const box = $('photo');
+  let dragging = false;
+  const slide = x => box.style.setProperty('--split', `${Math.max(0, Math.min(100, x / innerWidth * 100))}%`);
+  box.addEventListener('pointerdown', event => { if (event.target.closest('.photo-bar')) return; dragging = true; box.setPointerCapture(event.pointerId); slide(event.clientX); });
+  box.addEventListener('pointermove', event => { if (dragging) slide(event.clientX); });
+  box.addEventListener('pointerup', () => { dragging = false; });
+  box.querySelector('.photo-close').onclick = hidePhoto;
+  box.querySelector('.photo-fade').onclick = event => { const on = box.classList.toggle('fade'); event.currentTarget.setAttribute('aria-pressed', String(on)); };
+  addEventListener('keydown', event => { if (event.key === 'Escape' && photoRef) hidePhoto(); });
+}
+
 // When the 3D scene cannot start, say why and how to fix it, and play the recorded construction instead
 // (the website keeps one per monument in ../media/<id>.mp4).
 function fallback(error) {
@@ -294,6 +413,10 @@ try {
   addEventListener('resize', layout);
   await open(decodeURIComponent(location.hash.slice(1)));
   layout();
+  // ?proof opens the evidence mode; ?photo=<n> lays reference photo n over the model.
+  if (data && (params.has('proof') || params.has('photo'))) await setProof(true);
+  const photoIndex = Number(params.get('photo'));
+  if (data && params.has('photo') && data.evidence?.references?.[photoIndex]) showPhoto(data.evidence.references[photoIndex]);
   document.fonts.ready.then(fitTimeline);
   requestAnimationFrame(frame);
 } catch (error) {

@@ -12,8 +12,8 @@
   <a href="#limits">Limits</a>
 </p>
 
-<p align="center"><img src=".github/assets/leaning-tower-of-pisa.gif" width="560" alt="The Leaning Tower of Pisa rising storey by storey, then leaning south as the years go by, and being pulled back by the engineers."></p>
-<p align="center"><sub><code>examples/leaning-tower-of-pisa.json</code>: three campaigns from 1173 to 1372, then the lean that reaches 5.5° in 1990 and is brought back to 3.97° in 2001.</sub></p>
+<p align="center"><img src=".github/assets/notre-dame-de-paris.gif" width="560" alt="Notre-Dame de Paris rising from its choir in 1163, losing its spire in the Revolution, restored by Viollet-le-Duc, burnt in 2019 and rebuilt."></p>
+<p align="center"><sub><code>examples/notre-dame-de-paris.json</code>: the choir of 1163, the nave, the west front and its towers, the roses and flying buttresses, the spire pulled down in 1792, Viollet-le-Duc's spire of 1859, the fire of 15 April 2019 and the rebuilding.</sub></p>
 
 ---
 
@@ -75,9 +75,10 @@ One rule sits at the top of [`SKILL.md`](SKILL.md): **the building is the eviden
 
 The world's most recognised monuments, built one by one. Each animation is recorded from the live viewer with `scripts/record.mjs`.
 
-| | | |
-|---|---|---|
-| <a href="https://gleaming0427.github.io/monument/view/#colosseum"><img src=".github/assets/colosseum.gif" alt="The Colosseum being built, then ruined"></a><br><b>Colosseum</b>, Rome | <a href="https://gleaming0427.github.io/monument/view/#leaning-tower-of-pisa"><img src=".github/assets/leaning-tower-of-pisa.gif" alt="The Leaning Tower of Pisa being built"></a><br><b>Leaning Tower of Pisa</b>, Italy | <a href="https://gleaming0427.github.io/monument/view/#eiffel-tower"><img src=".github/assets/eiffel-tower.gif" alt="The Eiffel Tower being built"></a><br><b>Eiffel Tower</b>, Paris |
+| | |
+|---|---|
+| <a href="https://gleaming0427.github.io/monument/view/#notre-dame-de-paris"><img src=".github/assets/notre-dame-de-paris.gif" alt="Notre-Dame de Paris built from 1163, its spire pulled down, rebuilt, burnt in 2019 and rebuilt again"></a><br><b>Notre-Dame de Paris</b>, 1163–2025 | <a href="https://gleaming0427.github.io/monument/view/#colosseum"><img src=".github/assets/colosseum.gif" alt="The Colosseum being built, then ruined"></a><br><b>Colosseum</b>, Rome |
+| <a href="https://gleaming0427.github.io/monument/view/#leaning-tower-of-pisa"><img src=".github/assets/leaning-tower-of-pisa.gif" alt="The Leaning Tower of Pisa being built"></a><br><b>Leaning Tower of Pisa</b>, Italy | <a href="https://gleaming0427.github.io/monument/view/#eiffel-tower"><img src=".github/assets/eiffel-tower.gif" alt="The Eiffel Tower being built"></a><br><b>Eiffel Tower</b>, Paris |
 
 Every one is live on the [website](https://gleaming0427.github.io/monument/collection/).
 

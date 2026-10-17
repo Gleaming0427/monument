@@ -11,6 +11,9 @@ import {resolveVisualStyle, pbrOptions, groundOptions, createEnvironment, dispos
 // lights it as it lands. One phase = one unit of time.
 const PIXEL_RATIO = Math.min(2, Math.max(1.5, globalThis.devicePixelRatio ?? 1));
 const FLY = 0.06;
+// Where each element of a monument comes from (element.provenance); anything else counts as unstated.
+export const PROVENANCE = ['measured', 'documented', 'interpreted'];
+const provenanceOf = element => { const i = PROVENANCE.indexOf(element?.provenance); return i < 0 ? 3 : i; };
 const UP = new T.Vector3(0, 1, 0);
 const KINDS = {
   stone: {roughness: .88, metalness: 0},
@@ -19,7 +22,8 @@ const KINDS = {
   tile: {roughness: .75, metalness: 0},
   wood: {roughness: .92, metalness: 0},
   cloth: {roughness: .9, metalness: 0},
-  glass: {roughness: .1, metalness: .4},
+  glass: {roughness: .16, metalness: .25},
+  lead: {roughness: .72, metalness: .12},
 };
 
 function random(seed) {
@@ -53,6 +57,186 @@ function kit(rand) {
       add(kind, color, phase, order, pos.y, extra);
     },
   };
+}
+
+// ——— Gothic churches: shared toolkit ———
+// The Gothic bricks share one frame: u along the element's axis, v across it, y up, placed by `center` [x, z]
+// and `rot` like the other bricks. Walls are coursed ashlar with their openings cut out; the glass sits inside
+// the wall, so it shows only through the openings, behind stone tracery. Roofs are laid in strips, eave to
+// ridge, so they grow during their phase; a roof with `until` burns or falls then, and `rebuild` lays it again.
+function gothic(k, e, P) {
+  const [cx, cz] = e.center ?? [0, 0], rot = e.rot ?? 0, co = Math.cos(rot), si = Math.sin(rot);
+  const stone = e.color ?? '#d6c8a8', lead = e.lead ?? '#8e979f', glass = e.glass ?? '#34404f', phase = P(e.phase);
+  const V = (u, y, v) => new T.Vector3(cx + u * co + v * si, y, cz - u * si + v * co);
+  const tint = (hex, j = .06) => k.tint(hex, j);
+  // A box at [u, v] and height y (its centre), its length along the frame direction [du, dv].
+  const box = (kind, [u, v], y, [l, h, t], [du, dv], color, ph = phase, extra = {}) => {
+    const p = V(u, y, v);
+    k.box(kind, [p.x, p.y, p.z], [l, h, t], rot + Math.atan2(-dv, du), color, ph, p.y, extra);
+  };
+  const beam = (kind, a, b, thick, color, ph = phase, extra = {}) => k.beam(kind, V(...a), V(...b), thick, color, ph, extra);
+  // Lifecycle of a part: built in its phase, gone at `until`, laid again at `rebuild`.
+  const life = (spec, fn) => {
+    fn(spec?.phase ? P(spec.phase) : phase, spec?.until ? {until: P(spec.until)} : {});
+    if (spec?.rebuild) fn(P(spec.rebuild), {});
+  };
+  // Half-width of an opening at height y, or -1 outside it.
+  const span = (o, y) => {
+    if (o.kind === 'circle') { const q = o.r * o.r - (y - o.y) ** 2; return q > 0 ? Math.sqrt(q) : -1; }
+    if (y < o.sill) return -1;
+    if (y <= o.spring) return o.w / 2;
+    if (o.kind === 'rect') return -1;
+    if (o.kind === 'round') { const q = (o.w / 2) ** 2 - (y - o.spring) ** 2; return q > 0 ? Math.sqrt(q) : -1; }
+    const q = o.w * o.w - (y - o.spring) ** 2; return q > 0 ? Math.sqrt(q) - o.w / 2 : -1;
+  };
+  const top = o => o.kind === 'circle' ? o.y + o.r : o.kind === 'rect' ? o.spring : o.spring + (o.kind === 'round' ? o.w / 2 : o.w * .866);
+
+  // An arch outline (pointed, round or flat) as a chain of stones, centred at s on a wall seen through F.
+  function arch(F, s, w, spring, off, thick, ph, extra, kind = 'pointed', segs = 4) {
+    const pts = [];
+    if (kind === 'round') for (let i = 0; i <= 2 * segs; i++) { const a = Math.PI * (1 - i / (2 * segs)); pts.push([s + Math.cos(a) * w / 2, spring + Math.sin(a) * w / 2]); }
+    else if (kind === 'rect') pts.push([s - w / 2, spring], [s + w / 2, spring]);
+    else {
+      for (let i = 0; i <= segs; i++) { const a = Math.PI - Math.PI / 3 * i / segs; pts.push([s + w / 2 + w * Math.cos(a), spring + w * Math.sin(a)]); }
+      for (let i = 1; i <= segs; i++) { const a = Math.PI / 3 - Math.PI / 3 * i / segs; pts.push([s - w / 2 + w * Math.cos(a), spring + w * Math.sin(a)]); }
+    }
+    for (let i = 0; i < pts.length - 1; i++) beam('stone', F(pts[i][0], pts[i][1], off), F(pts[i + 1][0], pts[i + 1][1], off), thick, tint(stone), ph, extra);
+  }
+  function ring(F, s, y, r, off, thick, n, ph, extra) {
+    for (let i = 0; i < n; i++) {
+      const a0 = i / n * Math.PI * 2, a1 = (i + 1) / n * Math.PI * 2;
+      beam('stone', F(s + Math.cos(a0) * r, y + Math.sin(a0) * r, off), F(s + Math.cos(a1) * r, y + Math.sin(a1) * r, off), thick, tint(stone), ph, extra);
+    }
+  }
+  // Glass and tracery of one opening. F(s, y, off) is a point on the wall, `off` towards the outside.
+  function opening(F, o, t, ph, extra) {
+    const W = o.kind === 'circle' ? 2 * o.r : o.w, y0 = o.kind === 'circle' ? o.y - o.r : o.sill, y1 = top(o), face = t / 2 + .08;
+    const [a, b] = [F(o.s - 1, 0, 0), F(o.s + 1, 0, 0)], dir = [(b[0] - a[0]) / 2, (b[2] - a[2]) / 2];
+    if (o.door) {
+      const p = F(o.s, 0, t / 2 - .4);
+      box('wood', [p[0], p[2]], (o.spring ?? 4) / 2, [W, o.spring ?? 4, .25], dir, tint(o.door, .05), ph, extra);
+    } else if (o.louvres) {
+      for (let y = y0 + .4; y < y1 - .3; y += .75) {
+        const hw = Math.max(.2, span(o, y + .1)), p = F(o.s, 0, 0);
+        box('wood', [p[0], p[2]], y, [2 * hw, .12, t * .5], dir, tint(o.louvres, .06), ph, extra);
+      }
+    } else if (o.glass !== false) {
+      const cols = Math.max(1, Math.round(W / 1.4)), rows = Math.max(1, Math.round((y1 - y0) / 1.9)), pw = W / cols, ph2 = (y1 - y0) / rows;
+      for (let i = 0; i < cols; i++) for (let j = 0; j < rows; j++) {
+        const p = F(o.s - W / 2 + (i + .5) * pw, 0, 0);
+        box('glass', [p[0], p[2]], y0 + (j + .5) * ph2, [pw, ph2, .1], dir, tint(o.colors ? o.colors[Math.floor(k.rand() * o.colors.length)] : glass, .2), ph, extra);
+      }
+    }
+    if (o.kind === 'circle') {
+      // A rose: frame on the face, two inner rings, spokes.
+      ring(F, o.s, o.y, o.r + .25, face, .7, 32, ph, extra);
+      ring(F, o.s, o.y, o.r * .66, 0, .32, 24, ph, extra);
+      ring(F, o.s, o.y, o.r * .3, 0, .3, 14, ph, extra);
+      const n = o.spokes ?? 16;
+      for (let i = 0; i < n; i++) {
+        const a = i / n * Math.PI * 2, c = Math.cos(a), s = Math.sin(a);
+        beam('stone', F(o.s + c * o.r * .3, o.y + s * o.r * .3, 0), F(o.s + c * o.r, o.y + s * o.r, 0), .26, tint(stone), ph, extra);
+        if (i % 2 === 0) beam('stone', F(o.s + c * o.r * .08, o.y + s * o.r * .08, 0), F(o.s + c * o.r * .3, o.y + s * o.r * .3, 0), .22, tint(stone), ph, extra);
+      }
+      return;
+    }
+    // The arch frame on the face, its jambs, and the tracery: a mullion, two lancets and an oculus.
+    arch(F, o.s, W + .35, o.spring, face, .45, ph, extra, o.kind);
+    for (const side of [-1, 1]) beam('stone', F(o.s + side * (W / 2 + .1), y0, face), F(o.s + side * (W / 2 + .1), o.spring, face), .4, tint(stone), ph, extra);
+    if (o.twin && W > 1.6) {
+      beam('stone', F(o.s, y0, 0), F(o.s, o.spring + W * .18, 0), .3, tint(stone), ph, extra);
+      for (const side of [-1, 1]) arch(F, o.s + side * W / 4, W / 2 - .12, o.spring, 0, .24, ph, extra, 'pointed', 3);
+      if (o.oculus !== false && o.kind !== 'rect') ring(F, o.s, o.spring + W * .5, W * .19, 0, .22, 10, ph, extra);
+    }
+  }
+  // Coursed ashlar from a to b ([u, v]) between y0 and y1, thickness t, `out` its outward normal ([u, v]),
+  // with its openings cut out. An opening without `s` is centred and narrowed to fit the wall.
+  function wall(a, b, y0, y1, t, out, openings = [], ph = phase, extra = {}, course = .8) {
+    const du = b[0] - a[0], dv = b[1] - a[1], len = Math.hypot(du, dv);
+    if (len < .3 || y1 - y0 < .2) return;
+    const dir = [du / len, dv / len], at = s => [a[0] + dir[0] * s, a[1] + dir[1] * s];
+    const F = (s, y, off) => [a[0] + dir[0] * s + out[0] * off, y, a[1] + dir[1] * s + out[1] * off];
+    const holes = openings.filter(Boolean).map(o => {
+      if (o.kind === 'circle') return {...o, s: o.s ?? len / 2};
+      const w = Math.min(o.width ?? o.w ?? 2, len - (o.margin ?? 1.4));
+      return w > .7 ? {...o, w, s: o.s ?? len / 2} : null;
+    }).filter(Boolean);
+    for (let y = y0, row = 0; y < y1 - .05; row++) {
+      const h = Math.min(course * (.85 + .3 * k.rand()), y1 - y), ym = y + h / 2;
+      let spans = [[0, len]];
+      for (const o of holes) {
+        const hw = span(o, ym);
+        if (hw > 0) spans = spans.flatMap(([p, q]) => [[p, Math.min(q, o.s - hw)], [Math.max(p, o.s + hw), q]]).filter(([p, q]) => q - p > .06);
+      }
+      for (const [p, q] of spans) for (let s = p - (row % 2) * .6; s < q - .05;) {
+        const l = 1.1 + .7 * k.rand(), from = Math.max(p, s), to = Math.min(q, s + l);
+        if (to - from > .06) box('stone', at((from + to) / 2), ym, [to - from - .03, h * .95, t], dir, tint(stone), ph, extra);
+        s += l;
+      }
+      y += h;
+    }
+    for (const o of holes) opening(F, o, t, ph, extra);
+  }
+  // A triangular gable on a wall line from a to b, base at y0, apex at y1, with an optional oculus.
+  function gable(a, b, y0, y1, t, out, ph = phase, extra = {}, oculus) {
+    const du = b[0] - a[0], dv = b[1] - a[1], len = Math.hypot(du, dv), dir = [du / len, dv / len];
+    const F = (s, y, off) => [a[0] + dir[0] * s + out[0] * off, y, a[1] + dir[1] * s + out[1] * off], H = y1 - y0;
+    for (let y = y0, row = 0; y < y1 - .3; row++) {
+      const h = Math.min(.8, y1 - y), hw = len / 2 * (1 - (y + h / 2 - y0) / H), c = len / 2;
+      let spans = [[c - hw, c + hw]];
+      if (oculus) { const q = oculus.r ** 2 - (y + h / 2 - oculus.y) ** 2; if (q > 0) { const w = Math.sqrt(q); spans = [[c - hw, c - w], [c + w, c + hw]].filter(([p, q2]) => q2 - p > .06); } }
+      for (const [p, q] of spans) for (let s = p - (row % 2) * .5; s < q - .05;) {
+        const l = 1.2 + .6 * k.rand(), from = Math.max(p, s), to = Math.min(q, s + l), m = F((from + to) / 2, 0, 0);
+        if (to - from > .06) box('stone', [m[0], m[2]], y + h / 2, [to - from - .03, h * .95, t], dir, tint(stone), ph, extra);
+        s += l;
+      }
+      y += h;
+    }
+    if (oculus) opening(F, {kind: 'circle', s: len / 2, y: oculus.y, r: oculus.r, spokes: 8}, t, ph, extra);
+    // Coping along the rakes, crockets, and a finial.
+    for (const side of [0, len]) {
+      beam('stone', F(side, y0, t / 2), F(len / 2, y1 + .3, t / 2), .55, tint(stone), ph, extra);
+      for (let f = .12; f < .95; f += .14) { const p = F(side + (len / 2 - side) * f, 0, t / 2 + .25); box('stone', [p[0], p[2]], y0 + H * f + .45, [.35, .45, .35], dir, tint(stone), ph, extra); }
+    }
+    const p = F(len / 2, 0, t / 2);
+    box('stone', [p[0], p[2]], y1 + 1, [.5, 1.6, .5], dir, tint(stone), ph, extra);
+    box('stone', [p[0], p[2]], y1 + 1.6, [1.2, .3, .3], dir, tint(stone), ph, extra);
+  }
+  // A pinnacle: a short shaft and a stepped spire with a finial, centred on [u, v].
+  function pinnacle(c, y0, h, w, ph = phase, extra = {}) {
+    box('stone', c, y0 + h * .17, [w, h * .34, w], [1, 0], tint(stone), ph, extra);
+    for (let i = 0; i < 6; i++) { const f = i / 6, s = w * (1 - f * .85); box('stone', c, y0 + h * (.34 + f * .56) + h * .045, [s, h * .09, s], [1, 0], tint(stone), ph, extra); }
+    box('stone', c, y0 + h * .96, [.22, h * .1, .22], [1, 0], tint(stone), ph, extra);
+  }
+  // A strip roof over the quad: eave edge e0–e1 at ye up to the ridge edge r0–r1 at yr (r0 = r1 for a cone).
+  function panel(A, B, C, D, color, ph, extra, kind = 'lead', strip = 1.25, lift = .12) {
+    const ea = A.clone().lerp(B, .5), ra = C.clone().lerp(D, .5), slope = ea.distanceTo(ra), n = Math.max(1, Math.round(slope / strip));
+    for (let j = 0; j < n; j++) {
+      const t = (j + .5) / n, L = A.clone().lerp(C, t), R = B.clone().lerp(D, t), len = L.distanceTo(R);
+      if (len < .12) continue;
+      const tg = R.clone().sub(L).normalize(), sd = ra.clone().sub(ea).normalize(), nrm = new T.Vector3().crossVectors(sd, tg);
+      if (nrm.y < 0) { tg.negate(); nrm.crossVectors(sd, tg); }
+      nrm.normalize();
+      const z = new T.Vector3().crossVectors(tg, nrm).normalize();
+      k.oriented(kind, L.clone().lerp(R, .5).addScaledVector(nrm, lift), tg, nrm, z, [len * 1.02 + .1, .24, slope / n * 1.12], tint(color, .05), ph, L.y, extra);
+    }
+  }
+  const quad = (e0, e1, ye, r0, r1, yr, color, ph, extra, kind) => panel(V(e0[0], ye, e0[1]), V(e1[0], ye, e1[1]), V(r0[0], yr, r0[1]), V(r1[0], yr, r1[1]), color, ph, extra, kind);
+  // A stone balustrade along a line.
+  function rail(a, b, y, ph = phase, extra = {}) {
+    beam('stone', [a[0], y + 1, a[1]], [b[0], y + 1, b[1]], .26, tint(stone), ph, extra);
+    beam('stone', [a[0], y + .15, a[1]], [b[0], y + .15, b[1]], .3, tint(stone), ph, extra);
+    const len = Math.hypot(b[0] - a[0], b[1] - a[1]), n = Math.max(1, Math.round(len / 1.4));
+    for (let i = 0; i <= n; i++) { const f = i / n, u = a[0] + (b[0] - a[0]) * f, v = a[1] + (b[1] - a[1]) * f; box('stone', [u, v], y + .55, [.2, .8, .2], [b[0] - a[0], b[1] - a[1]], tint(stone), ph, extra); }
+  }
+  // A carved figure on a plinth, facing `out`.
+  function statue([u, v], y, h, out, color, ph = phase, extra = {}) {
+    const dir = [-out[1], out[0]];
+    box('stone', [u, v], y + .15, [h * .34, .3, h * .3], dir, tint(stone), ph, extra);
+    box('stone', [u, v], y + .3 + h * .38, [h * .26, h * .76, h * .2], dir, tint(color, .08), ph, extra);
+    box('stone', [u + out[0] * .03, v + out[1] * .03], y + .3 + h * .85, [h * .14, h * .16, h * .14], dir, tint(color, .08), ph, extra);
+  }
+  return {V, P, phase, stone, lead, glass, tint, box, beam, life, span, arch, ring, opening, wall, gable, pinnacle, panel, quad, rail, statue};
 }
 
 // ——— Generators (bricks) ———
@@ -802,7 +986,233 @@ export const generators = {
     const top = e.height;
     beam(V(0, e.height - 6, 0), V(0, top + e.flag.pole, 0), .45);
     e.flag.colors.forEach((c, i) => k.box('cloth', [1.2 + i * 1.6 + .8, top + e.flag.pole - 1.4, 0], [1.6, 2.6, .1], 0, new T.Color(c), P(e.flag.phase), top + 99));
+  },  // Basilican body of a Gothic church: a central vessel lit by a clerestory under a steep roof, aisles under
+  // lean-to roofs, chapels between the buttresses, buttress piers with pinnacles and flying buttresses. One
+  // element is one run: straight (`from`, `to`, `bays`, `sides`) or a hemicycle (`apse`: {sides, start, end}
+  // in degrees, 0 = +u) around `center`.
+  basilica(k, e, P) {
+    const G = gothic(k, e, P), {vessel, aisles, chapels, buttresses: butt, flyers} = e, roof = e.roof ?? {};
+    const lines = [];
+    if (e.apse) {
+      const {sides, start = -90, end = 90} = e.apse, list = [];
+      for (let i = 0; i <= sides; i++) { const a = (start + (end - start) * i / sides) * Math.PI / 180; list.push({A: [0, 0], n: [Math.cos(a), Math.sin(a)]}); }
+      lines.push(list);
+    } else for (const side of e.sides ?? [-1, 1]) {
+      const list = [];
+      for (let i = 0; i <= e.bays; i++) list.push({A: [e.from + (e.to - e.from) * i / e.bays, 0], n: [0, side]});
+      lines.push(list);
+    }
+    const at = (s, d) => [s.A[0] + s.n[0] * d, s.A[1] + s.n[1] * d];
+    const mid = (s0, s1) => { const n = [s0.n[0] + s1.n[0], s0.n[1] + s1.n[1]], l = Math.hypot(...n); return [n[0] / l, n[1] / l]; };
+    const base = aisles ? aisles.top - 1.2 : 0, chapelPhase = chapels?.phase ? P(chapels.phase) : G.phase, eaveOut = vessel.half + .9;
+    // Temporary or plain end walls with their gables (`ends`: {at: ['from', 'to'], until}).
+    if (e.ends && !e.apse) for (const which of e.ends.at ?? ['from', 'to']) {
+      const u = which === 'from' ? e.from : e.to, extra = e.ends.until ? {until: P(e.ends.until)} : {}, o = [which === 'from' ? -1 : 1, 0];
+      G.wall([u, -eaveOut], [u, eaveOut], 0, vessel.eave, 1.2, o, [], G.phase, extra);
+      G.gable([u, -eaveOut], [u, eaveOut], vessel.eave, vessel.ridge, 1.1, o, G.phase, extra);
+    }
+    for (const line of lines) {
+      for (let i = 0; i < line.length - 1; i++) {
+        const s0 = line[i], s1 = line[i + 1], out = mid(s0, s1);
+        // The clerestory: in every bay, twin lancets under an oculus.
+        G.wall(at(s0, vessel.half), at(s1, vessel.half), base, vessel.eave, vessel.thick ?? 1.2, out, vessel.windows ? [{kind: 'pointed', twin: true, ...vessel.windows}] : [], G.phase);
+        G.rail(at(s0, eaveOut - .2), at(s1, eaveOut - .2), vessel.eave, G.phase);
+        if (aisles) {
+          // The aisle wall and its roof, replaced when chapels are built out between the buttresses.
+          const gone = chapels?.phase ? {until: chapelPhase} : {};
+          G.wall(at(s0, aisles.half), at(s1, aisles.half), 0, aisles.wall, 1.1, out, aisles.windows ? [{kind: 'pointed', ...aisles.windows}] : [], G.phase, gone);
+          G.quad(at(s0, aisles.half + .4), at(s1, aisles.half + .4), aisles.wall + .2, at(s0, vessel.half + .7), at(s1, vessel.half + .7), aisles.top, G.lead, G.phase, gone);
+          if (chapels) {
+            G.wall(at(s0, chapels.half), at(s1, chapels.half), 0, chapels.wall, 1.1, out, chapels.windows ? [{kind: 'pointed', twin: true, ...chapels.windows}] : [], chapelPhase);
+            G.quad(at(s0, chapels.half + .4), at(s1, chapels.half + .4), chapels.wall + .2, at(s0, vessel.half + .7), at(s1, vessel.half + .7), aisles.top, G.lead, chapelPhase);
+            if (chapels.gables) {
+              const len = Math.hypot(at(s1, chapels.half)[0] - at(s0, chapels.half)[0], at(s1, chapels.half)[1] - at(s0, chapels.half)[1]), inset = Math.max(.6, (len - chapels.gables.width) / 2), d = chapels.half + .3;
+              const a = at(s0, d), b = at(s1, d), f = inset / len;
+              G.gable([a[0] + (b[0] - a[0]) * f, a[1] + (b[1] - a[1]) * f], [b[0] + (a[0] - b[0]) * f, b[1] + (a[1] - b[1]) * f], chapels.wall - .4, chapels.wall + chapels.gables.height, .6, out, chapelPhase);
+            }
+          }
+          // The arcade piers, seen while the aisles are open.
+          for (const d of [vessel.half - .2, (vessel.half + aisles.half) / 2]) for (let y = 0; y < (d < vessel.half ? base : aisles.wall) - .1; y += 3) G.box('stone', at(s0, d), y + 1.5, [1.3, 2.95, 1.3], s0.n, G.tint(G.stone), G.phase);
+        }
+        // The main roof, eave to ridge (a half cone around a hemicycle), and its crest.
+        G.life(roof, (ph, extra) => {
+          G.quad(at(s0, eaveOut), at(s1, eaveOut), vessel.eave, s0.A, s1.A, vessel.ridge, roof.color ?? G.lead, ph, extra);
+          if (!e.apse && roof.crest !== false) {
+            G.beam('lead', [s0.A[0], vessel.ridge + .35, s0.A[1]], [s1.A[0], vessel.ridge + .35, s1.A[1]], .4, G.tint(roof.color ?? G.lead), ph, extra);
+            for (let f = .25; f < 1; f += .5) G.box('lead', [s0.A[0] + (s1.A[0] - s0.A[0]) * f, s0.A[1] + (s1.A[1] - s0.A[1]) * f], vessel.ridge + .9, [.3, .8, .3], [1, 0], G.tint(roof.color ?? G.lead), ph, extra);
+          }
+        });
+      }
+      // Buttress piers with pinnacles, and the flying buttresses that carry the vaults' thrust over the aisles.
+      if (butt) for (const [i, s] of line.entries()) {
+        if (butt.ends === false && (i === 0 || i === line.length - 1)) continue;
+        const d0 = aisles?.half ?? vessel.half, d1 = butt.half, w = butt.width ?? 1.6, step = butt.step ?? 1.6, low = chapels?.wall ?? aisles?.wall ?? 8;
+        for (let y = 0; y < butt.top - .05;) {
+          const h = Math.min(1.1, butt.top - y), c = d1 - (y + h / 2 > low ? step : 0);
+          G.box('stone', at(s, (d0 + c) / 2), y + h / 2, [c - d0, h * .96, w], s.n, G.tint(G.stone), G.phase);
+          y += h;
+        }
+        if (butt.pinnacle) G.pinnacle(at(s, d1 - step - w / 2), butt.top, butt.pinnacle, w * .9, G.phase);
+        if (flyers && aisles) {
+          const ph = flyers.phase ? P(flyers.phase) : G.phase, dA = d0 + .5, dB = vessel.half + .6, m = 9, drop = flyers.drop ?? 4.5;
+          const top = t => flyers.from + (flyers.to - flyers.from) * t + .4, low2 = t => flyers.from - drop + (flyers.to - 1.8 - flyers.from + drop) * Math.sin(t * Math.PI / 2);
+          for (let j = 0; j < m; j++) {
+            const t = (j + .5) / m, yt = top(t), yb = low2(t);
+            G.box('stone', at(s, dA + (dB - dA) * t), (yt + yb) / 2, [Math.abs(dB - dA) / m * 1.04, Math.max(.7, yt - yb), flyers.thick ?? .9], s.n, G.tint(G.stone), ph);
+          }
+          const pa = at(s, dA), pb = at(s, dB);
+          G.beam('stone', [pa[0], top(0) + .3, pa[1]], [pb[0], top(1) + .3, pb[1]], .5, G.tint(G.stone), ph);
+        }
+      }
+    }
   },
+  // The harmonic west front of a Gothic church: three portals, a gallery of kings, a rose between two tall
+  // windows, an open high gallery, then two square towers with tall louvred openings. It faces -u from the
+  // front line (u = 0); `depth` runs into the church. Levels are given as heights; `bands` give their phases.
+  twinTowerFront(k, e, P) {
+    const G = gothic(k, e, P), hw = e.width / 2, d = e.depth, t = e.thick ?? 2.6, L = e.levels, out = [-1, 0];
+    const ph = y => P((e.bands ?? []).find(b => y < b.to)?.phase ?? e.phase);
+    const front = (y0, y1, openings) => G.wall([t / 2, -hw], [t / 2, hw], y0, y1, t, out, openings, ph(y0));
+    // Portals: deep pointed arches stepping in, a tympanum above the doors.
+    front(0, L.kings, e.portals.map(p => ({kind: 'pointed', s: hw + p.v, w: p.w, sill: 0, spring: p.spring, glass: false})));
+    for (const p of e.portals) {
+      // Archivolts stepping in through the wall, statues in the splayed jambs, the doors and their trumeau,
+      // and a tympanum carved in registers above the lintel.
+      const n = e.archivolts ?? 5, lintel = p.spring * .72;
+      for (let i = 0; i < n; i++) G.arch((s, y, off) => [i * (t - .5) / n + .25, y, p.v + s], 0, p.w - .2 - i * .5, p.spring, 0, .62, ph(0), {}, 'pointed', 6);
+      for (const side of [-1, 1]) for (let i = 0; i < 3; i++) {
+        const v = p.v + side * (p.w / 2 - .45 - i * .5), u = .45 + i * .6;
+        G.beam('stone', [u, 0, v], [u, p.spring, v], .32, G.tint(G.stone), ph(0));
+        G.statue([u - .25, v], .9, 2.9, out, e.sculpture ?? G.stone, ph(0));
+      }
+      G.wall([t - .3, p.v - p.w / 2], [t - .3, p.v + p.w / 2], 0, p.spring + p.w * .87, .6, out, [{kind: 'rect', s: p.w / 2 - p.w * .21, w: p.w * .3, sill: 0, spring: lintel, door: '#4a3b2f', margin: 0}, {kind: 'rect', s: p.w / 2 + p.w * .21, w: p.w * .3, sill: 0, spring: lintel, door: '#4a3b2f', margin: 0}], ph(0));
+      G.box('stone', [t - .75, p.v], lintel / 2, [.5, lintel, .9], [1, 0], G.tint(G.stone), ph(0));
+      G.statue([t - 1.15, p.v], 1.2, Math.min(3.2, lintel - 1.6), out, e.sculpture ?? G.stone, ph(0));
+      for (const y of [lintel + .25, lintel + 2.3, lintel + 4.3]) {
+        const hw2 = G.span({kind: 'pointed', w: p.w - .2 - (n - 1) * .5, sill: 0, spring: p.spring}, y);
+        if (hw2 > .5) G.beam('stone', [t - .65, y, p.v - hw2], [t - .65, y, p.v + hw2], .45, G.tint(e.tympanum ?? G.stone), ph(0));
+      }
+    }
+    // The gallery of kings: a ledge, a row of niches and their statues (taken down and remade if asked).
+    front(L.kings, L.rose, []);
+    G.beam('stone', [-.5, L.kings + .2, -hw], [-.5, L.kings + .2, hw], .8, G.tint(G.stone), ph(L.kings));
+    const kings = e.kings ?? {count: 28};
+    for (let i = 0; i < kings.count; i++) {
+      const v = -hw + 1 + (2 * hw - 2) * (i + .5) / kings.count, y = L.kings + .5;
+      G.arch((s, yy, off) => [-.25, yy, v + s], 0, (2 * hw - 2) / kings.count * .9, L.rose - 1.4, 0, .22, ph(L.kings), {}, 'pointed', 2);
+      G.life({phase: kings.phase ?? e.bands?.find(b => L.kings < b.to)?.phase ?? e.phase, until: kings.until, rebuild: kings.rebuild}, (p, extra) => G.statue([-.45, v], y, L.rose - L.kings - 1.6, out, kings.color ?? G.stone, p, extra));
+    }
+    // The rose level: the rose in the middle, a tall twin window in each tower section, the Virgin's balustrade.
+    front(L.rose, L.gallery, [{kind: 'circle', s: hw + e.rose.v, y: e.rose.y, r: e.rose.r, colors: e.rose.colors}, ...e.towers.map(tw => ({kind: 'pointed', s: hw + tw.v, w: e.windowWidth ?? 5.2, sill: L.rose + 1.6, spring: L.gallery - 5.2, twin: true}))]);
+    G.rail([-.6, -hw], [-.6, hw], L.rose, ph(L.rose));
+    // The high gallery: slender colonnettes and arches before the towers' walls, open between the towers.
+    for (let v = -hw + .6; v <= hw - .5; v += 1.15) G.beam('stone', [.3, L.gallery + .4, v], [.3, L.gallery + 6.2, v], .3, G.tint(G.stone), ph(L.gallery));
+    for (let v = -hw + .6; v < hw - 1.6; v += 1.15) G.arch((s, y, off) => [.3, y, v + .575 + s], 0, 1.1, L.gallery + 6.2, 0, .22, ph(L.gallery), {}, 'pointed', 2);
+    G.beam('stone', [.3, L.gallery + .3, -hw], [.3, L.gallery + .3, hw], .6, G.tint(G.stone), ph(L.gallery));
+    G.beam('stone', [.3, L.gallery + 7.4, -hw], [.3, L.gallery + 7.4, hw], .7, G.tint(G.stone), ph(L.gallery));
+    for (const tw of e.towers) G.wall([2.2, tw.v - tw.w / 2], [2.2, tw.v + tw.w / 2], L.gallery, L.top, 1.6, out, [], ph(L.gallery));
+    if (e.gable) G.wall([d, -e.gable.half], [d, e.gable.half], L.gallery, e.gable.eave, 1.2, out, [], ph(L.gallery));
+    if (e.gable) G.gable([d, -e.gable.half], [d, e.gable.half], e.gable.eave, e.gable.ridge, 1.1, out, ph(L.gallery));
+    G.wall([.4, -hw], [.4, hw], L.top - 1.6, L.top - .6, 1.4, out, [], ph(L.gallery));
+    G.rail([-.2, -hw], [-.2, hw], L.top - .6, ph(L.gallery));
+    // Sides of the front block, with their buttresses.
+    for (const side of [-1, 1]) {
+      G.wall([0, side * hw], [d, side * hw], 0, L.top, 1.8, [0, side], (e.sideWindows ?? []).map(w => ({kind: 'pointed', twin: true, ...w})), ph(0));
+      for (const u of e.sideButtresses ?? []) for (let y = 0; y < L.top - 3; y += 1.1) {
+        const h = Math.min(1.1, L.top - 3 - y), depth = y < L.rose ? 2.4 : 1.4;
+        G.box('stone', [u, side * (hw + depth / 2)], y + h / 2, [1.9, h * .96, depth], [1, 0], G.tint(G.stone), ph(y));
+      }
+    }
+    // Front buttresses up to the high gallery, stepping back.
+    for (const v of e.buttresses ?? []) for (let y = 0; y < L.top - 1; y += 1.1) {
+      const h = Math.min(1.1, L.top - 1 - y), depth = y < L.kings ? 1.5 : y < L.gallery ? 1 : .6;
+      G.box('stone', [-depth / 2 + .2, v], y + h / 2, [depth + .4, h * .96, 2.3], [1, 0], G.tint(G.stone), ph(y));
+    }
+    // The towers: four walls with two tall louvred openings each, corner buttresses, a balustrade and a terrace.
+    for (const tw of e.towers) {
+      const u0 = .6, u1 = .6 + tw.depth, v0 = tw.v - tw.w / 2, v1 = tw.v + tw.w / 2, y0 = L.top, y1 = e.towerTop - 1.5;
+      const holes = len => [len / 2 - len * .22, len / 2 + len * .22].map(s => ({kind: 'pointed', s, w: e.opening?.width ?? 2.6, sill: y0 + (e.opening?.sill ?? 2), spring: y1 - (e.opening?.top ?? 3.2) - (e.opening?.width ?? 2.6) * .87, louvres: '#57534d', margin: 0}));
+      for (const [a, b, o] of [[[u0, v0], [u0, v1], [-1, 0]], [[u1, v0], [u1, v1], [1, 0]], [[u0, v0], [u1, v0], [0, -1]], [[u0, v1], [u1, v1], [0, 1]]]) {
+        G.wall(a, b, y0, y1, 1.5, o, holes(Math.hypot(b[0] - a[0], b[1] - a[1])), ph(y0));
+        G.rail(a, b, y1 + .6, ph(y0));
+      }
+      G.box('lead', [(u0 + u1) / 2, tw.v], y1 + .4, [tw.depth - 1, .4, tw.w - 1], [1, 0], G.tint(G.lead), ph(y0));
+      G.wall([u0 - .2, v0 + .5], [u0 - .2, v1 - .5], y1, y1 + .6, 1.6, [-1, 0], [], ph(y0));
+      for (const [cu, cv] of [[u0, v0], [u0, v1], [u1, v0], [u1, v1]]) {
+        for (let y = y0; y < y1 - .5; y += 1.1) { const s = y < y0 + 8 ? 2 : y < y0 + 15 ? 1.6 : 1.2; G.box('stone', [cu, cv], y + .55, [s, 1.06, s], [1, 0], G.tint(G.stone), ph(y0)); }
+        G.pinnacle([cu, cv], y1 - .5, 3.2, 1.1, ph(y0));
+      }
+      if (tw.turret) {
+        const [cu, cv] = [tw.turret[0] === 'back' ? u1 - 1.4 : u0 + 1.4, tw.turret[1] === 'right' ? v1 - 1.4 : v0 + 1.4];
+        for (let y = y1; y < y1 + 4; y += 1) G.box('stone', [cu, cv], y + .5, [2.4, .96, 2.4], [1, 0], G.tint(G.stone), ph(y0));
+        G.pinnacle([cu, cv], y1 + 4, 3, 2.2, ph(y0));
+      }
+    }
+  },
+  // The end of a Gothic transept (or any gabled front): a portal, a glazed gallery, a great rose, a gable with
+  // an oculus, between two slender turrets. It faces -u from the front line (u = 0).
+  roseFront(k, e, P) {
+    const G = gothic(k, e, P), hw = e.width / 2, t = e.thick ?? 2.2, out = [-1, 0], tw = e.turrets?.width ?? 2.6;
+    const gallery = [];
+    for (let i = 0; i < (e.gallery?.count ?? 0); i++) gallery.push({kind: 'pointed', s: hw - hw * .8 + (2 * hw * .8) * (i + .5) / e.gallery.count, w: 2 * hw * .8 / e.gallery.count - .5, sill: e.gallery.sill, spring: e.gallery.spring, margin: 0});
+    const portal = e.portal ? [{kind: 'pointed', s: hw, w: e.portal.w, sill: 0, spring: e.portal.spring, glass: false}] : [];
+    G.wall([t / 2, -hw], [t / 2, hw], 0, e.eave, t, out, [...portal, ...gallery, {kind: 'circle', s: hw, y: e.rose.y, r: e.rose.r, colors: e.rose.colors, spokes: e.rose.spokes ?? 24}], G.phase);
+    if (e.portal) {
+      for (let i = 0; i < 3; i++) G.arch((s, y, off) => [i * .6 + .3, y, s], 0, e.portal.w - i * .5, e.portal.spring, 0, .45, G.phase, {}, 'pointed', 5);
+      G.wall([t - .3, -e.portal.w / 2], [t - .3, e.portal.w / 2], 0, e.portal.spring + e.portal.w * .87, .6, out, [{kind: 'rect', w: e.portal.w * .7, sill: 0, spring: e.portal.spring * .7, door: '#4a3b2f', margin: 0}], G.phase);
+      G.gable([-.6, -e.portal.w / 2 - .8], [-.6, e.portal.w / 2 + .8], e.portal.spring + e.portal.w * .7, e.portal.spring + e.portal.w * 1.45, .6, out, G.phase);
+    }
+    G.rail([-.4, -hw], [-.4, hw], e.eave - .2, G.phase);
+    G.gable([t / 2, -hw], [t / 2, hw], e.eave, e.apex, t * .8, out, G.phase, {}, e.oculus);
+    // The turrets that frame the front, rising above the gable's shoulders.
+    for (const side of [-1, 1]) {
+      const c = [t / 2, side * (hw + tw / 2 - .2)];
+      for (let y = 0; y < e.turrets.top - .05; y += 1.1) { const h = Math.min(1.1, e.turrets.top - y), s = y < e.eave * .5 ? tw : y < e.eave ? tw * .85 : tw * .7; G.box('stone', c, y + h / 2, [s + .6, h * .96, s], [1, 0], G.tint(G.stone), G.phase); }
+      G.pinnacle(c, e.turrets.top, e.turrets.pinnacle, tw * .7, G.phase);
+    }
+  },
+  // A Gothic crossing spire: an octagonal timber spire covered with lead over an open lantern with gables on
+  // every face, crockets along its arrises, a cross and a cock; statues may stand on the roofs at its foot.
+  spire(k, e, P) {
+    const G = gothic(k, e, P), r = e.radius, y0 = e.base, top = e.top, lan = e.lantern ?? 10, needle = y0 + lan + 2.5;
+    const lead = e.lead ?? '#5d636b', C = (i, rr, y) => G.V(Math.cos((i + .5) * Math.PI / 4) * rr, y, Math.sin((i + .5) * Math.PI / 4) * rr);
+    const uv = (i, rr) => [Math.cos((i + .5) * Math.PI / 4) * rr, Math.sin((i + .5) * Math.PI / 4) * rr];
+    // The collar where the spire meets the roofs.
+    for (let i = 0; i < 8; i++) G.panel(C(i, r * 1.05, y0 - 5), C(i + 1, r * 1.05, y0 - 5), C(i, r * 1.05, y0), C(i + 1, r * 1.05, y0), lead, G.phase, {}, 'lead', 1.1, 0);
+    // The open lantern: corner posts, a gable over every face, pinnacles at the corners.
+    for (let i = 0; i < 8; i++) {
+      const [u, v] = uv(i, r);
+      for (let y = y0; y < y0 + lan; y += 2) G.box('wood', [u, v], y + 1, [.7, 1.98, .7], [1, 0], G.tint(e.timber ?? '#5b5650'), G.phase);
+      const a = uv(i, r * 1.02), b = uv(i + 1, r * 1.02), m = [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2];
+      G.beam('lead', [a[0], y0 + lan, a[1]], [m[0] * 1.03, y0 + lan + 4, m[1] * 1.03], .35, G.tint(lead), G.phase);
+      G.beam('lead', [b[0], y0 + lan, b[1]], [m[0] * 1.03, y0 + lan + 4, m[1] * 1.03], .35, G.tint(lead), G.phase);
+      G.beam('lead', [a[0], y0 + lan, a[1]], [b[0], y0 + lan, b[1]], .4, G.tint(lead), G.phase);
+      G.box('lead', [u * 1.1, v * 1.1], y0 + lan + 1.2, [.5, 2.6, .5], [1, 0], G.tint(lead), G.phase);
+      G.box('lead', [u * 1.1, v * 1.1], y0 + lan + 3, [.24, 1.2, .24], [1, 0], G.tint(lead), G.phase);
+    }
+    // The needle: eight lead faces tapering to the top, crockets up its arrises.
+    const steps = Math.max(6, Math.round((top - 6 - needle) / 1.6)), rr = y => r * .78 * (1 - (y - needle) / (top - 4 - needle)) + .18;
+    for (let j = 0; j < steps; j++) {
+      const ya = needle + (top - 6 - needle) * j / steps, yb = needle + (top - 6 - needle) * (j + 1) / steps;
+      for (let i = 0; i < 8; i++) {
+        G.panel(C(i, rr(ya), ya), C(i + 1, rr(ya), ya), C(i, rr(yb), yb), C(i + 1, rr(yb), yb), lead, G.phase, {}, 'lead', 2, 0);
+        if (j % 2 === 1) { const [u, v] = uv(i, rr(ya) + .25); G.box('lead', [u, v], ya, [.35, .5, .35], [1, 0], G.tint(lead), G.phase); }
+      }
+    }
+    G.beam('lead', [0, top - 6.2, 0], [0, top - 1, 0], .3, G.tint(lead), G.phase);
+    G.box('metal', [0, 0], top - 2.6, [1.4, .18, .18], [1, 0], G.tint(e.gold ?? '#c8a046'), G.phase);
+    G.box('metal', [0, 0], top - .6, [.8, .7, .25], [1, 0], G.tint(e.gold ?? '#c8a046'), G.phase);
+    // Statues at the foot of the spire: one group on each of the four roofs, facing out along it, standing one
+    // behind another down the slope (`ridge` and `slope`: the roofs' ridge height and fall per metre across).
+    if (e.statues) {
+      const {count = 16, color = '#6c9b88', ridge = y0, slope = 1.2, step = [2, 1.3]} = e.statues, per = Math.ceil(count / 4);
+      for (let g = 0; g < 4; g++) for (let j = 0; j < per && g * per + j < count; j++) {
+        const a = g * Math.PI / 2, out = [Math.cos(a), Math.sin(a)], side = [-out[1], out[0]], dist = r + 2 + j * step[0], lat = 1.1 + j * step[1];
+        G.life({phase: e.statues.phase ?? e.phase, until: e.statues.until}, (p, extra) => G.statue([out[0] * dist + side[0] * lat, out[1] * dist + side[1] * lat], ridge - lat * slope - .2, 3, out, color, p, extra));
+      }
+    }
+  },
+
 };
 
 // ——— Scene ———
@@ -812,10 +1222,11 @@ export function buildPieces(data) {
   const index = Object.fromEntries(data.phases.map((p, i) => [p.id, i]));
   const P = id => { if (!(id in index)) throw new Error(`Unknown phase: ${id}`); return index[id]; };
   const k = kit(random(data.seed ?? 7));
-  for (const element of data.elements) {
+  for (const [elementIndex, element] of data.elements.entries()) {
     const before = k.pieces.length;
     if(!generators[element.type])throw new Error(`Unknown brick: ${element.type}. Add a generator before loading this monument.`);
     generators[element.type](k, element, P);
+    for (const piece of k.pieces.slice(before)) piece.element = elementIndex;
     if(element.type === "timberFrame")for(const piece of k.pieces.slice(before))piece.structural=true;
     if(element.until)for(const piece of k.pieces.slice(before))piece.until=P(element.until);
     if(element.lean)for(const piece of k.pieces.slice(before))piece.lean=1;
@@ -850,7 +1261,7 @@ export function createStage(host) {
   composer.addPass(bloom);
   composer.addPass(new OutputPass());
 
-  const uniforms = {uTime: {value: 0}, uFly: {value: FLY}, uDrop: {value: 30}, uNight: {value: 0}, uSparkle: {value: 0}, uClock: {value: 0}, uHeight: {value: 100}, uNightColor: {value: new T.Color('#ff9a2e')},
+  const uniforms = {uProof: {value: 0}, uTime: {value: 0}, uFly: {value: FLY}, uDrop: {value: 30}, uNight: {value: 0}, uSparkle: {value: 0}, uClock: {value: 0}, uHeight: {value: 100}, uNightColor: {value: new T.Color('#ff9a2e')},
     // One leaning group per monument (a tower sinking on soft ground): pivot, axis and angle over time.
     uLeanPivot: {value: new T.Vector3()}, uLeanAxis: {value: new T.Vector3(1, 0, 0)}, uLeanAngle: {value: 0}};
   // Sky, distant ground and fog share one horizon colour: no visible seam.
@@ -947,7 +1358,8 @@ export function createStage(host) {
   function makeWorksite(spec, phase, seed) {
     const group = new T.Group(), rand = random(seed), [cx, cz] = spec.at ?? [0, 0], radius = Math.max(4, spec.radius ?? 14), height = Math.max(3, spec.height ?? 9);
     const site = {group, phase, spec, scaffoldParts: [], progress: 0};
-    group.position.set(cx, 0, cz); group.visible = false; scene.add(group); siteGroups.push(site);
+    // Worksites are written in the monument's own frame: they turn with it ("rotate").
+    group.position.copy(toWorld([cx, 0, cz])); group.rotation.y = turnY; group.visible = false; scene.add(group); siteGroups.push(site);
     const fill = new T.PointLight('#ffd3a0', 24, radius * 3.5, 1.7); fill.position.set(0, Math.min(height, 12) * .75, 0); group.add(fill);
     const wood = siteMaterial(spec.wood ?? '#765236'), stone = siteMaterial(spec.materialColor ?? (spec.craft === 'metal' ? '#58616a' : '#a79579'), spec.craft === 'metal' ? 'metal' : 'matte');
     const rope = siteMaterial('#80684d'), palette = spec.clothes ?? ['#9a5b38', '#5c6f7b', '#7c6943', '#6d4c45'];
@@ -1064,7 +1476,13 @@ export function createStage(host) {
     }
   }
 
-  let monument = null, total = 1, heightTrack = [], tagTrack = {}, leaning = null;
+  let monument = null, total = 1, heightTrack = [], tagTrack = {}, leaning = null, turnY = 0, outlineGroup = null;
+  // A point of the monument file ([x, y, z] or [x, z]) in the scene, after the monument's "rotate".
+  const toWorld = p => {
+    if (!p) return p;
+    const [x, y, z] = p.length === 2 ? [p[0], 0, p[1]] : p, c = Math.cos(turnY), s = Math.sin(turnY);
+    return new T.Vector3(x * c + z * s, y, -x * s + z * c);
+  };
 
   // Pieces grow into place, drop from above, are taken down and lean, in the colour pass and in the shadow
   // pass alike: a piece that is not built yet casts no shadow.
@@ -1102,6 +1520,9 @@ export function createStage(host) {
 
   function material(kind) {
     const {pbr, ...surface} = pbrOptions(kind, visual, renderer), mat = new T.MeshStandardMaterial({color: '#ffffff', ...KINDS[kind], ...surface});
+    // Every kind compiles its own program: three.js would otherwise reuse a textured (PBR) program for a
+    // plain material with the same parameters, which then samples a stray texture.
+    mat.customProgramCacheKey = () => `piece:${kind}:${pbr ? ['albedo', 'normal', 'roughness', 'ao'].map(key => pbr[key] ? key[0] : '-').join('') : 'plain'}`;
     mat.onBeforeCompile = shader => {
       Object.assign(shader.uniforms, uniforms);
       shader.uniforms.uGlow = {value: new T.Color(kind === 'metal' ? '#ffb15c' : kind === 'wood' ? '#ffcf8a' : '#ffd9a8')};
@@ -1111,6 +1532,18 @@ export function createStage(host) {
         uPbrScale: {value: pbr.scale}, uPbrNormalScale: {value: pbr.normal ? pbr.normalScale : 0},
       });
       growVertex(shader, pbr);
+      // Evidence mode: each piece takes the colour of its provenance (measured, documented, interpreted).
+      shader.vertexShader = shader.vertexShader
+        .replace('#include <common>', `#include <common>
+          attribute float aProof; varying float vProof;`)
+        .replace('#include <begin_vertex>', `#include <begin_vertex>
+          vProof=aProof;`);
+      shader.fragmentShader = shader.fragmentShader
+        .replace('#include <common>', `#include <common>
+          uniform float uProof; varying float vProof;`)
+        .replace('#include <color_fragment>', `#include <color_fragment>
+          if(uProof>0.){vec3 proof=vProof<.5?vec3(.2,.78,.62):vProof<1.5?vec3(.38,.53,1.):vProof<2.5?vec3(1.,.66,.25):vec3(.5,.5,.52);
+            diffuseColor.rgb=mix(diffuseColor.rgb,proof*.9,.72*uProof);}`);
       shader.fragmentShader = shader.fragmentShader
         .replace('#include <common>', `#include <common>
           uniform vec3 uGlow,uNightColor; uniform float uNight,uSparkle,uClock,uHeight,uKind;
@@ -1142,6 +1575,7 @@ export function createStage(host) {
 
   function shadowMaterial() {
     const mat = new T.MeshDepthMaterial({depthPacking: T.RGBADepthPacking});
+    mat.customProgramCacheKey = () => 'piece:shadow';
     mat.onBeforeCompile = shader => { Object.assign(shader.uniforms, uniforms); growVertex(shader, null); };
     return mat;
   }
@@ -1149,6 +1583,7 @@ export function createStage(host) {
   function clear() {
     for (const mesh of meshes) { scene.remove(mesh); mesh.geometry.dispose(); mesh.material.dispose(); mesh.customDepthMaterial?.dispose(); }
     meshes.length = 0;
+    if (outlineGroup) { scene.remove(outlineGroup); outlineGroup.traverse(o => { o.geometry?.dispose(); o.material?.dispose(); }); outlineGroup = null; }
     for (const {group} of siteGroups) scene.remove(group);
     siteGroups.length = 0; siteActors.length = 0; siteDust.length = 0; siteRigs.length = 0;
     if (environmentGroup) { scene.remove(environmentGroup); disposeEnvironment(environmentGroup); environmentGroup = null; environmentTimed = []; }
@@ -1158,8 +1593,9 @@ export function createStage(host) {
 
   function load(data) {
     clear();
-    monument = data; moved = false;
+    monument = data; moved = false; turnY = (data.rotate ?? 0) * Math.PI / 180;
     visual = resolveVisualStyle(data.visualStyle ?? {quality: 'basic'});
+    if (turnY) visual = {...visual, decor: visual.decor.map(spec => { const p = toWorld(spec.at ?? [0, 0]); return {...spec, at: [p.x, p.z], ...(spec.rot !== undefined ? {rot: spec.rot + turnY} : {})}; })};
     renderer.setPixelRatio(Math.min(PIXEL_RATIO, visual.quality.pixelRatio));
     renderer.toneMappingExposure = visual.qualityName === 'basic' ? 1.05 : visual.qualityName === 'cinematic' ? 1.18 : 1.24;
     renderer.shadowMap.enabled = Boolean(visual.quality.shadows); renderer.shadowMap.type = T.PCFShadowMap;
@@ -1186,13 +1622,16 @@ export function createStage(host) {
     const groups = {};
     for (const piece of k.pieces) (groups[piece.kind] ??= []).push(piece);
     for (const [kind, list] of Object.entries(groups)) {
-      const geometry = new T.BoxGeometry(1, 1, 1), life = new Float32Array(list.length * 2), seed = new Float32Array(list.length), lean = new Float32Array(list.length);
+      const geometry = new T.BoxGeometry(1, 1, 1), life = new Float32Array(list.length * 2), seed = new Float32Array(list.length), lean = new Float32Array(list.length), proof = new Float32Array(list.length);
       geometry.setAttribute('uv1', geometry.attributes.uv);
       const mesh = new T.InstancedMesh(geometry, material(kind), list.length);
       list.forEach((piece, i) => {
         mesh.setMatrixAt(i, piece.matrix); mesh.setColorAt(i, piece.color);
         life[i * 2] = piece.birth; life[i * 2 + 1] = piece.until === undefined ? 1e6 : death(piece.until); seed[i] = k.rand() * 100; lean[i] = piece.lean ?? 0;
+        piece.death = life[i * 2 + 1]; proof[i] = provenanceOf(data.elements[piece.element]);
       });
+      geometry.setAttribute('aProof', new T.InstancedBufferAttribute(proof, 1));
+      mesh.userData.pieces = list;
       geometry.setAttribute('aLife', new T.InstancedBufferAttribute(life, 2));
       geometry.setAttribute('aSeed', new T.InstancedBufferAttribute(seed, 1));
       geometry.setAttribute('aLean', new T.InstancedBufferAttribute(lean, 1));
@@ -1308,7 +1747,7 @@ export function createStage(host) {
       const f = Math.min(1, t / Math.max(1, total - 1)), s = f * f * (3 - 2 * f);
       const target = new T.Vector3(...start.target).lerp(end, s);
       let distance = start.distance + (fit() - start.distance) * s;
-      if (focus) { target.lerp(new T.Vector3(...focus), Number.isFinite(closeDistance) ? .82 : .45); distance = Number.isFinite(closeDistance) ? closeDistance : distance * .72; }
+      if (focus) { target.lerp(toWorld(focus), Number.isFinite(closeDistance) ? .82 : .45); distance = Number.isFinite(closeDistance) ? closeDistance : distance * .72; }
       if(host.clientWidth <= 1100) distance=Math.max(distance,fit());
       const dir = camera.position.clone().sub(controls.target).normalize(), now = camera.position.distanceTo(controls.target);
       controls.target.lerp(target, .06);
@@ -1316,7 +1755,7 @@ export function createStage(host) {
     },
     // Screen position of a scene point (to pin a moment).
     project(point) {
-      const v = new T.Vector3(...point);
+      const v = toWorld(point);
       // Pins on a leaning building lean with it.
       if (leaning && Math.hypot(v.x - uniforms.uLeanPivot.value.x, v.z - uniforms.uLeanPivot.value.z) < (leaning.radius ?? 30))
         v.sub(uniforms.uLeanPivot.value).applyAxisAngle(uniforms.uLeanAxis.value, uniforms.uLeanAngle.value).add(uniforms.uLeanPivot.value);
@@ -1338,7 +1777,8 @@ export function createStage(host) {
       for (const item of environmentTimed) item.object.visible = t >= item.from && t < item.until;
       const phaseIndex = Math.min(total - 1, Math.floor(t));
       for (const site of siteGroups) {
-        site.group.visible = site.phase === phaseIndex;
+        // A worksite shows during its phase only: the finished building stands clear of it.
+        site.group.visible = site.phase === phaseIndex && t < total;
         site.progress = Math.max(0, Math.min(1, t - site.phase));
         if (t >= total && site.phase === total - 1) site.progress = 1;
         for (const part of site.scaffoldParts) part.visible = part.userData.siteReveal <= site.progress;
@@ -1360,8 +1800,39 @@ export function createStage(host) {
       camera.position.copy(controls.target).add(new T.Vector3(Math.sin(az) * Math.cos(el), Math.sin(el), -Math.cos(az) * Math.cos(el)).multiplyScalar(distance));
       controls.update();
     },
-    // Vertical field of view of a reference photo's lens, in degrees.
-    fov(degrees) { camera.fov = degrees; camera.updateProjectionMatrix(); },
+    // Vertical field of view of a reference photo's lens, in degrees (38 by default).
+    fov(degrees = 38) { camera.fov = degrees; camera.updateProjectionMatrix(); },
+    // Evidence mode: tint the pieces by provenance; the measured outline drawn on the ground.
+    proof(on) { uniforms.uProof.value = on ? 1 : 0; },
+    outline(shapes) {
+      if (outlineGroup) { scene.remove(outlineGroup); outlineGroup.traverse(o => { o.geometry?.dispose(); o.material?.dispose(); }); outlineGroup = null; }
+      if (!shapes) return;
+      outlineGroup = new T.Group();
+      const material = new T.LineBasicMaterial({color: '#f1b867', transparent: true, opacity: .95, depthTest: false});
+      for (const [points, closed] of shapes) {
+        const geometry = new T.BufferGeometry().setFromPoints(points.map(([x, z]) => new T.Vector3(x, .25, z)));
+        outlineGroup.add(closed ? new T.LineLoop(geometry, material) : new T.Line(geometry, material));
+      }
+      outlineGroup.renderOrder = 5; scene.add(outlineGroup);
+    },
+    showOutline(on) { if (outlineGroup) outlineGroup.visible = on; },
+    // The piece under a screen point, standing at the current time: its element and phase.
+    pick(x, y, t) {
+      const rect = renderer.domElement.getBoundingClientRect(), ray = new T.Raycaster();
+      ray.setFromCamera(new T.Vector2((x - rect.left) / rect.width * 2 - 1, -(y - rect.top) / rect.height * 2 + 1), camera);
+      const hits = ray.intersectObjects(meshes.filter(m => m.userData.pieces), false).sort((a, b) => a.distance - b.distance);
+      for (const hit of hits) {
+        const piece = hit.object.userData.pieces[hit.instanceId];
+        if (piece && piece.birth <= t && piece.death > t) return {element: piece.element, phase: piece.phase, kind: piece.kind, point: hit.point.toArray()};
+      }
+      return null;
+    },
+    // Share of the standing pieces by provenance at the end of the timeline.
+    provenance() {
+      const counts = [0, 0, 0, 0];
+      for (const mesh of meshes) for (const piece of mesh.userData.pieces ?? []) if (piece.death > total) counts[provenanceOf(monument.elements[piece.element])]++;
+      return counts;
+    },
     autoRotate(on) { controls.autoRotate = on; },
     render(clock) {
       uniforms.uClock.value = clock;

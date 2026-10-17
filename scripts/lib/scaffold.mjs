@@ -271,7 +271,8 @@ export function createDraft({query, result, ring, requestedFamily = 'auto', id, 
       generated: {query, family: choice.family, familyReason: choice.reason, heightSource: dims.estimatedHeight ? 'family estimate' : height != null ? 'CLI override' : 'OpenStreetMap height tag', levelsSource: dims.estimatedFloors ? 'family estimate' : floors != null ? 'CLI override' : 'OpenStreetMap building:levels tag'},
     },
     phases: [{id: 'survey', when: 'Current mapped state', title: 'Measured base volume', text: 'The mapped footprint is raised as a coarse present-day volume. Historical construction phases and recognisable architectural details still need sourced research.', source, moments: []}],
-    elements: familyElements(choice.family, local.points, rect, dims),
+    // Footprint measured, everything above it estimated: interpreted until the research replaces it.
+    elements: familyElements(choice.family, local.points, rect, dims).map(element => ({provenance: 'interpreted', note: 'Generated on the OpenStreetMap footprint; height, roof and facades are family estimates until replaced by sourced measurements.', ...element})),
     _scaffold: {family: choice.family, rectangle: rect, origin: local.origin},
   };
 }

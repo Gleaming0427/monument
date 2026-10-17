@@ -138,3 +138,48 @@ body.clean:not(.caption) .story{display:none!important}
 /* Leave the measured scene room in medium-width preview panels. */
 @media(min-width:721px) and (max-width:1100px){.story{width:calc(100% - 40px);left:20px}.top{right:216px}.live{top:16px;width:180px;padding:10px 12px}.live #facts{display:none}}
 @media(min-width:1101px){.top{right:260px}}
+
+/* Evidence mode: the provenance of every piece, the measured plan, the pages read and the reference photos. */
+.chip{flex:none;height:32px;padding:0 13px;border-radius:16px;background:var(--glass);border:1px solid var(--line);color:var(--muted);font:600 12px 'Manrope',system-ui,sans-serif;cursor:pointer;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+.chip:hover{color:#fff}
+.chip[aria-pressed="true"]{color:#0b0c14;background:var(--gold);border-color:var(--gold)}
+body.empty #proof-toggle{display:none}
+body.proof .live{display:none}
+#proof{position:fixed;z-index:3;top:16px;right:20px;bottom:110px;width:340px;overflow:auto;padding:16px 18px;border-radius:16px;background:var(--glass);border:1px solid var(--line);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);font-size:13px}
+#proof h2{margin:0 0 4px;font-size:15px}
+#proof h3{margin:16px 0 6px;font:600 10px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--gold)}
+#proof p{margin:0 0 6px;color:var(--muted);line-height:1.45}
+#proof a{color:var(--ink)}
+#proof ul{margin:0;padding-left:18px;color:var(--muted)}
+#proof li{margin:3px 0}
+.legend{display:grid;gap:6px;margin:10px 0 0}
+.legend div{display:grid;grid-template-columns:12px 1fr auto;gap:8px;align-items:center}
+.legend i,.prov::before{display:inline-block;width:12px;height:12px;border-radius:3px;background:var(--c)}
+.legend small{grid-column:2/4;margin-top:-4px;color:var(--muted);font-size:11px}
+.legend b{font-weight:700}
+.legend span:last-of-type{font:600 11px var(--mono);color:var(--muted)}
+[data-p="measured"]{--c:#33c79e}[data-p="documented"]{--c:#6188ff}[data-p="interpreted"]{--c:#ffa940}[data-p="unstated"]{--c:#808085}
+#proof label{display:flex;gap:8px;align-items:center;margin-top:6px;color:var(--ink);cursor:pointer}
+.photos{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.photos button{position:relative;padding:0;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:#111;cursor:pointer;aspect-ratio:4/3}
+.photos img{width:100%;height:100%;object-fit:cover;display:block}
+.photos span{position:absolute;left:0;right:0;bottom:0;padding:4px 6px;font-size:10px;line-height:1.3;text-align:left;color:#fff;background:linear-gradient(transparent,rgba(0,0,0,.8))}
+#proof details{margin:4px 0;color:var(--muted)}
+#proof summary{cursor:pointer;color:var(--ink)}
+#pick{position:fixed;z-index:4;max-width:280px;padding:10px 12px;border-radius:12px;background:rgba(10,12,22,.9);border:1px solid var(--line);font-size:12px;pointer-events:auto}
+#pick b{display:block;margin-bottom:4px}
+#pick p{margin:6px 0 0;color:var(--muted)}
+#pick a{display:inline-block;margin-top:6px;color:var(--gold)}
+.prov{display:inline-flex;align-items:center;gap:6px;font:600 10px var(--mono);letter-spacing:.1em;text-transform:uppercase}
+#photo{position:fixed;inset:0;z-index:6;cursor:ew-resize;--split:50%}
+.photo-clip{position:absolute;inset:0;overflow:hidden;clip-path:inset(0 calc(100% - var(--split)) 0 0)}
+.photo-clip img{position:absolute;top:0;left:50%;height:100%;transform:translateX(-50%);max-width:none}
+#photo.fade .photo-clip{clip-path:none;opacity:.5}
+#photo.fade .photo-split{display:none}
+.photo-split{position:absolute;top:0;bottom:0;left:var(--split);width:2px;margin-left:-1px;background:var(--gold);box-shadow:0 0 0 1px rgba(0,0,0,.4)}
+.photo-split::after{content:'';position:absolute;top:50%;left:50%;width:30px;height:30px;margin:-15px 0 0 -15px;border-radius:50%;background:var(--gold);box-shadow:0 2px 8px rgba(0,0,0,.5)}
+.photo-bar{position:absolute;left:16px;right:16px;bottom:16px;display:flex;gap:10px;align-items:center;padding:10px 12px;border-radius:14px;background:var(--glass);border:1px solid var(--line);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);cursor:default}
+.photo-caption{flex:1;min-width:0;font-size:12px;color:var(--muted)}
+.photo-caption a{color:var(--ink)}
+body.photo :is(.top,.story,.timeline,.live,#proof,#pick,#moment,#pin,#leader,#labels){display:none!important}
+@media (max-width:1100px){#proof{top:auto;left:12px;right:12px;bottom:12px;width:auto;max-height:55vh}body.proof .story{display:none}}
