@@ -40,10 +40,12 @@ const exists = path => stat(path).then(() => true, () => false);
 // Words that betray facts taken from a search engine's summary instead of a page that was read.
 const HEARSAY = /search[- ](result|snippet)|\bsnippets?\b|search engine|summari[sz]ing (the )?(search|results)/i;
 const VISUAL_QUALITY = new Set(['basic', 'standard', 'cinematic']);
-const MATERIAL_PRESETS = new Set(['gothic-limestone', 'roman-weathered', 'marble-italian', 'historic-masonry', 'industrial-iron']);
-const ENVIRONMENT_PRESETS = new Set(['gothic-urban', 'mediterranean-lawn', 'roman-ruins', 'exposition-grounds', 'museum-neutral']);
-const SURFACE_MATERIALS = new Set(['limestone-paris', 'limestone-weathered', 'marble-white', 'sandstone-warm', 'granite-grey', 'brick-roman', 'oak-aged', 'slate-aged', 'terracotta-aged']);
-const DECOR_TYPES = new Set(['tree-oak', 'tree-cypress', 'tree-olive', 'stone-blocks', 'cart-medieval', 'amphora']);
+const MATERIAL_PRESETS = new Set(['gothic-limestone', 'roman-weathered', 'marble-italian', 'historic-masonry', 'industrial-iron', 'japanese-timber', 'vernacular-timber']);
+const ENVIRONMENT_PRESETS = new Set(['gothic-urban', 'mediterranean-lawn', 'roman-ruins', 'exposition-grounds', 'museum-neutral', 'japanese-garden', 'green-park']);
+const SURFACE_MATERIALS = new Set(['limestone-paris', 'limestone-weathered', 'marble-white', 'sandstone-warm', 'granite-grey', 'brick-roman', 'oak-aged', 'slate-aged', 'terracotta-aged',
+  'grass-lawn', 'grass-wild', 'moss-carpet', 'gravel-raked', 'gravel-fine', 'forest-floor', 'soil-section', 'pond-mud', 'hinoki', 'cedar', 'wood-weathered', 'wood-rough', 'wood-old',
+  'plaster-white', 'plaster-rough', 'shingle-wood', 'shingle-mossy', 'thatch', 'tile-clay', 'stone-japanese', 'rock-mossy', 'bark-pine', 'bark-cedar', 'gold-leaf']);
+const DECOR_TYPES = new Set(['tree-oak', 'tree-cypress', 'tree-olive', 'stone-blocks', 'cart-medieval', 'amphora', 'bush-round', 'bush-mound', 'shrub-wild', 'pine-garden', 'maple-japanese', 'grass-tuft', 'reeds']);
 // Links are opened, not trusted: a page cited must answer, a reference photo must exist on Wikimedia
 // Commons and, when Commons records where it was taken, the declared viewpoint must match that place.
 const UA = {'User-Agent': 'monument-skill/1.0 (+https://github.com/Gleaming0427/monument)'};
@@ -147,6 +149,12 @@ for (const file of (await Promise.all(targets.map(files))).flat()) {
     bricks = new Set([...kit, ...bricksOf(source)]);
   }
   const phases = new Set(d.phases.map(p => p.id));
+  for (const [i, w] of (d.water ?? []).entries()) {
+    check(Array.isArray(w?.points) && w.points.length > 2 && w.points.every(p => p?.length === 2 && p.every(Number.isFinite)), `${at} water ${i} needs "points": [[x, z], …] (its shore, three points at least)`);
+    check((w?.holes ?? []).every(h => Array.isArray(h) && h.length > 2), `${at} water ${i}: each hole (an island) needs three points at least`);
+    check(['level', 'depth', 'shore'].every(k => w?.[k] === undefined || Number.isFinite(w[k])) && !(w?.depth <= 0) && !(w?.shore <= 0), `${at} water ${i}: level, depth and shore are numbers in metres (depth and shore positive)`);
+    check(w?.tint === undefined || ['clear', 'blue', 'green'].includes(w.tint) || /^#[0-9a-f]{6}$/i.test(w.tint), `${at} water ${i}: tint is "clear", "blue", "green" or a colour`);
+  }
   check(phases.size === d.phases.length, `${at} duplicate phase id`);
   if (d.visualStyle) {
     const style = d.visualStyle;
@@ -155,7 +163,8 @@ for (const file of (await Promise.all(targets.map(files))).flat()) {
     check(ENVIRONMENT_PRESETS.has(style.environmentPreset), `${at} visualStyle.environmentPreset is not in the bundled environment library`);
     for (const [surface, material] of Object.entries(style.surfaces ?? {})) check(SURFACE_MATERIALS.has(material), `${at} visualStyle.surfaces.${surface} uses unknown material "${material}"`);
     check(style.vegetation === undefined || typeof style.vegetation === 'boolean', `${at} visualStyle.vegetation must be true or false`);
-    check(style.presentation === undefined || ['site', 'studio'].includes(style.presentation), `${at} visualStyle.presentation must be "site" or "studio"`);
+    check(style.presentation === undefined || ['site', 'studio', 'diorama'].includes(style.presentation), `${at} visualStyle.presentation must be "site", "studio" or "diorama"`);
+    check(style.diorama === undefined || (typeof style.diorama === 'object' && ['size', 'depth', 'cell'].every(k => style.diorama[k] === undefined || (Number.isFinite(style.diorama[k]) && style.diorama[k] > 0))), `${at} visualStyle.diorama needs positive size, depth and cell in metres`);
     check((style.props ?? []).every(type => DECOR_TYPES.has(type)), `${at} visualStyle.props contains an unknown prop`);
     if (style.environment?.from) check(phases.has(style.environment.from), `${at} visualStyle.environment.from names unknown phase "${style.environment.from}"`);
     if (style.environment?.count !== undefined) check(Number.isInteger(style.environment.count) && style.environment.count >= 0 && style.environment.count <= 24, `${at} visualStyle.environment.count must be 0–24`);

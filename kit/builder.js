@@ -5,6 +5,8 @@ import {RenderPass} from 'three/addons/postprocessing/RenderPass.js';
 import {UnrealBloomPass} from 'three/addons/postprocessing/UnrealBloomPass.js';
 import {OutputPass} from 'three/addons/postprocessing/OutputPass.js';
 import {GTAOPass} from 'three/addons/postprocessing/GTAOPass.js';
+import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
+import {clone as cloneSkinned} from 'three/addons/utils/SkeletonUtils.js';
 import {resolveVisualStyle, pbrOptions, groundOptions, createEnvironment, disposeEnvironment} from './visuals.js';
 
 // Construction engine: a monument file (phases + elements) becomes thousands of instanced pieces.
@@ -25,6 +27,11 @@ const KINDS = {
   cloth: {roughness: .9, metalness: 0},
   glass: {roughness: .16, metalness: .25},
   lead: {roughness: .72, metalness: .12},
+  // Lime or clay plaster, wooden shingles and thatch, gold leaf on lacquer (it mirrors the sky), tree bark.
+  plaster: {roughness: .92, metalness: 0},
+  shingle: {roughness: .86, metalness: 0},
+  gilt: {roughness: .36, metalness: .5},
+  bark: {roughness: .95, metalness: 0},
 };
 
 function random(seed) {
@@ -1899,7 +1906,7 @@ export function createStage(host) {
   };
   const PAPER = new T.Color('#f4f1ea'), studioFloor = new T.Mesh(new T.CircleGeometry(1, 96), new T.ShadowMaterial({color: '#4a3f30', opacity: .26}));
   studioFloor.rotation.x = -Math.PI / 2; studioFloor.position.y = .01; studioFloor.receiveShadow = true; studioFloor.visible = false; scene.add(studioFloor);
-  let studio = false, presentationAsked = null, paper = PAPER.clone();
+  let studio = false, diorama = false, presentationAsked = null, paper = PAPER.clone();
   scene.add(sun.target);
   let light = LIGHTS.golden;
   let visual = resolveVisualStyle({quality: 'basic'}), realisticGroundMaterial = null, environmentGroup = null, environmentTimed = [], baseBloom = .5, ambientBase = 0;
@@ -1908,6 +1915,7 @@ export function createStage(host) {
   // Human-scale construction tableaux, described and sourced per phase. They are deliberately kept
   // outside buildPieces(): workers, dust and temporary tools must not alter plan or height checks.
   const siteGroups = [], siteActors = [], siteDust = [], siteRigs = [];
+  let siteGeneration = 0, lastClock, wetAt = () => false;
   const siteBox = new T.BoxGeometry(1, 1, 1), siteCylinder = new T.CylinderGeometry(1, 1, 1, 8), siteHead = new T.SphereGeometry(1, 12, 8);
   const siteMaterials = new Map();
   const siteMaterial = (color, kind = 'matte') => {
@@ -1923,23 +1931,74 @@ export function createStage(host) {
     mesh.quaternion.setFromUnitVectors(UP, direction.normalize()); return mesh;
   };
 
-  function makeWorker(parent, x, z, turn, palette, role, offset) {
-    const actor = new T.Group(); actor.position.set(x, 0, z); actor.rotation.y = turn; parent.add(actor);
+  // ——— Figures ———
+  // Workers are animated characters (kit/assets/characters, CC0 by Quaternius; credits in sources.json there): a
+  // craftsman in shirt and trousers before the industrial age, a builder in helmet and vest after it. Each is
+  // dressed in the scene's palette, holds a mallet or shoulders a load, and plays its own animation (working,
+  // striking, walking to and fro). Until a model has loaded, or where it cannot load, a simple stand-in shows.
+  const CHARACTERS = {traditional: 'worker-traditional.glb', modern: 'worker-modern.glb'}, characterAssets = {};
+  let charactersPending = 0;
+  const loadCharacter = era => characterAssets[era] ??= new Promise(resolve => {
+    charactersPending++;
+    new GLTFLoader().load(new URL(`./assets/characters/${CHARACTERS[era] ?? CHARACTERS.traditional}`, import.meta.url).href,
+      gltf => { charactersPending--; resolve(gltf); }, undefined, () => { charactersPending--; resolve(null); });
+  });
+  const ROLE_CLIP = {mason: 'Interact', lift: 'Sword_Slash', carry: 'Walk', idle: 'Idle'};
+  function standIn(actor, palette, role, offset) {
     const cloth = siteMaterial(palette[Math.floor(offset) % palette.length]), skin = siteMaterial('#9a6949'), dark = siteMaterial('#3c342d'), stone = siteMaterial('#a89a83');
-    siteMesh(actor, siteCylinder, cloth, [0, 1.14, 0], [.19, .58, .19]);
-    siteMesh(actor, siteHead, skin, [0, 1.59, 0], [.14, .16, .14]);
-    siteMesh(actor, siteBox, dark, [0, 1.72, 0], [.22, .07, .2]);
-    siteBeam(actor, [-.1, .84, 0], [-.11, .1, .02], .065, dark);
-    siteBeam(actor, [.1, .84, 0], [.13, .1, -.02], .065, dark);
+    const body = new T.Group(); actor.add(body);
+    siteMesh(body, siteCylinder, cloth, [0, 1.14, 0], [.19, .58, .19]);
+    siteMesh(body, siteHead, skin, [0, 1.59, 0], [.14, .16, .14]);
+    siteMesh(body, siteBox, dark, [0, 1.72, 0], [.22, .07, .2]);
+    siteBeam(body, [-.1, .84, 0], [-.11, .1, .02], .065, dark);
+    siteBeam(body, [.1, .84, 0], [.13, .1, -.02], .065, dark);
     const arms = [];
     for (const side of [-1, 1]) {
-      const pivot = new T.Group(); pivot.position.set(side * .2, 1.38, 0); actor.add(pivot);
+      const pivot = new T.Group(); pivot.position.set(side * .2, 1.38, 0); body.add(pivot);
       siteMesh(pivot, siteCylinder, skin, [0, -.24, 0], [.055, .48, .055]);
       pivot.rotation.z = side * (role === 'lift' ? 2.45 : role === 'carry' ? 1.3 : .45); arms.push(pivot);
     }
-    if (role === 'carry') siteMesh(actor, siteBox, stone, [0, 1.03, .28], [.5, .2, .28]);
-    if (role === 'mason') { actor.scale.y = .82; siteMesh(actor, siteBox, stone, [0, .35, .45], [.32, .2, .34]); }
-    actor.userData = {baseY: 0, baseTurn: turn, offset, arms, role}; siteActors.push(actor);
+    if (role === 'carry') siteMesh(body, siteBox, stone, [0, 1.03, .28], [.5, .2, .28]);
+    if (role === 'mason') { body.scale.y = .82; siteMesh(body, siteBox, stone, [0, .35, .45], [.32, .2, .34]); }
+    return {body, arms};
+  }
+  function makeWorker(parent, x, z, turn, palette, role, offset, era = 'traditional') {
+    const actor = new T.Group(); actor.position.set(x, 0, z); actor.rotation.y = turn; parent.add(actor);
+    const {body, arms} = standIn(actor, palette, role, offset);
+    actor.userData = {baseY: 0, baseTurn: turn, offset, arms, role, base: [x, z]}; siteActors.push(actor);
+    const generation = siteGeneration;
+    loadCharacter(era).then(gltf => {
+      if (!gltf || generation !== siteGeneration) return;
+      const figure = cloneSkinned(gltf.scene), shirt = new T.Color(palette[Math.floor(offset) % palette.length]), trousers = new T.Color(palette[(Math.floor(offset) + 2) % palette.length]).multiplyScalar(.7);
+      figure.traverse(o => {
+        if (!o.isMesh) return;
+        o.castShadow = o.receiveShadow = true; o.frustumCulled = false;
+        const dress = m => {
+          const c = m.clone(); c.roughness = .9; c.metalness = 0; c.clippingPlanes = sectionPlanes;
+          if (['Beige', 'Worker_Vest'].includes(m.name)) c.color.copy(shirt);
+          if (['LightBlue', 'Brown2'].includes(m.name)) c.color.copy(trousers);
+          return c;
+        };
+        o.material = Array.isArray(o.material) ? o.material.map(dress) : dress(o.material);
+      });
+      // A figure stands 1.7 m tall, whatever the model's own units.
+      figure.updateMatrixWorld(true);
+      const head = new T.Vector3(); figure.getObjectByName('Head')?.getWorldPosition(head);
+      figure.scale.multiplyScalar(head.y > 0 ? 1.55 / head.y : 1);
+      const mixer = new T.AnimationMixer(figure), clip = gltf.animations.find(a => a.name.endsWith(`|${ROLE_CLIP[role] ?? 'Idle'}`)) ?? gltf.animations[0];
+      if (clip) { const action = mixer.clipAction(clip); action.time = (offset * 1.37) % clip.duration; action.timeScale = .8 + (offset % 1) * .3; action.play(); }
+      // The tool in the right hand: a mallet to strike or work, a load on the shoulder to carry.
+      const hand = figure.getObjectByName('Wrist.R');
+      if (hand) {
+        figure.updateMatrixWorld(true);
+        const tool = new T.Group(), k = 1 / hand.getWorldScale(new T.Vector3()).x, wood = siteMaterial('#6b4a2e');
+        if (role === 'carry') siteMesh(tool, siteBox, siteMaterial('#a08060'), [0, .12, 0], [.22, .22, 1.6]);
+        else { siteMesh(tool, siteCylinder, wood, [0, -.12, .05], [.022, .38, .022]); siteMesh(tool, siteBox, wood, [0, -.3, .05], [.1, .1, .2]); }
+        tool.scale.setScalar(k); hand.add(tool);
+      }
+      body.removeFromParent(); actor.add(figure);
+      actor.userData.arms = null; actor.userData.mixer = mixer; actor.userData.walker = role === 'carry';
+    });
   }
 
   // ——— Scaffolds fitted to the work ———
@@ -1951,6 +2010,8 @@ export function createStage(host) {
   // foot, and it comes down when the phase ends. Timber poles with putlogs into the wall before the industrial
   // age (`material: "timber"`), steel tubes on two rows of standards with guard rails after (`"steel"`).
   const ZERO = new T.Matrix4().makeScale(0, 0, 0);
+  // A worksite's figures: `figures` ("traditional" or "modern"), or modern where the scaffold is of steel tubes.
+  const eraOf = spec => spec.figures ?? (typeof spec.scaffold === 'object' && spec.scaffold.material === 'steel' ? 'modern' : 'traditional');
   function fitScaffold(group, site, spec, phase) {
     const cfg = typeof spec.scaffold === 'object' ? spec.scaffold : {}, kind = cfg.kind ?? 'facade', steel = cfg.material === 'steel';
     const lift = cfg.levelHeight ?? 2, gap = cfg.gap ?? .45, depth = cfg.depth ?? (steel ? 1.1 : 1.3), base = cfg.base ?? 0, ceiling = cfg.height !== undefined ? base + cfg.height : Infinity;
@@ -2064,7 +2125,7 @@ export function createStage(host) {
       if (deck.i % 5 !== 2) continue;
       const next = decks.find(d => d.i === deck.i && d.y > deck.y), pos = P(deck.i + .5, edge(deck.i) + gap + depth * .45, deck.y + .1);
       const before = siteActors.length;
-      makeWorker(group, pos.x, pos.z, -(mid - half + (deck.i + .5) * width) + Math.PI / 2, palette, n % 2 ? 'mason' : 'lift', n * 1.3);
+      makeWorker(group, pos.x, pos.z, -(mid - half + (deck.i + .5) * width) + Math.PI / 2, palette, n % 2 ? 'mason' : 'lift', n * 1.3, eraOf(spec));
       const actor = siteActors[before];
       if (actor) { actor.userData.baseY = deck.y + .1; actor.userData.siteReveal = deck.reveal; actor.userData.siteHide = next?.reveal ?? 1.01; site.scaffoldParts.push(actor); }
     }
@@ -2078,11 +2139,16 @@ export function createStage(host) {
     const fill = new T.PointLight('#ffd3a0', 24, radius * 3.5, 1.7); fill.position.set(0, Math.min(height, 12) * .75, 0); group.add(fill);
     const wood = siteMaterial(spec.wood ?? '#765236'), stone = siteMaterial(spec.materialColor ?? (spec.craft === 'metal' ? '#58616a' : '#a79579'), spec.craft === 'metal' ? 'metal' : 'matte');
     const rope = siteMaterial('#80684d'), palette = spec.clothes ?? ['#9a5b38', '#5c6f7b', '#7c6943', '#6d4c45'];
+    // A point of the worksite (its own frame) on dry ground: the water of the site is left to the boats.
+    const dry = (x, z) => { const w = group.localToWorld(new T.Vector3(x, 0, z)); return !wetAt(w.x, w.z); };
+    group.updateMatrixWorld(true);
+    const stackSide = dry(-radius * .34, radius * .56) ? 1 : dry(-radius * .34, -radius * .56) ? -1 : dry(radius * .56, -radius * .34) ? 'east' : 1;
 
     if (spec.materials !== false) {
       if (spec.craft === 'timber' || spec.craft === 'metal') for (let i = 0; i < 9; i++) {
-        const z = radius * .54 + (i % 3) * .24, y = .11 + Math.floor(i / 3) * .19;
-        siteBeam(group, [-radius * .64, y, z], [-radius * .05, y, z + (rand() - .5) * .12], spec.craft === 'metal' ? .065 : .1, stone);
+        const z = (radius * .54 + (i % 3) * .24) * (stackSide === -1 ? -1 : 1), y = .11 + Math.floor(i / 3) * .19, swap = stackSide === 'east';
+        const a = [-radius * .64, y, z], b = [-radius * .05, y, z + (rand() - .5) * .12];
+        siteBeam(group, swap ? [-a[2], y, a[0]] : a, swap ? [-b[2], y, b[0]] : b, spec.craft === 'metal' ? .065 : .1, stone);
       } else for (let i = 0; i < 18; i++) {
         const row = Math.floor(i / 6), col = i % 6;
         siteMesh(group, siteBox, stone, [-radius * .62 + col * .55, .16 + row * .3, radius * .48 + (row % 2) * .16], [.48 + rand() * .06, .28, .36 + rand() * .08]);
@@ -2125,8 +2191,11 @@ export function createStage(host) {
 
     const workerCount = Math.max(0, Math.min(18, Math.round(spec.workers ?? 6)));
     for (let i = 0; i < workerCount; i++) {
-      const angle = -Math.PI * .1 + (i + .5) / Math.max(1, workerCount) * Math.PI * 1.2, distance = radius * (.45 + rand() * .28);
-      makeWorker(group, Math.cos(angle) * distance, Math.sin(angle) * distance, -angle + Math.PI / 2 + (rand() - .5) * .5, palette, ['mason', 'carry', 'lift'][i % 3], i * 1.7 + rand());
+      let angle = -Math.PI * .1 + (i + .5) / Math.max(1, workerCount) * Math.PI * 1.2, distance = radius * (.45 + rand() * .28);
+      // Round the site, on dry ground: turned on round the ring, or brought in towards the work.
+      for (let k = 0; k < 24 && !dry(Math.cos(angle) * distance, Math.sin(angle) * distance); k++) { angle += Math.PI / 12; if (k % 6 === 5) distance *= .85; }
+      if (!dry(Math.cos(angle) * distance, Math.sin(angle) * distance)) continue;
+      makeWorker(group, Math.cos(angle) * distance, Math.sin(angle) * distance, -angle + Math.PI / 2 + (rand() - .5) * .5, palette, ['mason', 'carry', 'lift'][i % 3], i * 1.7 + rand(), eraOf(spec));
     }
 
     const dustAmount = Math.max(0, Math.min(1, spec.dust ?? .35)), count = Math.round(120 * dustAmount);
@@ -2184,6 +2253,8 @@ export function createStage(host) {
 
   function material(kind) {
     const {pbr, ...surface} = pbrOptions(kind, visual, renderer), mat = new T.MeshStandardMaterial({color: '#ffffff', ...KINDS[kind], ...surface, clippingPlanes: sectionPlanes});
+    // Gold leaf reflects the sky: without it a metal looks dark and olive.
+    if (kind === 'gilt') { mat.userData.gilt = true; mat.envMapIntensity = .85; }
     // Every kind compiles its own program: three.js would otherwise reuse a textured (PBR) program for a
     // plain material with the same parameters, which then samples a stray texture.
     mat.customProgramCacheKey = () => `piece:${kind}:${pbr ? ['albedo', 'normal', 'roughness', 'ao'].map(key => pbr[key] ? key[0] : '-').join('') : 'plain'}`;
@@ -2404,21 +2475,26 @@ export function createStage(host) {
     meshes.length = 0; reliefsPending = 0; reliefGeneration++;
     if (outlineGroup) { scene.remove(outlineGroup); outlineGroup.traverse(o => { o.geometry?.dispose(); o.material?.dispose(); }); outlineGroup = null; }
     for (const {group, scaffoldSets} of siteGroups) { scene.remove(group); for (const set of scaffoldSets) set.mesh.dispose(); }
-    siteGroups.length = 0; siteActors.length = 0; siteDust.length = 0; siteRigs.length = 0;
+    siteGroups.length = 0; siteActors.length = 0; siteDust.length = 0; siteRigs.length = 0; siteGeneration++;
     if (environmentGroup) { scene.remove(environmentGroup); disposeEnvironment(environmentGroup); environmentGroup = null; environmentTimed = []; }
     if (realisticGroundMaterial) { for (const key of ['map', 'normalMap', 'roughnessMap', 'aoMap']) realisticGroundMaterial[key]?.dispose(); realisticGroundMaterial.dispose(); realisticGroundMaterial = null; }
     ground.material = planGroundMaterial; ground.receiveShadow = false;
+    clearTerrain();
   }
 
   // Studio or site presentation (see LIGHTS.studio). The backdrop's colour is set so that, once tone mapped,
   // it shows as warm paper.
   function present(mode) {
-    studio = mode === 'studio';
-    const environment = visual.environment, radius = monument.view.radius;
-    sky.visible = !studio; ground.visible = !studio; studioFloor.visible = studio; if (environmentGroup) environmentGroup.visible = !studio;
+    studio = mode === 'studio'; diorama = mode === 'diorama' && Boolean(terrainSquare);
+    const environment = visual.environment, radius = monument.view.radius, paperBack = studio || diorama;
+    sky.visible = !paperBack; ground.visible = !paperBack; studioFloor.visible = studio; if (environmentGroup) environmentGroup.visible = !studio;
+    for (const o of terrainObjects) if (o.isObject3D) o.visible = !studio;
+    if (terrainSides) terrainSides.visible = diorama;
+    // On the cut-out model, only what stands on its square shows.
+    if (environmentGroup && terrainSquare) for (const o of environmentGroup.children) if (!o.isInstancedMesh) o.userData.offModel = diorama && (o.position.x < terrainSquare.x0 || o.position.x > terrainSquare.x1 || o.position.z < terrainSquare.z0 || o.position.z > terrainSquare.z1);
     renderer.toneMappingExposure = studio ? 1.02 : visual.qualityName === 'basic' ? 1.05 : visual.qualityName === 'cinematic' ? 1.18 : 1.24;
-    if (studio) paper.copy(acesInverse(PAPER, renderer.toneMappingExposure));
-    scene.background = studio ? paper.clone() : null;
+    if (paperBack) paper.copy(acesInverse(PAPER, renderer.toneMappingExposure));
+    scene.background = paperBack ? paper.clone() : null;
     light = studio ? LIGHTS.studio : LIGHTS[environment?.light ?? monument.view.light] ?? LIGHTS.golden;
     sun.color.set(light.sun); hemi.color.set(light.sky); hemi.groundColor.set(studio ? '#d4cbbb' : environment?.groundLight ?? '#3a2a1c');
     sun.position.set(...light.dir.map(v => v * radius)); sun.target.position.set(0, 0, 0);
@@ -2426,11 +2502,145 @@ export function createStage(host) {
     if (visual.quality.shadows) sun.shadow.mapSize.setScalar(studio ? Math.max(2048, visual.quality.shadows) : visual.quality.shadows);
     if (sun.shadow.map) { sun.shadow.map.dispose(); sun.shadow.map = null; }
     sun.castShadow = Boolean(visual.quality.shadows);
-    baseBloom = studio ? 0 : visual.qualityName === 'basic' ? .5 : visual.qualityName === 'cinematic' ? .28 : .18;
+    baseBloom = paperBack ? 0 : visual.qualityName === 'basic' ? .5 : visual.qualityName === 'cinematic' ? .28 : .18;
     ambientBase = studio ? .12 : visual.qualityName === 'basic' ? 0 : visual.qualityName === 'cinematic' ? .5 : .44;
-    fogFactor = studio ? .12 : environment?.fog ?? .4;
-    if (studio) scene.fog.color.copy(paper);
+    fogFactor = paperBack ? .12 : environment?.fog ?? .4;
+    if (paperBack) scene.fog.color.copy(paper);
     return studio;
+  }
+
+
+  // ——— Terrain, water, and the cut-out model ———
+  // A square of ground round the monument (`visualStyle.diorama`: size, depth, center, cell), carved where the
+  // monument file has water (`water`: bodies of water in the geographic frame, each {points, holes, level, depth,
+  // shore, tint}). Its bed slopes from the shore down to `depth` over `shore` metres and darkens with depth;
+  // the water is a sheet that mirrors the sky, rippled, clear, blue or green. In the "diorama" presentation the
+  // square stands alone on the paper, cut on its four sides: the soil shows in section, and so does the water
+  // over its bed wherever a side crosses it.
+  const terrainObjects = [];
+  let terrainSides = null, terrainSquare = null;
+  const skyEnvironmentCache = new Map();
+  // The sky as an environment map (gold and water mirror it): the horizon and zenith colours on a sphere.
+  function skyEnvironment() {
+    const key = `${horizon.value.getHexString()}${zenith.value.getHexString()}`;
+    if (skyEnvironmentCache.has(key)) return skyEnvironmentCache.get(key);
+    const envScene = new T.Scene(), sphere = new T.Mesh(new T.SphereGeometry(10, 32, 16), new T.ShaderMaterial({side: T.BackSide, uniforms: {h: {value: dayHorizon.clone()}, z: {value: zenith.value.clone()}},
+      vertexShader: 'varying vec3 d;void main(){d=normalize(position);gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}',
+      fragmentShader: 'uniform vec3 h,z;varying vec3 d;void main(){vec3 g=vec3(.32,.3,.24);gl_FragColor=vec4(d.y>0.?mix(h,z,smoothstep(0.,.6,d.y)):mix(h,g,smoothstep(0.,.25,-d.y)),1.);}'}));
+    envScene.add(sphere);
+    const pmrem = new T.PMREMGenerator(renderer), texture = pmrem.fromScene(envScene, .02).texture;
+    pmrem.dispose(); sphere.geometry.dispose(); sphere.material.dispose();
+    skyEnvironmentCache.set(key, texture);
+    return texture;
+  }
+  const WATER_TINTS = {clear: ['#86aeb4', .34], blue: ['#3e6f8c', .62], green: ['#4c6a47', .86]};
+  const insideRing = (ring, x, z) => { let c = false; for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) { const [xi, zi] = ring[i], [xj, zj] = ring[j]; if ((zi > z) !== (zj > z) && x < (xj - xi) * (z - zi) / (zj - zi) + xi) c = !c; } return c; };
+  const ringDistance = (ring, x, z) => { let best = Infinity; for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) { const [ax, az] = ring[j], [bx, bz] = ring[i], dx = bx - ax, dz = bz - az, t = Math.max(0, Math.min(1, ((x - ax) * dx + (z - az) * dz) / (dx * dx + dz * dz || 1))); best = Math.min(best, Math.hypot(ax + t * dx - x, az + t * dz - z)); } return best; };
+  // A ring clipped to the square [x0, x1] × [z0, z1] (Sutherland-Hodgman, one side after the other).
+  function clipRing(ring, x0, x1, z0, z1) {
+    let out = ring;
+    for (const [inside, cut] of [[p => p[0] >= x0, (a, b) => [x0, a[1] + (b[1] - a[1]) * (x0 - a[0]) / (b[0] - a[0])]], [p => p[0] <= x1, (a, b) => [x1, a[1] + (b[1] - a[1]) * (x1 - a[0]) / (b[0] - a[0])]],
+      [p => p[1] >= z0, (a, b) => [a[0] + (b[0] - a[0]) * (z0 - a[1]) / (b[1] - a[1]), z0]], [p => p[1] <= z1, (a, b) => [a[0] + (b[0] - a[0]) * (z1 - a[1]) / (b[1] - a[1]), z1]]]) {
+      const input = out; out = [];
+      for (let i = 0; i < input.length; i++) { const a = input[(i + input.length - 1) % input.length], b = input[i]; if (inside(b)) { if (!inside(a)) out.push(cut(a, b)); out.push(b); } else if (inside(a)) out.push(cut(a, b)); }
+      if (!out.length) break;
+    }
+    return out;
+  }
+  function terrainMaterial(id, extent, extra = {}) {
+    const options = groundOptions(visual, renderer, monument.view.radius, extent, id);
+    const mat = new T.MeshStandardMaterial({color: '#7a7563', roughness: .95, ...(options ?? {}), ...extra, clippingPlanes: sectionPlanes});
+    terrainObjects.push({dispose: () => { for (const key of ['map', 'normalMap', 'roughnessMap', 'aoMap']) mat[key]?.dispose(); mat.dispose(); }});
+    return mat;
+  }
+  function buildTerrain(data, bodies) {
+    const dio = data.visualStyle?.diorama ?? {}, radius = data.view.radius, size = dio.size ?? radius * 2.6, half = size / 2, depth = dio.depth ?? Math.max(2.5, radius * .08);
+    const [cx, cz] = dio.center ?? [data.view.target[0], data.view.target[2]], x0 = cx - half, z0 = cz - half, cell = Math.max(dio.cell ?? .5, size / 260), n = Math.ceil(size / cell);
+    terrainSquare = {x0, x1: x0 + size, z0, z1: z0 + size, size};
+    const env = visual.environment ?? {}, groundId = env.ground ?? null;
+    const water = bodies.map(b => ({...b, rings: [b.points, ...(b.holes ?? [])], level: b.level ?? -.15, depth: b.depth ?? 1.2, shore: b.shore ?? 4, tint: b.tint ?? env.water ?? 'green'}));
+    const bodyAt = (x, z) => water.find(b => insideRing(b.points, x, z) && !(b.holes ?? []).some(h => insideRing(h, x, z)));
+    // Heights and colours of the grid: the bed under water, the ground at 0 elsewhere.
+    const heights = new Float32Array((n + 1) * (n + 1)), colours = new Float32Array((n + 1) * (n + 1) * 3), deep = new T.Color();
+    for (let j = 0; j <= n; j++) for (let i = 0; i <= n; i++) {
+      const x = x0 + i * size / n, z = z0 + j * size / n, b = bodyAt(x, z), k = j * (n + 1) + i;
+      let y = 0, f = 0;
+      if (b) { const d = Math.min(...b.rings.map(r => ringDistance(r, x, z))); f = Math.min(1, d / b.shore); y = b.level - .08 - (b.depth - .08) * f; deep.set(WATER_TINTS[b.tint]?.[0] ?? b.tint).multiplyScalar(.5); }
+      // Just outside the water the ground dips under its surface: the shore is the water's own smooth edge.
+      else for (const w of water) if (Math.min(...w.rings.map(r => ringDistance(r, x, z))) < cell * 1.6) { y = w.level - .03; break; }
+      heights[k] = y;
+      const c = new T.Color(1, 1, 1).lerp(deep, f * .7); colours.set([c.r, c.g, c.b], k * 3);
+    }
+    const pos = new Float32Array((n + 1) * (n + 1) * 3), uv = new Float32Array((n + 1) * (n + 1) * 2);
+    for (let j = 0; j <= n; j++) for (let i = 0; i <= n; i++) { const k = j * (n + 1) + i; pos.set([x0 + i * size / n, heights[k], z0 + j * size / n], k * 3); uv.set([i / n, 1 - j / n], k * 2); }
+    const dry = [], wet = [];
+    for (let j = 0; j < n; j++) for (let i = 0; i < n; i++) {
+      // The bed's surface under the water; the ground's, moss or grass, where the shore only dips under it.
+      const a = j * (n + 1) + i, b = a + 1, c = a + n + 1, d = c + 1, list = Math.min(heights[a], heights[b], heights[c], heights[d]) < -.2 ? wet : dry;
+      list.push(a, c, b, b, c, d);
+    }
+    const geometry = new T.BufferGeometry();
+    geometry.setAttribute('position', new T.BufferAttribute(pos, 3)); geometry.setAttribute('uv', new T.BufferAttribute(uv, 2)); geometry.setAttribute('uv1', new T.BufferAttribute(uv.slice(), 2)); geometry.setAttribute('color', new T.BufferAttribute(colours, 3));
+    geometry.setIndex([...dry, ...wet]); geometry.addGroup(0, dry.length, 0); geometry.addGroup(dry.length, wet.length, 1); geometry.computeVertexNormals();
+    const land = new T.Mesh(geometry, [terrainMaterial(groundId, size, {color: env.groundTint ?? '#ffffff'}), terrainMaterial(env.bed ?? 'pond-mud', size, {vertexColors: true})]);
+    land.receiveShadow = true; scene.add(land); terrainObjects.push(land);
+    // The water: one rippled sheet per body, clipped to the square, mirroring the sky.
+    if (water.length) {
+      const ripple = new T.TextureLoader().load(new URL('./assets/materials/water-ripple/normal.png', import.meta.url).href);
+      ripple.wrapS = ripple.wrapT = T.RepeatWrapping;
+      for (const b of water) {
+        const outer = clipRing(b.points, x0, x0 + size, z0, z0 + size);
+        if (outer.length < 3) continue;
+        const shape = new T.Shape(outer.map(([x, z]) => new T.Vector2(x, -z)));
+        for (const h of b.holes ?? []) { const c = clipRing(h, x0, x0 + size, z0, z0 + size); if (c.length > 2) shape.holes.push(new T.Path(c.map(([x, z]) => new T.Vector2(x, -z)))); }
+        const g = new T.ShapeGeometry(shape); g.rotateX(-Math.PI / 2);
+        const at = g.attributes.position, u = new Float32Array(at.count * 2); for (let i = 0; i < at.count; i++) { u[i * 2] = at.getX(i) / 7; u[i * 2 + 1] = at.getZ(i) / 7; } g.setAttribute('uv', new T.BufferAttribute(u, 2));
+        const [color, opacity] = WATER_TINTS[b.tint] ?? [b.tint, .7];
+        const mat = new T.MeshStandardMaterial({color, transparent: true, opacity, roughness: .07, metalness: 0, normalMap: ripple, normalScale: new T.Vector2(.32, .32), envMap: skyEnvironment(), envMapIntensity: 1.15, depthWrite: false, clippingPlanes: sectionPlanes});
+        const sheet = new T.Mesh(g, mat); sheet.position.y = b.level; sheet.renderOrder = 2; sheet.userData.water = true; scene.add(sheet); terrainObjects.push(sheet);
+      }
+      terrainObjects.push({dispose: () => ripple.dispose(), tick: t => ripple.offset.set(t * .011, t * .007)});
+    }
+    // The cut sides of the model: soil from the ground or the bed down to the base, water above the bed.
+    terrainSides = new T.Group(); scene.add(terrainSides); terrainObjects.push(terrainSides);
+    const soil = terrainMaterial(env.soil ?? 'soil-section', size, {side: T.DoubleSide}), base = -depth, sp = [], suv = [], wp = [], wc = [];
+    const edges = [[i => [i, 0]], [i => [n, i]], [i => [n - i, n]], [i => [0, n - i]]];
+    edges.forEach(([at], e) => {
+      for (let i = 0; i < n; i++) {
+        const [ia, ja] = at(i), [ib, jb] = at(i + 1), ka = ja * (n + 1) + ia, kb = jb * (n + 1) + ib;
+        const A = [x0 + ia * size / n, z0 + ja * size / n], B = [x0 + ib * size / n, z0 + jb * size / n], ya = heights[ka], yb = heights[kb], s0 = (e * n + i) / n, s1 = s0 + 1 / n;
+        sp.push(A[0], ya, A[1], B[0], yb, B[1], B[0], base, B[1], A[0], ya, A[1], B[0], base, B[1], A[0], base, A[1]);
+        suv.push(s0, ya / size, s1, yb / size, s1, base / size, s0, ya / size, s1, base / size, s0, base / size);
+        const wa = bodyAt(...A), wb = bodyAt(...B), level = (wa ?? wb)?.level;
+        if (level !== undefined && (ya < level || yb < level)) {
+          const dark = new T.Color(WATER_TINTS[(wa ?? wb).tint]?.[0] ?? '#4c6a47');
+          wp.push(A[0], level, A[1], B[0], level, B[1], B[0], yb, B[1], A[0], level, A[1], B[0], yb, B[1], A[0], ya, A[1]);
+          for (const y of [level, level, yb, level, yb, ya]) { const c = dark.clone().multiplyScalar(1 - Math.min(.6, (level - y) * .35)); wc.push(c.r, c.g, c.b); }
+        }
+      }
+    });
+    const sg = new T.BufferGeometry(); sg.setAttribute('position', new T.Float32BufferAttribute(sp, 3)); sg.setAttribute('uv', new T.Float32BufferAttribute(suv, 2)); sg.computeVertexNormals();
+    const cut = new T.Mesh(sg, soil); cut.receiveShadow = true; terrainSides.add(cut);
+    const bottom = new T.Mesh(new T.PlaneGeometry(size, size).rotateX(Math.PI / 2), new T.MeshStandardMaterial({color: '#3d3226', roughness: 1, clippingPlanes: sectionPlanes})); bottom.position.set(cx, base, cz); terrainSides.add(bottom);
+    if (wp.length) {
+      const wg = new T.BufferGeometry(); wg.setAttribute('position', new T.Float32BufferAttribute(wp, 3)); wg.setAttribute('color', new T.Float32BufferAttribute(wc, 3)); wg.computeVertexNormals();
+      const section = new T.Mesh(wg, new T.MeshStandardMaterial({vertexColors: true, transparent: true, opacity: .62, roughness: .12, side: T.DoubleSide, depthWrite: false, clippingPlanes: sectionPlanes})); section.renderOrder = 3; terrainSides.add(section);
+    }
+    // Outside the square, the ground plane keeps a hole for it.
+    const plane = radius * 40, sh = new T.Shape([[-.5, -.5], [.5, -.5], [.5, .5], [-.5, .5]].map(([a, b]) => new T.Vector2(a, b))), hx = cx / plane, hy = -cz / plane, hh = half / plane;
+    sh.holes.push(new T.Path([[hx - hh, hy - hh], [hx - hh, hy + hh], [hx + hh, hy + hh], [hx + hh, hy - hh]].map(([a, b]) => new T.Vector2(a, b))));
+    const holed = new T.ShapeGeometry(sh), hp = holed.attributes.position, hu = new Float32Array(hp.count * 2);
+    for (let i = 0; i < hp.count; i++) { hu[i * 2] = hp.getX(i) + .5; hu[i * 2 + 1] = hp.getY(i) + .5; }
+    holed.setAttribute('uv', new T.BufferAttribute(hu, 2)); holed.setAttribute('uv1', new T.BufferAttribute(hu.slice(), 2));
+    ground.geometry = holed; terrainObjects.push({dispose: () => { ground.geometry = groundGeometry; holed.dispose(); }});
+    return bodyAt;
+  }
+  function clearTerrain() {
+    for (const o of terrainObjects) {
+      if (o.isObject3D) { scene.remove(o); o.traverse(c => { c.geometry?.dispose(); if (c.material && !Array.isArray(c.material)) c.material.dispose?.(); }); }
+      else o.dispose?.();
+    }
+    terrainObjects.length = 0; terrainSides = null; terrainSquare = null;
   }
 
   // `base`: the monument file's URL, against which its photo reliefs are found.
@@ -2519,6 +2729,8 @@ export function createStage(host) {
         scene.add(mesh); meshes.push(mesh);
       }
     }
+    const ponds = (data.water ?? []).filter(w => w.points?.length > 2);
+    wetAt = (x, z) => ponds.some(w => insideRing(w.points, x, z) && !(w.holes ?? []).some(h => insideRing(h, x, z)));
     data.phases.forEach((phase, i) => { if (phase.scene) makeWorksite(phase.scene, i, (data.seed ?? 7) + i * 977 + 41); });
     // Height reached and counters over time.
     const sorted = [...k.pieces].sort((a, b) => a.birth - b.birth);
@@ -2535,7 +2747,7 @@ export function createStage(host) {
     uniforms.uNightColor.value.set(data.view.night ?? '#ff9a2e');
     ground.scale.set(radius * 40, radius * 40, 1);
     const realisticGround = !data.view.water && groundOptions(visual, renderer, radius);
-    if (realisticGround) { realisticGroundMaterial = new T.MeshStandardMaterial(realisticGround); realisticGroundMaterial.fog = true; ground.material = realisticGroundMaterial; ground.receiveShadow = Boolean(visual.quality.shadows); }
+    if (realisticGround) { realisticGroundMaterial = new T.MeshStandardMaterial({...realisticGround, color: visual.environment?.groundTint ?? '#ffffff'}); realisticGroundMaterial.fog = true; ground.material = realisticGroundMaterial; ground.receiveShadow = Boolean(visual.quality.shadows); }
     else { ground.material = planGroundMaterial; planGroundMaterial.uniforms.uStep.value = data.view.dots ?? radius / 60; planGroundMaterial.uniforms.uRadius.value = radius * 3.2; planGroundMaterial.uniforms.uWater.value = data.view.water ? 1 : 0; }
     const environment = visual.environment;
     dayHorizon = new T.Color(environment?.horizon ?? DUSK); horizon.value.copy(dayHorizon); zenith.value.set(environment?.zenith ?? '#1b213d'); sunGlow.value.set(environment ? '#6b3a20' : '#9d4e24'); fogFactor = environment?.fog ?? .4;
@@ -2551,7 +2763,17 @@ export function createStage(host) {
       const [tx, , tz] = r.target ?? data.view.target, az = r.azimuth * Math.PI / 180, across = Math.cos(r.elevation * Math.PI / 180) * r.distance;
       return {camera: [tx + Math.sin(az) * across, tz - Math.cos(az) * across], target: [tx, tz], fov: (r.fov ?? 38) * Math.PI / 180};
     });
-    const builtEnvironment = createEnvironment(visual, data.view, data.seed ?? 7, index, sights); environmentGroup = builtEnvironment.group; environmentTimed = builtEnvironment.timed; scene.add(environmentGroup);
+    // Terrain and water when the file has water or asks for the cut-out model.
+    const bodies = (data.water ?? []).filter(w => w.points?.length > 2);
+    const wet = bodies.length || data.visualStyle?.diorama || data.visualStyle?.presentation === 'diorama' ? buildTerrain(data, bodies) : null;
+    // Gold leaf mirrors this monument's sky.
+    for (const mesh of meshes) if (mesh.material?.userData?.gilt) { mesh.material.envMap = skyEnvironment(); mesh.material.needsUpdate = true; }
+    // Trees and grass keep off the water and the monument's own ground (its pieces' outline, with a margin).
+    const footprint = new T.Box3();
+    for (const piece of built) if (piece.phase <= total - 1 && piece.top > .3) footprint.expandByPoint(new T.Vector3().setFromMatrixPosition(piece.matrix));
+    footprint.expandByScalar(3);
+    const keepOut = (x, z) => Boolean(wet?.(x, z)) || (x > footprint.min.x && x < footprint.max.x && z > footprint.min.z && z < footprint.max.z);
+    const builtEnvironment = createEnvironment(visual, data.view, data.seed ?? 7, index, sights, keepOut); environmentGroup = builtEnvironment.group; environmentTimed = builtEnvironment.timed; scene.add(environmentGroup);
     studioFloor.scale.setScalar(radius * 30);
     present(presentationAsked ?? data.visualStyle?.presentation ?? 'site');
     home();
@@ -2644,8 +2866,11 @@ export function createStage(host) {
     // "site" (the default: sky, ground and trees) or "studio"; remembered for the next monument loaded.
     presentation(mode) { presentationAsked = mode; return monument ? present(mode) : mode === 'studio'; },
     get studio() { return studio; },
+    // The cut-out model, when the monument has a terrain (water, or visualStyle.diorama).
+    get diorama() { return diorama; },
+    get hasModel() { return Boolean(terrainSquare); },
     // True once every photo relief has its image (or has given up on it).
-    get ready() { return reliefsPending === 0; },
+    get ready() { return reliefsPending === 0 && charactersPending === 0; },
     setTime(t) {
       uniforms.uTime.value = t;
       if (leaning) uniforms.uLeanAngle.value = lerp(leaning.track, t) * Math.PI / 180;
@@ -2654,11 +2879,11 @@ export function createStage(host) {
       uniforms.uNight.value = night;
       uniforms.uSparkle.value = phase?.sparkle ? night : 0;
       sun.intensity = light.sunI * (1 - night * .92); hemi.intensity = light.hemiI * (1 - night * .75); ambient.intensity = ambientBase * (1 - night * .7); rim.intensity = (light.rimI ?? .9) - night * .3;
-      bloom.strength = baseBloom + night * .35; bloom.enabled = !studio || night > 0;
+      bloom.strength = baseBloom + night * .35; bloom.enabled = !(studio || diorama) || night > 0;
       horizon.value.copy(dayHorizon).lerp(NIGHT, night);
-      if (studio) { scene.background.copy(paper).lerp(NIGHT, night * .9); scene.fog.color.copy(scene.background); }
+      if (studio || diorama) { scene.background.copy(paper).lerp(NIGHT, night * .9); scene.fog.color.copy(scene.background); }
       else scene.fog.color.copy(horizon.value);
-      for (const item of environmentTimed) item.object.visible = !studio && t >= item.from && t < item.until;
+      for (const item of environmentTimed) item.object.visible = !studio && !item.object.userData.offModel && t >= item.from && t < item.until;
       const phaseIndex = Math.min(total - 1, Math.floor(t));
       for (const site of siteGroups) {
         // A worksite shows during its phase only: the finished building stands clear of it.
@@ -2729,6 +2954,8 @@ export function createStage(host) {
     },
     autoRotate(on) { controls.autoRotate = on; },
     render(clock) {
+      if (lastClock === undefined) lastClock = clock;
+      for (const o of terrainObjects) o.tick?.(clock);
       uniforms.uClock.value = clock;
       if (sectioning) {
         const n = controls.target.clone().sub(camera.position).setY(0);
@@ -2741,10 +2968,15 @@ export function createStage(host) {
         sun.target.position.copy(controls.target).setY(0);
         sun.position.set(controls.target.x + Math.sin(az) * Math.cos(el) * R, Math.sin(el) * R, controls.target.z + Math.cos(az) * Math.cos(el) * R);
       }
+      const dt = Math.min(.1, Math.max(0, clock - lastClock)); lastClock = clock;
       for (const actor of siteActors) if (actor.parent?.visible) {
         const u = actor.userData;
         if (u.hoist) actor.position.y = u.baseY + Math.sin(clock * .65 + u.offset) * .35;
-        else {
+        else if (u.mixer) {
+          u.mixer.update(dt);
+          // A carrier walks 3 m out along its heading and back, turning at each end.
+          if (u.walker) { const w = (clock * .22 + u.offset) % 2, out = w < 1 ? w : 2 - w, dir = u.baseTurn; actor.position.set(u.base[0] + Math.sin(dir) * out * 3, u.baseY, u.base[1] + Math.cos(dir) * out * 3); actor.rotation.y = w < 1 ? dir : dir + Math.PI; }
+        } else {
           const wave = Math.sin(clock * 2.1 + u.offset);
           actor.position.y = u.baseY + Math.abs(wave) * .018; actor.rotation.y = u.baseTurn + wave * .025;
           u.arms?.forEach((arm, i) => { const base = u.role === 'lift' ? 2.45 : u.role === 'carry' ? 1.3 : .45; arm.rotation.z = (i ? -1 : 1) * (base + wave * (u.role === 'mason' ? .4 : .12)); });

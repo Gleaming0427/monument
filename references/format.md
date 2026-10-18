@@ -50,7 +50,7 @@ At least two construction phases in a standard build carry `scene`, unless the w
 
 - `craft`: `masonry`, `timber`, `metal`, `earth`, `restoration` or `mixed`; this chooses the restrained material and particle language.
 - `at`: `[x, z]` centre of the activity. `focus`: `[x, y, z]` point the camera should feel close to. `distance` sets the human-scale camera distance in metres; frame at least one worker and the detail being built. `radius` controls the spread and `height` the work reached.
-- `workers`: 0–18. Figures communicate human scale; do not use them to assert an unsupported workforce count.
+- `workers`: 0–18. Figures communicate human scale; do not use them to assert an unsupported workforce count. `figures`: `"traditional"` (shirt, trousers, hat) or `"modern"` (helmet and vest); by default modern where the scaffold is of steel. `clothes`: the palette they are dressed in.
 - `materials`, `scaffold`, `hoist`: include only what the scene's source supports. Temporary structures grow during the phase, so describe their geometry instead of using `true`.
   - `scaffold`: fitted to the work. It follows the outer face of the pieces laid during the phase at a constant gap, rises lift by lift as the masonry beside it reaches each lift's foot, and comes down when the phase ends. `kind`: `facade` (over `width` metres of wall centred on the scene, around the monument's centre), `ring` (around the scene's centre: an apse, a round tower; `arc` and `start` in degrees, `radius` for its reach) or `tower` (all round the scene's centre: a pier, a tower, a spire; `width` for its reach). `base` (metres): where it stands, for a scaffold set on a roof or on a lower storey; `height`: the highest piece it serves above `base`; `rise: "first"`: put up before the work, for a restoration or a spire built inside its cage; `material`: `timber` (poles, putlogs into the wall, plank decks, braces, ladders, before the industrial age) or `steel` (tubes on two rows of standards, transoms, boards, toe boards and guard rails); `levelHeight` (2 m), `gap` from the wall (0.45 m), `depth` of the decks, `zone` (3 m: how deep the outer face is).
   - `hoist.kind`: `gin-pole`, `treadwheel` or `steam-crane`. Without `offset`, it stands just outside the scaffold with its boom over the wall. Use `height`, `offset: [x, z]`, and `from`/`to` for the base height followed during the phase. `start` and `end` (0–1) limit the moving interval.
@@ -79,6 +79,10 @@ At least two construction phases in a standard build carry `scene`, unless the w
 ## visualStyle
 
 Standard builds use the bundled semi-realistic PBR library. Set `quality`, `materialPreset` and `environmentPreset`; add dated vegetation or props only when useful. The complete catalog and schema are in [visual-style.md](visual-style.md).
+
+## water (optional)
+
+`"water": [{"points": [[x, z], …], "holes": [[[x, z], …]], "level": -0.05, "depth": 1.2, "shore": 3, "tint": "green"}]`: the ponds, moats and rivers that belong to the monument's own grounds, in the geographic frame of the outline (from the same map extract: an OpenStreetMap `natural=water` outline and its islands as `holes`). `level` is the water's surface (metres, the ground being 0), `depth` the bed's depth, reached `shore` metres from the bank, and `tint` `"clear"`, `"blue"`, `"green"` or a colour (the environment preset's by default). The water carves the terrain, mirrors the sky, ripples, and shows its bed; in the diorama it shows in section on the cut sides. A depth that is not documented is said so in `evidence.uncertainties`.
 
 ## live and facts
 

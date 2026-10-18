@@ -72,7 +72,7 @@ Everything that happens to a building is tied to a phase:
 ## Adding a brick
 
 Write a generator `name(k, e, P)` modelled on the existing ones:
-- `k.box`, `k.beam`, `k.oriented`, `k.turned`, `k.lying` or `k.column` for every piece, with its colour from `k.tint`;
+- `k.box`, `k.beam`, `k.oriented`, `k.turned`, `k.lying` or `k.column` for every piece, with its colour from `k.tint`, and its kind: `stone`, `wood`, `slate`, `tile`, `plaster`, `shingle`, `gilt` (gold leaf, mirroring the sky), `bark`, `metal`, `lead`, `glass` or `cloth`, each dressed with the monument's surface for it (visual-style.md);
 - `P(e.phase)` for its phase;
 - the `order` argument sets the laying order inside the phase: bottom to top by default, or out from the towers, as for the bridge.
 
