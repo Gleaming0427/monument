@@ -89,10 +89,10 @@
    "url": "https://www.openstreetmap.org/way/201611261",
    "outline": "notre-dame-de-paris.evidence/outline.json",
    "fit": {
-    "p90": 2.24,
+    "p90": 2.69,
     "max": 8.63,
     "coverage": 0.99,
-    "overflow": 0.06
+    "overflow": 0.07
    }
   },
   "references": [
@@ -1618,9 +1618,9 @@
    "phase": "transept",
    "center": [
     2.85,
-    -34
+    -36.2
    ],
-   "rot": 1.5708,
+   "rot": -1.5708,
    "color": "#d8cba9",
    "glass": "#34404f",
    "width": 14.6,
@@ -1637,7 +1637,8 @@
      "#4a2230",
      "#35264a",
      "#1f3440"
-    ]
+    ],
+    "relief": true
    },
    "gallery": {
     "count": 9,
@@ -1664,9 +1665,9 @@
    "phase": "transept",
    "center": [
     2.85,
-    17.799999999999997
+    20
    ],
-   "rot": -1.5708,
+   "rot": 1.5708,
    "color": "#d8cba9",
    "glass": "#34404f",
    "width": 14.6,
@@ -1683,7 +1684,8 @@
      "#4a2230",
      "#35264a",
      "#1f3440"
-    ]
+    ],
+    "relief": true
    },
    "gallery": {
     "count": 9,
@@ -1702,6 +1704,126 @@
     "width": 2.8,
     "top": 46,
     "pinnacle": 8
+   }
+  },
+  {
+   "type": "relief",
+   "name": "Rose nord",
+   "provenance": "documented",
+   "note": "The north transept rose, 13.1 m across, photographed from below in 2017 and straightened: its lowest part, behind the balustrade, is not seen in the photo.",
+   "phase": "transept",
+   "center": [
+    2.85,
+    -36.2
+   ],
+   "rot": -1.5708,
+   "at": [
+    -0.05,
+    28.6,
+    0
+   ],
+   "size": [
+    13.1,
+    13.1
+   ],
+   "facing": [
+    -1,
+    0
+   ],
+   "shape": {
+    "kind": "circle"
+   },
+   "depth": 0.3,
+   "image": "notre-dame-de-paris.evidence/reliefs/rose-nord.jpg",
+   "corners": [
+    [
+     238.4,
+     157.6
+    ],
+    [
+     1851.9,
+     157.6
+    ],
+    [
+     1919.1,
+     1024.2
+    ],
+    [
+     171.2,
+     1024.2
+    ]
+   ],
+   "tone": "#d9cdb0",
+   "credit": {
+    "file": "https://commons.wikimedia.org/wiki/File:Paris_Cathédrale_Notre-Dame_Nördliches_Querschiff.jpg",
+    "author": "Zairon",
+    "license": "CC BY-SA 4.0",
+    "crop": [
+     1050,
+     650,
+     3150,
+     1850
+    ]
+   }
+  },
+  {
+   "type": "relief",
+   "name": "Rose sud",
+   "provenance": "documented",
+   "note": "The south transept rose, 13.1 m across, from a 2010 photograph of the south side; the balustrade before its foot is part of the photo.",
+   "phase": "transept",
+   "center": [
+    2.85,
+    20
+   ],
+   "rot": 1.5708,
+   "at": [
+    -0.05,
+    28.6,
+    0
+   ],
+   "size": [
+    13.1,
+    13.1
+   ],
+   "facing": [
+    -1,
+    0
+   ],
+   "shape": {
+    "kind": "circle"
+   },
+   "depth": 0.3,
+   "image": "notre-dame-de-paris.evidence/reliefs/rose-sud.jpg",
+   "corners": [
+    [
+     104,
+     155
+    ],
+    [
+     1300,
+     155
+    ],
+    [
+     1300,
+     1215
+    ],
+    [
+     104,
+     1215
+    ]
+   ],
+   "tone": "#d9cdb0",
+   "credit": {
+    "file": "https://commons.wikimedia.org/wiki/File:Notre_Dame_Paris_side.jpg",
+    "author": "Hwman",
+    "license": "CC BY-SA 3.0",
+    "crop": [
+     3500,
+     1800,
+     4950,
+     3100
+    ]
    }
   },
   {

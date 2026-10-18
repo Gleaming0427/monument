@@ -83,57 +83,74 @@
    {
     "url": "https://commons.wikimedia.org/wiki/File:Campanile_Dôme_-_Pise_(IT52)_-_2022-08-31_-_15.jpg",
     "view": "north-east",
-    "azimuth": 51,
-    "elevation": -35.5,
+    "azimuth": 41.8,
+    "elevation": -29.1,
     "distance": 45.5,
     "target": [
-     0,
-     28,
-     0
+     -3,
+     23.5,
+     3.8
     ],
     "camera": "37 m from the tower at ground level (Commons camera location), 75° lens",
-    "fov": 75
+    "fov": 62.4,
+    "calibration": {
+     "points": 22,
+     "rms": 1.1
+    }
    },
    {
     "url": "https://commons.wikimedia.org/wiki/File:2016_Leaning_Tower_(Pisa)_-_Exterior_03.jpg",
     "view": "west",
-    "azimuth": 270,
-    "elevation": -37.8,
+    "azimuth": 272.6,
+    "elevation": -26.7,
     "distance": 43,
     "target": [
-     0,
-     28,
-     0
+     -7.5,
+     21,
+     0.3
     ],
     "camera": "34 m from the tower at ground level (Commons camera location), 78° lens",
-    "fov": 78
+    "fov": 60.3,
+    "calibration": {
+     "points": 22,
+     "rms": 1.3
+    }
    },
    {
     "url": "https://commons.wikimedia.org/wiki/File:Leaning_tower_of_pisa_2.jpg",
     "view": "west-south-west",
-    "azimuth": 248,
-    "elevation": -12.7,
-    "distance": 119.9,
+    "azimuth": 243.9,
+    "elevation": -14.2,
+    "distance": 120,
     "target": [
-     0,
-     28,
-     0
+     -10,
+     31.6,
+     -5
     ],
-    "camera": "117 m from the tower (Commons camera location)"
+    "camera": "117 m from the tower (Commons camera location)",
+    "fov": 34,
+    "calibration": {
+     "points": 27,
+     "rms": 1.5
+    }
    },
    {
     "url": "https://commons.wikimedia.org/wiki/File:2016_Leaning_Tower_(Pisa)_-_Exterior_01.jpg",
     "view": "south",
-    "azimuth": 194,
-    "elevation": -19.2,
+    "azimuth": 193.2,
+    "elevation": -20.5,
     "distance": 80.5,
     "target": [
-     0,
-     28,
-     0
+     -3.4,
+     29.8,
+     4.6
     ],
     "camera": "76 m from the tower at ground level (Commons camera location), 45° lens",
-    "fov": 45
+    "fov": 44,
+    "calibration": {
+     "points": 22,
+     "rms": 1.1
+    }
    }
   ],
   "features": [
@@ -168,6 +185,22 @@
    {
     "text": "Continuous marble cornices separate the open column galleries into strong horizontal rings.",
     "source": "https://www.italia.it/it/toscana/pisa/torre-di-pisa"
+   },
+   {
+    "text": "A lozenge of darker marble inlaid under the crown of each of the fifteen blind arches of the ground floor.",
+    "source": "https://commons.wikimedia.org/wiki/File:Campanile_Dôme_-_Pise_(IT52)_-_2022-08-31_-_15.jpg"
+   },
+   {
+    "text": "The entrance door in a bay of the ground floor on the south side, in a plain marble frame.",
+    "source": "https://commons.wikimedia.org/wiki/File:2016_Leaning_Tower_(Pisa)_-_Exterior_01.jpg"
+   },
+   {
+    "text": "Corbels close set under the projecting cornice of every gallery.",
+    "source": "https://commons.wikimedia.org/wiki/File:2016_Leaning_Tower_(Pisa)_-_Exterior_03.jpg"
+   },
+   {
+    "text": "The bell chamber's open arches between piers faced with columns, bells hanging inside, and iron railings round its foot and its top.",
+    "source": "https://commons.wikimedia.org/wiki/File:Leaning_tower_of_pisa_2.jpg"
    }
   ],
   "geometry": "Outer radius 7.742 m (Wikipedia); the OSM outline (radius 8.25 m) includes the footing. Total height 56 m shared between storeys from the photo taken from the east: ground floor about 1.8 gallery heights, bell chamber about 1.3, its radius about 0.65 of the tower's.",
@@ -178,7 +211,10 @@
    "Split of the upper galleries between 1272–1278 and 1319 inferred from the dates in the sources.",
    "The ring scaffold and treadwheel hoist show a period-appropriate masonry workflow; their exact layout and height progression are interpretive.",
    "Cathedral and baptistery not shown.",
-   "Gallery arches simplified (smaller arches under a continuous band); no marble veining, bands or lozenge inlays; no railing or flagpole on the bell chamber; no stepped base."
+   "Gallery arches simplified (smaller arches under a continuous band); no marble veining, bands or lozenge inlays; no railing or flagpole on the bell chamber; no stepped base.",
+   "The iron railings round the terraces are drawn as in present-day photos; their date is not in the sources used, so they appear with the 1999–2001 works.",
+   "The plinth's two steps round the foot follow the photos; the walkway dug round the base in 1838 (the catino) is not modelled.",
+   "The seven bells are drawn as bronze bells of three sizes hung in alternate arches; their real sizes and places are not modelled."
   ],
   "size": "building",
   "plan": {
@@ -483,7 +519,12 @@
      "phase": "first",
      "kind": "blind",
      "height": 11.1,
-     "arches": 15
+     "arches": 15,
+     "door": {
+      "angle": 0,
+      "width": 1.7,
+      "height": 3.6
+     }
     },
     {
      "phase": "first",
@@ -526,7 +567,8 @@
      "kind": "belfry",
      "height": 8,
      "radius": 5,
-     "arches": 12
+     "arches": 12,
+     "bells": 7
     }
    ],
    "lean": {
@@ -589,7 +631,32 @@
     ]
    },
    "shadow": "#837d73",
-   "provenance": "measured"
+   "provenance": "measured",
+   "base": [
+    [
+     1.5,
+     0.45
+    ],
+    [
+     2.3,
+     0.22
+    ]
+   ],
+   "railings": {
+    "phase": "saved",
+    "rings": [
+     [
+      7.592,
+      48
+     ],
+     [
+      5.2,
+      56
+     ]
+    ]
+   },
+   "core": "#c2baab",
+   "dark": "#57524b"
   }
  ]
 }

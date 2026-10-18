@@ -40,7 +40,7 @@ If the architecture needs a brand-new complex brick, say that the first build ca
 
 ### Publication build
 
-Use this only when the user asks for maximum documentation or wants to publish. Add at least three pages from two sites, four photos from three sides, the complete plan evidence, phase captures and a second comparison pass. `node <skill>/scripts/validate.mjs --strict monuments/<id>.json` is the publication gate. A standard build is a valid local result; it is not publishable until strict validation passes.
+Use this only when the user asks for maximum documentation or wants to publish. Add at least three pages from two sites, four photos from three sides, each with its viewpoint fitted by `calibrate.mjs`, the complete plan evidence, phase captures and a second comparison pass. `node <skill>/scripts/validate.mjs --strict monuments/<id>.json` is the publication gate. A standard build is a valid local result; it is not publishable until strict validation passes.
 
 ## Rules
 

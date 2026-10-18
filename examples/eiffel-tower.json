@@ -1015,70 +1015,87 @@
    {
     "url": "https://commons.wikimedia.org/wiki/File:Tour_Eiffel_vue_du_Champ-de-Mars.jpg",
     "view": "south-east, from the Champ-de-Mars lawns (Jebulon, 2011, CC0)",
-    "azimuth": 136,
-    "elevation": -32.9,
+    "azimuth": 135.4,
+    "elevation": 0,
     "distance": 273,
     "target": [
-     0,
-     150,
-     0
+     -29.3,
+     1.9,
+     -27.5
     ],
-    "fov": 68,
+    "fov": 81.1,
     "camera": [
      48.85677778,
      2.29669444
-    ]
+    ],
+    "calibration": {
+     "points": 6,
+     "rms": 0.4
+    },
+    "shift": 0.3864
    },
    {
     "url": "https://commons.wikimedia.org/wiki/File:Eiffel_Tower_from_the_northwest,_20_January_2013.jpg",
     "view": "north-west, from the Seine bank below the Pont d'Iéna (Yann Caradec, 2013, CC BY-SA 2.0)",
-    "azimuth": 319,
-    "elevation": -26.7,
+    "azimuth": 335.6,
+    "elevation": -19.3,
     "distance": 343,
     "target": [
-     0,
-     150,
-     0
+     -82.8,
+     111,
+     23.5
     ],
-    "fov": 56,
+    "fov": 51.5,
     "camera": [
      48.860347,
      2.291755
-    ]
+    ],
+    "calibration": {
+     "points": 6,
+     "rms": 1.4
+    }
    },
    {
     "url": "https://commons.wikimedia.org/wiki/File:Tour_Eiffel_et_Seine_durant_la_crue_de_2018.jpg",
     "view": "west, from the Seine downstream during the 2018 flood (Ibex73, CC BY-SA 4.0)",
-    "azimuth": 268,
-    "elevation": -19.8,
+    "azimuth": 261.1,
+    "elevation": -8.9,
     "distance": 453,
     "target": [
-     0,
-     150,
-     0
+     13.1,
+     67.2,
+     -53.8
     ],
-    "fov": 42,
+    "fov": 65,
     "camera": [
      48.858161,
      2.288703
-    ]
+    ],
+    "calibration": {
+     "points": 6,
+     "rms": 0.7
+    }
    },
    {
     "url": "https://commons.wikimedia.org/wiki/File:Tour_Eiffel,_Oct_2022,_Paris,_France.jpg",
     "view": "north, telephoto on the legs, the arches and the first floor from across the Seine (dconvertini, 2022, CC BY-SA 2.0)",
-    "azimuth": 1,
-    "elevation": -7.6,
+    "azimuth": 359.8,
+    "elevation": -12.4,
     "distance": 506,
     "target": [
-     0,
-     75,
-     0
+     10.8,
+     116.9,
+     -7.3
     ],
-    "fov": 22,
+    "fov": 24.5,
     "camera": [
      48.862809,
      2.294597
-    ]
+    ],
+    "calibration": {
+     "points": 4,
+     "rms": 2
+    }
    }
   ],
   "features": [

@@ -266,6 +266,14 @@ async function evidence(d, text, file, id, at, strict) {
   check(photos.length >= photoMinimum, `${at} evidence.references needs at least ${photoMinimum} reference photos`);
   for (const [i, r] of photos.entries()) check(url(r?.url) && typeof r.view === 'string' && [r.azimuth, r.elevation, r.distance].every(Number.isFinite), `${at} reference ${i} needs "url", "view", "azimuth", "elevation" and "distance"`);
   for (const [i, r] of photos.entries()) check(r?.phase === undefined || d.phases.some(p => p.id === r.phase), `${at} reference ${i}: "phase" names unknown phase "${r?.phase}"`);
+  // Publication: every viewpoint is fitted on the photo (calibrate.mjs), and a gap above 3% of the photo's
+  // height is named in evidence.uncertainties.
+  if (strict) for (const [i, r] of photos.entries()) {
+    const fit = r?.calibration, side = String(r?.view ?? '').split(/[,(]/)[0].trim().toLowerCase();
+    check(fit && fit.points >= 3 && Number.isFinite(fit.rms), `${at} reference ${i}: fit its viewpoint on the photo with scripts/calibrate.mjs --write (publication needs every reference fitted)`);
+    if (fit?.rms > 5) check(false, `${at} reference ${i}: the model is ${fit.rms}% of the photo's height off once the viewpoint is fitted (5% at most): fix the model or the points`);
+    else if (fit?.rms > 3) check((ev.uncertainties ?? []).some(u => side && u.toLowerCase().includes(side)), `${at} reference ${i}: ${fit.rms}% off once fitted; say in evidence.uncertainties what still differs seen from the ${side || 'photo'}`);
+  }
   const sides = new Set(photos.filter(r => Number.isFinite(r?.azimuth)).map(r => Math.floor((((r.azimuth % 360) + 360) % 360) / 90)));
   check(sides.size >= sideMinimum, `${at} the reference photos must be taken from at least ${sideMinimum} sides (azimuths in different quadrants)`);
   // Every reference photo exists, and its viewpoint is where Commons says it was taken.

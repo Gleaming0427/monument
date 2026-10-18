@@ -144,6 +144,7 @@ export const SHAPES = {
   cone: () => new T.CylinderGeometry(0, .5, 1, 16),
   torus: () => { const g = new T.TorusGeometry(.375, .125, 6, 18); g.rotateX(Math.PI / 2); g.scale(1, 4, 1); return g; },
   ball: () => new T.SphereGeometry(.5, 10, 6),
+  bell: () => { const g = new T.LatheGeometry([[0, .5], [.17, .49], [.26, .4], [.3, .1], [.36, -.25], [.5, -.46], [.49, -.5], [0, -.5]].map(([x, y]) => new T.Vector2(x, y)), 20); return g; },
   octagon: () => flat(new T.CylinderGeometry(.5, .5, 1, 8).rotateY(Math.PI / 8)),
   spike: () => flat(new T.CylinderGeometry(0, .5, 1, 8).rotateY(Math.PI / 8)),
 };
@@ -568,8 +569,12 @@ export const generators = {
     const up = new T.Vector3(0, 1, 0);
     const pos = (a, r, y) => new T.Vector3(cx + Math.sin(a) * r, y, cz + Math.cos(a) * r);
     const box = (a, r, y, size, hex, ph) => { const p = pos(a, r, y); k.box('stone', [p.x, p.y, p.z], size, a, k.tint(hex, .035), ph, p.y); };
-    // A ring of tangent blocks: a cylindrical wall, band or cornice.
-    const ring = (r, y, h, t, hex, ph, step = .85) => { const n = Math.max(24, Math.round(2 * Math.PI * r / step)); for (let i = 0; i < n; i++) box((i + .5) / n * 2 * Math.PI, r, y + h / 2, [2 * Math.PI * r / n * 1.05, h, t], hex, ph); };
+    // A ring of tangent blocks: a cylindrical wall, band or cornice. A wall is laid in courses (`course`
+    // metres high, 0.62 by default) with the joints staggered from one course to the next, as the marble is.
+    const ring = (r, y, h, t, hex, ph, step = .85) => {
+      const course = e.course ?? .62, rows = h > course * 1.6 ? Math.round(h / course) : 1, rh = h / rows, n = Math.max(24, Math.round(2 * Math.PI * r / (rows > 1 ? Math.max(step, 1.35) : step)));
+      for (let j = 0; j < rows; j++) for (let i = 0; i < n; i++) box((i + .5 + (j % 2) * .5) / n * 2 * Math.PI, r, y + rh * (j + .5), [2 * Math.PI * r / n * 1.035, rh * (rows > 1 ? .988 : 1), t], hex, ph);
+    };
     // A round arch between two columns, laid voussoir by voussoir in the tangent plane.
     const arch = (a0, a1, r, spring, depth, hex, ph) => {
       const am = (a0 + a1) / 2, ra = r * Math.sin((a1 - a0) / 2), mid = pos(am, r * Math.cos((a1 - a0) / 2), spring), tan = new T.Vector3(Math.cos(am), 0, -Math.sin(am)), rad = new T.Vector3(Math.sin(am), 0, Math.cos(am));
@@ -582,7 +587,16 @@ export const generators = {
     };
     // Round columns: monolithic marble shafts with attic bases and leafy capitals (`order`, corinthian by default).
     const column = (a, r, y, h, d, hex, ph) => { const p = pos(a, r, y); k.column('stone', [p.x, y, p.z], {height: h, diameter: d, order: e.order ?? 'corinthian', drum: 0, taper: .1, out: [Math.sin(a), Math.cos(a)]}, hex, ph); };
+    // A lozenge set flat in the wall: a white frame round an inlay of darker marble and a small boss.
+    const lozenge = (a, r, yc, side, ph) => {
+      const tan = new T.Vector3(Math.cos(a), 0, -Math.sin(a)), rad = new T.Vector3(Math.sin(a), 0, Math.cos(a));
+      const x = tan.clone().add(up).normalize(), z = new T.Vector3().crossVectors(x, rad).normalize();
+      for (const [f, out, hex] of [[1, 0, color], [.74, .05, e.inlay ?? '#a39d90'], [.5, .08, e.inlayDark ?? '#7d8580'], [.2, .12, color]]) k.oriented('stone', pos(a, r + out, yc), x, rad, z, [side * f, .12, side * f], k.tint(hex, .03), ph, yc);
+    };
     let y = y0;
+    // The plinth's steps round the foot (`base`: [[outwards, height], …] from the wall out).
+    let inner = R + .8;
+    for (const [out, h] of e.base ?? []) { const outer = R + out; ring((inner + outer) / 2, y0 - .02, h, outer - inner, shade, P(e.phase), .9); inner = outer; }
     for (const s of e.storeys) {
       const ph = P(s.phase ?? e.phase), h = s.height;
       if (s.kind === 'blind') {
@@ -593,6 +607,15 @@ export const generators = {
           const a = i / n * 2 * Math.PI;
           column(a, R + .12, y + .7, spring - y - .7, .55, color, ph);
           arch(a, (i + 1) / n * 2 * Math.PI, R + .08, spring, .4, color, ph);
+          // In each blind arch, a lozenge under its crown (`lozenges`: false to leave them out).
+          if (s.lozenges !== false) lozenge((i + .5) / n * 2 * Math.PI, R + .02, spring + .2, Math.min(1.5, (R + .08) * Math.sin(Math.PI / n) * .85), ph);
+        }
+        // The door (`door`: {angle, width, height}; angle in degrees, 0 = south, 90 = east), in the nearest bay.
+        if (s.door) {
+          const a = (Math.round((s.door.angle ?? 0) / 360 * n - .5) + .5) / n * 2 * Math.PI, w = s.door.width ?? 1.6, dh = s.door.height ?? 3.4;
+          box(a, R + .02, y + .7 + dh / 2, [w, dh, .2], s.door.color ?? '#4a3b2f', ph);
+          for (const side of [-1, 1]) { const q = pos(a, R + .1, 0), t2 = new T.Vector3(Math.cos(a), 0, -Math.sin(a)).multiplyScalar(side * (w / 2 + .14)); k.box('stone', [q.x + t2.x, y + .7 + dh / 2, q.z + t2.z], [.26, dh, .3], a, k.tint(color, .03), ph, y); }
+          box(a, R + .12, y + .7 + dh + .2, [w + .6, .4, .32], color, ph);
         }
         ring(R - .45, y + h - .4, .4, 1.3, color, ph);
       } else if (s.kind === 'loggia') {
@@ -607,20 +630,41 @@ export const generators = {
         }
         ring(rc - .02, spring + ra * .62, top - spring - ra * .62, .3, color, ph);
         ring((R + .1 + back) / 2, top, .4, R + .1 - back, color, ph);
+        // The corbels carrying the gallery's cornice, close set under its projecting edge.
+        const corbels = Math.round(2 * Math.PI * R / .7);
+        for (let i = 0; i < corbels; i++) box((i + .5) / corbels * 2 * Math.PI, R - .08, top - .14, [.18, .28, .34], color, ph);
       } else if (s.kind === 'belfry') {
+        // The bell chamber: open arches between piers faced with engaged columns, the bells hanging inside
+        // (`bells`: their count), a dim core behind.
         const rb = s.radius ?? R * .7, n = s.arches, top = y + h - .5, ra = rb * Math.sin(Math.PI / n), spring = top - ra - .45;
-        ring(rb - 1.3, y, h - .5, .5, dark, ph, 1.1);
+        ring(rb - 1.6, y, h - .5, .45, dark, ph, 1.1);
+        ring(rb, y, .5, .9, color, ph);
         for (let i = 0; i < n; i++) {
           const a = i / n * 2 * Math.PI;
-          box(a, rb, y + (spring - y) / 2, [Math.PI * rb / n, spring - y, .8], color, ph);
+          box(a, rb, y + (spring - y) / 2, [2 * Math.PI * rb / n * .32, spring - y, .8], color, ph);
+          column(a, rb + .45, y + .5, spring - y - .5, .32, color, ph);
           box(a, rb, spring + ra * .3, [ra * .9, ra * .6, .7], color, ph);
           arch(a, (i + 1) / n * 2 * Math.PI, rb, spring, .7, color, ph);
+        }
+        for (let i = 0; i < (s.bells ?? 0); i++) {
+          const a = (Math.floor(i * n / s.bells) + .5) / n * 2 * Math.PI, d = 1.5 - .7 * (i % 3) / 2, q = pos(a, rb - .75, spring - d * .6);
+          k.turned('bell', 'metal', [q.x, q.y, q.z], [d, d * 1.05], a, k.tint(e.bronze ?? '#7c6a43', .06), ph, spring);
+          k.box('wood', [q.x, spring - .05, q.z], [.25, .25, 1.4], a, k.tint('#5a4632', .05), ph, spring);
         }
         ring(rb, spring + ra * .62, top - spring - ra * .62, .7, color, ph);
         ring(rb + .2, top, .5, 1.1, color, ph);
         ring(rb - .2, top + .5, .6, .35, color, ph);
       }
       y += h;
+    }
+    // Iron railings round the terraces (`railings`: {phase, rings: [[radius, height], …], color}).
+    for (const [r, yr] of e.railings?.rings ?? []) {
+      const ph = P(e.railings.phase ?? e.phase), hex = e.railings.color ?? '#3f4144', n = Math.max(12, Math.round(2 * Math.PI * r / 1.1));
+      for (let i = 0; i < n; i++) {
+        const a = i / n * 2 * Math.PI, q = pos(a, r, yr + .55);
+        k.box('metal', [q.x, q.y, q.z], [.05, 1.1, .05], a, k.tint(hex, .03), ph, yr + 100);
+        for (const dy of [.5, 1.08]) { const m = pos(a + Math.PI / n, r, yr + dy); k.box('metal', [m.x, m.y, m.z], [2 * Math.PI * r / n * 1.02, .04, .04], a + Math.PI / n, k.tint(hex, .03), ph, yr + 100); }
+      }
     }
   },
 
@@ -1353,7 +1397,7 @@ export const generators = {
     const gallery = [];
     for (let i = 0; i < (e.gallery?.count ?? 0); i++) gallery.push({kind: 'pointed', s: hw - hw * .8 + (2 * hw * .8) * (i + .5) / e.gallery.count, w: 2 * hw * .8 / e.gallery.count - .5, sill: e.gallery.sill, spring: e.gallery.spring, margin: 0});
     const portal = e.portal ? [{kind: 'pointed', s: hw, w: e.portal.w, sill: 0, spring: e.portal.spring, glass: false}] : [];
-    G.wall([t / 2, -hw], [t / 2, hw], 0, e.eave, t, out, [...portal, ...gallery, {kind: 'circle', s: hw, y: e.rose.y, r: e.rose.r, colors: e.rose.colors, spokes: e.rose.spokes ?? 24}], G.phase);
+    G.wall([t / 2, -hw], [t / 2, hw], 0, e.eave, t, out, [...portal, ...gallery, {kind: 'circle', s: hw, y: e.rose.y, r: e.rose.r, colors: e.rose.colors, spokes: e.rose.spokes ?? 24, photo: e.rose.relief}], G.phase);
     if (e.portal) {
       for (let i = 0; i < 3; i++) G.arch((s, y, off) => [i * .6 + .3, y, s], 0, e.portal.w - i * .5, e.portal.spring, 0, .45, G.phase, {}, 'pointed', 5);
       G.wall([t - .3, -e.portal.w / 2], [t - .3, e.portal.w / 2], 0, e.portal.spring + e.portal.w * .87, .6, out, [{kind: 'rect', w: e.portal.w * .7, sill: 0, spring: e.portal.spring * .7, door: '#4a3b2f', margin: 0}], G.phase);
@@ -1523,6 +1567,24 @@ export function createStage(host) {
     'clear-day': {sun: '#fff0d2', sunI: 3.2, sky: '#c3dcf1', hemiI: 1.58, dir: [-.9, 1.05, .55], rimI: .28},
     'warm-day': {sun: '#ffe0b8', sunI: 3.35, sky: '#c8dced', hemiI: 1.62, dir: [-1.1, .92, .6], rimI: .42},
   };
+  // Studio, on request: the monument alone on a seamless paper backdrop, in soft high-key light, with its
+  // shadow and the darkening where it meets the floor, as a model photographed in a studio. "site", the
+  // default, keeps the sky, the ground and the trees of the environment preset.
+  LIGHTS.studio = {sun: '#fff3e2', sunI: 3.1, sky: '#fbf8f2', hemiI: .95, dir: [-.8, 1.25, .95], rimI: .1};
+  // The linear colour that ACES tone mapping (as three.js applies it, at this exposure) turns into `target`:
+  // the backdrop then shows exactly as paper.
+  const acesInverse = (target, exposure) => {
+    const A = [[.59719, .35458, .04823], [.076, .90834, .01566], [.0284, .13383, .83777]], B = [[1.60475, -.53108, -.07367], [-.10208, 1.10813, -.00605], [-.00327, -.07276, 1.07602]];
+    const mul = (M, v) => M.map(row => row[0] * v[0] + row[1] * v[1] + row[2] * v[2]), fit = v => v.map(x => (x * (x + .0245786) - .000090537) / (x * (.983729 * x + .432951) + .238081));
+    const forward = v => mul(B, fit(mul(A, v.map(x => x * exposure / .6)))).map(x => Math.min(1, Math.max(0, x)));
+    const goal = [target.r, target.g, target.b]; let v = goal.slice();
+    for (let i = 0; i < 200; i++) { const out = forward(v); v = v.map((x, j) => Math.max(0, x + (goal[j] - out[j]) * (1 + x))); }
+    return new T.Color(...v);
+  };
+  const PAPER = new T.Color('#f4f1ea'), studioFloor = new T.Mesh(new T.CircleGeometry(1, 96), new T.ShadowMaterial({color: '#4a3f30', opacity: .26}));
+  studioFloor.rotation.x = -Math.PI / 2; studioFloor.position.y = .01; studioFloor.receiveShadow = true; studioFloor.visible = false; scene.add(studioFloor);
+  let studio = false, presentationAsked = null, paper = PAPER.clone();
+  scene.add(sun.target);
   let light = LIGHTS.golden;
   let visual = resolveVisualStyle({quality: 'basic'}), realisticGroundMaterial = null, environmentGroup = null, environmentTimed = [], baseBloom = .5, ambientBase = 0;
 
@@ -2017,6 +2079,29 @@ export function createStage(host) {
     ground.material = planGroundMaterial; ground.receiveShadow = false;
   }
 
+  // Studio or site presentation (see LIGHTS.studio). The backdrop's colour is set so that, once tone mapped,
+  // it shows as warm paper.
+  function present(mode) {
+    studio = mode === 'studio';
+    const environment = visual.environment, radius = monument.view.radius;
+    sky.visible = !studio; ground.visible = !studio; studioFloor.visible = studio; if (environmentGroup) environmentGroup.visible = !studio;
+    renderer.toneMappingExposure = studio ? 1.02 : visual.qualityName === 'basic' ? 1.05 : visual.qualityName === 'cinematic' ? 1.18 : 1.24;
+    if (studio) paper.copy(acesInverse(PAPER, renderer.toneMappingExposure));
+    scene.background = studio ? paper.clone() : null;
+    light = studio ? LIGHTS.studio : LIGHTS[environment?.light ?? monument.view.light] ?? LIGHTS.golden;
+    sun.color.set(light.sun); hemi.color.set(light.sky); hemi.groundColor.set(studio ? '#d4cbbb' : environment?.groundLight ?? '#3a2a1c');
+    sun.position.set(...light.dir.map(v => v * radius)); sun.target.position.set(0, 0, 0);
+    renderer.shadowMap.type = studio ? T.PCFSoftShadowMap : T.PCFShadowMap; renderer.shadowMap.needsUpdate = true;
+    if (visual.quality.shadows) sun.shadow.mapSize.setScalar(studio ? Math.max(2048, visual.quality.shadows) : visual.quality.shadows);
+    if (sun.shadow.map) { sun.shadow.map.dispose(); sun.shadow.map = null; }
+    sun.castShadow = Boolean(visual.quality.shadows);
+    baseBloom = studio ? 0 : visual.qualityName === 'basic' ? .5 : visual.qualityName === 'cinematic' ? .28 : .18;
+    ambientBase = studio ? .12 : visual.qualityName === 'basic' ? 0 : visual.qualityName === 'cinematic' ? .5 : .44;
+    fogFactor = studio ? .12 : environment?.fog ?? .4;
+    if (studio) scene.fog.color.copy(paper);
+    return studio;
+  }
+
   // `base`: the monument file's URL, against which its photo reliefs are found.
   function load(data, {base = location.href} = {}) {
     clear();
@@ -2130,6 +2215,8 @@ export function createStage(host) {
       const shadow = sun.shadow.camera; shadow.left = shadow.bottom = -radius * 1.45; shadow.right = shadow.top = radius * 1.45; shadow.near = 1; shadow.far = radius * 5; shadow.updateProjectionMatrix(); sun.shadow.bias = -.00015;
     }
     const builtEnvironment = createEnvironment(visual, data.view, data.seed ?? 7, index); environmentGroup = builtEnvironment.group; environmentTimed = builtEnvironment.timed; scene.add(environmentGroup);
+    studioFloor.scale.setScalar(radius * 30);
+    present(presentationAsked ?? data.visualStyle?.presentation ?? 'site');
     home();
     if (data.view.start) {
       const dir = camera.position.clone().sub(controls.target).normalize();
@@ -2204,6 +2291,9 @@ export function createStage(host) {
       return {x: (v.x * .5 + .5) * host.clientWidth, y: (-v.y * .5 + .5) * host.clientHeight, visible: v.z < 1 && Math.abs(v.x) < 1.1 && Math.abs(v.y) < 1.1};
     },
     get duration() { return total; },
+    // "site" (the default: sky, ground and trees) or "studio"; remembered for the next monument loaded.
+    presentation(mode) { presentationAsked = mode; return monument ? present(mode) : mode === 'studio'; },
+    get studio() { return studio; },
     // True once every photo relief has its image (or has given up on it).
     get ready() { return reliefsPending === 0; },
     setTime(t) {
@@ -2214,10 +2304,11 @@ export function createStage(host) {
       uniforms.uNight.value = night;
       uniforms.uSparkle.value = phase?.sparkle ? night : 0;
       sun.intensity = light.sunI * (1 - night * .92); hemi.intensity = light.hemiI * (1 - night * .75); ambient.intensity = ambientBase * (1 - night * .7); rim.intensity = (light.rimI ?? .9) - night * .3;
-      bloom.strength = baseBloom + night * .35;
+      bloom.strength = baseBloom + night * .35; bloom.enabled = !studio || night > 0;
       horizon.value.copy(dayHorizon).lerp(NIGHT, night);
-      scene.fog.color.copy(horizon.value);
-      for (const item of environmentTimed) item.object.visible = t >= item.from && t < item.until;
+      if (studio) { scene.background.copy(paper).lerp(NIGHT, night * .9); scene.fog.color.copy(scene.background); }
+      else scene.fog.color.copy(horizon.value);
+      for (const item of environmentTimed) item.object.visible = !studio && t >= item.from && t < item.until;
       const phaseIndex = Math.min(total - 1, Math.floor(t));
       for (const site of siteGroups) {
         // A worksite shows during its phase only: the finished building stands clear of it.
@@ -2289,6 +2380,13 @@ export function createStage(host) {
     autoRotate(on) { controls.autoRotate = on; },
     render(clock) {
       uniforms.uClock.value = clock;
+      // In the studio the key light turns with the camera: always from the front left, high, as a
+      // photographer would set it, so every view shows the forms modelled by light and shade.
+      if (studio && monument) {
+        const d = camera.position.clone().sub(controls.target), az = Math.atan2(d.x, d.z) - .85, el = .82, R = monument.view.radius * 2.5;
+        sun.target.position.copy(controls.target).setY(0);
+        sun.position.set(controls.target.x + Math.sin(az) * Math.cos(el) * R, Math.sin(el) * R, controls.target.z + Math.cos(az) * Math.cos(el) * R);
+      }
       for (const actor of siteActors) if (actor.parent?.visible) {
         const u = actor.userData;
         if (u.hoist) actor.position.y = u.baseY + Math.sin(clock * .65 + u.offset) * .35;
