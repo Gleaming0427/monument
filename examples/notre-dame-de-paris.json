@@ -58,14 +58,14 @@
    "label": "spire"
   }
  ],
- "modelNote": "Placed on the OpenStreetMap footprint and the published dimensions (127 m long, 48 m wide, vaults at 33 m, roofs at 43 m, towers 69 m, spire 96 m); bays, roses and portals are measured on photos. The portals, the gallery of kings, the west rose and the statues in niches are free photographs from Wikimedia Commons laid on the model with their depth; other carving is simplified, and the first spire's form is interpreted.",
+ "modelNote": "Placed on the OpenStreetMap footprint and the published dimensions (127 m long, 48 m wide, vaults at 33 m, roofs at 43 m, towers 69 m, spire 96 m); bays, roses and portals are measured on photos. The portals, the gallery of kings, the west rose and the statues in niches are free photographs from Wikimedia Commons laid on the model with their depth; other carving is simplified, and the first spire's form is interpreted. Inside, the great organ and the choir screens are free photographs too: they show through the section view.",
  "evidence": {
   "size": "building",
   "identity": "Cathédrale Notre-Dame de Paris, 6 parvis Notre-Dame – place Jean-Paul-II, 75004 Paris, France (OpenStreetMap way 201611261; Mérimée PA00086250)",
   "sources": [
    {
     "url": "https://fr.wikipedia.org/wiki/Cath%C3%A9drale_Notre-Dame_de_Paris",
-    "read": "Dimensions (127 × 48 m, nave 60 m long, central vessel 13 m wide, vaults at 33 m, roofs at 43 m, transept 48 × 14 m, ten nave bays and five choir bays, towers 69 m, spire 96 m, façade 43.5 × 45 m, roses 9.70 m and 13.10 m) and the campaigns: choir 1163–1182 (altar consecrated 19 May 1182), nave 1182–1225, façade from 1208 with the rose level 1220–1225, towers 1240 and 1250, chapels from 1235, transept by Jehan de Chelles and Pierre de Montreuil, chevet buttresses by Jean Ravy 1318–1344, end in 1345; 21 of the 28 kings' heads found in 1977; the fire of 15 April 2019; reopening on 7 December 2024."
+    "read": "Dimensions (127 × 48 m, nave 60 m long, central vessel 13 m wide, vaults at 33 m, roofs at 43 m, transept 48 × 14 m, ten nave bays and five choir bays, towers 69 m, spire 96 m, façade 43.5 × 45 m, roses 9.70 m and 13.10 m) and the campaigns: choir 1163–1182 (altar consecrated 19 May 1182), nave 1182–1225, façade from 1208 with the rose level 1220–1225, towers 1240 and 1250, chapels from 1235, transept by Jehan de Chelles and Pierre de Montreuil, chevet buttresses by Jean Ravy 1318–1344, end in 1345; 21 of the 28 kings' heads found in 1977; the fire of 15 April 2019; reopening on 7 December 2024. Inside: a three-level elevation (great arcades on large columns, tribunes 8 m high under their vaults, high windows), double aisles continued as a double ambulatory, sexpartite vaults in the nave; the high altar consecrated on 19 May 1182 by the legate Henri de Château-Marçay and Maurice de Sully, the choir finished in 1177."
    },
    {
     "url": "https://pop.culture.gouv.fr/notice/merimee/PA00086250",
@@ -82,6 +82,22 @@
    {
     "url": "https://en.wikipedia.org/wiki/Spire_of_Notre-Dame_de_Paris",
     "read": "The first spire, built 1220–1230, rose 78 m above the floor and was taken down 1786–1792; Viollet-le-Duc's spire is 96 m high, 18 m more, with about 250 t of lead; sixteen statues (twelve apostles and four evangelist symbols) in four groups, one per roof, facing the cardinal directions, removed four days before the fire; the spire fell at about 7:45 pm on 15 April 2019; the cock was set on the new spire on 16 December 2023."
+   },
+   {
+    "url": "https://arxiv.org/abs/2005.12584",
+    "read": "Vannucci, Structural study of the Notre-Dame ancient charpente (2020): the frame was 115.6 m long, 13 m wide and 9.75 m high over nave and choir; choir frame after 1220 (about 1225–1230), nave frame about 1230–1240, transept, spire and the frames next to it rebuilt by Lassus and Viollet-le-Duc after 1843 on the system of trusses, purlins and rafters; 'chevrons formant fermes': principal trusses (tie beam, king post, collars, struts) with four secondary trusses between them, 4.1 m and 82 cm apart in the choir, 3.5 m and 75 cm in the nave; longitudinal ties and braces join the king posts; roof pitch about 55°; some timbers reused from the first roof of about 1160–1170, whose form is not known."
+   },
+   {
+    "url": "https://www.rebatirnotredamedeparis.fr/en/restoration/reconstruction-of-the-frameworks-and-spire",
+    "read": "Rebâtir Notre-Dame: the oak frames and lead roofs of nave, choir and transept burnt on 15 April 2019 and are reconstituted identical to the originals; the nave and choir frames dated from the early 13th century, the spire and transept frames from 1859–1864 by Viollet-le-Duc; logs squared and shaped with adze or axe as in the 13th century; the medieval 'trussed rafter' system alternates complex main trusses with simpler rafters, each truss different; the trusses are covered with sand-cast lead sheets and a lead ridge crest."
+   },
+   {
+    "url": "https://fr.wikipedia.org/wiki/Grand_orgue_de_Notre-Dame_de_Paris",
+    "read": "Grand orgue de Notre-Dame de Paris: under the west rose; built in its present case by François Thierry in 1733, rebuilt by François-Henri Clicquot in 1783 and by Aristide Cavaillé-Coll in 1868 (86 stops); 115 stops and 7,952 pipes since 2014; not seriously damaged by the 2019 fire but made unusable by soot and dust, it was taken down except its case, bellows and some 10 m pipes, cleaned, reinstalled under the west rose and played at the reopening on 7 December 2024."
+   },
+   {
+    "url": "https://pop.culture.gouv.fr/notice/palissy/PM75000695",
+    "read": "Palissy PM75000695, clôture de chœur: painted and gilded stone, 13th century to mid-14th; begun by Jean Ravy and finished by his nephew Jean le Bouteiller; height 220 cm on the south side, 145 cm on the north; north panels from the Visitation to the Mount of Olives, south panels the appearances of Christ after the Resurrection; scraped, repainted and partly completed by Viollet-le-Duc; listed 20 February 1905."
    }
   ],
   "plan": {
@@ -205,6 +221,22 @@
    {
     "text": "Viollet-le-Duc's sacristy south of the choir, in the cathedral's style.",
     "source": "https://eduscol.education.gouv.fr/sites/default/files/document/notre-dame-de-paris-histoire-des-arts-2019-100842.pdf"
+   },
+   {
+    "text": "The 'forest': the oak roof frame of chevrons formant fermes, a principal truss every 3.5–4.1 m and four rafter trusses between, burnt in 2019 and rebuilt identically.",
+    "source": "https://arxiv.org/abs/2005.12584"
+   },
+   {
+    "text": "The great organ under the west rose, on its tribune: case of 1733 by François Thierry, rebuilt by Clicquot (1783) and Cavaillé-Coll (1868), 7,952 pipes.",
+    "source": "https://fr.wikipedia.org/wiki/Grand_orgue_de_Notre-Dame_de_Paris"
+   },
+   {
+    "text": "The choir screens of the 14th century, painted and gilded: the life of Christ on the north side, his appearances after the Resurrection on the south side.",
+    "source": "https://pop.culture.gouv.fr/notice/palissy/PM75000695"
+   },
+   {
+    "text": "Inside, a three-level elevation: great arcades on large round columns, tribunes over the inner aisles, high windows under sexpartite vaults; double aisles round the nave and choir.",
+    "source": "https://fr.wikipedia.org/wiki/Cath%C3%A9drale_Notre-Dame_de_Paris"
    }
   ],
   "geometry": "Footprint, orientation (axis at azimuth 115.6°) and the positions of the buttresses, transept fronts and apse are measured on OpenStreetMap way 201611261; heights come from the published dimensions; bay counts, roses, portals and the levels of the west front are read from the reference photos.",
@@ -213,8 +245,10 @@
    "The 12th-century flying buttresses, replaced in the 13th and 14th centuries, and the original transept fronts are not modelled in detail; the transept arms show plain ends until the 1250s fronts.",
    "The west front's carving is shown by photographs of 2014 and 2025, laid on the model: the portals appear as they are today in every phase, so their earlier states and the restorations of the 19th century are not shown (only the gallery of kings is taken down under the Revolution and set back afterwards). Other sculpture (the transept portals, the chimeras, the crockets) is simplified.",
    "The sacristy is drawn as three plain blocks on its OpenStreetMap footprint; its height is estimated. Soufflot's earlier sacristy is not shown.",
-   "Interior vaults, the 2019 collapse of part of the vaults and their rebuilding are not shown from outside.",
-   "Seen from the north-east, the model and the photo still differ by about 5% of the photo's height after fitting the viewpoint; the cause (the photo's recorded position or the towers' plan) is not settled."
+   "The 2019 collapse of part of the vaults and their rebuilding are not shown.",
+   "Seen from the north-east, the model and the photo still differ by about 5% of the photo's height after fitting the viewpoint; the cause (the photo's recorded position or the towers' plan) is not settled.",
+   "Inside, only the great organ (on a tribune drawn plainly), the choir screens (their masonry, height above the floor and place along the choir read on photographs) and the high altar of 1182 (form and place not known) are shown; the choir stalls, Robert de Cotte's altar and the Vœu de Louis XIII are not.",
+   "The interior elevation is drawn from the published vault height and the tribunes' 8 m: the arcade's springing (7.2 m), the tribune openings and the aisle and chapel vaults (6.5–11 m) are read on photographs, not surveyed; the choir's vaults are drawn sexpartite like the nave's, and the crossing and transept as simple quadripartite bays."
   ],
   "comparisons": [
    {
@@ -304,12 +338,52 @@
      "North-east: fitted on five points, the gap stays at 5%: the spire and the north tower land left of the photo's while the gable and the south tower fit, so either the photo's recorded position is far off or the towers' plan near the crossing differs.",
      "East: fitted on six points with the camera moved, within 3.3%; the chevet, its flyers and the apse roof overlay the photo, the towers behind are slightly offset."
     ],
-    "fixed": [],
+    "fixed": [
+     "The towers' bases were open behind above the aisle roofs (pass 3, north-east view: the inside of the north tower showed through): they are closed by their east walls, with the arches through which the aisles run on, and by the towers' sides along the terrace.",
+     "The bay between the towers had no vault and no cover: the nave's vault now runs on to the west front under the lead terrace, its sides opening through tall arches into the towers' bases.",
+     "Seen in section, the choir and nave stood on 22 m columns under a plain barrel that hid the high windows: they now stand on an arcade of round piers with the tribunes' openings above, under sexpartite vaults (rib vaults in the transept and apse) whose wall arches rise over the windows, with rib vaults over the aisles and chapels.",
+     "Arches springing at their sill had jambs of no length; lit as NaN, they blackened section views through the bloom. Such pieces are no longer laid."
+    ],
     "remaining": [
      "Sculpture is reduced to simple figures; tracery is schematic (twin lancets and an oculus per bay, spoked roses).",
      "The chevet's flying buttresses are shorter than the real 15 m spans.",
      "The north-east view keeps a 5% gap after fitting: to be resolved with a better located photo or a measured plan of the towers.",
      "The first spire is interpreted, and the sacristy's height is estimated."
+    ]
+   },
+   {
+    "pass": 4,
+    "captures": [
+     "notre-dame-de-paris.evidence/compare/pass-4/ref-0.jpg",
+     "notre-dame-de-paris.evidence/compare/pass-4/ref-1.jpg",
+     "notre-dame-de-paris.evidence/compare/pass-4/ref-2.jpg",
+     "notre-dame-de-paris.evidence/compare/pass-4/ref-3.jpg"
+    ],
+    "phases": [
+     "notre-dame-de-paris.evidence/compare/pass-4/phase-0.jpg",
+     "notre-dame-de-paris.evidence/compare/pass-4/phase-1.jpg",
+     "notre-dame-de-paris.evidence/compare/pass-4/phase-2.jpg",
+     "notre-dame-de-paris.evidence/compare/pass-4/phase-3.jpg",
+     "notre-dame-de-paris.evidence/compare/pass-4/phase-4.jpg",
+     "notre-dame-de-paris.evidence/compare/pass-4/phase-5.jpg",
+     "notre-dame-de-paris.evidence/compare/pass-4/phase-6.jpg",
+     "notre-dame-de-paris.evidence/compare/pass-4/phase-7.jpg",
+     "notre-dame-de-paris.evidence/compare/pass-4/phase-8.jpg",
+     "notre-dame-de-paris.evidence/compare/pass-4/phase-9.jpg"
+    ],
+    "gaps": [
+     "West front: with the viewpoint fitted on six points (camera moved 12 m from the recorded position), the model stays within 2.4% of the photo's height; its towers are slightly wider at the top than the real ones, whose balustrades sit inside the corner buttresses.",
+     "South-west (Viviani): fitted on five points, within 1.1%; tower, flyers, south rose and spire overlay the photo.",
+     "North-east: fitted on five points, the gap stays at 5%: the spire and the north tower land left of the photo's while the gable and the south tower fit. The north tower's east face, open above the aisle roofs in pass 3, is now closed like the photo's.",
+     "East: fitted on six points with the camera moved, within 3.3%; the chevet, its flyers and the apse roof overlay the photo, the towers behind are slightly offset."
+    ],
+    "fixed": [],
+    "remaining": [
+     "Sculpture is reduced to simple figures; tracery is schematic (twin lancets and an oculus per bay, spoked roses).",
+     "The chevet's flying buttresses are shorter than the real 15 m spans.",
+     "The north-east view keeps a 5% gap after fitting: to be resolved with a better located photo or a measured plan of the towers.",
+     "The first spire is interpreted, and the sacristy's height is estimated.",
+     "Inside, the choir stalls, the later altars and the Vœu de Louis XIII are not shown; the organ's tribune and the screens' masonry are drawn plainly."
     ]
    }
   ]
@@ -370,6 +444,24 @@
       -26.1
      ],
      "source": "https://eduscol.education.gouv.fr/sites/default/files/document/notre-dame-de-paris-histoire-des-arts-2019-100842.pdf"
+    },
+    {
+     "at": 0.86,
+     "tag": "Inside",
+     "title": "The high altar consecrated",
+     "text": "On 19 May 1182 the papal legate Henri de Château-Marçay and Maurice de Sully consecrate the high altar; the choir was finished in 1177 and mass was said there from 1180.",
+     "anchor": [
+      39,
+      2,
+      -5.1
+     ],
+     "distance": 36,
+     "look": [
+      205.6,
+      12
+     ],
+     "inside": true,
+     "source": "https://fr.wikipedia.org/wiki/Cath%C3%A9drale_Notre-Dame_de_Paris"
     }
    ]
   },
@@ -526,6 +618,51 @@
       5.9
      ],
      "source": "https://eduscol.education.gouv.fr/sites/default/files/document/notre-dame-de-paris-histoire-des-arts-2019-100842.pdf"
+    },
+    {
+     "at": 0.86,
+     "tag": "Inside",
+     "title": "The choir screen",
+     "text": "Jean Ravy begins the stone screen round the canons' choir, carved and painted with the life of Christ; his nephew Jean le Bouteiller finishes it in 1351.",
+     "anchor": [
+      15.2,
+      3.5,
+      -18.6
+     ],
+     "distance": 24,
+     "look": [
+      25.6,
+      8
+     ],
+     "inside": true,
+     "source": "https://pop.culture.gouv.fr/notice/palissy/PM75000695"
+    }
+   ]
+  },
+  {
+   "id": "orgue",
+   "when": "1733",
+   "title": "The great organ",
+   "text": "François Thierry builds the great organ in 1733, in the case that still stands under the west rose, on its tribune at the end of the nave. François-Henri Clicquot rebuilds it in 1783 and Aristide Cavaillé-Coll in 1868; today it has 7,952 pipes.",
+   "source": "https://fr.wikipedia.org/wiki/Grand_orgue_de_Notre-Dame_de_Paris",
+   "moments": [
+    {
+     "at": 0.25,
+     "tag": "Inside",
+     "title": "Under the west rose",
+     "text": "Seen from the nave, the case stands before the rose. The 2019 fire spared it: cleaned pipe by pipe, the organ was played again at the reopening on 7 December 2024.",
+     "anchor": [
+      -59.3,
+      21,
+      -7.6
+     ],
+     "distance": 46,
+     "look": [
+      115.6,
+      6
+     ],
+     "inside": true,
+     "source": "https://fr.wikipedia.org/wiki/Grand_orgue_de_Notre-Dame_de_Paris"
     }
    ]
   },
@@ -709,14 +846,31 @@
      "sill": 25,
      "spring": 30.1,
      "margin": 1.2
+    },
+    "vault": {
+     "spring": 25,
+     "crown": 33,
+     "sexpartite": true
+    },
+    "arcade": {
+     "spring": 7.2
+    },
+    "tribune": {
+     "width": 3.6,
+     "sill": 12.8,
+     "spring": 17
     }
    },
    "roof": {
     "until": "incendie",
-    "rebuild": "renaissance"
+    "rebuild": "renaissance",
+    "extend": [
+     7,
+     0
+    ]
    },
    "phase": "choeur",
-   "from": 10.6,
+   "from": 9.85,
    "to": 43.5,
    "bays": 6,
    "aisles": {
@@ -727,6 +881,10 @@
      "width": 3,
      "sill": 3.5,
      "spring": 7
+    },
+    "vault": {
+     "spring": 6.5,
+     "crown": 10
     }
    },
    "chapels": {
@@ -741,6 +899,10 @@
     "gables": {
      "width": 4,
      "height": 3.6
+    },
+    "vault": {
+     "spring": 7,
+     "crown": 11
     }
    },
    "buttresses": {
@@ -779,6 +941,18 @@
      "sill": 25,
      "spring": 30.1,
      "margin": 1.2
+    },
+    "vault": {
+     "spring": 25,
+     "crown": 33
+    },
+    "arcade": {
+     "spring": 7.2
+    },
+    "tribune": {
+     "width": 3.6,
+     "sill": 12.8,
+     "spring": 17
     }
    },
    "roof": {
@@ -799,6 +973,10 @@
      "width": 3,
      "sill": 3.5,
      "spring": 7
+    },
+    "vault": {
+     "spring": 6.5,
+     "crown": 10
     }
    },
    "chapels": {
@@ -813,6 +991,10 @@
     "gables": {
      "width": 3.6,
      "height": 3.4
+    },
+    "vault": {
+     "spring": 7,
+     "crown": 11
     }
    },
    "buttresses": {
@@ -850,6 +1032,10 @@
      "sill": 25,
      "spring": 30.1,
      "margin": 1.2
+    },
+    "vault": {
+     "spring": 25,
+     "crown": 33
     }
    },
    "roof": {
@@ -858,12 +1044,28 @@
    },
    "phase": "nef",
    "rot": 1.5708,
-   "from": -24.6,
-   "to": 24.6,
+   "from": -26.1,
+   "to": 26.1,
    "bays": 8,
    "ends": {
     "until": "transept"
-   }
+   },
+   "open": [
+    [
+     -6.6,
+     6.6
+    ],
+    [
+     -24.2,
+     -6.6,
+     22.3
+    ],
+    [
+     6.6,
+     24.2,
+     22.3
+    ]
+   ]
   },
   {
    "type": "basilica",
@@ -885,11 +1087,32 @@
      "sill": 25,
      "spring": 30.1,
      "margin": 1.2
+    },
+    "vault": {
+     "spring": 25,
+     "crown": 33,
+     "extend": [
+      14,
+      0
+     ],
+     "sexpartite": true
+    },
+    "arcade": {
+     "spring": 7.2
+    },
+    "tribune": {
+     "width": 3.6,
+     "sill": 12.8,
+     "spring": 17
     }
    },
    "roof": {
     "until": "incendie",
-    "rebuild": "renaissance"
+    "rebuild": "renaissance",
+    "extend": [
+     0,
+     7
+    ]
    },
    "phase": "nef",
    "from": -50.2,
@@ -903,6 +1126,10 @@
      "width": 3,
      "sill": 3.5,
      "spring": 7
+    },
+    "vault": {
+     "spring": 6.5,
+     "crown": 10
     }
    },
    "chapels": {
@@ -917,6 +1144,10 @@
     "gables": {
      "width": 4,
      "height": 3.6
+    },
+    "vault": {
+     "spring": 7,
+     "crown": 11
     }
    },
    "buttresses": {
@@ -934,6 +1165,187 @@
     "drop": 4.5,
     "phase": "tours"
    }
+  },
+  {
+   "type": "roofFrame",
+   "name": "Charpente du chœur (XIIe s.)",
+   "provenance": "interpreted",
+   "note": "The first frames, of the 1160s–1210s, are not known: drawn as Viollet-le-Duc read the early Gothic roofs, without tie beams, the rafters held by collars and braces (Vannucci 2020, fig. 4a). Replaced from 1225.",
+   "system": "sans-entrait",
+   "center": [
+    0,
+    -8.1
+   ],
+   "from": 9.85,
+   "to": 43.5,
+   "main": 4.1,
+   "fermettes": 4,
+   "half": 7.1,
+   "eave": 34.5,
+   "ridge": 43,
+   "phase": "choeur",
+   "until": "tours",
+   "color": "#6a4e34"
+  },
+  {
+   "type": "roofFrame",
+   "name": "Charpente de l'abside (XIIe s.)",
+   "provenance": "interpreted",
+   "note": "The first frames, of the 1160s–1210s, are not known: drawn as Viollet-le-Duc read the early Gothic roofs, without tie beams, the rafters held by collars and braces (Vannucci 2020, fig. 4a). Replaced from 1225.",
+   "system": "sans-entrait",
+   "center": [
+    43.5,
+    -8.1
+   ],
+   "apse": {
+    "sides": 7,
+    "start": -90,
+    "end": 90
+   },
+   "fermettes": 2,
+   "half": 7.1,
+   "eave": 34.5,
+   "ridge": 43,
+   "phase": "choeur",
+   "until": "tours",
+   "color": "#6a4e34"
+  },
+  {
+   "type": "roofFrame",
+   "name": "Charpente de la nef (vers 1200)",
+   "provenance": "interpreted",
+   "note": "The first frames, of the 1160s–1210s, are not known: drawn as Viollet-le-Duc read the early Gothic roofs, without tie beams, the rafters held by collars and braces (Vannucci 2020, fig. 4a). Replaced from 1225.",
+   "system": "sans-entrait",
+   "center": [
+    0,
+    -8.1
+   ],
+   "from": -50.2,
+   "to": -4.15,
+   "main": 3.5,
+   "fermettes": 4,
+   "half": 7.1,
+   "eave": 34.5,
+   "ridge": 43,
+   "phase": "nef",
+   "until": "tours",
+   "color": "#6a4e34"
+  },
+  {
+   "type": "roofFrame",
+   "name": "Charpente du chœur (1225–1230)",
+   "provenance": "documented",
+   "note": "The choir frame of about 1225–1230: 'chevrons formant fermes', a principal truss with tie beam and king post every 4.1 m and four rafter trusses (fermettes) between them, 82 cm apart (Vannucci 2020, survey of Fromont and Trentesaux). Burnt in 2019 and rebuilt identically in green oak hewn with axes.",
+   "system": "chevrons-formant-fermes",
+   "center": [
+    0,
+    -8.1
+   ],
+   "from": 9.85,
+   "to": 43.5,
+   "main": 4.1,
+   "fermettes": 4,
+   "half": 7.1,
+   "eave": 34.5,
+   "ridge": 43,
+   "phase": "tours",
+   "until": "incendie",
+   "rebuild": "renaissance",
+   "color": "#5d432c",
+   "rebuildColor": "#b38b5c"
+  },
+  {
+   "type": "roofFrame",
+   "name": "Charpente de l'abside (1225–1230)",
+   "provenance": "documented",
+   "note": "The choir frame of about 1225–1230: 'chevrons formant fermes', a principal truss with tie beam and king post every 4.1 m and four rafter trusses (fermettes) between them, 82 cm apart (Vannucci 2020, survey of Fromont and Trentesaux). Burnt in 2019 and rebuilt identically in green oak hewn with axes.",
+   "system": "chevrons-formant-fermes",
+   "center": [
+    43.5,
+    -8.1
+   ],
+   "apse": {
+    "sides": 7,
+    "start": -90,
+    "end": 90
+   },
+   "fermettes": 2,
+   "half": 7.1,
+   "eave": 34.5,
+   "ridge": 43,
+   "phase": "tours",
+   "until": "incendie",
+   "rebuild": "renaissance",
+   "color": "#5d432c",
+   "rebuildColor": "#b38b5c"
+  },
+  {
+   "type": "roofFrame",
+   "name": "Charpente de la nef (1230–1240)",
+   "provenance": "documented",
+   "note": "The nave frame of about 1230–1240: the same system with principal trusses every 3.5 m and four fermettes 75 cm apart (Vannucci 2020). Burnt in 2019 and rebuilt identically in green oak hewn with axes.",
+   "system": "chevrons-formant-fermes",
+   "center": [
+    0,
+    -8.1
+   ],
+   "from": -50.2,
+   "to": -4.15,
+   "main": 3.5,
+   "fermettes": 4,
+   "half": 7.1,
+   "eave": 34.5,
+   "ridge": 43,
+   "phase": "tours",
+   "until": "incendie",
+   "rebuild": "renaissance",
+   "color": "#5d432c",
+   "rebuildColor": "#b38b5c"
+  },
+  {
+   "type": "roofFrame",
+   "name": "Charpente du transept (XIIIe s.)",
+   "provenance": "interpreted",
+   "note": "The 13th-century transept frame, replaced in the 19th century, is not described in the sources used: drawn like the nave's.",
+   "system": "chevrons-formant-fermes",
+   "center": [
+    2.85,
+    -8.1
+   ],
+   "rot": 1.5708,
+   "from": -26.1,
+   "to": 26.1,
+   "main": 3.5,
+   "fermettes": 4,
+   "half": 7.5,
+   "eave": 34.5,
+   "ridge": 43,
+   "phase": "transept",
+   "until": "restauration",
+   "color": "#5d432c"
+  },
+  {
+   "type": "roofFrame",
+   "name": "Charpente du transept (Viollet-le-Duc)",
+   "provenance": "documented",
+   "note": "The transept frame and the first frames by the spire, rebuilt by Lassus and Viollet-le-Duc in 1859–1864 on the 19th-century system of trusses, purlins and rafters (Vannucci 2020; Rebâtir Notre-Dame); the spacing of its trusses is drawn at 4 m, not measured. Burnt in 2019, rebuilt identically.",
+   "system": "fermes-pannes-chevrons",
+   "center": [
+    2.85,
+    -8.1
+   ],
+   "rot": 1.5708,
+   "from": -26.1,
+   "to": 26.1,
+   "main": 4,
+   "half": 7.5,
+   "eave": 34.5,
+   "ridge": 43,
+   "phase": "restauration",
+   "until": "incendie",
+   "rebuild": "renaissance",
+   "color": "#7a5a3c",
+   "rebuildColor": "#b38b5c"
   },
   {
    "type": "twinTowerFront",
@@ -1080,7 +1492,36 @@
     "eave": 34.5,
     "ridge": 43
    },
-   "lead": "#7d868e"
+   "lead": "#7d868e",
+   "terrace": true,
+   "back": {
+    "gap": [
+     -6.85,
+     6.35
+    ],
+    "arches": [
+     {
+      "v": -14.95,
+      "w": 4.4,
+      "spring": 6.5
+     },
+     {
+      "v": -9.55,
+      "w": 4.4,
+      "spring": 6.5
+     },
+     {
+      "v": 9.05,
+      "w": 4.4,
+      "spring": 6.5
+     },
+     {
+      "v": 14.45,
+      "w": 4.4,
+      "spring": 6.5
+     }
+    ]
+   }
   },
   {
    "type": "relief",
@@ -1944,6 +2385,414 @@
     "height": 5,
     "color": "#5d6670"
    }
+  },
+  {
+   "type": "furnishing",
+   "name": "Tribune et buffet d'orgue",
+   "provenance": "interpreted",
+   "note": "The tribune at the west end of the nave and the mass of the organ case behind its photograph: the tribune's two columns, the case's depth and its towers' plan are drawn plainly; the case's width and height are read on the photograph, scaled on the west rose (9.70 m).",
+   "phase": "orgue",
+   "center": [
+    -66.8,
+    -7.85
+   ],
+   "color": "#4a3226",
+   "parts": [
+    {
+     "at": [
+      6.8,
+      0,
+      -6.45
+     ],
+     "size": [
+      1,
+      12.6,
+      1
+     ],
+     "kind": "stone",
+     "shape": "drum",
+     "color": "#d8cba9"
+    },
+    {
+     "at": [
+      6.8,
+      0,
+      6.95
+     ],
+     "size": [
+      1,
+      12.6,
+      1
+     ],
+     "kind": "stone",
+     "shape": "drum",
+     "color": "#d8cba9"
+    },
+    {
+     "at": [
+      4.9,
+      12.6,
+      0.25
+     ],
+     "size": [
+      4.6,
+      0.8,
+      14.6
+     ],
+     "kind": "stone",
+     "color": "#d8cba9"
+    },
+    {
+     "at": [
+      4.8,
+      13.4,
+      0.25
+     ],
+     "size": [
+      3.2,
+      5.7,
+      13.2
+     ],
+     "kind": "wood"
+    },
+    {
+     "at": [
+      5.7,
+      19.1,
+      6.18
+     ],
+     "size": [
+      1.4,
+      10.1,
+      1.5
+     ],
+     "kind": "wood"
+    },
+    {
+     "at": [
+      5.7,
+      19.1,
+      3.12
+     ],
+     "size": [
+      1.4,
+      8.1,
+      1.8
+     ],
+     "kind": "wood"
+    },
+    {
+     "at": [
+      5.7,
+      19.1,
+      0.38
+     ],
+     "size": [
+      1.4,
+      6.6,
+      1.4
+     ],
+     "kind": "wood"
+    },
+    {
+     "at": [
+      5.7,
+      19.1,
+      -2.28
+     ],
+     "size": [
+      1.4,
+      8.1,
+      1.7
+     ],
+     "kind": "wood"
+    },
+    {
+     "at": [
+      5.7,
+      19.1,
+      -5.45
+     ],
+     "size": [
+      1.4,
+      10.1,
+      1.65
+     ],
+     "kind": "wood"
+    }
+   ]
+  },
+  {
+   "type": "relief",
+   "name": "Grand orgue",
+   "provenance": "documented",
+   "note": "The great organ's case of 1733 with its pipes, before the west rose, photographed from the nave in December 2024 after its restoration; laid on the case at its width and height.",
+   "phase": "orgue",
+   "center": [
+    -66.8,
+    -7.85
+   ],
+   "at": [
+    6.5,
+    21.4,
+    0.25
+   ],
+   "size": [
+    13.2,
+    15.8
+   ],
+   "facing": [
+    1,
+    0
+   ],
+   "depth": 0.5,
+   "image": "notre-dame-de-paris.evidence/reliefs/grand-orgue.jpg",
+   "corners": [
+    [
+     195,
+     1140
+    ],
+    [
+     1748,
+     1140
+    ],
+    [
+     1748,
+     3000
+    ],
+    [
+     195,
+     3000
+    ]
+   ],
+   "tone": "#bcb6c0",
+   "credit": {
+    "file": "https://commons.wikimedia.org/wiki/File:Great_organ_of_Notre-Dame_de_Paris_2024_(1).jpg",
+    "author": "Ibex73",
+    "license": "CC BY 4.0"
+   }
+  },
+  {
+   "type": "furnishing",
+   "name": "Clôture du chœur",
+   "provenance": "interpreted",
+   "note": "The masonry of the north and south choir screens, against the choir's piers, behind the photographs of their carving: the base's height (2.5 m to the ledge under the scenes) and the screens' place along the choir are read on photographs, not measured.",
+   "phase": "transept",
+   "center": [
+    0,
+    -8.1
+   ],
+   "color": "#5a4038",
+   "parts": [
+    {
+     "at": [
+      15.2,
+      0,
+      -6.6
+     ],
+     "size": [
+      9.25,
+      4.35,
+      1.1
+     ],
+     "kind": "stone",
+     "order": 100000
+    },
+    {
+     "at": [
+      17.4,
+      0,
+      6.6
+     ],
+     "size": [
+      7.92,
+      4.4,
+      1.1
+     ],
+     "kind": "stone",
+     "order": 100000
+    }
+   ]
+  },
+  {
+   "type": "relief",
+   "name": "Clôture nord",
+   "provenance": "documented",
+   "note": "The west end of the north screen, begun under Jean Ravy: the meal at Bethany, the Entry into Jerusalem, the Last Supper, the Washing of the Feet and the Mount of Olives (its last scene), under their canopy, as Viollet-le-Duc repainted them; 1.45 m from the ledge to the canopy (Palissy) gives the scale.",
+   "phase": "transept",
+   "center": [
+    0,
+    -8.1
+   ],
+   "at": [
+    15.2,
+    3.165,
+    -7.15
+   ],
+   "size": [
+    9.25,
+    3.03
+   ],
+   "facing": [
+    0,
+    -1
+   ],
+   "depth": 0.35,
+   "image": "notre-dame-de-paris.evidence/reliefs/cloture-nord.jpg",
+   "corners": [
+    [
+     55,
+     120
+    ],
+    [
+     2895,
+     120
+    ],
+    [
+     2895,
+     1050
+    ],
+    [
+     55,
+     1050
+    ]
+   ],
+   "tone": "#c8ae80",
+   "credit": {
+    "file": "https://commons.wikimedia.org/wiki/File:Paris_Cathédrale_Notre-Dame_Innen_Südliche_Chorschranke_1.jpg",
+    "author": "Zairon",
+    "license": "CC BY-SA 4.0",
+    "crop": [
+     60,
+     1100,
+     3500,
+     2700
+    ]
+   }
+  },
+  {
+   "type": "relief",
+   "name": "Clôture sud",
+   "provenance": "documented",
+   "note": "The south screen, finished by Jean le Bouteiller in 1351: Christ appearing to Mary Magdalene, to the holy women, to Peter and to the pilgrims of Emmaus, under its openwork crest; 2.20 m from the ledge to the crest (Palissy) gives the scale. The Commons file is titled north, but these scenes are the south screen's.",
+   "phase": "transept",
+   "center": [
+    0,
+    -8.1
+   ],
+   "at": [
+    17.4,
+    3.405,
+    7.15
+   ],
+   "size": [
+    7.92,
+    2.59
+   ],
+   "facing": [
+    0,
+    1
+   ],
+   "depth": 0.35,
+   "image": "notre-dame-de-paris.evidence/reliefs/cloture-sud.jpg",
+   "corners": [
+    [
+     45,
+     45
+    ],
+    [
+     2905,
+     45
+    ],
+    [
+     2915,
+     980
+    ],
+    [
+     45,
+     980
+    ]
+   ],
+   "tone": "#c8ae80",
+   "credit": {
+    "file": "https://commons.wikimedia.org/wiki/File:Paris_Cathédrale_Notre-Dame_Innen_Nördliche_Chorschranke_1.jpg",
+    "author": "Zairon",
+    "license": "CC BY-SA 4.0",
+    "crop": [
+     120,
+     950,
+     4440,
+     2750
+    ]
+   }
+  },
+  {
+   "type": "furnishing",
+   "name": "Maître-autel (1182)",
+   "provenance": "interpreted",
+   "note": "The high altar consecrated on 19 May 1182, at the head of the choir: its form and place are not known and are drawn as a plain stone altar on two steps; it was replaced in 1699 by Robert de Cotte's, and is drawn until the 18th century.",
+   "phase": "choeur",
+   "until": "orgue",
+   "center": [
+    0,
+    -8.1
+   ],
+   "color": "#d8cba9",
+   "parts": [
+    {
+     "at": [
+      39,
+      0,
+      0
+     ],
+     "size": [
+      5,
+      0.2,
+      6
+     ],
+     "order": 100000
+    },
+    {
+     "at": [
+      39,
+      0.2,
+      0
+     ],
+     "size": [
+      4,
+      0.2,
+      4.6
+     ],
+     "order": 100001
+    },
+    {
+     "at": [
+      39,
+      0.4,
+      0
+     ],
+     "size": [
+      1.3,
+      0.9,
+      3
+     ],
+     "order": 100002
+    },
+    {
+     "at": [
+      39,
+      1.3,
+      0
+     ],
+     "size": [
+      1.5,
+      0.15,
+      3.2
+     ],
+     "color": "#e2d8bf",
+     "order": 100003
+    }
+   ]
   }
  ]
 }

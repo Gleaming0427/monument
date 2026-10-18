@@ -1,22 +1,38 @@
 #!/usr/bin/env node
 // Photographs a monument with a local Chrome, for photo comparisons and gallery thumbnails.
 //   node scripts/capture.mjs <id> [--dir monuments] [--t 6] [--cam azimuth,elevation,distance[,x,y,z]]
-//                            [--size 1200,800] [--out <id>.png] [--ui]
-// Without --ui the interface is hidden (?clean). Set CHROME to the browser binary if it is not found.
-import {execFileSync} from 'node:child_process';
+//                            [--size 1200,800] [--out <id>.png] [--ui] [--section]
+// Without --ui the interface is hidden (?clean). --section opens the monument on the camera's side (its
+// vaults, roof frames and furnishings). The picture is taken once the monument is built and its photo
+// reliefs are in. Set CHROME to the browser binary if it is not found.
+import {writeFile} from 'node:fs/promises';
 import {resolve} from 'node:path';
-import {findChrome, startViewer, GL} from './lib/browser.mjs';
+import {startViewer, openBrowser} from './lib/browser.mjs';
 
 const args = process.argv.slice(2), flag = (name, fallback) => { const i = args.indexOf(`--${name}`); return i >= 0 ? args[i + 1] : fallback; };
-const id = args.find((arg, i) => !arg.startsWith('--') && !args[i - 1]?.startsWith('--'));
-if (!id) { console.error('Usage: node scripts/capture.mjs <id> [--dir monuments] [--t 6] [--cam az,el,dist[,x,y,z]] [--size 1200,800] [--out file.png] [--ui]'); process.exit(1); }
+const valued = ['--dir', '--t', '--cam', '--size', '--out', '--port'];
+const id = args.find((arg, i) => !arg.startsWith('--') && !valued.includes(args[i - 1]));
+if (!id) { console.error('Usage: node scripts/capture.mjs <id> [--dir monuments] [--t 6] [--cam az,el,dist[,x,y,z]] [--size 1200,800] [--out file.png] [--ui] [--section]'); process.exit(1); }
 
-const chrome = findChrome(), viewer = await startViewer(flag('dir', 'monuments'), flag('port', 4190));
+const [width, height] = flag('size', '1200,800').split(',').map(Number);
+const viewer = await startViewer(flag('dir', 'monuments'), Number(flag('port', 4190))), browser = await openBrowser({width, height});
 const query = new URLSearchParams({t: flag('t', '99')});
 if (flag('cam')) query.set('cam', flag('cam'));
+if (args.includes('--section')) query.set('section', '');
 const url = `${viewer.base}?${query}${args.includes('--ui') ? '' : '&clean'}#${id}`;
 const out = resolve(flag('out', `${id}.png`));
 try {
-  execFileSync(chrome, ['--headless=new', ...GL, '--virtual-time-budget=9000', `--window-size=${flag('size', '1200,800')}`, `--screenshot=${out}`, url], {stdio: 'ignore', timeout: 120000});
+  // Once the monument is built and its photo reliefs are in.
+  await browser.open(url);
+  // Without --cam, the film's camera eases from its opening shot to the overall view a little every frame:
+  // wait until it stands still (a software renderer draws few frames a second).
+  if (!flag('cam')) for (let i = 0, last = null; i < 600; i++) {
+    await browser.settle();
+    const eye = await browser.run('monument.eye');
+    if (last && Math.hypot(...eye.map((v, j) => v - last[j])) < 2e-4 * Math.hypot(eye[0] - eye[3], eye[1] - eye[4], eye[2] - eye[5])) break;
+    last = eye;
+  }
+  await browser.settle();
+  await writeFile(out, await browser.shot(out.endsWith('.jpg') ? 'jpeg' : 'png'));
   console.log(`${out}  ←  ${url}`);
-} finally { viewer.stop(); }
+} finally { await browser.close(); viewer.stop(); }

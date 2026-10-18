@@ -265,6 +265,19 @@
      ],
      "source": "https://www.toureiffel.paris/en/faq/spot/how-can-you-walk-eiffel-tower-foot",
      "text": "On 31 March 1889, Gustave Eiffel climbs the 1,665 steps from the esplanade to the top, the day the tower is inaugurated."
+    },
+    {
+     "at": 0.65,
+     "tag": "Technique",
+     "title": "Lifts that climb a curve",
+     "text": "No shaft was allowed under the first floor, so the lifts climb the leaning legs: Otis cars to the second floor on two straight runs, then Edoux's vertical lift to the top, its two cars meeting halfway.",
+     "anchor": [
+      16,
+      60,
+      -16
+     ],
+     "distance": 150,
+     "source": "https://www.gutenberg.org/ebooks/32282"
     }
    ]
   },
@@ -951,7 +964,54 @@
      "#d4202c"
     ]
    },
-   "provenance": "measured"
+   "provenance": "measured",
+   "lifts": [
+    {
+     "leg": [
+      1,
+      1
+     ],
+     "to": 57.6,
+     "phase": "sommet"
+    },
+    {
+     "leg": [
+      -1,
+      -1
+     ],
+     "to": 57.6,
+     "phase": "sommet"
+    },
+    {
+     "leg": [
+      1,
+      -1
+     ],
+     "to": 115.7,
+     "breaks": [
+      57.6
+     ],
+     "phase": "sommet"
+    },
+    {
+     "leg": [
+      -1,
+      1
+     ],
+     "to": 115.7,
+     "breaks": [
+      57.6
+     ],
+     "phase": "sommet"
+    },
+    {
+     "axis": true,
+     "from": 115.7,
+     "to": 276.1,
+     "landing": 195.9,
+     "phase": "sommet"
+    }
+   ]
   }
  ],
  "rotate": 45,
@@ -998,6 +1058,10 @@
    {
     "url": "https://data.geopf.fr/wfs/ows?SERVICE=WFS&VERSION=2.0.0&REQUEST=GetFeature&TYPENAMES=BDTOPO_V3:batiment&BBOX=48.8570,2.2925,48.8595,2.2965,urn:ogc:def:crs:EPSG::4326&outputFormat=application/json",
     "read": "IGN BD TOPO building parts of the tower (nature 'Tour, donjon'): a 41.9 m part whose outer ring reaches 86.8 m from the centre at the leg tips and 37.6 m between the legs, a 62 m first-floor part, a 116.4 m second-floor part and a 286.4 m top part; the outer ring matches OpenStreetMap way 5013364."
+   },
+   {
+    "url": "https://www.gutenberg.org/ebooks/32282",
+    "read": "Robert M. Vogel, Elevator Systems of the Eiffel Tower, 1889 (Smithsonian, 1961): no vertical shaft under the first platform, so the lifts ran up the inclined legs; Roux, Combaluzier and Lepape hydraulic lifts in the east and west legs to the first platform on straight runs; Otis lifts in the north and south legs to the second platform, on two straight lengths of run; Léon Edoux's direct-plunger lift from the second platform to the top, 525 ft in two halves of 262 ft with two balanced cars meeting at an intermediate platform, a central guide on the tower's centre line; the Roux lifts replaced by Fives-Lille in 1900, the south Otis lift by a stairway in 1900."
    }
   ],
   "plan": {
@@ -1023,16 +1087,16 @@
      1.9,
      -27.5
     ],
-    "fov": 81.1,
+    "fov": 80.1,
     "camera": [
      48.85677778,
      2.29669444
     ],
     "calibration": {
-     "points": 6,
-     "rms": 0.4
+     "points": 11,
+     "rms": 1.1
     },
-    "shift": 0.3864
+    "shift": 0.4024
    },
    {
     "url": "https://commons.wikimedia.org/wiki/File:Eiffel_Tower_from_the_northwest,_20_January_2013.jpg",
@@ -1079,22 +1143,22 @@
    {
     "url": "https://commons.wikimedia.org/wiki/File:Tour_Eiffel,_Oct_2022,_Paris,_France.jpg",
     "view": "north, telephoto on the legs, the arches and the first floor from across the Seine (dconvertini, 2022, CC BY-SA 2.0)",
-    "azimuth": 359.8,
-    "elevation": -12.4,
+    "azimuth": 359.9,
+    "elevation": -12.6,
     "distance": 506,
     "target": [
-     10.8,
-     116.9,
-     -7.3
+     9.8,
+     118.9,
+     -7.7
     ],
-    "fov": 24.5,
+    "fov": 25.8,
     "camera": [
      48.862809,
      2.294597
     ],
     "calibration": {
-     "points": 4,
-     "rms": 2
+     "points": 10,
+     "rms": 1.6
     }
    }
   ],
@@ -1142,6 +1206,10 @@
    {
     "text": "Seen from above, each leg narrows quickly from its 25 m foot and the arches between the legs draw a curved star-shaped footprint.",
     "source": "https://data.geopf.fr/wfs/ows?SERVICE=WFS&VERSION=2.0.0&REQUEST=GetFeature&TYPENAMES=BDTOPO_V3:batiment&BBOX=48.8570,2.2925,48.8595,2.2965,urn:ogc:def:crs:EPSG::4326&outputFormat=application/json"
+   },
+   {
+    "text": "The 1889 lifts: Roux, Combaluzier and Lepape in the east and west legs to the first floor, Otis in the north and south legs to the second, and Edoux's vertical lift on the axis from the second floor to the top, in two halves meeting at a landing.",
+    "source": "https://www.gutenberg.org/ebooks/32282"
    }
   ],
   "geometry": "Base and floor heights and widths from the official figures (124.90 m base, 74.24 m inner gap, floors at 57.63/115.73/276.13 m, 70.69/40.96/18.65 m wide, 300 m); the footprint is measured against OpenStreetMap way 5013364, confirmed by IGN BD TOPO; the leg taper between the foot and the first floor is fitted to that footprint.",
@@ -1253,12 +1321,107 @@
     "fixed": [
      "The pavilions now belong to a sourced 2015 phase (first floor refurbished, reopened 4 September 2015).",
      "Pieces cast shadows only once built: the shadow pass uses the same growth shader as the colour pass, for every monument.",
-     "Captures retaken after both fixes: the phase strip reads foundations, legs with their scaffolds, second floor, top, lighting, then the glazed first floor."
+     "Captures retaken after both fixes: the phase strip reads foundations, legs with their scaffolds, second floor, top, lighting, then the glazed first floor.",
+     "The 1889 lifts were added after this pass, from Vogel (Smithsonian, 1961): Roux-Combaluzier-Lepape cars in the east and west legs to the first floor, Otis cars in the north and south legs to the second floor on two straight runs, and the Edoux vertical lift on the axis to the top with its landing halfway."
     ],
     "remaining": [
      "The lattice is schematic: the real tower has several hundred lattice members per panel; the model keeps the silhouette and the panel rhythm.",
      "The antennas (330 m since 2022), lifts and restaurants of the second floor are left out.",
      "The first-floor pavilions are one glazed block per side; the second-floor girder depth is read from the photos."
+    ]
+   },
+   {
+    "pass": 5,
+    "captures": [
+     "eiffel-tower.evidence/compare/pass-5/ref-0.jpg",
+     "eiffel-tower.evidence/compare/pass-5/ref-1.jpg",
+     "eiffel-tower.evidence/compare/pass-5/ref-2.jpg",
+     "eiffel-tower.evidence/compare/pass-5/ref-3.jpg"
+    ],
+    "phases": [
+     "eiffel-tower.evidence/compare/pass-5/phase-0.jpg",
+     "eiffel-tower.evidence/compare/pass-5/phase-1.jpg",
+     "eiffel-tower.evidence/compare/pass-5/phase-2.jpg",
+     "eiffel-tower.evidence/compare/pass-5/phase-3.jpg",
+     "eiffel-tower.evidence/compare/pass-5/phase-4.jpg",
+     "eiffel-tower.evidence/compare/pass-5/phase-5.jpg"
+    ],
+    "gaps": [
+     "Ref 0 (south-east, Champ-de-Mars), laid over its photo: the floors and the top sat at the right heights, but the model was twice as wide as the tower. The fit was right: refitted on eleven points, including three points along each near leg outer edge, it holds at 1.1% of the photo height. The viewer was wrong. Its lens shift for photos with straightened verticals called setViewOffset on a 1×1 frame, which also set the camera aspect to 1, so the picture was stretched across by the screen aspect. Pass 4 and every in-viewer overlay of this photo were stretched the same way, and so was the Colosseum north view, the only other straightened photo.",
+     "Refs 1 (north-west), 2 (west) and 3 (north telephoto), laid over their photos: the silhouette, the curve of the legs, the floors and the arches lie on the photos.",
+     "The 1889 lifts sit along the middle of the legs and on the axis above the second floor. At the photos distances they read only as a few denser lines behind the lattice, as the lift structures do in the photos.",
+     "The photos end with the antennas above the lantern (330 m since 2022), and show the second-floor restaurant; the model ends with the 1889 lantern and its flag."
+    ],
+    "fixed": [
+     "The lens shift now moves the view without changing the aspect: it is added to the offset that centres the monument in the free area, and kept when the window is resized.",
+     "Ref 0 refitted on eleven points: the corners of the first and second floors, the top platform, and the outer edges of the two near legs. scripts/calibrate.mjs now takes a known edge as a polyline (`line`), for a curved edge seen at a height that cannot be read, here where trees hide the foot of the legs."
+    ]
+   },
+   {
+    "pass": 6,
+    "captures": [
+     "eiffel-tower.evidence/compare/pass-6/ref-0.jpg",
+     "eiffel-tower.evidence/compare/pass-6/ref-1.jpg",
+     "eiffel-tower.evidence/compare/pass-6/ref-2.jpg",
+     "eiffel-tower.evidence/compare/pass-6/ref-3.jpg"
+    ],
+    "overlays": [
+     "eiffel-tower.evidence/compare/pass-6/overlay-0.jpg",
+     "eiffel-tower.evidence/compare/pass-6/overlay-1.jpg",
+     "eiffel-tower.evidence/compare/pass-6/overlay-2.jpg",
+     "eiffel-tower.evidence/compare/pass-6/overlay-3.jpg"
+    ],
+    "phases": [
+     "eiffel-tower.evidence/compare/pass-6/phase-0.jpg",
+     "eiffel-tower.evidence/compare/pass-6/phase-1.jpg",
+     "eiffel-tower.evidence/compare/pass-6/phase-2.jpg",
+     "eiffel-tower.evidence/compare/pass-6/phase-3.jpg",
+     "eiffel-tower.evidence/compare/pass-6/phase-4.jpg",
+     "eiffel-tower.evidence/compare/pass-6/phase-5.jpg"
+    ],
+    "gaps": [
+     "First pass with each photo laid over its capture at half strength (overlay-<n>.jpg).",
+     "Ref 0 (south-east, Champ-de-Mars): with the lens shift fixed, the tower lies on the photo from the legs to the lantern, with no double outline.",
+     "Refs 1 (north-west) and 2 (west): silhouette, legs, floors and arches lie on the photos.",
+     "Ref 3 (north telephoto, a diagonal view on the north leg): the first floor lies on the photo, but above the second floor the model shaft stood wider than the photo, and the legs between the two floors a little wider too. This viewpoint was fitted on four points, all on the first floor."
+    ],
+    "fixed": [
+     "Ref 3 refitted on ten points: the ends of the first and second floors, two points on each corner edge of the shaft above the second floor, and two on the west leg outer edge. Lens 25.8° (was 24.5°), 1.6% of the photo height (was 2% on four points). What remains sits on the second floor and the shaft, slightly wider in the model in this diagonal view, while the face view (ref 0) holds within 1.5%."
+    ]
+   },
+   {
+    "pass": 7,
+    "captures": [
+     "eiffel-tower.evidence/compare/pass-7/ref-0.jpg",
+     "eiffel-tower.evidence/compare/pass-7/ref-1.jpg",
+     "eiffel-tower.evidence/compare/pass-7/ref-2.jpg",
+     "eiffel-tower.evidence/compare/pass-7/ref-3.jpg"
+    ],
+    "overlays": [
+     "eiffel-tower.evidence/compare/pass-7/overlay-0.jpg",
+     "eiffel-tower.evidence/compare/pass-7/overlay-1.jpg",
+     "eiffel-tower.evidence/compare/pass-7/overlay-2.jpg",
+     "eiffel-tower.evidence/compare/pass-7/overlay-3.jpg"
+    ],
+    "phases": [
+     "eiffel-tower.evidence/compare/pass-7/phase-0.jpg",
+     "eiffel-tower.evidence/compare/pass-7/phase-1.jpg",
+     "eiffel-tower.evidence/compare/pass-7/phase-2.jpg",
+     "eiffel-tower.evidence/compare/pass-7/phase-3.jpg",
+     "eiffel-tower.evidence/compare/pass-7/phase-4.jpg",
+     "eiffel-tower.evidence/compare/pass-7/phase-5.jpg"
+    ],
+    "gaps": [
+     "Ref 3 (north telephoto), with its ten-point fit and laid over its photo: the legs, the arches, the first and second floors and the shaft lie on the photo. The shaft above the second floor, and the legs between the two floors, stand a few pixels wider than in the photo on this diagonal view (1.6% of the photo height).",
+     "Refs 0 (south-east), 1 (north-west) and 2 (west) are unchanged since pass 6: the tower lies on all three photos without a double outline.",
+     "The photos end with the antennas above the lantern (330 m since 2022) and show the second-floor restaurant; the model ends with the 1889 lantern and its flag, and its lifts are those of 1889."
+    ],
+    "fixed": [],
+    "remaining": [
+     "The lattice is schematic: the real tower has several hundred members per panel; the model keeps the silhouette and the panel rhythm.",
+     "The antennas (330 m since 2022) and the second-floor restaurant are left out; the lifts are those of 1889.",
+     "The first-floor pavilions are one glazed block per side; the second-floor girder depth is read from the photos.",
+     "In the diagonal north view, the shaft above the second floor stands slightly wider than in the photo (1.6% of its height), while the face view holds within 1.5%."
     ]
    }
   ],
@@ -1267,7 +1430,8 @@
    "The climbing steam crane and scaffold cage follow the documented construction method, while their exact position within the selected leg is interpretive.",
    "The leg width between the foot and the first floor is fitted to the measured outline (OpenStreetMap and IGN BD TOPO agree); no published section of the piers was found.",
    "The first-floor pavilions are drawn as one glazed block between the legs on every side; their exact plans are not in the sources used. The second-floor girder depth is read from the photos.",
-   "The antennas above the lantern (330 m since 2022), the lifts and the second-floor restaurant are left out."
+   "The antennas above the lantern (330 m since 2022) and the second-floor restaurant are left out. The lifts are those of 1889, drawn as rails along each leg's middle and on the axis with their cars; where the Otis runs bend is not documented (the first floor is assumed), and their replacements of 1900, 1965 and 1983, along the same legs, are not drawn separately.",
+   "In the diagonal north view, the shaft above the second floor stands slightly wider than in the photo (1.6% of the photo height), while the face view from the Champ-de-Mars holds within 1.5%: the corners of the upper shaft may stand a little further in than the profile used."
   ]
  },
  "modelNote": "Measured from the official dimensions and the OpenStreetMap and IGN footprints (edge gap 2.5 m at the 90th percentile); the lattice is simplified to its four legs, arches and three floors, the pavilions and the lighting are schematic."

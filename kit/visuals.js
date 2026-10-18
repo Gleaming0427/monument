@@ -191,7 +191,17 @@ function makeProp(type, seed, qualityName) {
 
 function random(seed) { return () => { seed |= 0; seed = seed + 0x6D2B79F5 | 0; let t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
 
-export function createEnvironment(style, view, seed, phaseIndex) {
+// A tree that would stand in a reference photo's view between its camera and the building (sights: the
+// cameras and targets on the ground, with the photo's vertical field of view in radians). The width of the
+// view allows a 16:10 screen, plus a crown's reach.
+const hides = ([x, z], sights) => sights.some(({camera: [cx, cz], target: [tx, tz], fov}) => {
+  const fx = tx - cx, fz = tz - cz, reach = Math.hypot(fx, fz), qx = x - cx, qz = z - cz;
+  if (reach < 1) return false;
+  const depth = (qx * fx + qz * fz) / reach, side = Math.abs(qx * fz - qz * fx) / reach;
+  return depth > -4 && depth < reach && side < Math.max(0, depth) * Math.tan(fov / 2) * 1.6 + 4;
+});
+
+export function createEnvironment(style, view, seed, phaseIndex, sights = []) {
   const group = new T.Group(), timed = [], rand = random(seed + 6029), environment = style.environment;
   if (!environment) return {group, timed};
   const place = (spec, i) => {
@@ -203,8 +213,11 @@ export function createEnvironment(style, view, seed, phaseIndex) {
   if (style.vegetation && environment.vegetation.length) {
     const count = Math.round(environment.count * style.quality.density), inner = view.radius * environment.exclusion, outer = view.radius * .9;
     for (let i = 0; i < count; i++) {
-      const angle = (i + rand() * .65) / Math.max(1, count) * Math.PI * 2, distance = mix(inner, outer, .25 + rand() * .75);
-      place({type: environment.vegetation[i % environment.vegetation.length], at: [Math.cos(angle) * distance, Math.sin(angle) * distance], scale: .72 + rand() * .42, from: environment.from}, index++);
+      const angle = (i + rand() * .65) / Math.max(1, count) * Math.PI * 2, distance = mix(inner, outer, .25 + rand() * .75), scale = .72 + rand() * .42;
+      // Out of the reference photos' views: moved round the ring by up to half a gap each way, or left out.
+      const turn = [0, .15, -.15, .3, -.3, .45, -.45].map(k => angle + k / Math.max(1, count) * Math.PI * 2).find(a => !hides([Math.cos(a) * distance, Math.sin(a) * distance], sights));
+      if (turn === undefined) { rand(); index++; continue; }
+      place({type: environment.vegetation[i % environment.vegetation.length], at: [Math.cos(turn) * distance, Math.sin(turn) * distance], scale, from: environment.from}, index++);
     }
   }
   for (const type of style.props) {

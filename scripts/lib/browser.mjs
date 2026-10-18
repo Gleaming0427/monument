@@ -55,7 +55,8 @@ export async function openBrowser({width, height}) {
     async open(url) {
       await send('Page.navigate', {url});
       await sleep(300);
-      for (let i = 0; i < 160 && !(await run('Boolean(window.monument?.ready)').catch(() => false)); i++) await sleep(250);
+      // A large monument can take a minute or two to build in a software renderer.
+      for (let i = 0; i < 720 && !(await run('Boolean(window.monument?.ready)').catch(() => false)); i++) await sleep(250);
       await run('document.fonts.ready.then(() => true)');
       await sleep(1200);
       if (!(await run('monument.duration'))) throw new Error(`The monument did not load: ${url}`);

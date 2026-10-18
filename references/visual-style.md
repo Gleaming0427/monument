@@ -19,8 +19,12 @@ Monument ships one small semi-realistic historical art set. It uses tileable alb
 ## Quality
 
 - `basic`: simple colours, reduced vegetation, no shadows. Use only for a rapid geometry draft or a weak GPU.
-- `standard`: albedo, normal and roughness maps, soft 1024 px shadows and restrained props. This is the default build.
-- `cinematic`: adds ambient occlusion, 2048 px shadows and denser vegetation. Use for showcase captures when performance has been checked.
+- `standard`: albedo, normal and roughness maps, soft 1024 px shadows, ambient occlusion and restrained props. This is the default build.
+- `cinematic`: adds the ambient-occlusion map of the materials, 2048 px shadows and denser vegetation. Use for showcase captures when performance has been checked.
+
+## Presentation
+
+`"presentation": "site"` (the default) shows the monument in its setting: the preset's sky, ground, fog, trees and props. `"studio"` shows it alone on a seamless paper backdrop, lit from the front left by a key light that turns with the camera, with its shadow and ambient occlusion on the floor: a clean presentation for a report or a brochure. Viewers switch with the Studio button, `?studio` or `?site`. Either way, the building's own detail is what counts: round columns with their orders, coursed walls, carving from photo reliefs.
 
 ## Presets
 
@@ -34,7 +38,7 @@ The five ready stone surfaces are `limestone-paris`, `limestone-weathered`, `mar
 
 Ready vegetation: `tree-oak`, `tree-cypress`, `tree-olive`. Ready props: `stone-blocks`, `cart-medieval`, `amphora`.
 
-`vegetation: true` scatters the environment preset's small tree set outside `environment.exclusion × view.radius`. `environment.count` is the standard-quality count and `environment.from` can delay every scattered tree until a named phase. Prefer explicit `decor` for a documented site. Each item takes `type`, `at: [x,z]`, optional `y`, `scale`, `rot`, `from` and `until`.
+`vegetation: true` scatters the environment preset's small tree set outside `environment.exclusion × view.radius`. A scattered tree never stands in a reference photo's view between its camera and the building: it moves round its ring, or is left out. `environment.count` is the standard-quality count and `environment.from` can delay every scattered tree until a named phase. Prefer explicit `decor` for a documented site. Each item takes `type`, `at: [x,z]`, optional `y`, `scale`, `rot`, `from` and `until`.
 
 Decor is presentation unless a cited source establishes its placement. Keep it out of `evidence.features`, state interpretive historical staging in `evidence.uncertainties`, and never use generic vegetation to hide an unfinished facade.
 

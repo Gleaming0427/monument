@@ -211,7 +211,7 @@
    "Split of the upper galleries between 1272–1278 and 1319 inferred from the dates in the sources.",
    "The ring scaffold and treadwheel hoist show a period-appropriate masonry workflow; their exact layout and height progression are interpretive.",
    "Cathedral and baptistery not shown.",
-   "Gallery arches simplified (smaller arches under a continuous band); no marble veining, bands or lozenge inlays; no railing or flagpole on the bell chamber; no stepped base.",
+   "No grey bands or veins in the marble, whose joints read stronger than on the real tower, and no flag on top of the bell chamber; in the shaded galleries the back wall can reflect the sky at a grazing angle.",
    "The iron railings round the terraces are drawn as in present-day photos; their date is not in the sources used, so they appear with the 1999–2001 works.",
    "The plinth's two steps round the foot follow the photos; the walkway dug round the base in 1838 (the catino) is not modelled.",
    "The seven bells are drawn as bronze bells of three sizes hung in alternate arches; their real sizes and places are not modelled."
@@ -286,6 +286,72 @@
      "Gallery arches simplified (smaller arches under a continuous band).",
      "No marble veining or bands, no lozenge inlays on the ground floor.",
      "No railing or flagpole on the bell chamber; no stepped base.",
+     "Cathedral, baptistery and lawn of the Piazza not shown."
+    ],
+    "fixed": [
+     "The walls are laid in staggered marble courses; a lozenge of darker marble sits under the crown of each blind arch of the ground floor; the plinth has two steps; the south door has its frame; corbels carry every gallery cornice.",
+     "The bell chamber opens between columned piers onto its seven bells, with iron railings at its foot and its top.",
+     "Every reference viewpoint was fitted on the cornice circles (1.1-1.5% of the photo height)."
+    ]
+   },
+   {
+    "pass": 3,
+    "captures": [
+     "leaning-tower-of-pisa.evidence/compare/pass-3/ref-0.jpg",
+     "leaning-tower-of-pisa.evidence/compare/pass-3/ref-1.jpg",
+     "leaning-tower-of-pisa.evidence/compare/pass-3/ref-2.jpg",
+     "leaning-tower-of-pisa.evidence/compare/pass-3/ref-3.jpg"
+    ],
+    "phases": [
+     "leaning-tower-of-pisa.evidence/compare/pass-3/phase-0.jpg",
+     "leaning-tower-of-pisa.evidence/compare/pass-3/phase-1.jpg",
+     "leaning-tower-of-pisa.evidence/compare/pass-3/phase-2.jpg",
+     "leaning-tower-of-pisa.evidence/compare/pass-3/phase-3.jpg",
+     "leaning-tower-of-pisa.evidence/compare/pass-3/phase-4.jpg",
+     "leaning-tower-of-pisa.evidence/compare/pass-3/phase-5.jpg",
+     "leaning-tower-of-pisa.evidence/compare/pass-3/phase-6.jpg"
+    ],
+    "gaps": [
+     "Ref 0 (north-east, from the foot): a decorative tree of the setting stood on the camera and hid the whole tower; the photo shows the open lawn of the Piazza.",
+     "Ref 3 (south): another tree of the setting stood in front of the ground floor and its door.",
+     "Refs 1 and 3: the gallery openings still read square. Filler blocks over each column and a continuous band hid the haunches and crowns of the arches, where the photos show full semicircles from column to column.",
+     "The lozenges under the blind arches, the two-step plinth, the door frame, the cornice corbels, the bell chamber with its piers and bells, and the railings now read as in refs 1 and 3.",
+     "The photos show the flag on top of the bell chamber, and grey bands and veins in the marble; the model has neither."
+    ],
+    "fixed": [
+     "The setting keeps its decorative trees out of every reference photo view: a tree that would stand between the camera and the building moves round its ring or is left out. This applies to every monument.",
+     "Stepped spandrels follow the back of each gallery arch, so every opening keeps its full semicircle; the band above the arcade starts at the crowns."
+    ]
+   },
+   {
+    "pass": 4,
+    "captures": [
+     "leaning-tower-of-pisa.evidence/compare/pass-4/ref-0.jpg",
+     "leaning-tower-of-pisa.evidence/compare/pass-4/ref-1.jpg",
+     "leaning-tower-of-pisa.evidence/compare/pass-4/ref-2.jpg",
+     "leaning-tower-of-pisa.evidence/compare/pass-4/ref-3.jpg"
+    ],
+    "phases": [
+     "leaning-tower-of-pisa.evidence/compare/pass-4/phase-0.jpg",
+     "leaning-tower-of-pisa.evidence/compare/pass-4/phase-1.jpg",
+     "leaning-tower-of-pisa.evidence/compare/pass-4/phase-2.jpg",
+     "leaning-tower-of-pisa.evidence/compare/pass-4/phase-3.jpg",
+     "leaning-tower-of-pisa.evidence/compare/pass-4/phase-4.jpg",
+     "leaning-tower-of-pisa.evidence/compare/pass-4/phase-5.jpg",
+     "leaning-tower-of-pisa.evidence/compare/pass-4/phase-6.jpg"
+    ],
+    "gaps": [
+     "Ref 0 (north-east, from the foot): the tower is in full view again. The galleries read as rows of full semicircular arches on their columns, as in the photo, and the ground floor shows its engaged columns, blind arches and lozenges.",
+     "Ref 0: the masonry joints read as a dark grid on the ground floor; in the photo the marble is smooth, with faint joints and a few grey bands.",
+     "Ref 1 (west, from the foot): at the north edge, one bay of the shaded back wall in the two lowest galleries reflects the blue sky at a grazing angle; in the photo the galleries are in deep shade.",
+     "Refs 2 (west-south-west) and 3 (south): the silhouette, the lean to the right and the narrower bell chamber agree; only the photos show the flag on the bell chamber. No tree of the setting stands in front of the tower any more.",
+     "The phase strip reads from the first three levels, the century of waiting and the galleries resumed, to the seventh floor, the bell chamber, the tower closed at 5.5° and straightened by 45 cm; the trees of the setting come with the 1999–2001 phase."
+    ],
+    "fixed": [],
+    "remaining": [
+     "No grey bands or veins in the marble; the joints read stronger than on the real marble.",
+     "No flag on top of the bell chamber.",
+     "In the shaded galleries, the back wall can reflect the sky at a grazing angle (one bay seen from the foot on the west side).",
      "Cathedral, baptistery and lawn of the Piazza not shown."
     ]
    }

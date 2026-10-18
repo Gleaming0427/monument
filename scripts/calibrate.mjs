@@ -5,7 +5,9 @@
 // frame before "rotate") and where it appears in the photo (pixels in an image of the given size). The camera
 // A point may also lie anywhere on a known line: {"ellipse": {"center": [x, z], "radii": [a, b], "rot": radians,
 // "y": height, "arc": [from, to] degrees}, "at": [px, py]}, for a curved facade whose bays cannot be told
-// apart (a cornice, the top of a wall); only the side of the line facing the camera counts. The camera
+// apart (a cornice, the top of a wall); only the side of the line facing the camera counts. Or on a known
+// edge, {"line": [[x, y, z], …], "at": [px, py]}: a polyline through the building's points (with --frame, in
+// its own frame), for a curved edge seen at a height that cannot be read (a tower's leg behind trees). The camera
 // stays where the reference puts it (the place Commons records) and its direction and field of view are
 // fitted so the model's points land on the photo's; with --move (six points or more), its position is fitted
 // too, since a phone's recorded position can be tens of metres off. With --write, the reference's azimuth, elevation, target and fov
@@ -45,7 +47,7 @@ const project = ([psi, theta, phi, dx = 0, dy = 0, dz = 0], P) => {
   const q = [P[0] - C2[0], P[1] - C2[1], P[2] - C2[2]], depth = dot(q, f), F = .5 / Math.tan(phi / 2);
   return [F * dot(q, r) / depth, -F * dot(q, u) / depth + (upright ? theta : 0)];
 };
-const seen = points.map(p => Array.isArray(p) ? {P: world(p.slice(0, 3)), at: [(p[3] - W / 2) / H, (p[4] - H / 2) / H]} : {curve: p.ellipse, at: [(p.at[0] - W / 2) / H, (p.at[1] - H / 2) / H]});
+const seen = points.map(p => Array.isArray(p) ? {P: world(p.slice(0, 3)), at: [(p[3] - W / 2) / H, (p[4] - H / 2) / H]} : {curve: p.ellipse ?? {line: p.line.map(world)}, at: [(p.at[0] - W / 2) / H, (p.at[1] - H / 2) / H]});
 // Points along an ellipse (amphitheatre convention: angle 0 at the end of the first axis, turned by rot).
 const along = ({center: [cx, cz], radii: [a, b], rot = 0, y, arc}) => {
   const out = [], co = Math.cos(rot), si = Math.sin(rot);
@@ -56,14 +58,19 @@ const along = ({center: [cx, cz], radii: [a, b], rot = 0, y, arc}) => {
   }
   return out;
 };
-for (const s of seen) if (s.curve) s.samples = along(s.curve);
+// Points along an edge, every 25 cm; an edge has no side, so all of it counts.
+const edge = line => line.slice(1).flatMap((b, i) => {
+  const a = line[i], k = Math.max(1, Math.ceil(Math.hypot(b[0] - a[0], b[1] - a[1], b[2] - a[2]) / .25));
+  return Array.from({length: k + (i === line.length - 2)}, (_, j) => ({P: a.map((v, m) => v + (b[m] - v) * j / k)}));
+});
+for (const s of seen) if (s.curve) s.samples = s.curve.line ? edge(s.curve.line) : along(s.curve);
 // Image distance from a seen point to where the model puts it (the nearest visible point of a line).
 const miss = (p, s) => {
   if (!s.curve) { const [a, b] = project(p, s.P); return (a - s.at[0]) ** 2 + (b - s.at[1]) ** 2; }
   const C2 = [C[0] + (p[3] ?? 0), C[1] + (p[4] ?? 0), C[2] + (p[5] ?? 0)];
   let best = Infinity;
   for (const {P, n} of s.samples) {
-    if (n[0] * (C2[0] - P[0]) + n[2] * (C2[2] - P[2]) <= 0) continue;
+    if (n && n[0] * (C2[0] - P[0]) + n[2] * (C2[2] - P[2]) <= 0) continue;
     const [a, b] = project(p, P); best = Math.min(best, (a - s.at[0]) ** 2 + (b - s.at[1]) ** 2);
   }
   return best === Infinity ? 1 : best;

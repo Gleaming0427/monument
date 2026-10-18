@@ -155,6 +155,7 @@ for (const file of (await Promise.all(targets.map(files))).flat()) {
     check(ENVIRONMENT_PRESETS.has(style.environmentPreset), `${at} visualStyle.environmentPreset is not in the bundled environment library`);
     for (const [surface, material] of Object.entries(style.surfaces ?? {})) check(SURFACE_MATERIALS.has(material), `${at} visualStyle.surfaces.${surface} uses unknown material "${material}"`);
     check(style.vegetation === undefined || typeof style.vegetation === 'boolean', `${at} visualStyle.vegetation must be true or false`);
+    check(style.presentation === undefined || ['site', 'studio'].includes(style.presentation), `${at} visualStyle.presentation must be "site" or "studio"`);
     check((style.props ?? []).every(type => DECOR_TYPES.has(type)), `${at} visualStyle.props contains an unknown prop`);
     if (style.environment?.from) check(phases.has(style.environment.from), `${at} visualStyle.environment.from names unknown phase "${style.environment.from}"`);
     if (style.environment?.count !== undefined) check(Number.isInteger(style.environment.count) && style.environment.count >= 0 && style.environment.count <= 24, `${at} visualStyle.environment.count must be 0–24`);
@@ -202,6 +203,8 @@ for (const file of (await Promise.all(targets.map(files))).flat()) {
       check(m.at >= 0 && m.at <= 1, `${at} moment "${m.title}" must have 0 ≤ at ≤ 1`);
       check(m.anchor?.length === 3 && m.anchor.every(Number.isFinite), `${at} moment "${m.title}" needs an [x, y, z] anchor`);
       check(m.distance === undefined || Number.isFinite(m.distance) && m.distance > 0, `${at} moment "${m.title}": distance must be a positive camera distance`);
+      check(m.look === undefined || Array.isArray(m.look) && m.look.length >= 1 && m.look.length <= 2 && m.look.every(Number.isFinite), `${at} moment "${m.title}": look must be [azimuth, elevation] in degrees`);
+      check(m.inside === undefined || typeof m.inside === 'boolean', `${at} moment "${m.title}": inside must be true or false`);
       check(url(m.source), `${at} moment "${m.title}" needs a source URL`);
     }
   }
@@ -306,7 +309,7 @@ async function evidence(d, text, file, id, at, strict) {
   check(passes.length >= passMinimum, `${at} evidence.comparisons needs at least ${passMinimum} pass${passMinimum > 1 ? 'es' : ''}`);
   for (const c of passes) {
     check(Array.isArray(c.captures) && c.captures.length >= photos.length, `${at} pass ${c.pass}: one capture per reference photo (run compare.mjs again)`);
-    for (const capture of c.captures ?? []) check(await exists(join(dir, capture)), `${at} pass ${c.pass}: capture ${capture} not found`);
+    for (const capture of [...c.captures ?? [], ...c.overlays ?? []]) check(await exists(join(dir, capture)), `${at} pass ${c.pass}: capture ${capture} not found`);
     check(Array.isArray(c.gaps) && c.gaps.length > 0 && c.gaps.every(g => typeof g === 'string' && g.length > 10), `${at} pass ${c.pass}: write in "gaps" what differs between each photo and its capture`);
     // The last pass shows the current timeline: one capture per phase. Earlier passes keep the phases of their day.
     if (strict) check(Array.isArray(c.phases) && c.phases.length >= (c === passes.at(-1) ? d.phases.length : 1), `${at} pass ${c.pass}: publication needs one capture per phase (run compare.mjs without --quick)`);

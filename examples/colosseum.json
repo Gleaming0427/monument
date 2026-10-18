@@ -229,7 +229,9 @@
    "Stone weathering and black crusts are not drawn; the clamp pits are scattered, not placed one by one.",
    "The 1807 buttress is a straight brick slope read on the east photo (from the top of the wall at its end to the ground about 22 m out); the OpenStreetMap outline leaves it out, so it alone makes the control plan's largest edge gap (90% of the edges are within 2 m).",
    "Seen from the south and the west, the tall west end of the standing outer wall and Valadier's stepped arches stand further north-west in the photos than in the model, while the inner ring fits them within 0.7%: the end's exact position and the length of the stepped arches are not settled.",
-   "The north inner ring stands two storeys high behind the outer wall, as the sky seen through the third-storey arcades in the north photo requires; its exact remaining height there is not measured."
+   "The north inner ring stands two storeys high behind the outer wall, as the sky seen through the third-storey arcades in the north photo requires; its exact remaining height there is not measured.",
+   "From the south, the photo does not show the 1807 buttress that the model puts in view: either the east end of the standing wall stands further north, or the south viewpoint (fitted 170 m away where Commons records 99 m) is off.",
+   "The notch in the north attic, the two walled-up bays next to the 1807 buttress and the square windows in the top of the inner ring are not modelled."
   ],
   "plan": {
    "source": "OpenStreetMap relation 1834818 (building parts with heights)",
@@ -371,9 +373,45 @@
      "Ref 3 (west): the inner ring fits the photo within 0.7%; the tall west end of the outer wall and Valadier's stepped arches stand further to the left (north-west) in the photo than in the model.",
      "Colours: the travertine reads close to the photos; the model has no black crusts or weathering streaks."
     ],
-    "fixed": [],
+    "fixed": [
+     "The lens shift for photos with straightened verticals no longer changes the aspect: it had stretched this pass capture of ref 0, the only such photo here, by the screen aspect (found in the Eiffel Tower pass 5).",
+     "The trees of the setting keep out of the reference photo views (found in the Leaning Tower of Pisa pass 3): three of the six move round their ring."
+    ],
     "remaining": [
      "The west end of the standing outer wall and the length of Valadier's stepped arches are not settled (see the uncertainties).",
+     "Capitals, corbels and the clamp pits are simplified; no weathering or black crusts.",
+     "Seating, underground galleries and the arena floor are schematic."
+    ]
+   },
+   {
+    "pass": 5,
+    "captures": [
+     "colosseum.evidence/compare/pass-5/ref-0.jpg",
+     "colosseum.evidence/compare/pass-5/ref-1.jpg",
+     "colosseum.evidence/compare/pass-5/ref-2.jpg",
+     "colosseum.evidence/compare/pass-5/ref-3.jpg"
+    ],
+    "phases": [
+     "colosseum.evidence/compare/pass-5/phase-0.jpg",
+     "colosseum.evidence/compare/pass-5/phase-1.jpg",
+     "colosseum.evidence/compare/pass-5/phase-2.jpg",
+     "colosseum.evidence/compare/pass-5/phase-3.jpg",
+     "colosseum.evidence/compare/pass-5/phase-4.jpg",
+     "colosseum.evidence/compare/pass-5/phase-5.jpg",
+     "colosseum.evidence/compare/pass-5/phase-6.jpg",
+     "colosseum.evidence/compare/pass-5/phase-7.jpg"
+    ],
+    "gaps": [
+     "Ref 0 (north), the only photo with straightened verticals: pass 4 captured it stretched across by the screen aspect (1.6 times), so its note that the bays fell on the photo held for the fit, not for that capture. With the shift fixed, the whole north ellipse lies on the photo, bay for bay. The photo shows a notch in the attic right of centre, where the top courses are gone over a few bays; the model attic and cornice run unbroken.",
+     "Ref 1 (east), laid over its photo: the facade, its storeys and bays lie on the photo. Next to the 1807 buttress, the two nearest bays of the second and third storeys are walled up in the photo and open in the model; the foot of the buttress reaches further out in the model.",
+     "Ref 2 (south): the arcades of the inner ring lie on the photo. On the left, the photo shows the tall west end of the outer wall, under scaffolding, rising above the inner ring, where the model shows nothing; on the right, the model shows the 1807 buttress, which the photo does not.",
+     "Ref 3 (west): the inner ring lies on the photo; the tall west end of the outer wall stands about a sixth of the frame further left (north) in the photo than in the model. The top of the inner ring is a brick wall with large square windows in the photos; in the model it is ragged brick with small holes.",
+     "No tree of the setting stands in a reference view any more; the phase strip still reads from the foundations to the cleaned facade."
+    ],
+    "fixed": [],
+    "remaining": [
+     "The ends of the standing outer wall are not settled: the south and west photos put its west end further north-west than the model does, and the south photo does not show the 1807 buttress that the model puts in view (see the uncertainties).",
+     "The notch in the north attic, the two walled-up bays by the 1807 buttress and the square windows of the inner ring top are not modelled.",
      "Capitals, corbels and the clamp pits are simplified; no weathering or black crusts.",
      "Seating, underground galleries and the arena floor are schematic."
     ]

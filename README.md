@@ -13,7 +13,7 @@
 </p>
 
 <p align="center"><img src=".github/assets/notre-dame-de-paris.gif" width="560" alt="Notre-Dame de Paris rising from its choir in 1163, losing its spire in the Revolution, restored by Viollet-le-Duc, burnt in 2019 and rebuilt."></p>
-<p align="center"><sub><code>examples/notre-dame-de-paris.json</code>: the choir of 1163, the nave, the west front and its towers, the roses and flying buttresses, the spire pulled down in 1792, Viollet-le-Duc's spire of 1859, the fire of 15 April 2019 and the rebuilding.</sub></p>
+<p align="center"><sub><code>examples/notre-dame-de-paris.json</code>: the choir of 1163, the nave, the west front and its towers, the roses and flying buttresses, the great organ of 1733, the spire pulled down in 1792, Viollet-le-Duc's spire of 1859, the fire of 15 April 2019 and the rebuilding; inside, the oak frames, the vaults and the choir screens.</sub></p>
 
 ---
 
@@ -69,8 +69,9 @@ One rule sits at the top of [`SKILL.md`](SKILL.md): **the building is the eviden
 5. **Write the timeline**: dated, sourced phases and construction moments ([references/format.md](references/format.md)).
 6. **Build it from bricks**: generators that turn each element into small solid pieces, square or turned (columns stand on their bases with drums, entasis and the capital of their order), then sourced human-scale worksite tableaux add workers, materials, hoists, scaffolds, dust and sparks to the relevant phases ([references/bricks.md](references/bricks.md)). A new kind of architecture gets a new brick.
 7. **Lay the carving from photographs**: sculpture too fine to build piece by piece (tympana, galleries of statues, roses) is a free photo from Wikimedia Commons, measured, straightened onto the model and given its depth back, a portal's splay included, and credited ([references/bricks.md](references/bricks.md)).
-8. **Compare with the photos**: each reference photo's viewpoint is fitted on lines recognised in it (`calibrate.mjs`), then a standard build uses one focused capture pass; publication adds the complete second pass.
-9. **Report honestly**: what is measured, documented and interpreted, and what still differs.
+8. **Close it and build the inside**: no wall or roof is left open; vaults, the roof frame of its country and century and the interior works that marked its history (an altar, a choir screen, an organ) are built in their phase. The viewer's section view (the **Section** button, or `?section`) cuts the building open on the camera's side, and moments set inside open it on their own.
+9. **Compare with the photos**: each reference photo's viewpoint is fitted on lines recognised in it (`calibrate.mjs`), then a standard build uses one focused capture pass; publication adds the complete second pass.
+10. **Report honestly**: what is measured, documented and interpreted, and what still differs.
 
 ## The collection
 
@@ -130,6 +131,6 @@ site/               the website, deployed to GitHub Pages
 
 Made by [@Gleaming0427](https://x.com/Gleaming0427) with Claude Code.
 
-The format of this skill, of its install and of its website follows [Anatomy](https://skills.wheresryan.sh/anatomy) by Ryan. The carving of Notre-Dame's west front is photographed: the gallery of kings and the west rose by Dietmar Rabich ([1](https://commons.wikimedia.org/wiki/File:Paris,_Notre_Dame_--_2014_--_1458-65.jpg), [2](https://commons.wikimedia.org/wiki/File:Paris,_Notre_Dame_--_2014_--_1446.jpg)) and the portals and statues by The wub ([3](https://commons.wikimedia.org/wiki/File:Notre_Dame_west_facade_2025-09-02_-_01.jpg)), all CC BY-SA 4.0; every relief's credit is in its monument file and in the viewer's evidence mode. Built with [Three.js](https://threejs.org) (MIT) and [Manrope](https://github.com/sharanda/manrope) (SIL Open Font License). Footprints and streets: © [OpenStreetMap](https://www.openstreetmap.org/copyright) contributors (ODbL) and IGN BD TOPO (Licence Ouverte). Each monument links to its own sources.
+The format of this skill, of its install and of its website follows [Anatomy](https://skills.wheresryan.sh/anatomy) by Ryan. The carving of Notre-Dame's west front is photographed: the gallery of kings and the west rose by Dietmar Rabich ([1](https://commons.wikimedia.org/wiki/File:Paris,_Notre_Dame_--_2014_--_1458-65.jpg), [2](https://commons.wikimedia.org/wiki/File:Paris,_Notre_Dame_--_2014_--_1446.jpg)) and the portals and statues by The wub ([3](https://commons.wikimedia.org/wiki/File:Notre_Dame_west_facade_2025-09-02_-_01.jpg)), all CC BY-SA 4.0; inside, the choir screens by Zairon ([4](https://commons.wikimedia.org/wiki/File:Paris_Cath%C3%A9drale_Notre-Dame_Innen_S%C3%BCdliche_Chorschranke_1.jpg), [5](https://commons.wikimedia.org/wiki/File:Paris_Cath%C3%A9drale_Notre-Dame_Innen_N%C3%B6rdliche_Chorschranke_1.jpg), CC BY-SA 4.0) and the great organ by Ibex73 ([6](https://commons.wikimedia.org/wiki/File:Great_organ_of_Notre-Dame_de_Paris_2024_(1).jpg), CC BY 4.0); every relief's credit is in its monument file and in the viewer's evidence mode. Built with [Three.js](https://threejs.org) (MIT) and [Manrope](https://github.com/sharanda/manrope) (SIL Open Font License). Footprints and streets: © [OpenStreetMap](https://www.openstreetmap.org/copyright) contributors (ODbL) and IGN BD TOPO (Licence Ouverte). Each monument links to its own sources.
 
 MIT licence.

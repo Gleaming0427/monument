@@ -16,7 +16,7 @@ try { speed = SPEEDS.includes(Number(localStorage.getItem('monument-speed'))) ? 
 const version = new URL(import.meta.url).search;
 const params = new URLSearchParams(location.search);
 
-let stage = null, data = null, time = 0, playing = false, touched = false, last = performance.now(), shown = '';
+let stage = null, data = null, time = 0, playing = false, touched = false, last = performance.now(), shown = '', sectionChosen = false;
 // Active construction moment: pinned in 3D; playback slows down long enough to read it.
 let moment = null, momentKey = '', momentSince = 0, reading = 0;
 
@@ -56,6 +56,8 @@ async function open(id) {
   if (params.has('site') || params.has('studio')) stage.presentation(params.has('site') ? 'site' : 'studio');
   stage.load(showContext ? data : {...data, context: undefined}, {base: response.url});
   document.body.classList.toggle('studio', stage.studio);
+  // ?section opens the monument on the side facing the camera.
+  if (params.has('section')) { sectionChosen = true; stage.section(true); $('section-toggle').setAttribute('aria-pressed', 'true'); }
   $('studio-toggle').setAttribute('aria-pressed', String(stage.studio));
   $('name').textContent = data.name; $('place').textContent = data.place ?? '';
   document.title = `${data.name} — Monument`;
@@ -208,7 +210,13 @@ function frame(now) {
   update();
   // Sourced worksite tableaux keep the camera at human scale between the more precise pinned moments.
   const siteFocus = phase.scene?.focus ?? (phase.scene?.at ? [phase.scene.at[0], (phase.scene.height ?? data.view.height ?? 12) * .55, phase.scene.at[1]] : null);
-  if (!touched) stage.cinematic(time, moment?.anchor ?? siteFocus, moment?.distance ?? phase.scene?.distance);
+  if (!touched) stage.cinematic(time, moment?.anchor ?? siteFocus, moment?.distance ?? phase.scene?.distance, moment?.look);
+  // A moment inside the building (`inside`) opens the section view while it shows, when the film holds the
+  // camera; once the reader has set the section view themselves, it is theirs.
+  if (!sectionChosen) {
+    const open = Boolean(moment?.inside) && (!touched || stage.sectioning);
+    if (open !== stage.sectioning) { stage.section(open); $('section-toggle').setAttribute('aria-pressed', String(open)); }
+  }
   stage.render(now / 1000);
   pinMoment();
   placeLabels();
@@ -344,6 +352,7 @@ async function setProof(on) {
   } else stage.showOutline(false);
 }
 $('proof-toggle').onclick = () => setProof(!proofOn);
+$('section-toggle').onclick = () => { sectionChosen = true; const on = stage.section(!stage.sectioning); $('section-toggle').setAttribute('aria-pressed', String(on)); };
 $('studio-toggle').onclick = () => { const on = stage.presentation(stage.studio ? 'site' : 'studio'); document.body.classList.toggle('studio', on); $('studio-toggle').setAttribute('aria-pressed', String(on)); };
 
 // A click (not a drag) on the scene, in evidence mode, names the piece under it.
@@ -444,6 +453,7 @@ window.monument = {
   seek(t) { time = Math.max(0, Math.min(stage.duration, t)); play(false); },
   get duration() { return stage?.duration ?? 0; },
   get ready() { return Boolean(data) && stage.ready; },
+  get eye() { return stage?.eye ?? []; },
 };
 
 // Direct links can change only the fragment without reloading the document.
