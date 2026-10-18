@@ -1,0 +1,6483 @@
+{
+ "id": "kinkaku-ji",
+ "name": "Kinkaku, the Golden Pavilion",
+ "place": "Rokuon-ji · Kyoto · Japan",
+ "seed": 1397,
+ "rotate": -3,
+ "bricks": "kinkaku-ji.bricks.js",
+ "view": {
+  "target": [
+   0,
+   6,
+   0
+  ],
+  "distance": 44,
+  "width": 26,
+  "radius": 30,
+  "height": 13,
+  "drop": 3,
+  "direction": [
+   0.62,
+   0.26,
+   0.74
+  ],
+  "start": {
+   "target": [
+    0,
+    2.5,
+    3
+   ],
+   "distance": 26
+  },
+  "light": "day"
+ },
+ "visualStyle": {
+  "quality": "standard",
+  "materialPreset": "historic-masonry",
+  "environmentPreset": "mediterranean-lawn",
+  "vegetation": false,
+  "surfaces": {
+   "stone": "marble-white",
+   "tile": "granite-grey",
+   "slate": "oak-aged",
+   "wood": "oak-aged"
+  }
+ },
+ "live": [
+  {
+   "label": "Height",
+   "kind": "height",
+   "unit": "m"
+  }
+ ],
+ "facts": [
+  {
+   "value": "12.5 m",
+   "label": "high"
+  },
+  {
+   "value": "33 × 24 shaku",
+   "label": "first two storeys (≈ 10.0 × 7.3 m)"
+  },
+  {
+   "value": "20 kg",
+   "label": "of gold leaf laid in 1986–87"
+  }
+ ],
+ "modelNote": "Footprint measured on OpenStreetMap; plan from the published bays (33 × 24 shaku, the top storey 18 shaku square); heights read from the reference photographs; every bay's fitting from the description of each storey. Brackets, rafters, the phoenix and the interior figures are simplified; the roof frame is interpreted.",
+ "evidence": {
+  "size": "building",
+  "identity": "Kinkaku (shariden, the relic hall) of Rokuon-ji, 1 Kinkakuji-chō, Kita-ku, Kyoto, Japan (OpenStreetMap 3D building parts, eave way 403406104)",
+  "sources": [
+   {
+    "url": "https://ja.wikipedia.org/wiki/%E9%B9%BF%E8%8B%91%E5%AF%BA",
+    "read": "Japanese Wikipedia, Rokuon-ji: the relic hall faces south on the Kyōko-chi pond; pyramidal (hōgyō) roof of kokera shingles with a bronze phoenix; three storeys but no roof between the first and second, so \"two roofs, three storeys\"; first storey bare wood, second and third gilded outside with their railings, third gilded inside; first and second storeys of the same plan, five bays by four, the second bay from the west wider; through-posts; third storey three bays square. First storey (Hōsui-in): an open veranda bay across the front, shitomi shutters on the five front bays of the room, plank doors in the front bay of each side and earthen walls behind, a waist rail showing outside only on the north wall; the one-bay gabled Sōsei on the west over the pond. Second storey (Chōon-dō): veranda and railing all round; an open veranda three bays by one in front of the three-bay Buddha room (double plank door, lattice windows over waist walls), an east room two bays by four with maira doors; east and west walls all boards, north boards with a door in the second bay from the west. Third storey (Kukkyōchō): sankarado in the middle bay and katōmado either side on all four faces, zen railing with inverted-lotus posts. History: 1397 Yoshimitsu builds Kitayama-dono, the relic hall thought completed in 1399; 1420 Rokuon-ji; 1649 major repair; 1897 special protected building; 1904–1906 dismantling repair; 2 July 1950 arson, the phoenix and the plaque removed beforehand survive; rebuilt 22 March 1952 – 10 October 1955 from the 1904 drawings under Murata Jirō; the second storey gilded on the evidence of a gilded hip-rafter fragment (disputed by Miyakami Shigetaka); before the fire the second storey had renji windows in the middle of its east and west faces; February 1986 – October 1987 Shōwa restoration: lacquer (about 1.5 t of Jōbōji lacquer) and gold leaf (about 200,000 leaves, 20 kg, 0.45–0.55 µm, five times the usual) renewed; the phoenix renewed, a work of Kataoka Hiroyoshi."
+   },
+   {
+    "url": "https://en.wikipedia.org/wiki/Kinkaku-ji",
+    "read": "English Wikipedia, Kinkaku-ji: the pavilion is three storeys and 12.5 m high; the top two storeys coated in gold leaf; the original thought built in 1399; every other building burned in the Ōnin War (1467–1477); burned by a novice monk on 2 July 1950 and rebuilt in 1955; in 1984 the leaf was found peeling and from 1986 to 1987 replaced with 0.5 µm leaf weighing 20 kg; the first floor in shinden style of natural wood and white plaster with shutters, the second in samurai (buke) style, the third a Zen hall; the roof restored in 2003; a small fishing deck attached to the pavilion."
+   },
+   {
+    "url": "https://online.bunka.go.jp/suisensyo/kyoto/MAINTEXT/3b-M-j.html",
+    "read": "Agency for Cultural Affairs, World Heritage nomination (Rokuon-ji): Yoshimitsu takes over the estate in 1397; the three-storey relic hall faces the pond, first storey in shinden style, second residential, third a Zen hall, the hōgyō roof of kokera shingles, the second and third storeys gilded all over; Rokuon-ji from 1422; the pavilion burned in 1950 and was rebuilt in 1955, the detailed drawings of the 1904 repair making an exact restoration possible; repaired in 1987; disaster-prevention works, mainly fire-fighting with water cannons, 1988–1990."
+   },
+   {
+    "url": "https://crd.ndl.go.jp/reference/entry/index.php?id=1000208522&page=ref_view",
+    "read": "National Diet Library reference case on the Sōsei: one bay east–west (10.05 shaku) by one bay north–south (7.22 shaku) on the west side of the pavilion, over the Kyōko-chi; built with the pavilion from 1397, burned in 1950 and rebuilt in plain wood in 1955 (citing Rokuon, 1955, and the Nihon kenchikushi kiso shiryō shūsei)."
+   },
+   {
+    "url": "https://tekuteku-sanpo.com/kinkakuji-size/",
+    "read": "Article on the pavilion's dimensions (a sponsored page, no source named): 12.5 m high; first and second storeys about 9.99 m in front by 7.27 m at the side (about 73 m²); third storey three bays, about 5 m square; about 200,000 gold leaves in the 1987 work."
+   },
+   {
+    "url": "https://kyotokankoyagi.com/?p=15172",
+    "read": "Kyoto tourism blog following the 2020 roof work: started on 1 September 2020; scaffolding finished around 20 September, then netting; the old roof removed by 12 October and new shingles laid on the boards; the roof of sawara wood, thin boards cut from logs, overlapped and fixed with bamboo nails; finished on 12 December, the scaffolding then taken down; the first storey has no roof."
+   },
+   {
+    "url": "https://soranews24.com/2020/12/30/kyotos-kinkakuji-golden-pavilion-finishes-restoration-looks-more-beautiful-than-ever%E3%80%90photos%E3%80%91/",
+    "read": "SoraNews24, 30 December 2020: a four-month restoration, mainly replacing the roof surface; about 100,000 boards of sawara cypress over 320 m²; the last re-roofing in 2002; while the scaffolding stood, the phoenix was resurfaced with some 10,000 pieces of gold leaf."
+   },
+   {
+    "url": "https://www.gltjp.com/ja/directory/item/12632/",
+    "read": "Japan National Tourism Organization guide entry: pure gold laid on the second and third storeys with lacquer as the adhesive; a kokera roof of thin sawara boards; burned in 1950, rebuilt in 1955."
+   },
+   {
+    "url": "https://kotobank.jp/word/%E9%87%91%E9%96%A3%E5%AF%BA",
+    "read": "Kotobank dictionaries (Daijisen, Nihon kokugo daijiten): a three-storey hōgyō relic hall built in 1397, gold leaf laid on a lacquer ground; burned in 1950 and rebuilt in 1955."
+   },
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:Restoration_of_Kinkakuji_in_1955_(1).JPG",
+    "read": "Photograph, autumn 1955 (public domain, Japan): a craftsman laying gold leaf on the lacquered boards of the rebuilt pavilion by hand, leaf by leaf."
+   },
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:Restoration_of_Kinjakuji_in_1955_(2).JPG",
+    "read": "Photograph, autumn 1955 (public domain, Japan): workmen setting the gilded phoenix on the roof among log scaffolding poles lashed together, with a steel wire rope."
+   },
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:Burned_Kinkaku.jpg",
+    "read": "Photograph of 2 July 1950 (public domain): the burnt pavilion, the charred posts and eaves of the two lower storeys still standing, the top storey gone."
+   },
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:Exterieur_van_de_Gouden_Paviljoen_Tempel_in_Kyoto_Kinkakuji_Garden_Kioto._(titel_op_object),_RP-F-F01206-AI.jpg",
+    "read": "Rijksmuseum albumen print, about 1870–1900 (CC0): the pavilion before the 1904 repair, grey weathered timber on all three storeys with no visible gold, the shitomi shutters of the first storey, the railings and the Sōsei."
+   }
+  ],
+  "plan": {
+   "source": "OpenStreetMap, traced from aerial imagery: the eave of the main roof (way 403406104) and the Sōsei (ways 403098076, 403093737)",
+   "url": "https://www.openstreetmap.org/way/403406104",
+   "outline": "kinkaku-ji.evidence/outline.json",
+   "tolerance": 3,
+   "fit": {
+    "p90": 0.5,
+    "max": 1.5,
+    "coverage": 0.93,
+    "overflow": 0.02
+   }
+  },
+  "references": [
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:Shariden,_Kinkaku-ji,_Kyoto,_East_View_20190416_2.jpg",
+    "view": "south-east, across the pond",
+    "azimuth": 134.9,
+    "elevation": -3.3,
+    "distance": 64.1,
+    "target": [
+     -2.4,
+     5.2,
+     0.8
+    ],
+    "fov": 18.9,
+    "camera": "Commons camera location, 64 m from the pavilion; photo 7918 × 5382 px",
+    "phase": "bosai",
+    "calibration": {
+     "points": 14,
+     "rms": 0.4
+    }
+   },
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:Shariden,_Kinkaku-ji,_Kyoto,_North_View_20190416_1.jpg",
+    "view": "north-west",
+    "azimuth": 319.7,
+    "elevation": -7.7,
+    "distance": 26.9,
+    "target": [
+     -1.6,
+     5.4,
+     3.6
+    ],
+    "fov": 39.7,
+    "camera": "Commons camera location, 27 m from the pavilion; photo 7955 × 5316 px",
+    "phase": "bosai",
+    "calibration": {
+     "points": 17,
+     "rms": 0.8
+    }
+   },
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:Kinkakuji_(Golden_Pavilion)_(11079715494).jpg",
+    "view": "north-east, from the garden",
+    "phase": "bosai",
+    "azimuth": 38,
+    "elevation": -10.3,
+    "distance": 26.9,
+    "target": [
+     -4.7,
+     6.3,
+     6.4
+    ],
+    "fov": 51.3,
+    "camera": "Commons camera location, 27 m from the pavilion; photo 5423 × 3704 px",
+    "calibration": {
+     "points": 16,
+     "rms": 1.3
+    }
+   },
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:Temple_of_the_Golden_Pavilion,_Kyoto_Japan_(14437492520).jpg",
+    "view": "south-south-east, across the pond",
+    "phase": "bosai",
+    "azimuth": 152.8,
+    "elevation": 1,
+    "distance": 61.9,
+    "target": [
+     0.6,
+     0.6,
+     -2.1
+    ],
+    "fov": 26.8,
+    "camera": "Commons camera location moved 23 m east by the fit (see positionReason); photo 3861 × 2171 px, 43 mm equivalent",
+    "calibration": {
+     "points": 18,
+     "rms": 0.8
+    },
+    "positionReason": "The photograph shows the east face at about 30 degrees and the south face at about 60 degrees, so it was taken from the south-east bank of the pond, some 23 m east of the position Commons records; the fit moves the camera there."
+   }
+  ],
+  "features": [
+   {
+    "text": "Three storeys under two roofs: no roof projects between the first and second storeys.",
+    "source": "https://ja.wikipedia.org/wiki/%E9%B9%BF%E8%8B%91%E5%AF%BA"
+   },
+   {
+    "text": "First and second storeys of one plan, five bays by four, the second bay from the west wider; the third three bays square.",
+    "source": "https://ja.wikipedia.org/wiki/%E9%B9%BF%E8%8B%91%E5%AF%BA"
+   },
+   {
+    "text": "First storey of bare wood and white plaster: an open veranda bay across the front, shitomi lattice shutters behind it, plank doors in the sides.",
+    "source": "https://ja.wikipedia.org/wiki/%E9%B9%BF%E8%8B%91%E5%AF%BA"
+   },
+   {
+    "text": "The waist rail of the plaster walls shows outside on the north wall only.",
+    "source": "https://ja.wikipedia.org/wiki/%E9%B9%BF%E8%8B%91%E5%AF%BA"
+   },
+   {
+    "text": "Second storey gilded with its railing, a veranda all round; lattice windows and a double plank door on the Buddha room, maira sliding doors on the east room.",
+    "source": "https://ja.wikipedia.org/wiki/%E9%B9%BF%E8%8B%91%E5%AF%BA"
+   },
+   {
+    "text": "Third storey a Zen hall: panelled sankarado in the middle bay and bell-shaped katōmado either side on each face, zen railing with finialled corner posts.",
+    "source": "https://ja.wikipedia.org/wiki/%E9%B9%BF%E8%8B%91%E5%AF%BA"
+   },
+   {
+    "text": "Gold leaf laid on lacquer on the second and third storeys.",
+    "source": "https://www.gltjp.com/ja/directory/item/12632/"
+   },
+   {
+    "text": "Pyramidal (hōgyō) roof of thin sawara shingles fixed with bamboo nails, crowned by a phoenix.",
+    "source": "https://kyotokankoyagi.com/?p=15172"
+   },
+   {
+    "text": "The Sōsei: a one-bay gabled pavilion over the pond on the west side, 10.05 by 7.22 shaku.",
+    "source": "https://crd.ndl.go.jp/reference/entry/index.php?id=1000208522&page=ref_view"
+   },
+   {
+    "text": "The plaque \"Kukkyōchō\" of the top storey.",
+    "source": "https://ja.wikipedia.org/wiki/%E9%B9%BF%E8%8B%91%E5%AF%BA"
+   },
+   {
+    "text": "Wind bells hang under the corners of both roofs, and the eaves lift sharply at the corners over gilded rafters in two tiers (seen in the reference photographs).",
+    "source": "https://commons.wikimedia.org/wiki/File:Shariden,_Kinkaku-ji,_Kyoto,_East_View_20190416_2.jpg"
+   }
+  ],
+  "geometry": "Measured: the position and orientation of the pavilion (OpenStreetMap 3D building parts traced from aerial imagery, 3° off the cardinal axes), the pond, and the heights and eave extents fitted jointly on the three reference photographs from their recorded camera positions (residual about 1% of the photo height): floor 0.75 m, first-storey head 3.0 m, second-storey veranda 3.4 m and head 5.46 m, eave corners of the main roof 6.1 m at 14.5 × 11.8 m, third-storey veranda 7.15 m and head 8.6 m, eave corners of the top roof 9.6 m at 9.0 m square, apex 11.0 m, phoenix 12.6 m above the water (the published height is 12.5 m). Documented: the plan in bays (5 × 4 and 3 × 3 bays of 6 shaku with the wider 9-shaku bay second from the west, 9.99 × 7.27 m), the fittings of every bay, the Sōsei (10.05 × 7.22 shaku). Interpreted: the roof frames, the curve between the eave corners and the ridges.",
+  "comparisons": [
+   {
+    "pass": 1,
+    "captures": [
+     "kinkaku-ji.evidence/compare/pass-1/ref-0.jpg",
+     "kinkaku-ji.evidence/compare/pass-1/ref-1.jpg",
+     "kinkaku-ji.evidence/compare/pass-1/ref-2.jpg",
+     "kinkaku-ji.evidence/compare/pass-1/ref-3.jpg"
+    ],
+    "overlays": [
+     "kinkaku-ji.evidence/compare/pass-1/overlay-0.jpg",
+     "kinkaku-ji.evidence/compare/pass-1/overlay-1.jpg",
+     "kinkaku-ji.evidence/compare/pass-1/overlay-2.jpg",
+     "kinkaku-ji.evidence/compare/pass-1/overlay-3.jpg"
+    ],
+    "phases": [
+     "kinkaku-ji.evidence/compare/pass-1/phase-0.jpg",
+     "kinkaku-ji.evidence/compare/pass-1/phase-1.jpg",
+     "kinkaku-ji.evidence/compare/pass-1/phase-2.jpg",
+     "kinkaku-ji.evidence/compare/pass-1/phase-3.jpg",
+     "kinkaku-ji.evidence/compare/pass-1/phase-4.jpg",
+     "kinkaku-ji.evidence/compare/pass-1/phase-5.jpg",
+     "kinkaku-ji.evidence/compare/pass-1/phase-6.jpg",
+     "kinkaku-ji.evidence/compare/pass-1/phase-7.jpg"
+    ],
+    "gaps": [
+     "The captures of this pass were taken again after the fixes below, with the fourth photograph added; the gaps listed after this one are those seen on the first captures.",
+     "Ref 0 (south-east, across the pond): roofs, storeys, the third storey, the pedestal and the phoenix fall on the photo's outlines; the pond stopped at 38 m, so the foreground showed dry ground where the photo shows water.",
+     "Ref 0: the shingles read blue-grey under the sky; in the photo they are dark brown. The first storey's room, seen through the open veranda, was bright in the model and dark in the photo; the lower shitomi panels were pale.",
+     "Ref 1 (north-west): the roofs, the plaster bays of the north wall with their waist rail, the Sōsei's gabled roof and the conductor down the north side match; the two rods at the north corners of the top roof started too high and rose too steeply.",
+     "Ref 2 (north-east, 2013): the silhouette matches with a slight double outline of the roofs (1.3% residual, a 24 mm lens); the conductor stands a little further west in the photo.",
+     "All refs: the rocks along the water were regular drums; the phoenix was a few sticks.",
+     "Ref 3 (south-south-east, 2014): the roofs, the storeys, the Sōsei and the phoenix fall on the photo's outlines (0.8% once fitted); the photographer stood about 23 m east of the position Commons records.",
+     "Phase captures: every state reads (the gilded hall of 1399, the grey weathered hall, the charred frame of 1950, the 1955 log scaffold with its gin pole, the regilded hall, the 2020 steel scaffold); in the two worksite phases the worksite's light shows as a bright glare on the water."
+    ],
+    "fixed": [
+     "The pond extended to 75 m round the pavilion and laid in rows cut at the shore, so that the water reaches the photographers' banks without stepped edges.",
+     "Shingles laid as wood, in a darker brown; the first storey's walls lined inside with dark boards; the shitomi panels backed with dark boards.",
+     "Rods set under the eave at the north corners of the top roof, rising 0.45 m over 3.8 m.",
+     "Rocks along the water made irregular; the phoenix rebuilt with legs, breast, crested head, wings in fans of feathers and a sweeping tail.",
+     "Before this pass: the heights and eave extents were fitted jointly on the three photographs (the first storey 2.25 m to its head beam, the eave corners at 14.5 × 11.8 m, the phoenix at 12.6 m), replacing the first estimates.",
+     "After the refreshed captures: wind bells added under the corners of both roofs, as the photographs show.",
+     "The water laid matte, so that it no longer mirrors the worksite light as a glare."
+    ]
+   },
+   {
+    "pass": 2,
+    "captures": [
+     "kinkaku-ji.evidence/compare/pass-2/ref-0.jpg",
+     "kinkaku-ji.evidence/compare/pass-2/ref-1.jpg",
+     "kinkaku-ji.evidence/compare/pass-2/ref-2.jpg",
+     "kinkaku-ji.evidence/compare/pass-2/ref-3.jpg"
+    ],
+    "overlays": [
+     "kinkaku-ji.evidence/compare/pass-2/overlay-0.jpg",
+     "kinkaku-ji.evidence/compare/pass-2/overlay-1.jpg",
+     "kinkaku-ji.evidence/compare/pass-2/overlay-2.jpg",
+     "kinkaku-ji.evidence/compare/pass-2/overlay-3.jpg"
+    ],
+    "phases": [
+     "kinkaku-ji.evidence/compare/pass-2/phase-0.jpg",
+     "kinkaku-ji.evidence/compare/pass-2/phase-1.jpg",
+     "kinkaku-ji.evidence/compare/pass-2/phase-2.jpg",
+     "kinkaku-ji.evidence/compare/pass-2/phase-3.jpg",
+     "kinkaku-ji.evidence/compare/pass-2/phase-4.jpg",
+     "kinkaku-ji.evidence/compare/pass-2/phase-5.jpg",
+     "kinkaku-ji.evidence/compare/pass-2/phase-6.jpg",
+     "kinkaku-ji.evidence/compare/pass-2/phase-7.jpg"
+    ],
+    "gaps": [
+     "Ref 0 (south-east, 2019): the outlines fall on the photo (0.4% once fitted); the model's water and plaster are flatter than the photo's reflections and the pine on the right is not modelled.",
+     "Ref 1 (north-west, 2019): roofs, rods, the conductor and the Sōsei line up (0.8%); the moss bank and the garden plants in front are absent from the model.",
+     "Ref 2 (north-east, 2013): a faint double outline of the roofs remains (1.3%, a 24 mm lens), and the conductor stands a little further west in the photo.",
+     "Ref 3 (south-south-east, 2014): roofs, storeys, the Sōsei and the phoenix line up (0.8%); the island with its pine in the foreground is water in the model.",
+     "Phase captures: every state reads, and the glare of the worksite light on the water is gone."
+    ],
+    "fixed": [],
+    "remaining": [
+     "The kokera roofs are laid as boards 0.56 m wide in 0.3 m courses; the real shingles are far smaller and thinner.",
+     "Bracket sets, the phoenix and the interior figures are simplified volumes; the ceiling paintings and the plaque's lettering are not shown.",
+     "The north-east view keeps a slight double outline of the roofs (1.3% of the photo's height), and the conductor's place along the north side is approximate.",
+     "The garden round the pavilion (moss, gravel, pines, the islands' rocks) is not modelled: the flat ground plane and the pond's water stand for it."
+    ]
+   }
+  ],
+  "uncertainties": [
+   "No measured elevation was found: the heights and the eave extents come from a joint fit on three photographs, scaled by the published plan (9.99 × 7.27 m); the phoenix comes out at 12.6 m above the water, against the published 12.5 m.",
+   "OpenStreetMap traces the main roof at 16.5 × 13.3 m (way 403406103) and its eave at 15.9 × 12.6 m (way 403406104); the photographs put the eave corners at about 14.5 × 11.8 m, with the same 2.3 m overhang on all four sides. The model follows the photographs, and the control plan uses the eave trace, the closer of the two.",
+   "The 9-shaku second bay from the west and the 6-shaku module are inferred from the published totals (33 × 24 shaku, the wider second bay) and the photographs.",
+   "The original gilding of the second storey is disputed; the first life of the pavilion shows it gilded, as the 1955 rebuilding decided.",
+   "The roof frames (wagoya, hanegi) are interpreted: no survey of Kinkaku's frame was read.",
+   "The worksite of 1952–1955 is drawn from two photographs of autumn 1955 (log scaffolding lashed together, a steel cable); the gin pole and the layout of the scaffold are interpreted. The 2020 scaffold is documented as scaffolding and netting; the netting is not shown.",
+   "The rods at the north corners of the top roof are dated to the 1988–1990 disaster-prevention works by inference.",
+   "The phoenix, the brackets and the interior figures are simplified volumes; the ceiling paintings of the second storey are not shown.",
+   "The pond is the present-day outline with the islands OpenStreetMap maps left dry (the small pine islet in front of the south view is not mapped and shows as water); the garden round the pavilion (moss, gravel, pines, rocks) is not modelled.",
+   "Kokera shingles are modelled as boards much larger than the real ones; bracket sets are simplified.",
+   "The north-east view keeps a slight double outline of the roofs (1.3% of the photo's height) and the conductor's place along the north side is approximate."
+  ]
+ },
+ "phases": [
+  {
+   "id": "kitayama",
+   "when": "1397–1399",
+   "title": "Yoshimitsu's relic hall",
+   "source": "https://ja.wikipedia.org/wiki/%E9%B9%BF%E8%8B%91%E5%AF%BA",
+   "text": "In 1397 the retired shōgun Ashikaga Yoshimitsu takes over the Saionji estate at Kitayama and builds his villa there. Its three-storey relic hall on the Mirror Pond is thought to have been finished in 1399.",
+   "moments": [
+    {
+     "at": 0.3,
+     "tag": "Plan",
+     "title": "Five bays by four",
+     "text": "The first two storeys share one plan, five bays by four. The second bay from the west is wider, in front of the main image, and through-posts tie the two storeys together.",
+     "anchor": [
+      -2.7,
+      2.2,
+      3.7
+     ],
+     "distance": 20,
+     "source": "https://ja.wikipedia.org/wiki/%E9%B9%BF%E8%8B%91%E5%AF%BA"
+    },
+    {
+     "at": 0.55,
+     "tag": "Figure",
+     "title": "The Sōsei",
+     "text": "On the west side a one-bay open pavilion, 10.05 by 7.22 shaku (3.05 × 2.19 m), stands out over the water under its own gabled roof.",
+     "anchor": [
+      -9.1,
+      2.2,
+      0.35
+     ],
+     "distance": 16,
+     "source": "https://crd.ndl.go.jp/reference/entry/index.php?id=1000208522&page=ref_view"
+    },
+    {
+     "at": 0.78,
+     "tag": "Technique",
+     "title": "Three houses in one",
+     "text": "Each storey has its own style: a nobleman's hall with lattice shutters, then a Buddha hall in the Japanese manner, and on top a Zen hall with bell-shaped windows.",
+     "anchor": [
+      0,
+      8.6,
+      2.75
+     ],
+     "distance": 18,
+     "source": "https://online.bunka.go.jp/suisensyo/kyoto/MAINTEXT/3b-M-j.html"
+    }
+   ]
+  },
+  {
+   "id": "weathered",
+   "when": "1420–1890s",
+   "title": "The gold wears away",
+   "source": "https://ja.wikipedia.org/wiki/%E9%B9%BF%E8%8B%91%E5%AF%BA",
+   "text": "After Yoshimitsu's death the villa becomes the Zen temple Rokuon-ji, and the hall alone survives the wars. By the first photographs, the gold has gone from its grey timber.",
+   "moments": [
+    {
+     "at": 0.25,
+     "tag": "Anecdote",
+     "title": "The only survivor",
+     "text": "In the Ōnin War (1467–1477) every other building of the complex burned; the pavilion was spared.",
+     "anchor": [
+      0,
+      5,
+      0
+     ],
+     "source": "https://en.wikipedia.org/wiki/Kinkaku-ji"
+    },
+    {
+     "at": 0.55,
+     "tag": "Restoration",
+     "title": "Repaired in 1649",
+     "text": "Under the Tokugawa the temple is rebuilt, and the relic hall has a major repair in 1649.",
+     "anchor": [
+      5.2,
+      2,
+      2
+     ],
+     "source": "https://ja.wikipedia.org/wiki/%E9%B9%BF%E8%8B%91%E5%AF%BA"
+    },
+    {
+     "at": 0.85,
+     "tag": "Evidence",
+     "title": "As the camera saw it",
+     "text": "Albumen prints of about 1870–1900 show bare weathered timber on all three storeys and no gold at all.",
+     "anchor": [
+      2,
+      5.2,
+      4.6
+     ],
+     "distance": 20,
+     "source": "https://commons.wikimedia.org/wiki/File:Exterieur_van_de_Gouden_Paviljoen_Tempel_in_Kyoto_Kinkakuji_Garden_Kioto._(titel_op_object),_RP-F-F01206-AI.jpg"
+    }
+   ]
+  },
+  {
+   "id": "meiji",
+   "when": "1904–1906",
+   "title": "Taken apart and drawn",
+   "source": "https://ja.wikipedia.org/wiki/%E9%B9%BF%E8%8B%91%E5%AF%BA",
+   "text": "Protected since 1897, the pavilion is dismantled and put back together. The detailed drawings made during the work will allow it to be rebuilt half a century later.",
+   "moments": [
+    {
+     "at": 0.45,
+     "tag": "Plan",
+     "title": "The drawings of 1904",
+     "text": "The detailed drawings of this repair are what made an exact restoration possible after the fire.",
+     "anchor": [
+      0,
+      6,
+      0
+     ],
+     "source": "https://online.bunka.go.jp/suisensyo/kyoto/MAINTEXT/3b-M-j.html"
+    },
+    {
+     "at": 0.8,
+     "tag": "Detail",
+     "title": "Windows since walled",
+     "text": "Before the fire the second storey had latticed renji windows in the middle of its east and west faces; the rebuilt pavilion has plain walls there.",
+     "anchor": [
+      5.1,
+      5.2,
+      -0.9
+     ],
+     "distance": 14,
+     "source": "https://ja.wikipedia.org/wiki/%E9%B9%BF%E8%8B%91%E5%AF%BA"
+    }
+   ]
+  },
+  {
+   "id": "fire",
+   "from": "1950-07-02",
+   "to": "1950-07-02",
+   "title": "Arson",
+   "source": "https://ja.wikipedia.org/wiki/%E9%B9%BF%E8%8B%91%E5%AF%BA",
+   "text": "Before dawn on 2 July 1950 a young acolyte sets the pavilion on fire. It burns out with its statues, leaving the charred frame of the two lower storeys.",
+   "moments": [
+    {
+     "at": 0.45,
+     "tag": "Anecdote",
+     "title": "Taken down in time",
+     "text": "The phoenix and the plaque of the top storey had been removed before the fire and survive; the gilt bronze phoenix is a cultural property of Kyoto city.",
+     "anchor": [
+      0,
+      11.8,
+      0
+     ],
+     "distance": 16,
+     "source": "https://ja.wikipedia.org/wiki/%E9%B9%BF%E8%8B%91%E5%AF%BA"
+    },
+    {
+     "at": 0.8,
+     "tag": "Evidence",
+     "title": "The burnt shell",
+     "text": "A photograph taken that day shows the charred posts of the two lower storeys still standing, the top storey gone.",
+     "anchor": [
+      0,
+      3,
+      3.7
+     ],
+     "distance": 22,
+     "source": "https://commons.wikimedia.org/wiki/File:Burned_Kinkaku.jpg"
+    }
+   ]
+  },
+  {
+   "id": "reconstruction",
+   "from": "1952-03-22",
+   "to": "1955-10-10",
+   "title": "Rebuilt from the drawings",
+   "source": "https://ja.wikipedia.org/wiki/%E9%B9%BF%E8%8B%91%E5%AF%BA",
+   "text": "From March 1952, under Murata Jirō, the pavilion is rebuilt from the 1904 drawings, photographs and charred timbers, and consecrated on 10 October 1955. Both upper storeys are gilded.",
+   "scene": {
+    "craft": "timber",
+    "at": [
+     0,
+     0
+    ],
+    "focus": [
+     3.4,
+     4.5,
+     6.6
+    ],
+    "distance": 24,
+    "radius": 12,
+    "height": 13.5,
+    "workers": 10,
+    "materials": true,
+    "scaffold": {
+     "kind": "tower",
+     "width": 22,
+     "material": "timber",
+     "height": 13.6
+    },
+    "hoist": {
+     "kind": "gin-pole",
+     "height": 15,
+     "from": 0,
+     "to": 11
+    },
+    "dust": 0.15,
+    "source": "https://commons.wikimedia.org/wiki/File:Restoration_of_Kinjakuji_in_1955_(2).JPG"
+   },
+   "moments": [
+    {
+     "at": 0.4,
+     "tag": "Controversy",
+     "title": "One gilded rafter",
+     "text": "Only the top storey still showed gold before the fire. The second was gilded because a saved piece of its hip rafter, made into a flower vase, carried gold leaf; some historians think it never was.",
+     "anchor": [
+      7.7,
+      6.05,
+      6.2
+     ],
+     "distance": 12,
+     "source": "https://ja.wikipedia.org/wiki/%E9%B9%BF%E8%8B%91%E5%AF%BA"
+    },
+    {
+     "at": 0.72,
+     "tag": "Technique",
+     "title": "Leaf by leaf",
+     "text": "In autumn 1955 gilders press the gold leaf by hand onto the lacquered boards, one square at a time.",
+     "anchor": [
+      3.2,
+      5,
+      3.7
+     ],
+     "distance": 7,
+     "source": "https://commons.wikimedia.org/wiki/File:Restoration_of_Kinkakuji_in_1955_(1).JPG"
+    },
+    {
+     "at": 0.92,
+     "tag": "Figure",
+     "title": "The phoenix goes up",
+     "text": "The gilded phoenix is set on the roof's pedestal among lashed log scaffolding, hoisted on a steel cable.",
+     "anchor": [
+      0,
+      12.2,
+      0
+     ],
+     "distance": 9,
+     "source": "https://commons.wikimedia.org/wiki/File:Restoration_of_Kinjakuji_in_1955_(2).JPG"
+    },
+    {
+     "at": 0.97,
+     "tag": "Interior",
+     "title": "The Hōsui-in",
+     "text": "Inside the first storey, a dais at the back of the west three bays carries the crowned Shaka in the middle and the seated Yoshimitsu to its left.",
+     "anchor": [
+      -1.8,
+      2.2,
+      -1.6
+     ],
+     "inside": true,
+     "look": [
+      180,
+      8
+     ],
+     "source": "https://ja.wikipedia.org/wiki/%E9%B9%BF%E8%8B%91%E5%AF%BA"
+    }
+   ]
+  },
+  {
+   "id": "showa",
+   "from": "1986-02-01",
+   "to": "1987-10-31",
+   "title": "Gold five times thicker",
+   "source": "https://ja.wikipedia.org/wiki/%E9%B9%BF%E8%8B%91%E5%AF%BA",
+   "text": "Within ten years of the rebuilding the leaf had peeled, baring the black lacquer. In 1986–1987 the lacquer is renewed and some 200,000 leaves, 20 kg of gold, are laid again.",
+   "moments": [
+    {
+     "at": 0.3,
+     "tag": "Restoration",
+     "title": "Black under the gold",
+     "text": "Where the 1955 leaf peeled, the black lacquer showed through, and sunlight was breaking it down.",
+     "anchor": [
+      5.1,
+      5,
+      1
+     ],
+     "distance": 12,
+     "source": "https://ja.wikipedia.org/wiki/%E9%B9%BF%E8%8B%91%E5%AF%BA"
+    },
+    {
+     "at": 0.65,
+     "tag": "Figure",
+     "title": "Half a micron",
+     "text": "The new leaf is 0.45–0.55 µm thick, five times the usual leaf, laid on about 1.5 t of Jōbōji lacquer.",
+     "anchor": [
+      0,
+      8.4,
+      2.75
+     ],
+     "distance": 12,
+     "source": "https://ja.wikipedia.org/wiki/%E9%B9%BF%E8%8B%91%E5%AF%BA"
+    }
+   ]
+  },
+  {
+   "id": "bosai",
+   "when": "1988–1990",
+   "title": "Fire defences",
+   "source": "https://online.bunka.go.jp/suisensyo/kyoto/MAINTEXT/3b-M-j.html",
+   "text": "Disaster-prevention works are completed round the pavilion, chiefly fire-fighting equipment and water cannons.",
+   "moments": [
+    {
+     "at": 0.6,
+     "tag": "Plan",
+     "title": "Never again",
+     "text": "After the fire of 1950 the temple is equipped against fire: hydrants and water cannons stand round the pond.",
+     "anchor": [
+      7,
+      6.9,
+      -5.8
+     ],
+     "source": "https://online.bunka.go.jp/suisensyo/kyoto/MAINTEXT/3b-M-j.html"
+    }
+   ]
+  },
+  {
+   "id": "roof2020",
+   "from": "2020-09-01",
+   "to": "2020-12-14",
+   "title": "New shingles",
+   "source": "https://soranews24.com/2020/12/30/kyotos-kinkakuji-golden-pavilion-finishes-restoration-looks-more-beautiful-than-ever%E3%80%90photos%E3%80%91/",
+   "text": "From September to December 2020 the shingle roofs, last relaid in 2002, are stripped and covered again with about 100,000 thin boards of sawara cypress, and the phoenix is regilded.",
+   "scene": {
+    "craft": "timber",
+    "at": [
+     0,
+     0
+    ],
+    "focus": [
+     3.5,
+     9.6,
+     4.6
+    ],
+    "distance": 20,
+    "radius": 12,
+    "height": 13.8,
+    "workers": 8,
+    "materials": true,
+    "scaffold": {
+     "kind": "tower",
+     "width": 22,
+     "material": "steel",
+     "rise": "first",
+     "height": 13.8
+    },
+    "dust": 0.08,
+    "source": "https://kyotokankoyagi.com/?p=15172"
+   },
+   "moments": [
+    {
+     "at": 0.35,
+     "tag": "Technique",
+     "title": "Bamboo nails",
+     "text": "The boards are split thin from logs, overlapped course by course on the roof boards and fixed with bamboo nails.",
+     "anchor": [
+      2.2,
+      10.7,
+      2.6
+     ],
+     "distance": 8,
+     "source": "https://kyotokankoyagi.com/?p=15172"
+    },
+    {
+     "at": 0.75,
+     "tag": "Figure",
+     "title": "320 square metres",
+     "text": "About 100,000 sawara boards cover the two roofs, some 320 m²; the phoenix took about 10,000 leaves of gold.",
+     "anchor": [
+      5.5,
+      6.7,
+      4.6
+     ],
+     "distance": 14,
+     "source": "https://soranews24.com/2020/12/30/kyotos-kinkakuji-golden-pavilion-finishes-restoration-looks-more-beautiful-than-ever%E3%80%90photos%E3%80%91/"
+    }
+   ]
+  }
+ ],
+ "elements": [
+  {
+   "type": "pond",
+   "provenance": "measured",
+   "note": "The water of the Kyōko-chi cut to its present outline (OpenStreetMap relation 1407006), within 75 m of the pavilion; islands left dry.",
+   "phase": "kitayama",
+   "points": [
+    [
+     -0.89,
+     -13.09
+    ],
+    [
+     -27.02,
+     -14.98
+    ],
+    [
+     -37.66,
+     -6.36
+    ],
+    [
+     -38.37,
+     -6.7
+    ],
+    [
+     -46.19,
+     -11.24
+    ],
+    [
+     -54.73,
+     -10.25
+    ],
+    [
+     -66.22,
+     1.14
+    ],
+    [
+     -67.76,
+     19.63
+    ],
+    [
+     -61.88,
+     28.38
+    ],
+    [
+     -31.92,
+     35.48
+    ],
+    [
+     -33.6,
+     42.98
+    ],
+    [
+     -48.43,
+     42.29
+    ],
+    [
+     -55.43,
+     43.68
+    ],
+    [
+     -58.65,
+     49.93
+    ],
+    [
+     -56.27,
+     61.19
+    ],
+    [
+     -46.06,
+     64.8
+    ],
+    [
+     -23.52,
+     70.78
+    ],
+    [
+     -21.14,
+     75.23
+    ],
+    [
+     -19.74,
+     80.79
+    ],
+    [
+     -14.56,
+     80.93
+    ],
+    [
+     -11.48,
+     72.59
+    ],
+    [
+     -3.65,
+     71.45
+    ],
+    [
+     0.64,
+     75.22
+    ],
+    [
+     11.03,
+     72.06
+    ],
+    [
+     11.92,
+     66.41
+    ],
+    [
+     17.92,
+     59.94
+    ],
+    [
+     41.09,
+     50.91
+    ],
+    [
+     44.51,
+     45.9
+    ],
+    [
+     42.42,
+     35.48
+    ],
+    [
+     29.39,
+     20.47
+    ],
+    [
+     24.92,
+     13.24
+    ],
+    [
+     16.1,
+     2.39
+    ],
+    [
+     10.22,
+     0.45
+    ],
+    [
+     9.52,
+     6.98
+    ],
+    [
+     5.68,
+     7.57
+    ],
+    [
+     -10.45,
+     6.31
+    ],
+    [
+     -10.26,
+     2.98
+    ],
+    [
+     -13.33,
+     3.17
+    ],
+    [
+     -12.92,
+     -2.84
+    ],
+    [
+     -9.91,
+     -2.77
+    ],
+    [
+     -9.66,
+     -9
+    ],
+    [
+     -2.6,
+     -8.97
+    ],
+    [
+     -1.03,
+     -11.41
+    ]
+   ],
+   "holes": [
+    [
+     [
+      -6.52,
+      19.29
+     ],
+     [
+      -4.37,
+      18.44
+     ],
+     [
+      -6.44,
+      16.66
+     ],
+     [
+      -9.74,
+      18.22
+     ]
+    ],
+    [
+     [
+      -30.74,
+      7.12
+     ],
+     [
+      -29.31,
+      5.49
+     ],
+     [
+      -29.74,
+      4.06
+     ],
+     [
+      -32.82,
+      2.43
+     ],
+     [
+      -36.98,
+      2.86
+     ],
+     [
+      -38.41,
+      5.7
+     ],
+     [
+      -36.05,
+      8.12
+     ],
+     [
+      -32.53,
+      9.11
+     ]
+    ],
+    [
+     [
+      -55.25,
+      17.52
+     ],
+     [
+      -56.12,
+      15.38
+     ],
+     [
+      -55.4,
+      14.24
+     ],
+     [
+      -54.18,
+      12.67
+     ],
+     [
+      -53.75,
+      10.4
+     ],
+     [
+      -56.04,
+      8.9
+     ],
+     [
+      -57.05,
+      11.61
+     ],
+     [
+      -59.55,
+      16.73
+     ],
+     [
+      -58.48,
+      21.07
+     ],
+     [
+      -55.11,
+      19.44
+     ]
+    ],
+    [
+     [
+      -33.25,
+      25.27
+     ],
+     [
+      -33.53,
+      22.92
+     ],
+     [
+      -36.48,
+      21.57
+     ],
+     [
+      -37.41,
+      23.27
+     ],
+     [
+      -35.9,
+      25.34
+     ]
+    ],
+    [
+     [
+      -14.11,
+      39.87
+     ],
+     [
+      -0.36,
+      39.29
+     ],
+     [
+      2.37,
+      37.3
+     ],
+     [
+      2.01,
+      34.88
+     ],
+     [
+      3.45,
+      34.1
+     ],
+     [
+      5.81,
+      34.45
+     ],
+     [
+      10.04,
+      35.31
+     ],
+     [
+      14.98,
+      31.26
+     ],
+     [
+      10.11,
+      26.41
+     ],
+     [
+      5.38,
+      27.84
+     ],
+     [
+      -3.36,
+      26.41
+     ],
+     [
+      -8.45,
+      29.69
+     ],
+     [
+      -15.62,
+      34.88
+     ]
+    ]
+   ],
+   "focus": [
+    0,
+    0
+   ],
+   "radius": 75,
+   "step": 0.25,
+   "level": 0.02,
+   "color": "#566b5f"
+  },
+  {
+   "type": "pavilion",
+   "center": [
+    0,
+    0
+   ],
+   "unit": 0.30303,
+   "grid": {
+    "u": [
+     6,
+     9,
+     6,
+     6,
+     6
+    ],
+    "v": [
+     6,
+     6,
+     6,
+     6
+    ]
+   },
+   "post": 0.24,
+   "levels": {
+    "platform": 0.4,
+    "floor1": 0.75,
+    "head1": 3,
+    "floor2": 3.4,
+    "head2": 5.46,
+    "floor3": 7.15,
+    "head3": 8.62
+   },
+   "base": {
+    "half": [
+     6.4,
+     5.2
+    ],
+    "boulders": [
+     "s",
+     "w"
+    ],
+    "plinth": 0.2,
+    "plinthAt": 0.6
+   },
+   "storey1": {
+    "deck": 0.95,
+    "inner": 3,
+    "lintel": 0.54,
+    "waistRail": 0.8,
+    "shitomi": 0.95,
+    "railing": [
+     "s",
+     "w",
+     "n"
+    ],
+    "gaps": {
+     "w": [
+      -1.2,
+      1.9
+     ],
+     "n": [
+      -1.6,
+      9
+     ]
+    },
+    "steps": [
+     [
+      "e",
+      0.1,
+      1.7
+     ]
+    ],
+    "walls": [
+     {
+      "side": "s",
+      "line": 3,
+      "span": [
+       0,
+       5
+      ],
+      "bays": [
+       "shitomi",
+       "shitomi",
+       "shitomi",
+       "shitomi",
+       "shitomi"
+      ]
+     },
+     {
+      "side": "e",
+      "line": 5,
+      "span": [
+       0,
+       3
+      ],
+      "bays": [
+       "wall",
+       "wall",
+       "door"
+      ]
+     },
+     {
+      "side": "w",
+      "line": 0,
+      "span": [
+       0,
+       3
+      ],
+      "bays": [
+       "wall",
+       "wall",
+       "door"
+      ]
+     },
+     {
+      "side": "n",
+      "line": 0,
+      "span": [
+       0,
+       5
+      ],
+      "bays": [
+       "wall",
+       "wall",
+       "wall",
+       "wall",
+       "wall"
+      ]
+     }
+    ]
+   },
+   "storey2": {
+    "balcony": 0.9,
+    "rail": 0.75,
+    "lintel": 0.45,
+    "waist": 0.55,
+    "posts": [
+     [
+      1,
+      3
+     ],
+     [
+      2,
+      3
+     ],
+     [
+      3,
+      3
+     ],
+     [
+      3,
+      2
+     ],
+     [
+      3,
+      1
+     ]
+    ],
+    "walls": [
+     {
+      "side": "s",
+      "line": 4,
+      "span": [
+       3,
+       5
+      ],
+      "bays": [
+       "maira",
+       "maira"
+      ]
+     },
+     {
+      "side": "s",
+      "line": 3,
+      "span": [
+       0,
+       3
+      ],
+      "bays": [
+       "lattice",
+       "door2",
+       "lattice"
+      ]
+     },
+     {
+      "side": "e",
+      "line": 3,
+      "span": [
+       0,
+       4
+      ],
+      "bays": [
+       "maira",
+       "maira",
+       "maira",
+       "maira"
+      ]
+     },
+     {
+      "side": "e",
+      "line": 5,
+      "span": [
+       0,
+       4
+      ],
+      "bays": [
+       "plank",
+       "plank",
+       "plank",
+       "plank"
+      ]
+     },
+     {
+      "side": "w",
+      "line": 0,
+      "span": [
+       0,
+       3
+      ],
+      "bays": [
+       "plank",
+       "plank",
+       "plank"
+      ]
+     },
+     {
+      "side": "n",
+      "line": 0,
+      "span": [
+       0,
+       5
+      ],
+      "bays": [
+       "plank",
+       "door2",
+       "plank",
+       "plank",
+       "plank"
+      ]
+     }
+    ]
+   },
+   "storey3": {
+    "grid": [
+     6,
+     6,
+     6
+    ],
+    "balcony": 0.92,
+    "rail": 0.59,
+    "doorTop": 0.14,
+    "window": {
+     "w": 0.72,
+     "sill": 0.4,
+     "spring": 0.62,
+     "rise": 0.3
+    },
+    "bays": [
+     "katomado",
+     "sankarado",
+     "katomado"
+    ],
+    "plaque": [
+     0
+    ]
+   },
+   "roof2": {
+    "ao": 7.26,
+    "bo": 5.88,
+    "ai": 3,
+    "bi": 3,
+    "ye": 5.59,
+    "rise": 1.36,
+    "flat": 0.45,
+    "power": 2.2,
+    "lift": 0.5,
+    "between": true,
+    "bells": true
+   },
+   "roof3": {
+    "ao": 4.52,
+    "bo": 4.52,
+    "top": 0.58,
+    "ye": 9,
+    "rise": 2,
+    "flat": 0.3,
+    "power": 2.4,
+    "lift": 0.6,
+    "bells": true
+   },
+   "finial": {
+    "pedestal": 0.58,
+    "bird": 0.95
+   },
+   "annex": {
+    "u": [
+     -10.65,
+     -7.6
+    ],
+    "v": [
+     -0.75,
+     1.45
+    ],
+    "floor": 0.9,
+    "eave": 2.55,
+    "ridge": 3.05,
+    "overhang": 0.75,
+    "east": -5.3,
+    "join": -5.95
+   },
+   "phase": "kitayama",
+   "parts": [
+    "base"
+   ],
+   "provenance": "documented",
+   "note": "The stone platform and its revetment along the water, sized from the photographs; it is not measured."
+  },
+  {
+   "type": "pavilion",
+   "center": [
+    0,
+    0
+   ],
+   "unit": 0.30303,
+   "grid": {
+    "u": [
+     6,
+     9,
+     6,
+     6,
+     6
+    ],
+    "v": [
+     6,
+     6,
+     6,
+     6
+    ]
+   },
+   "post": 0.24,
+   "levels": {
+    "platform": 0.4,
+    "floor1": 0.75,
+    "head1": 3,
+    "floor2": 3.4,
+    "head2": 5.46,
+    "floor3": 7.15,
+    "head3": 8.62
+   },
+   "base": {
+    "half": [
+     6.4,
+     5.2
+    ],
+    "boulders": [
+     "s",
+     "w"
+    ],
+    "plinth": 0.2,
+    "plinthAt": 0.6
+   },
+   "storey1": {
+    "deck": 0.95,
+    "inner": 3,
+    "lintel": 0.54,
+    "waistRail": 0.8,
+    "shitomi": 0.95,
+    "railing": [
+     "s",
+     "w",
+     "n"
+    ],
+    "gaps": {
+     "w": [
+      -1.2,
+      1.9
+     ],
+     "n": [
+      -1.6,
+      9
+     ]
+    },
+    "steps": [
+     [
+      "e",
+      0.1,
+      1.7
+     ]
+    ],
+    "walls": [
+     {
+      "side": "s",
+      "line": 3,
+      "span": [
+       0,
+       5
+      ],
+      "bays": [
+       "shitomi",
+       "shitomi",
+       "shitomi",
+       "shitomi",
+       "shitomi"
+      ]
+     },
+     {
+      "side": "e",
+      "line": 5,
+      "span": [
+       0,
+       3
+      ],
+      "bays": [
+       "wall",
+       "wall",
+       "door"
+      ]
+     },
+     {
+      "side": "w",
+      "line": 0,
+      "span": [
+       0,
+       3
+      ],
+      "bays": [
+       "wall",
+       "wall",
+       "door"
+      ]
+     },
+     {
+      "side": "n",
+      "line": 0,
+      "span": [
+       0,
+       5
+      ],
+      "bays": [
+       "wall",
+       "wall",
+       "wall",
+       "wall",
+       "wall"
+      ]
+     }
+    ]
+   },
+   "storey2": {
+    "balcony": 0.9,
+    "rail": 0.75,
+    "lintel": 0.45,
+    "waist": 0.55,
+    "posts": [
+     [
+      1,
+      3
+     ],
+     [
+      2,
+      3
+     ],
+     [
+      3,
+      3
+     ],
+     [
+      3,
+      2
+     ],
+     [
+      3,
+      1
+     ]
+    ],
+    "walls": [
+     {
+      "side": "s",
+      "line": 4,
+      "span": [
+       3,
+       5
+      ],
+      "bays": [
+       "maira",
+       "maira"
+      ]
+     },
+     {
+      "side": "s",
+      "line": 3,
+      "span": [
+       0,
+       3
+      ],
+      "bays": [
+       "lattice",
+       "door2",
+       "lattice"
+      ]
+     },
+     {
+      "side": "e",
+      "line": 3,
+      "span": [
+       0,
+       4
+      ],
+      "bays": [
+       "maira",
+       "maira",
+       "maira",
+       "maira"
+      ]
+     },
+     {
+      "side": "e",
+      "line": 5,
+      "span": [
+       0,
+       4
+      ],
+      "bays": [
+       "plank",
+       "renji",
+       "renji",
+       "plank"
+      ]
+     },
+     {
+      "side": "w",
+      "line": 0,
+      "span": [
+       0,
+       3
+      ],
+      "bays": [
+       "plank",
+       "renji",
+       "renji"
+      ]
+     },
+     {
+      "side": "n",
+      "line": 0,
+      "span": [
+       0,
+       5
+      ],
+      "bays": [
+       "plank",
+       "door2",
+       "plank",
+       "plank",
+       "plank"
+      ]
+     }
+    ]
+   },
+   "storey3": {
+    "grid": [
+     6,
+     6,
+     6
+    ],
+    "balcony": 0.92,
+    "rail": 0.59,
+    "doorTop": 0.14,
+    "window": {
+     "w": 0.72,
+     "sill": 0.4,
+     "spring": 0.62,
+     "rise": 0.3
+    },
+    "bays": [
+     "katomado",
+     "sankarado",
+     "katomado"
+    ],
+    "plaque": [
+     0
+    ]
+   },
+   "roof2": {
+    "ao": 7.26,
+    "bo": 5.88,
+    "ai": 3,
+    "bi": 3,
+    "ye": 5.59,
+    "rise": 1.36,
+    "flat": 0.45,
+    "power": 2.2,
+    "lift": 0.5,
+    "between": true
+   },
+   "roof3": {
+    "ao": 4.52,
+    "bo": 4.52,
+    "top": 0.58,
+    "ye": 9,
+    "rise": 2,
+    "flat": 0.3,
+    "power": 2.4,
+    "lift": 0.6
+   },
+   "finial": {
+    "pedestal": 0.58,
+    "bird": 0.95
+   },
+   "annex": {
+    "u": [
+     -10.65,
+     -7.6
+    ],
+    "v": [
+     -0.75,
+     1.45
+    ],
+    "floor": 0.9,
+    "eave": 2.55,
+    "ridge": 3.05,
+    "overhang": 0.75,
+    "east": -5.3,
+    "join": -5.95
+   },
+   "phase": "kitayama",
+   "until": "meiji",
+   "parts": [
+    "timber",
+    "plaster",
+    "core",
+    "lacquer",
+    "roof",
+    "annex",
+    "finial"
+   ],
+   "finish": {
+    "timber": "#5e4b3b",
+    "plaster": "#ddd7c8",
+    "core": "#463b33",
+    "lacquer": "#3b312a",
+    "roof": "#5f584f",
+    "annex": "#5e4b3b",
+    "finial": "#d9b45c",
+    "pedestal": "#3b3734",
+    "bracket": "#3c332c",
+    "ceiling": "#4a3a2e"
+   },
+   "provenance": "documented",
+   "note": "The first pavilion in the form recorded by the 1904 drawings and the photographs before the fire, which the 1955 rebuilding follows; later repairs (1649) may have changed details."
+  },
+  {
+   "type": "pavilion",
+   "center": [
+    0,
+    0
+   ],
+   "unit": 0.30303,
+   "grid": {
+    "u": [
+     6,
+     9,
+     6,
+     6,
+     6
+    ],
+    "v": [
+     6,
+     6,
+     6,
+     6
+    ]
+   },
+   "post": 0.24,
+   "levels": {
+    "platform": 0.4,
+    "floor1": 0.75,
+    "head1": 3,
+    "floor2": 3.4,
+    "head2": 5.46,
+    "floor3": 7.15,
+    "head3": 8.62
+   },
+   "base": {
+    "half": [
+     6.4,
+     5.2
+    ],
+    "boulders": [
+     "s",
+     "w"
+    ],
+    "plinth": 0.2,
+    "plinthAt": 0.6
+   },
+   "storey1": {
+    "deck": 0.95,
+    "inner": 3,
+    "lintel": 0.54,
+    "waistRail": 0.8,
+    "shitomi": 0.95,
+    "railing": [
+     "s",
+     "w",
+     "n"
+    ],
+    "gaps": {
+     "w": [
+      -1.2,
+      1.9
+     ],
+     "n": [
+      -1.6,
+      9
+     ]
+    },
+    "steps": [
+     [
+      "e",
+      0.1,
+      1.7
+     ]
+    ],
+    "walls": [
+     {
+      "side": "s",
+      "line": 3,
+      "span": [
+       0,
+       5
+      ],
+      "bays": [
+       "shitomi",
+       "shitomi",
+       "shitomi",
+       "shitomi",
+       "shitomi"
+      ]
+     },
+     {
+      "side": "e",
+      "line": 5,
+      "span": [
+       0,
+       3
+      ],
+      "bays": [
+       "wall",
+       "wall",
+       "door"
+      ]
+     },
+     {
+      "side": "w",
+      "line": 0,
+      "span": [
+       0,
+       3
+      ],
+      "bays": [
+       "wall",
+       "wall",
+       "door"
+      ]
+     },
+     {
+      "side": "n",
+      "line": 0,
+      "span": [
+       0,
+       5
+      ],
+      "bays": [
+       "wall",
+       "wall",
+       "wall",
+       "wall",
+       "wall"
+      ]
+     }
+    ]
+   },
+   "storey2": {
+    "balcony": 0.9,
+    "rail": 0.75,
+    "lintel": 0.45,
+    "waist": 0.55,
+    "posts": [
+     [
+      1,
+      3
+     ],
+     [
+      2,
+      3
+     ],
+     [
+      3,
+      3
+     ],
+     [
+      3,
+      2
+     ],
+     [
+      3,
+      1
+     ]
+    ],
+    "walls": [
+     {
+      "side": "s",
+      "line": 4,
+      "span": [
+       3,
+       5
+      ],
+      "bays": [
+       "maira",
+       "maira"
+      ]
+     },
+     {
+      "side": "s",
+      "line": 3,
+      "span": [
+       0,
+       3
+      ],
+      "bays": [
+       "lattice",
+       "door2",
+       "lattice"
+      ]
+     },
+     {
+      "side": "e",
+      "line": 3,
+      "span": [
+       0,
+       4
+      ],
+      "bays": [
+       "maira",
+       "maira",
+       "maira",
+       "maira"
+      ]
+     },
+     {
+      "side": "e",
+      "line": 5,
+      "span": [
+       0,
+       4
+      ],
+      "bays": [
+       "plank",
+       "renji",
+       "renji",
+       "plank"
+      ]
+     },
+     {
+      "side": "w",
+      "line": 0,
+      "span": [
+       0,
+       3
+      ],
+      "bays": [
+       "plank",
+       "renji",
+       "renji"
+      ]
+     },
+     {
+      "side": "n",
+      "line": 0,
+      "span": [
+       0,
+       5
+      ],
+      "bays": [
+       "plank",
+       "door2",
+       "plank",
+       "plank",
+       "plank"
+      ]
+     }
+    ]
+   },
+   "storey3": {
+    "grid": [
+     6,
+     6,
+     6
+    ],
+    "balcony": 0.92,
+    "rail": 0.59,
+    "doorTop": 0.14,
+    "window": {
+     "w": 0.72,
+     "sill": 0.4,
+     "spring": 0.62,
+     "rise": 0.3
+    },
+    "bays": [
+     "katomado",
+     "sankarado",
+     "katomado"
+    ],
+    "plaque": [
+     0
+    ]
+   },
+   "roof2": {
+    "ao": 7.26,
+    "bo": 5.88,
+    "ai": 3,
+    "bi": 3,
+    "ye": 5.59,
+    "rise": 1.36,
+    "flat": 0.45,
+    "power": 2.2,
+    "lift": 0.5,
+    "between": true
+   },
+   "roof3": {
+    "ao": 4.52,
+    "bo": 4.52,
+    "top": 0.58,
+    "ye": 9,
+    "rise": 2,
+    "flat": 0.3,
+    "power": 2.4,
+    "lift": 0.6
+   },
+   "finial": {
+    "pedestal": 0.58,
+    "bird": 0.95
+   },
+   "annex": {
+    "u": [
+     -10.65,
+     -7.6
+    ],
+    "v": [
+     -0.75,
+     1.45
+    ],
+    "floor": 0.9,
+    "eave": 2.55,
+    "ridge": 3.05,
+    "overhang": 0.75,
+    "east": -5.3,
+    "join": -5.95
+   },
+   "phase": "kitayama",
+   "until": "weathered",
+   "parts": [
+    "skin"
+   ],
+   "finish": {
+    "skin": "#d5a845"
+   },
+   "provenance": "interpreted",
+   "note": "Gold on the third storey is documented (traces survived until 1950); on the second it rests on the gilded hip-rafter fragment the 1955 rebuilding relied on, and Miyakami Shigetaka argued it was never gilded."
+  },
+  {
+   "type": "pavilion",
+   "center": [
+    0,
+    0
+   ],
+   "unit": 0.30303,
+   "grid": {
+    "u": [
+     6,
+     9,
+     6,
+     6,
+     6
+    ],
+    "v": [
+     6,
+     6,
+     6,
+     6
+    ]
+   },
+   "post": 0.24,
+   "levels": {
+    "platform": 0.4,
+    "floor1": 0.75,
+    "head1": 3,
+    "floor2": 3.4,
+    "head2": 5.46,
+    "floor3": 7.15,
+    "head3": 8.62
+   },
+   "base": {
+    "half": [
+     6.4,
+     5.2
+    ],
+    "boulders": [
+     "s",
+     "w"
+    ],
+    "plinth": 0.2,
+    "plinthAt": 0.6
+   },
+   "storey1": {
+    "deck": 0.95,
+    "inner": 3,
+    "lintel": 0.54,
+    "waistRail": 0.8,
+    "shitomi": 0.95,
+    "railing": [
+     "s",
+     "w",
+     "n"
+    ],
+    "gaps": {
+     "w": [
+      -1.2,
+      1.9
+     ],
+     "n": [
+      -1.6,
+      9
+     ]
+    },
+    "steps": [
+     [
+      "e",
+      0.1,
+      1.7
+     ]
+    ],
+    "walls": [
+     {
+      "side": "s",
+      "line": 3,
+      "span": [
+       0,
+       5
+      ],
+      "bays": [
+       "shitomi",
+       "shitomi",
+       "shitomi",
+       "shitomi",
+       "shitomi"
+      ]
+     },
+     {
+      "side": "e",
+      "line": 5,
+      "span": [
+       0,
+       3
+      ],
+      "bays": [
+       "wall",
+       "wall",
+       "door"
+      ]
+     },
+     {
+      "side": "w",
+      "line": 0,
+      "span": [
+       0,
+       3
+      ],
+      "bays": [
+       "wall",
+       "wall",
+       "door"
+      ]
+     },
+     {
+      "side": "n",
+      "line": 0,
+      "span": [
+       0,
+       5
+      ],
+      "bays": [
+       "wall",
+       "wall",
+       "wall",
+       "wall",
+       "wall"
+      ]
+     }
+    ]
+   },
+   "storey2": {
+    "balcony": 0.9,
+    "rail": 0.75,
+    "lintel": 0.45,
+    "waist": 0.55,
+    "posts": [
+     [
+      1,
+      3
+     ],
+     [
+      2,
+      3
+     ],
+     [
+      3,
+      3
+     ],
+     [
+      3,
+      2
+     ],
+     [
+      3,
+      1
+     ]
+    ],
+    "walls": [
+     {
+      "side": "s",
+      "line": 4,
+      "span": [
+       3,
+       5
+      ],
+      "bays": [
+       "maira",
+       "maira"
+      ]
+     },
+     {
+      "side": "s",
+      "line": 3,
+      "span": [
+       0,
+       3
+      ],
+      "bays": [
+       "lattice",
+       "door2",
+       "lattice"
+      ]
+     },
+     {
+      "side": "e",
+      "line": 3,
+      "span": [
+       0,
+       4
+      ],
+      "bays": [
+       "maira",
+       "maira",
+       "maira",
+       "maira"
+      ]
+     },
+     {
+      "side": "e",
+      "line": 5,
+      "span": [
+       0,
+       4
+      ],
+      "bays": [
+       "plank",
+       "renji",
+       "renji",
+       "plank"
+      ]
+     },
+     {
+      "side": "w",
+      "line": 0,
+      "span": [
+       0,
+       3
+      ],
+      "bays": [
+       "plank",
+       "renji",
+       "renji"
+      ]
+     },
+     {
+      "side": "n",
+      "line": 0,
+      "span": [
+       0,
+       5
+      ],
+      "bays": [
+       "plank",
+       "door2",
+       "plank",
+       "plank",
+       "plank"
+      ]
+     }
+    ]
+   },
+   "storey3": {
+    "grid": [
+     6,
+     6,
+     6
+    ],
+    "balcony": 0.92,
+    "rail": 0.59,
+    "doorTop": 0.14,
+    "window": {
+     "w": 0.72,
+     "sill": 0.4,
+     "spring": 0.62,
+     "rise": 0.3
+    },
+    "bays": [
+     "katomado",
+     "sankarado",
+     "katomado"
+    ],
+    "plaque": [
+     0
+    ]
+   },
+   "roof2": {
+    "ao": 7.26,
+    "bo": 5.88,
+    "ai": 3,
+    "bi": 3,
+    "ye": 5.59,
+    "rise": 1.36,
+    "flat": 0.45,
+    "power": 2.2,
+    "lift": 0.5,
+    "between": true
+   },
+   "roof3": {
+    "ao": 4.52,
+    "bo": 4.52,
+    "top": 0.58,
+    "ye": 9,
+    "rise": 2,
+    "flat": 0.3,
+    "power": 2.4,
+    "lift": 0.6
+   },
+   "finial": {
+    "pedestal": 0.58,
+    "bird": 0.95
+   },
+   "annex": {
+    "u": [
+     -10.65,
+     -7.6
+    ],
+    "v": [
+     -0.75,
+     1.45
+    ],
+    "floor": 0.9,
+    "eave": 2.55,
+    "ridge": 3.05,
+    "overhang": 0.75,
+    "east": -5.3,
+    "join": -5.95
+   },
+   "phase": "kitayama",
+   "until": "meiji",
+   "parts": [
+    "frame"
+   ],
+   "finish": {
+    "timber": "#5e4b3b",
+    "plaster": "#ddd7c8",
+    "core": "#5b4b3d",
+    "lacquer": "#3b312a",
+    "roof": "#6f685e",
+    "annex": "#5e4b3b",
+    "finial": "#9a8550",
+    "pedestal": "#3b3734",
+    "bracket": "#3c332c",
+    "ceiling": "#4a3a2e"
+   },
+   "provenance": "interpreted",
+   "note": "A Japanese roof frame (wagoya purlins on struts, hanegi cantilevers) drawn as such frames are built; no survey of this frame was read."
+  },
+  {
+   "type": "pavilion",
+   "center": [
+    0,
+    0
+   ],
+   "unit": 0.30303,
+   "grid": {
+    "u": [
+     6,
+     9,
+     6,
+     6,
+     6
+    ],
+    "v": [
+     6,
+     6,
+     6,
+     6
+    ]
+   },
+   "post": 0.24,
+   "levels": {
+    "platform": 0.4,
+    "floor1": 0.75,
+    "head1": 3,
+    "floor2": 3.4,
+    "head2": 5.46,
+    "floor3": 7.15,
+    "head3": 8.62
+   },
+   "base": {
+    "half": [
+     6.4,
+     5.2
+    ],
+    "boulders": [
+     "s",
+     "w"
+    ],
+    "plinth": 0.2,
+    "plinthAt": 0.6
+   },
+   "storey1": {
+    "deck": 0.95,
+    "inner": 3,
+    "lintel": 0.54,
+    "waistRail": 0.8,
+    "shitomi": 0.95,
+    "railing": [
+     "s",
+     "w",
+     "n"
+    ],
+    "gaps": {
+     "w": [
+      -1.2,
+      1.9
+     ],
+     "n": [
+      -1.6,
+      9
+     ]
+    },
+    "steps": [
+     [
+      "e",
+      0.1,
+      1.7
+     ]
+    ],
+    "walls": [
+     {
+      "side": "s",
+      "line": 3,
+      "span": [
+       0,
+       5
+      ],
+      "bays": [
+       "shitomi",
+       "shitomi",
+       "shitomi",
+       "shitomi",
+       "shitomi"
+      ]
+     },
+     {
+      "side": "e",
+      "line": 5,
+      "span": [
+       0,
+       3
+      ],
+      "bays": [
+       "wall",
+       "wall",
+       "door"
+      ]
+     },
+     {
+      "side": "w",
+      "line": 0,
+      "span": [
+       0,
+       3
+      ],
+      "bays": [
+       "wall",
+       "wall",
+       "door"
+      ]
+     },
+     {
+      "side": "n",
+      "line": 0,
+      "span": [
+       0,
+       5
+      ],
+      "bays": [
+       "wall",
+       "wall",
+       "wall",
+       "wall",
+       "wall"
+      ]
+     }
+    ]
+   },
+   "storey2": {
+    "balcony": 0.9,
+    "rail": 0.75,
+    "lintel": 0.45,
+    "waist": 0.55,
+    "posts": [
+     [
+      1,
+      3
+     ],
+     [
+      2,
+      3
+     ],
+     [
+      3,
+      3
+     ],
+     [
+      3,
+      2
+     ],
+     [
+      3,
+      1
+     ]
+    ],
+    "walls": [
+     {
+      "side": "s",
+      "line": 4,
+      "span": [
+       3,
+       5
+      ],
+      "bays": [
+       "maira",
+       "maira"
+      ]
+     },
+     {
+      "side": "s",
+      "line": 3,
+      "span": [
+       0,
+       3
+      ],
+      "bays": [
+       "lattice",
+       "door2",
+       "lattice"
+      ]
+     },
+     {
+      "side": "e",
+      "line": 3,
+      "span": [
+       0,
+       4
+      ],
+      "bays": [
+       "maira",
+       "maira",
+       "maira",
+       "maira"
+      ]
+     },
+     {
+      "side": "e",
+      "line": 5,
+      "span": [
+       0,
+       4
+      ],
+      "bays": [
+       "plank",
+       "renji",
+       "renji",
+       "plank"
+      ]
+     },
+     {
+      "side": "w",
+      "line": 0,
+      "span": [
+       0,
+       3
+      ],
+      "bays": [
+       "plank",
+       "renji",
+       "renji"
+      ]
+     },
+     {
+      "side": "n",
+      "line": 0,
+      "span": [
+       0,
+       5
+      ],
+      "bays": [
+       "plank",
+       "door2",
+       "plank",
+       "plank",
+       "plank"
+      ]
+     }
+    ]
+   },
+   "storey3": {
+    "grid": [
+     6,
+     6,
+     6
+    ],
+    "balcony": 0.92,
+    "rail": 0.59,
+    "doorTop": 0.14,
+    "window": {
+     "w": 0.72,
+     "sill": 0.4,
+     "spring": 0.62,
+     "rise": 0.3
+    },
+    "bays": [
+     "katomado",
+     "sankarado",
+     "katomado"
+    ],
+    "plaque": [
+     0
+    ]
+   },
+   "roof2": {
+    "ao": 7.26,
+    "bo": 5.88,
+    "ai": 3,
+    "bi": 3,
+    "ye": 5.59,
+    "rise": 1.36,
+    "flat": 0.45,
+    "power": 2.2,
+    "lift": 0.5,
+    "between": true
+   },
+   "roof3": {
+    "ao": 4.52,
+    "bo": 4.52,
+    "top": 0.58,
+    "ye": 9,
+    "rise": 2,
+    "flat": 0.3,
+    "power": 2.4,
+    "lift": 0.6
+   },
+   "finial": {
+    "pedestal": 0.58,
+    "bird": 0.95
+   },
+   "annex": {
+    "u": [
+     -10.65,
+     -7.6
+    ],
+    "v": [
+     -0.75,
+     1.45
+    ],
+    "floor": 0.9,
+    "eave": 2.55,
+    "ridge": 3.05,
+    "overhang": 0.75,
+    "east": -5.3,
+    "join": -5.95
+   },
+   "phase": "meiji",
+   "until": "fire",
+   "parts": [
+    "timber",
+    "plaster",
+    "core",
+    "lacquer",
+    "roof",
+    "annex",
+    "finial"
+   ],
+   "skip": [
+    "skeleton"
+   ],
+   "finish": {
+    "timber": "#5e4b3b",
+    "plaster": "#ddd7c8",
+    "core": "#5b4b3d",
+    "lacquer": "#3b312a",
+    "roof": "#6f685e",
+    "annex": "#5e4b3b",
+    "finial": "#9a8550",
+    "pedestal": "#3b3734",
+    "bracket": "#3c332c",
+    "ceiling": "#4a3a2e"
+   },
+   "provenance": "documented",
+   "note": "The pavilion dismantled and rebuilt in 1904–1906, as photographed before 1950: bare weathered timber, renji windows on the second storey's east and west faces."
+  },
+  {
+   "type": "pavilion",
+   "center": [
+    0,
+    0
+   ],
+   "unit": 0.30303,
+   "grid": {
+    "u": [
+     6,
+     9,
+     6,
+     6,
+     6
+    ],
+    "v": [
+     6,
+     6,
+     6,
+     6
+    ]
+   },
+   "post": 0.24,
+   "levels": {
+    "platform": 0.4,
+    "floor1": 0.75,
+    "head1": 3,
+    "floor2": 3.4,
+    "head2": 5.46,
+    "floor3": 7.15,
+    "head3": 8.62
+   },
+   "base": {
+    "half": [
+     6.4,
+     5.2
+    ],
+    "boulders": [
+     "s",
+     "w"
+    ],
+    "plinth": 0.2,
+    "plinthAt": 0.6
+   },
+   "storey1": {
+    "deck": 0.95,
+    "inner": 3,
+    "lintel": 0.54,
+    "waistRail": 0.8,
+    "shitomi": 0.95,
+    "railing": [
+     "s",
+     "w",
+     "n"
+    ],
+    "gaps": {
+     "w": [
+      -1.2,
+      1.9
+     ],
+     "n": [
+      -1.6,
+      9
+     ]
+    },
+    "steps": [
+     [
+      "e",
+      0.1,
+      1.7
+     ]
+    ],
+    "walls": [
+     {
+      "side": "s",
+      "line": 3,
+      "span": [
+       0,
+       5
+      ],
+      "bays": [
+       "shitomi",
+       "shitomi",
+       "shitomi",
+       "shitomi",
+       "shitomi"
+      ]
+     },
+     {
+      "side": "e",
+      "line": 5,
+      "span": [
+       0,
+       3
+      ],
+      "bays": [
+       "wall",
+       "wall",
+       "door"
+      ]
+     },
+     {
+      "side": "w",
+      "line": 0,
+      "span": [
+       0,
+       3
+      ],
+      "bays": [
+       "wall",
+       "wall",
+       "door"
+      ]
+     },
+     {
+      "side": "n",
+      "line": 0,
+      "span": [
+       0,
+       5
+      ],
+      "bays": [
+       "wall",
+       "wall",
+       "wall",
+       "wall",
+       "wall"
+      ]
+     }
+    ]
+   },
+   "storey2": {
+    "balcony": 0.9,
+    "rail": 0.75,
+    "lintel": 0.45,
+    "waist": 0.55,
+    "posts": [
+     [
+      1,
+      3
+     ],
+     [
+      2,
+      3
+     ],
+     [
+      3,
+      3
+     ],
+     [
+      3,
+      2
+     ],
+     [
+      3,
+      1
+     ]
+    ],
+    "walls": [
+     {
+      "side": "s",
+      "line": 4,
+      "span": [
+       3,
+       5
+      ],
+      "bays": [
+       "maira",
+       "maira"
+      ]
+     },
+     {
+      "side": "s",
+      "line": 3,
+      "span": [
+       0,
+       3
+      ],
+      "bays": [
+       "lattice",
+       "door2",
+       "lattice"
+      ]
+     },
+     {
+      "side": "e",
+      "line": 3,
+      "span": [
+       0,
+       4
+      ],
+      "bays": [
+       "maira",
+       "maira",
+       "maira",
+       "maira"
+      ]
+     },
+     {
+      "side": "e",
+      "line": 5,
+      "span": [
+       0,
+       4
+      ],
+      "bays": [
+       "plank",
+       "renji",
+       "renji",
+       "plank"
+      ]
+     },
+     {
+      "side": "w",
+      "line": 0,
+      "span": [
+       0,
+       3
+      ],
+      "bays": [
+       "plank",
+       "renji",
+       "renji"
+      ]
+     },
+     {
+      "side": "n",
+      "line": 0,
+      "span": [
+       0,
+       5
+      ],
+      "bays": [
+       "plank",
+       "door2",
+       "plank",
+       "plank",
+       "plank"
+      ]
+     }
+    ]
+   },
+   "storey3": {
+    "grid": [
+     6,
+     6,
+     6
+    ],
+    "balcony": 0.92,
+    "rail": 0.59,
+    "doorTop": 0.14,
+    "window": {
+     "w": 0.72,
+     "sill": 0.4,
+     "spring": 0.62,
+     "rise": 0.3
+    },
+    "bays": [
+     "katomado",
+     "sankarado",
+     "katomado"
+    ],
+    "plaque": [
+     0
+    ]
+   },
+   "roof2": {
+    "ao": 7.26,
+    "bo": 5.88,
+    "ai": 3,
+    "bi": 3,
+    "ye": 5.59,
+    "rise": 1.36,
+    "flat": 0.45,
+    "power": 2.2,
+    "lift": 0.5,
+    "between": true
+   },
+   "roof3": {
+    "ao": 4.52,
+    "bo": 4.52,
+    "top": 0.58,
+    "ye": 9,
+    "rise": 2,
+    "flat": 0.3,
+    "power": 2.4,
+    "lift": 0.6
+   },
+   "finial": {
+    "pedestal": 0.58,
+    "bird": 0.95
+   },
+   "annex": {
+    "u": [
+     -10.65,
+     -7.6
+    ],
+    "v": [
+     -0.75,
+     1.45
+    ],
+    "floor": 0.9,
+    "eave": 2.55,
+    "ridge": 3.05,
+    "overhang": 0.75,
+    "east": -5.3,
+    "join": -5.95
+   },
+   "phase": "meiji",
+   "until": "reconstruction",
+   "parts": [
+    "timber",
+    "core"
+   ],
+   "only": "skeleton",
+   "finish": {
+    "timber": "#3a2f27",
+    "plaster": "#ddd7c8",
+    "core": "#3a2f27",
+    "lacquer": "#3b312a",
+    "roof": "#6f685e",
+    "annex": "#5e4b3b",
+    "finial": "#9a8550",
+    "pedestal": "#3b3734",
+    "bracket": "#3c332c",
+    "ceiling": "#4a3a2e"
+   },
+   "provenance": "documented",
+   "note": "The posts, head beams and veranda beams of the two lower storeys that stood, charred, after the fire (photograph of 2 July 1950)."
+  },
+  {
+   "type": "pavilion",
+   "center": [
+    0,
+    0
+   ],
+   "unit": 0.30303,
+   "grid": {
+    "u": [
+     6,
+     9,
+     6,
+     6,
+     6
+    ],
+    "v": [
+     6,
+     6,
+     6,
+     6
+    ]
+   },
+   "post": 0.24,
+   "levels": {
+    "platform": 0.4,
+    "floor1": 0.75,
+    "head1": 3,
+    "floor2": 3.4,
+    "head2": 5.46,
+    "floor3": 7.15,
+    "head3": 8.62
+   },
+   "base": {
+    "half": [
+     6.4,
+     5.2
+    ],
+    "boulders": [
+     "s",
+     "w"
+    ],
+    "plinth": 0.2,
+    "plinthAt": 0.6
+   },
+   "storey1": {
+    "deck": 0.95,
+    "inner": 3,
+    "lintel": 0.54,
+    "waistRail": 0.8,
+    "shitomi": 0.95,
+    "railing": [
+     "s",
+     "w",
+     "n"
+    ],
+    "gaps": {
+     "w": [
+      -1.2,
+      1.9
+     ],
+     "n": [
+      -1.6,
+      9
+     ]
+    },
+    "steps": [
+     [
+      "e",
+      0.1,
+      1.7
+     ]
+    ],
+    "walls": [
+     {
+      "side": "s",
+      "line": 3,
+      "span": [
+       0,
+       5
+      ],
+      "bays": [
+       "shitomi",
+       "shitomi",
+       "shitomi",
+       "shitomi",
+       "shitomi"
+      ]
+     },
+     {
+      "side": "e",
+      "line": 5,
+      "span": [
+       0,
+       3
+      ],
+      "bays": [
+       "wall",
+       "wall",
+       "door"
+      ]
+     },
+     {
+      "side": "w",
+      "line": 0,
+      "span": [
+       0,
+       3
+      ],
+      "bays": [
+       "wall",
+       "wall",
+       "door"
+      ]
+     },
+     {
+      "side": "n",
+      "line": 0,
+      "span": [
+       0,
+       5
+      ],
+      "bays": [
+       "wall",
+       "wall",
+       "wall",
+       "wall",
+       "wall"
+      ]
+     }
+    ]
+   },
+   "storey2": {
+    "balcony": 0.9,
+    "rail": 0.75,
+    "lintel": 0.45,
+    "waist": 0.55,
+    "posts": [
+     [
+      1,
+      3
+     ],
+     [
+      2,
+      3
+     ],
+     [
+      3,
+      3
+     ],
+     [
+      3,
+      2
+     ],
+     [
+      3,
+      1
+     ]
+    ],
+    "walls": [
+     {
+      "side": "s",
+      "line": 4,
+      "span": [
+       3,
+       5
+      ],
+      "bays": [
+       "maira",
+       "maira"
+      ]
+     },
+     {
+      "side": "s",
+      "line": 3,
+      "span": [
+       0,
+       3
+      ],
+      "bays": [
+       "lattice",
+       "door2",
+       "lattice"
+      ]
+     },
+     {
+      "side": "e",
+      "line": 3,
+      "span": [
+       0,
+       4
+      ],
+      "bays": [
+       "maira",
+       "maira",
+       "maira",
+       "maira"
+      ]
+     },
+     {
+      "side": "e",
+      "line": 5,
+      "span": [
+       0,
+       4
+      ],
+      "bays": [
+       "plank",
+       "renji",
+       "renji",
+       "plank"
+      ]
+     },
+     {
+      "side": "w",
+      "line": 0,
+      "span": [
+       0,
+       3
+      ],
+      "bays": [
+       "plank",
+       "renji",
+       "renji"
+      ]
+     },
+     {
+      "side": "n",
+      "line": 0,
+      "span": [
+       0,
+       5
+      ],
+      "bays": [
+       "plank",
+       "door2",
+       "plank",
+       "plank",
+       "plank"
+      ]
+     }
+    ]
+   },
+   "storey3": {
+    "grid": [
+     6,
+     6,
+     6
+    ],
+    "balcony": 0.92,
+    "rail": 0.59,
+    "doorTop": 0.14,
+    "window": {
+     "w": 0.72,
+     "sill": 0.4,
+     "spring": 0.62,
+     "rise": 0.3
+    },
+    "bays": [
+     "katomado",
+     "sankarado",
+     "katomado"
+    ],
+    "plaque": [
+     0
+    ]
+   },
+   "roof2": {
+    "ao": 7.26,
+    "bo": 5.88,
+    "ai": 3,
+    "bi": 3,
+    "ye": 5.59,
+    "rise": 1.36,
+    "flat": 0.45,
+    "power": 2.2,
+    "lift": 0.5,
+    "between": true
+   },
+   "roof3": {
+    "ao": 4.52,
+    "bo": 4.52,
+    "top": 0.58,
+    "ye": 9,
+    "rise": 2,
+    "flat": 0.3,
+    "power": 2.4,
+    "lift": 0.6
+   },
+   "finial": {
+    "pedestal": 0.58,
+    "bird": 0.95
+   },
+   "annex": {
+    "u": [
+     -10.65,
+     -7.6
+    ],
+    "v": [
+     -0.75,
+     1.45
+    ],
+    "floor": 0.9,
+    "eave": 2.55,
+    "ridge": 3.05,
+    "overhang": 0.75,
+    "east": -5.3,
+    "join": -5.95
+   },
+   "phase": "meiji",
+   "until": "fire",
+   "parts": [
+    "frame"
+   ],
+   "finish": {
+    "timber": "#5e4b3b",
+    "plaster": "#ddd7c8",
+    "core": "#5b4b3d",
+    "lacquer": "#3b312a",
+    "roof": "#6f685e",
+    "annex": "#5e4b3b",
+    "finial": "#9a8550",
+    "pedestal": "#3b3734",
+    "bracket": "#3c332c",
+    "ceiling": "#4a3a2e"
+   },
+   "provenance": "interpreted",
+   "note": "A Japanese roof frame (wagoya purlins on struts, hanegi cantilevers) drawn as such frames are built; no survey of this frame was read."
+  },
+  {
+   "type": "pavilion",
+   "center": [
+    0,
+    0
+   ],
+   "unit": 0.30303,
+   "grid": {
+    "u": [
+     6,
+     9,
+     6,
+     6,
+     6
+    ],
+    "v": [
+     6,
+     6,
+     6,
+     6
+    ]
+   },
+   "post": 0.24,
+   "levels": {
+    "platform": 0.4,
+    "floor1": 0.75,
+    "head1": 3,
+    "floor2": 3.4,
+    "head2": 5.46,
+    "floor3": 7.15,
+    "head3": 8.62
+   },
+   "base": {
+    "half": [
+     6.4,
+     5.2
+    ],
+    "boulders": [
+     "s",
+     "w"
+    ],
+    "plinth": 0.2,
+    "plinthAt": 0.6
+   },
+   "storey1": {
+    "deck": 0.95,
+    "inner": 3,
+    "lintel": 0.54,
+    "waistRail": 0.8,
+    "shitomi": 0.95,
+    "railing": [
+     "s",
+     "w",
+     "n"
+    ],
+    "gaps": {
+     "w": [
+      -1.2,
+      1.9
+     ],
+     "n": [
+      -1.6,
+      9
+     ]
+    },
+    "steps": [
+     [
+      "e",
+      0.1,
+      1.7
+     ]
+    ],
+    "walls": [
+     {
+      "side": "s",
+      "line": 3,
+      "span": [
+       0,
+       5
+      ],
+      "bays": [
+       "shitomi",
+       "shitomi",
+       "shitomi",
+       "shitomi",
+       "shitomi"
+      ]
+     },
+     {
+      "side": "e",
+      "line": 5,
+      "span": [
+       0,
+       3
+      ],
+      "bays": [
+       "wall",
+       "wall",
+       "door"
+      ]
+     },
+     {
+      "side": "w",
+      "line": 0,
+      "span": [
+       0,
+       3
+      ],
+      "bays": [
+       "wall",
+       "wall",
+       "door"
+      ]
+     },
+     {
+      "side": "n",
+      "line": 0,
+      "span": [
+       0,
+       5
+      ],
+      "bays": [
+       "wall",
+       "wall",
+       "wall",
+       "wall",
+       "wall"
+      ]
+     }
+    ]
+   },
+   "storey2": {
+    "balcony": 0.9,
+    "rail": 0.75,
+    "lintel": 0.45,
+    "waist": 0.55,
+    "posts": [
+     [
+      1,
+      3
+     ],
+     [
+      2,
+      3
+     ],
+     [
+      3,
+      3
+     ],
+     [
+      3,
+      2
+     ],
+     [
+      3,
+      1
+     ]
+    ],
+    "walls": [
+     {
+      "side": "s",
+      "line": 4,
+      "span": [
+       3,
+       5
+      ],
+      "bays": [
+       "maira",
+       "maira"
+      ]
+     },
+     {
+      "side": "s",
+      "line": 3,
+      "span": [
+       0,
+       3
+      ],
+      "bays": [
+       "lattice",
+       "door2",
+       "lattice"
+      ]
+     },
+     {
+      "side": "e",
+      "line": 3,
+      "span": [
+       0,
+       4
+      ],
+      "bays": [
+       "maira",
+       "maira",
+       "maira",
+       "maira"
+      ]
+     },
+     {
+      "side": "e",
+      "line": 5,
+      "span": [
+       0,
+       4
+      ],
+      "bays": [
+       "plank",
+       "plank",
+       "plank",
+       "plank"
+      ]
+     },
+     {
+      "side": "w",
+      "line": 0,
+      "span": [
+       0,
+       3
+      ],
+      "bays": [
+       "plank",
+       "plank",
+       "plank"
+      ]
+     },
+     {
+      "side": "n",
+      "line": 0,
+      "span": [
+       0,
+       5
+      ],
+      "bays": [
+       "plank",
+       "door2",
+       "plank",
+       "plank",
+       "plank"
+      ]
+     }
+    ]
+   },
+   "storey3": {
+    "grid": [
+     6,
+     6,
+     6
+    ],
+    "balcony": 0.92,
+    "rail": 0.59,
+    "doorTop": 0.14,
+    "window": {
+     "w": 0.72,
+     "sill": 0.4,
+     "spring": 0.62,
+     "rise": 0.3
+    },
+    "bays": [
+     "katomado",
+     "sankarado",
+     "katomado"
+    ],
+    "plaque": [
+     0
+    ]
+   },
+   "roof2": {
+    "ao": 7.26,
+    "bo": 5.88,
+    "ai": 3,
+    "bi": 3,
+    "ye": 5.59,
+    "rise": 1.36,
+    "flat": 0.45,
+    "power": 2.2,
+    "lift": 0.5,
+    "between": true,
+    "bells": true
+   },
+   "roof3": {
+    "ao": 4.52,
+    "bo": 4.52,
+    "top": 0.58,
+    "ye": 9,
+    "rise": 2,
+    "flat": 0.3,
+    "power": 2.4,
+    "lift": 0.6,
+    "bells": true
+   },
+   "finial": {
+    "pedestal": 0.58,
+    "bird": 0.95,
+    "only": "pedestal"
+   },
+   "annex": {
+    "u": [
+     -10.65,
+     -7.6
+    ],
+    "v": [
+     -0.75,
+     1.45
+    ],
+    "floor": 0.9,
+    "eave": 2.55,
+    "ridge": 3.05,
+    "overhang": 0.75,
+    "east": -5.3,
+    "join": -5.95
+   },
+   "phase": "reconstruction",
+   "parts": [
+    "timber",
+    "plaster",
+    "core",
+    "lacquer",
+    "annex",
+    "finial"
+   ],
+   "finish": {
+    "timber": "#4b3729",
+    "core": "#1e1b19",
+    "lacquer": "#1b1918",
+    "roof": "#3f3129",
+    "finial": "#e6c264",
+    "bracket": "#2a2522"
+   },
+   "provenance": "measured",
+   "note": "The rebuilt pavilion of 1955, placed on the OpenStreetMap trace: plan from the published bays (33 by 24 shaku, the third storey 18 shaku square), heights and eave extents fitted on three calibrated photographs, fittings bay by bay from the description of each storey."
+  },
+  {
+   "type": "pavilion",
+   "center": [
+    0,
+    0
+   ],
+   "unit": 0.30303,
+   "grid": {
+    "u": [
+     6,
+     9,
+     6,
+     6,
+     6
+    ],
+    "v": [
+     6,
+     6,
+     6,
+     6
+    ]
+   },
+   "post": 0.24,
+   "levels": {
+    "platform": 0.4,
+    "floor1": 0.75,
+    "head1": 3,
+    "floor2": 3.4,
+    "head2": 5.46,
+    "floor3": 7.15,
+    "head3": 8.62
+   },
+   "base": {
+    "half": [
+     6.4,
+     5.2
+    ],
+    "boulders": [
+     "s",
+     "w"
+    ],
+    "plinth": 0.2,
+    "plinthAt": 0.6
+   },
+   "storey1": {
+    "deck": 0.95,
+    "inner": 3,
+    "lintel": 0.54,
+    "waistRail": 0.8,
+    "shitomi": 0.95,
+    "railing": [
+     "s",
+     "w",
+     "n"
+    ],
+    "gaps": {
+     "w": [
+      -1.2,
+      1.9
+     ],
+     "n": [
+      -1.6,
+      9
+     ]
+    },
+    "steps": [
+     [
+      "e",
+      0.1,
+      1.7
+     ]
+    ],
+    "walls": [
+     {
+      "side": "s",
+      "line": 3,
+      "span": [
+       0,
+       5
+      ],
+      "bays": [
+       "shitomi",
+       "shitomi",
+       "shitomi",
+       "shitomi",
+       "shitomi"
+      ]
+     },
+     {
+      "side": "e",
+      "line": 5,
+      "span": [
+       0,
+       3
+      ],
+      "bays": [
+       "wall",
+       "wall",
+       "door"
+      ]
+     },
+     {
+      "side": "w",
+      "line": 0,
+      "span": [
+       0,
+       3
+      ],
+      "bays": [
+       "wall",
+       "wall",
+       "door"
+      ]
+     },
+     {
+      "side": "n",
+      "line": 0,
+      "span": [
+       0,
+       5
+      ],
+      "bays": [
+       "wall",
+       "wall",
+       "wall",
+       "wall",
+       "wall"
+      ]
+     }
+    ]
+   },
+   "storey2": {
+    "balcony": 0.9,
+    "rail": 0.75,
+    "lintel": 0.45,
+    "waist": 0.55,
+    "posts": [
+     [
+      1,
+      3
+     ],
+     [
+      2,
+      3
+     ],
+     [
+      3,
+      3
+     ],
+     [
+      3,
+      2
+     ],
+     [
+      3,
+      1
+     ]
+    ],
+    "walls": [
+     {
+      "side": "s",
+      "line": 4,
+      "span": [
+       3,
+       5
+      ],
+      "bays": [
+       "maira",
+       "maira"
+      ]
+     },
+     {
+      "side": "s",
+      "line": 3,
+      "span": [
+       0,
+       3
+      ],
+      "bays": [
+       "lattice",
+       "door2",
+       "lattice"
+      ]
+     },
+     {
+      "side": "e",
+      "line": 3,
+      "span": [
+       0,
+       4
+      ],
+      "bays": [
+       "maira",
+       "maira",
+       "maira",
+       "maira"
+      ]
+     },
+     {
+      "side": "e",
+      "line": 5,
+      "span": [
+       0,
+       4
+      ],
+      "bays": [
+       "plank",
+       "plank",
+       "plank",
+       "plank"
+      ]
+     },
+     {
+      "side": "w",
+      "line": 0,
+      "span": [
+       0,
+       3
+      ],
+      "bays": [
+       "plank",
+       "plank",
+       "plank"
+      ]
+     },
+     {
+      "side": "n",
+      "line": 0,
+      "span": [
+       0,
+       5
+      ],
+      "bays": [
+       "plank",
+       "door2",
+       "plank",
+       "plank",
+       "plank"
+      ]
+     }
+    ]
+   },
+   "storey3": {
+    "grid": [
+     6,
+     6,
+     6
+    ],
+    "balcony": 0.92,
+    "rail": 0.59,
+    "doorTop": 0.14,
+    "window": {
+     "w": 0.72,
+     "sill": 0.4,
+     "spring": 0.62,
+     "rise": 0.3
+    },
+    "bays": [
+     "katomado",
+     "sankarado",
+     "katomado"
+    ],
+    "plaque": [
+     0
+    ]
+   },
+   "roof2": {
+    "ao": 7.26,
+    "bo": 5.88,
+    "ai": 3,
+    "bi": 3,
+    "ye": 5.59,
+    "rise": 1.36,
+    "flat": 0.45,
+    "power": 2.2,
+    "lift": 0.5,
+    "between": true,
+    "bells": true
+   },
+   "roof3": {
+    "ao": 4.52,
+    "bo": 4.52,
+    "top": 0.58,
+    "ye": 9,
+    "rise": 2,
+    "flat": 0.3,
+    "power": 2.4,
+    "lift": 0.6,
+    "bells": true
+   },
+   "finial": {
+    "pedestal": 0.58,
+    "bird": 0.95
+   },
+   "annex": {
+    "u": [
+     -10.65,
+     -7.6
+    ],
+    "v": [
+     -0.75,
+     1.45
+    ],
+    "floor": 0.9,
+    "eave": 2.55,
+    "ridge": 3.05,
+    "overhang": 0.75,
+    "east": -5.3,
+    "join": -5.95
+   },
+   "phase": "reconstruction",
+   "parts": [
+    "frame"
+   ],
+   "finish": {
+    "frame": "#a07a52"
+   },
+   "provenance": "interpreted",
+   "note": "A Japanese roof frame (wagoya purlins on struts, hanegi cantilevers) drawn as such frames are built; no survey of this frame was read."
+  },
+  {
+   "type": "pavilion",
+   "center": [
+    0,
+    0
+   ],
+   "unit": 0.30303,
+   "grid": {
+    "u": [
+     6,
+     9,
+     6,
+     6,
+     6
+    ],
+    "v": [
+     6,
+     6,
+     6,
+     6
+    ]
+   },
+   "post": 0.24,
+   "levels": {
+    "platform": 0.4,
+    "floor1": 0.75,
+    "head1": 3,
+    "floor2": 3.4,
+    "head2": 5.46,
+    "floor3": 7.15,
+    "head3": 8.62
+   },
+   "base": {
+    "half": [
+     6.4,
+     5.2
+    ],
+    "boulders": [
+     "s",
+     "w"
+    ],
+    "plinth": 0.2,
+    "plinthAt": 0.6
+   },
+   "storey1": {
+    "deck": 0.95,
+    "inner": 3,
+    "lintel": 0.54,
+    "waistRail": 0.8,
+    "shitomi": 0.95,
+    "railing": [
+     "s",
+     "w",
+     "n"
+    ],
+    "gaps": {
+     "w": [
+      -1.2,
+      1.9
+     ],
+     "n": [
+      -1.6,
+      9
+     ]
+    },
+    "steps": [
+     [
+      "e",
+      0.1,
+      1.7
+     ]
+    ],
+    "walls": [
+     {
+      "side": "s",
+      "line": 3,
+      "span": [
+       0,
+       5
+      ],
+      "bays": [
+       "shitomi",
+       "shitomi",
+       "shitomi",
+       "shitomi",
+       "shitomi"
+      ]
+     },
+     {
+      "side": "e",
+      "line": 5,
+      "span": [
+       0,
+       3
+      ],
+      "bays": [
+       "wall",
+       "wall",
+       "door"
+      ]
+     },
+     {
+      "side": "w",
+      "line": 0,
+      "span": [
+       0,
+       3
+      ],
+      "bays": [
+       "wall",
+       "wall",
+       "door"
+      ]
+     },
+     {
+      "side": "n",
+      "line": 0,
+      "span": [
+       0,
+       5
+      ],
+      "bays": [
+       "wall",
+       "wall",
+       "wall",
+       "wall",
+       "wall"
+      ]
+     }
+    ]
+   },
+   "storey2": {
+    "balcony": 0.9,
+    "rail": 0.75,
+    "lintel": 0.45,
+    "waist": 0.55,
+    "posts": [
+     [
+      1,
+      3
+     ],
+     [
+      2,
+      3
+     ],
+     [
+      3,
+      3
+     ],
+     [
+      3,
+      2
+     ],
+     [
+      3,
+      1
+     ]
+    ],
+    "walls": [
+     {
+      "side": "s",
+      "line": 4,
+      "span": [
+       3,
+       5
+      ],
+      "bays": [
+       "maira",
+       "maira"
+      ]
+     },
+     {
+      "side": "s",
+      "line": 3,
+      "span": [
+       0,
+       3
+      ],
+      "bays": [
+       "lattice",
+       "door2",
+       "lattice"
+      ]
+     },
+     {
+      "side": "e",
+      "line": 3,
+      "span": [
+       0,
+       4
+      ],
+      "bays": [
+       "maira",
+       "maira",
+       "maira",
+       "maira"
+      ]
+     },
+     {
+      "side": "e",
+      "line": 5,
+      "span": [
+       0,
+       4
+      ],
+      "bays": [
+       "plank",
+       "plank",
+       "plank",
+       "plank"
+      ]
+     },
+     {
+      "side": "w",
+      "line": 0,
+      "span": [
+       0,
+       3
+      ],
+      "bays": [
+       "plank",
+       "plank",
+       "plank"
+      ]
+     },
+     {
+      "side": "n",
+      "line": 0,
+      "span": [
+       0,
+       5
+      ],
+      "bays": [
+       "plank",
+       "door2",
+       "plank",
+       "plank",
+       "plank"
+      ]
+     }
+    ]
+   },
+   "storey3": {
+    "grid": [
+     6,
+     6,
+     6
+    ],
+    "balcony": 0.92,
+    "rail": 0.59,
+    "doorTop": 0.14,
+    "window": {
+     "w": 0.72,
+     "sill": 0.4,
+     "spring": 0.62,
+     "rise": 0.3
+    },
+    "bays": [
+     "katomado",
+     "sankarado",
+     "katomado"
+    ],
+    "plaque": [
+     0
+    ]
+   },
+   "roof2": {
+    "ao": 7.26,
+    "bo": 5.88,
+    "ai": 3,
+    "bi": 3,
+    "ye": 5.59,
+    "rise": 1.36,
+    "flat": 0.45,
+    "power": 2.2,
+    "lift": 0.5,
+    "between": true,
+    "bells": true
+   },
+   "roof3": {
+    "ao": 4.52,
+    "bo": 4.52,
+    "top": 0.58,
+    "ye": 9,
+    "rise": 2,
+    "flat": 0.3,
+    "power": 2.4,
+    "lift": 0.6,
+    "bells": true
+   },
+   "finial": {
+    "pedestal": 0.58,
+    "bird": 0.95
+   },
+   "annex": {
+    "u": [
+     -10.65,
+     -7.6
+    ],
+    "v": [
+     -0.75,
+     1.45
+    ],
+    "floor": 0.9,
+    "eave": 2.55,
+    "ridge": 3.05,
+    "overhang": 0.75,
+    "east": -5.3,
+    "join": -5.95
+   },
+   "phase": "reconstruction",
+   "until": "roof2020",
+   "parts": [
+    "roof"
+   ],
+   "finish": {
+    "timber": "#4b3729",
+    "core": "#1e1b19",
+    "lacquer": "#1b1918",
+    "roof": "#3f3129",
+    "finial": "#e6c264",
+    "bracket": "#2a2522"
+   },
+   "provenance": "documented",
+   "note": "The kokera shingle roofs of the rebuilt pavilion (relaid in 2002, then in 2020)."
+  },
+  {
+   "type": "pavilion",
+   "center": [
+    0,
+    0
+   ],
+   "unit": 0.30303,
+   "grid": {
+    "u": [
+     6,
+     9,
+     6,
+     6,
+     6
+    ],
+    "v": [
+     6,
+     6,
+     6,
+     6
+    ]
+   },
+   "post": 0.24,
+   "levels": {
+    "platform": 0.4,
+    "floor1": 0.75,
+    "head1": 3,
+    "floor2": 3.4,
+    "head2": 5.46,
+    "floor3": 7.15,
+    "head3": 8.62
+   },
+   "base": {
+    "half": [
+     6.4,
+     5.2
+    ],
+    "boulders": [
+     "s",
+     "w"
+    ],
+    "plinth": 0.2,
+    "plinthAt": 0.6
+   },
+   "storey1": {
+    "deck": 0.95,
+    "inner": 3,
+    "lintel": 0.54,
+    "waistRail": 0.8,
+    "shitomi": 0.95,
+    "railing": [
+     "s",
+     "w",
+     "n"
+    ],
+    "gaps": {
+     "w": [
+      -1.2,
+      1.9
+     ],
+     "n": [
+      -1.6,
+      9
+     ]
+    },
+    "steps": [
+     [
+      "e",
+      0.1,
+      1.7
+     ]
+    ],
+    "walls": [
+     {
+      "side": "s",
+      "line": 3,
+      "span": [
+       0,
+       5
+      ],
+      "bays": [
+       "shitomi",
+       "shitomi",
+       "shitomi",
+       "shitomi",
+       "shitomi"
+      ]
+     },
+     {
+      "side": "e",
+      "line": 5,
+      "span": [
+       0,
+       3
+      ],
+      "bays": [
+       "wall",
+       "wall",
+       "door"
+      ]
+     },
+     {
+      "side": "w",
+      "line": 0,
+      "span": [
+       0,
+       3
+      ],
+      "bays": [
+       "wall",
+       "wall",
+       "door"
+      ]
+     },
+     {
+      "side": "n",
+      "line": 0,
+      "span": [
+       0,
+       5
+      ],
+      "bays": [
+       "wall",
+       "wall",
+       "wall",
+       "wall",
+       "wall"
+      ]
+     }
+    ]
+   },
+   "storey2": {
+    "balcony": 0.9,
+    "rail": 0.75,
+    "lintel": 0.45,
+    "waist": 0.55,
+    "posts": [
+     [
+      1,
+      3
+     ],
+     [
+      2,
+      3
+     ],
+     [
+      3,
+      3
+     ],
+     [
+      3,
+      2
+     ],
+     [
+      3,
+      1
+     ]
+    ],
+    "walls": [
+     {
+      "side": "s",
+      "line": 4,
+      "span": [
+       3,
+       5
+      ],
+      "bays": [
+       "maira",
+       "maira"
+      ]
+     },
+     {
+      "side": "s",
+      "line": 3,
+      "span": [
+       0,
+       3
+      ],
+      "bays": [
+       "lattice",
+       "door2",
+       "lattice"
+      ]
+     },
+     {
+      "side": "e",
+      "line": 3,
+      "span": [
+       0,
+       4
+      ],
+      "bays": [
+       "maira",
+       "maira",
+       "maira",
+       "maira"
+      ]
+     },
+     {
+      "side": "e",
+      "line": 5,
+      "span": [
+       0,
+       4
+      ],
+      "bays": [
+       "plank",
+       "plank",
+       "plank",
+       "plank"
+      ]
+     },
+     {
+      "side": "w",
+      "line": 0,
+      "span": [
+       0,
+       3
+      ],
+      "bays": [
+       "plank",
+       "plank",
+       "plank"
+      ]
+     },
+     {
+      "side": "n",
+      "line": 0,
+      "span": [
+       0,
+       5
+      ],
+      "bays": [
+       "plank",
+       "door2",
+       "plank",
+       "plank",
+       "plank"
+      ]
+     }
+    ]
+   },
+   "storey3": {
+    "grid": [
+     6,
+     6,
+     6
+    ],
+    "balcony": 0.92,
+    "rail": 0.59,
+    "doorTop": 0.14,
+    "window": {
+     "w": 0.72,
+     "sill": 0.4,
+     "spring": 0.62,
+     "rise": 0.3
+    },
+    "bays": [
+     "katomado",
+     "sankarado",
+     "katomado"
+    ],
+    "plaque": [
+     0
+    ]
+   },
+   "roof2": {
+    "ao": 7.26,
+    "bo": 5.88,
+    "ai": 3,
+    "bi": 3,
+    "ye": 5.59,
+    "rise": 1.36,
+    "flat": 0.45,
+    "power": 2.2,
+    "lift": 0.5,
+    "between": true,
+    "bells": true
+   },
+   "roof3": {
+    "ao": 4.52,
+    "bo": 4.52,
+    "top": 0.58,
+    "ye": 9,
+    "rise": 2,
+    "flat": 0.3,
+    "power": 2.4,
+    "lift": 0.6,
+    "bells": true
+   },
+   "finial": {
+    "pedestal": 0.58,
+    "bird": 0.95
+   },
+   "annex": {
+    "u": [
+     -10.65,
+     -7.6
+    ],
+    "v": [
+     -0.75,
+     1.45
+    ],
+    "floor": 0.9,
+    "eave": 2.55,
+    "ridge": 3.05,
+    "overhang": 0.75,
+    "east": -5.3,
+    "join": -5.95
+   },
+   "phase": "reconstruction",
+   "until": "showa",
+   "parts": [
+    "skin"
+   ],
+   "finish": {
+    "skin": "#d9ac48"
+   },
+   "provenance": "documented",
+   "note": "The gold leaf of 1955 on both upper storeys, which peeled within about ten years."
+  },
+  {
+   "type": "pavilion",
+   "center": [
+    0,
+    0
+   ],
+   "unit": 0.30303,
+   "grid": {
+    "u": [
+     6,
+     9,
+     6,
+     6,
+     6
+    ],
+    "v": [
+     6,
+     6,
+     6,
+     6
+    ]
+   },
+   "post": 0.24,
+   "levels": {
+    "platform": 0.4,
+    "floor1": 0.75,
+    "head1": 3,
+    "floor2": 3.4,
+    "head2": 5.46,
+    "floor3": 7.15,
+    "head3": 8.62
+   },
+   "base": {
+    "half": [
+     6.4,
+     5.2
+    ],
+    "boulders": [
+     "s",
+     "w"
+    ],
+    "plinth": 0.2,
+    "plinthAt": 0.6
+   },
+   "storey1": {
+    "deck": 0.95,
+    "inner": 3,
+    "lintel": 0.54,
+    "waistRail": 0.8,
+    "shitomi": 0.95,
+    "railing": [
+     "s",
+     "w",
+     "n"
+    ],
+    "gaps": {
+     "w": [
+      -1.2,
+      1.9
+     ],
+     "n": [
+      -1.6,
+      9
+     ]
+    },
+    "steps": [
+     [
+      "e",
+      0.1,
+      1.7
+     ]
+    ],
+    "walls": [
+     {
+      "side": "s",
+      "line": 3,
+      "span": [
+       0,
+       5
+      ],
+      "bays": [
+       "shitomi",
+       "shitomi",
+       "shitomi",
+       "shitomi",
+       "shitomi"
+      ]
+     },
+     {
+      "side": "e",
+      "line": 5,
+      "span": [
+       0,
+       3
+      ],
+      "bays": [
+       "wall",
+       "wall",
+       "door"
+      ]
+     },
+     {
+      "side": "w",
+      "line": 0,
+      "span": [
+       0,
+       3
+      ],
+      "bays": [
+       "wall",
+       "wall",
+       "door"
+      ]
+     },
+     {
+      "side": "n",
+      "line": 0,
+      "span": [
+       0,
+       5
+      ],
+      "bays": [
+       "wall",
+       "wall",
+       "wall",
+       "wall",
+       "wall"
+      ]
+     }
+    ]
+   },
+   "storey2": {
+    "balcony": 0.9,
+    "rail": 0.75,
+    "lintel": 0.45,
+    "waist": 0.55,
+    "posts": [
+     [
+      1,
+      3
+     ],
+     [
+      2,
+      3
+     ],
+     [
+      3,
+      3
+     ],
+     [
+      3,
+      2
+     ],
+     [
+      3,
+      1
+     ]
+    ],
+    "walls": [
+     {
+      "side": "s",
+      "line": 4,
+      "span": [
+       3,
+       5
+      ],
+      "bays": [
+       "maira",
+       "maira"
+      ]
+     },
+     {
+      "side": "s",
+      "line": 3,
+      "span": [
+       0,
+       3
+      ],
+      "bays": [
+       "lattice",
+       "door2",
+       "lattice"
+      ]
+     },
+     {
+      "side": "e",
+      "line": 3,
+      "span": [
+       0,
+       4
+      ],
+      "bays": [
+       "maira",
+       "maira",
+       "maira",
+       "maira"
+      ]
+     },
+     {
+      "side": "e",
+      "line": 5,
+      "span": [
+       0,
+       4
+      ],
+      "bays": [
+       "plank",
+       "plank",
+       "plank",
+       "plank"
+      ]
+     },
+     {
+      "side": "w",
+      "line": 0,
+      "span": [
+       0,
+       3
+      ],
+      "bays": [
+       "plank",
+       "plank",
+       "plank"
+      ]
+     },
+     {
+      "side": "n",
+      "line": 0,
+      "span": [
+       0,
+       5
+      ],
+      "bays": [
+       "plank",
+       "door2",
+       "plank",
+       "plank",
+       "plank"
+      ]
+     }
+    ]
+   },
+   "storey3": {
+    "grid": [
+     6,
+     6,
+     6
+    ],
+    "balcony": 0.92,
+    "rail": 0.59,
+    "doorTop": 0.14,
+    "window": {
+     "w": 0.72,
+     "sill": 0.4,
+     "spring": 0.62,
+     "rise": 0.3
+    },
+    "bays": [
+     "katomado",
+     "sankarado",
+     "katomado"
+    ],
+    "plaque": [
+     0
+    ]
+   },
+   "roof2": {
+    "ao": 7.26,
+    "bo": 5.88,
+    "ai": 3,
+    "bi": 3,
+    "ye": 5.59,
+    "rise": 1.36,
+    "flat": 0.45,
+    "power": 2.2,
+    "lift": 0.5,
+    "between": true,
+    "bells": true
+   },
+   "roof3": {
+    "ao": 4.52,
+    "bo": 4.52,
+    "top": 0.58,
+    "ye": 9,
+    "rise": 2,
+    "flat": 0.3,
+    "power": 2.4,
+    "lift": 0.6,
+    "bells": true
+   },
+   "finial": {
+    "pedestal": 0.58,
+    "bird": 0.95,
+    "only": "bird"
+   },
+   "annex": {
+    "u": [
+     -10.65,
+     -7.6
+    ],
+    "v": [
+     -0.75,
+     1.45
+    ],
+    "floor": 0.9,
+    "eave": 2.55,
+    "ridge": 3.05,
+    "overhang": 0.75,
+    "east": -5.3,
+    "join": -5.95
+   },
+   "phase": "reconstruction",
+   "until": "showa",
+   "parts": [
+    "finial"
+   ],
+   "finish": {
+    "timber": "#4b3729",
+    "core": "#1e1b19",
+    "lacquer": "#1b1918",
+    "roof": "#3f3129",
+    "finial": "#e6c264",
+    "bracket": "#2a2522"
+   },
+   "provenance": "documented",
+   "note": "The phoenix set on the roof in autumn 1955 (photograph); its shape is simplified."
+  },
+  {
+   "type": "pavilion",
+   "center": [
+    0,
+    0
+   ],
+   "unit": 0.30303,
+   "grid": {
+    "u": [
+     6,
+     9,
+     6,
+     6,
+     6
+    ],
+    "v": [
+     6,
+     6,
+     6,
+     6
+    ]
+   },
+   "post": 0.24,
+   "levels": {
+    "platform": 0.4,
+    "floor1": 0.75,
+    "head1": 3,
+    "floor2": 3.4,
+    "head2": 5.46,
+    "floor3": 7.15,
+    "head3": 8.62
+   },
+   "base": {
+    "half": [
+     6.4,
+     5.2
+    ],
+    "boulders": [
+     "s",
+     "w"
+    ],
+    "plinth": 0.2,
+    "plinthAt": 0.6
+   },
+   "storey1": {
+    "deck": 0.95,
+    "inner": 3,
+    "lintel": 0.54,
+    "waistRail": 0.8,
+    "shitomi": 0.95,
+    "railing": [
+     "s",
+     "w",
+     "n"
+    ],
+    "gaps": {
+     "w": [
+      -1.2,
+      1.9
+     ],
+     "n": [
+      -1.6,
+      9
+     ]
+    },
+    "steps": [
+     [
+      "e",
+      0.1,
+      1.7
+     ]
+    ],
+    "walls": [
+     {
+      "side": "s",
+      "line": 3,
+      "span": [
+       0,
+       5
+      ],
+      "bays": [
+       "shitomi",
+       "shitomi",
+       "shitomi",
+       "shitomi",
+       "shitomi"
+      ]
+     },
+     {
+      "side": "e",
+      "line": 5,
+      "span": [
+       0,
+       3
+      ],
+      "bays": [
+       "wall",
+       "wall",
+       "door"
+      ]
+     },
+     {
+      "side": "w",
+      "line": 0,
+      "span": [
+       0,
+       3
+      ],
+      "bays": [
+       "wall",
+       "wall",
+       "door"
+      ]
+     },
+     {
+      "side": "n",
+      "line": 0,
+      "span": [
+       0,
+       5
+      ],
+      "bays": [
+       "wall",
+       "wall",
+       "wall",
+       "wall",
+       "wall"
+      ]
+     }
+    ]
+   },
+   "storey2": {
+    "balcony": 0.9,
+    "rail": 0.75,
+    "lintel": 0.45,
+    "waist": 0.55,
+    "posts": [
+     [
+      1,
+      3
+     ],
+     [
+      2,
+      3
+     ],
+     [
+      3,
+      3
+     ],
+     [
+      3,
+      2
+     ],
+     [
+      3,
+      1
+     ]
+    ],
+    "walls": [
+     {
+      "side": "s",
+      "line": 4,
+      "span": [
+       3,
+       5
+      ],
+      "bays": [
+       "maira",
+       "maira"
+      ]
+     },
+     {
+      "side": "s",
+      "line": 3,
+      "span": [
+       0,
+       3
+      ],
+      "bays": [
+       "lattice",
+       "door2",
+       "lattice"
+      ]
+     },
+     {
+      "side": "e",
+      "line": 3,
+      "span": [
+       0,
+       4
+      ],
+      "bays": [
+       "maira",
+       "maira",
+       "maira",
+       "maira"
+      ]
+     },
+     {
+      "side": "e",
+      "line": 5,
+      "span": [
+       0,
+       4
+      ],
+      "bays": [
+       "plank",
+       "plank",
+       "plank",
+       "plank"
+      ]
+     },
+     {
+      "side": "w",
+      "line": 0,
+      "span": [
+       0,
+       3
+      ],
+      "bays": [
+       "plank",
+       "plank",
+       "plank"
+      ]
+     },
+     {
+      "side": "n",
+      "line": 0,
+      "span": [
+       0,
+       5
+      ],
+      "bays": [
+       "plank",
+       "door2",
+       "plank",
+       "plank",
+       "plank"
+      ]
+     }
+    ]
+   },
+   "storey3": {
+    "grid": [
+     6,
+     6,
+     6
+    ],
+    "balcony": 0.92,
+    "rail": 0.59,
+    "doorTop": 0.14,
+    "window": {
+     "w": 0.72,
+     "sill": 0.4,
+     "spring": 0.62,
+     "rise": 0.3
+    },
+    "bays": [
+     "katomado",
+     "sankarado",
+     "katomado"
+    ],
+    "plaque": [
+     0
+    ]
+   },
+   "roof2": {
+    "ao": 7.26,
+    "bo": 5.88,
+    "ai": 3,
+    "bi": 3,
+    "ye": 5.59,
+    "rise": 1.36,
+    "flat": 0.45,
+    "power": 2.2,
+    "lift": 0.5,
+    "between": true,
+    "bells": true
+   },
+   "roof3": {
+    "ao": 4.52,
+    "bo": 4.52,
+    "top": 0.58,
+    "ye": 9,
+    "rise": 2,
+    "flat": 0.3,
+    "power": 2.4,
+    "lift": 0.6,
+    "bells": true
+   },
+   "finial": {
+    "pedestal": 0.58,
+    "bird": 0.95
+   },
+   "annex": {
+    "u": [
+     -10.65,
+     -7.6
+    ],
+    "v": [
+     -0.75,
+     1.45
+    ],
+    "floor": 0.9,
+    "eave": 2.55,
+    "ridge": 3.05,
+    "overhang": 0.75,
+    "east": -5.3,
+    "join": -5.95
+   },
+   "phase": "showa",
+   "parts": [
+    "skin"
+   ],
+   "finish": {
+    "skin": "#e6b844"
+   },
+   "provenance": "documented",
+   "note": "The leaf of 1986–1987, five times the usual thickness, on both upper storeys and their railings."
+  },
+  {
+   "type": "pavilion",
+   "center": [
+    0,
+    0
+   ],
+   "unit": 0.30303,
+   "grid": {
+    "u": [
+     6,
+     9,
+     6,
+     6,
+     6
+    ],
+    "v": [
+     6,
+     6,
+     6,
+     6
+    ]
+   },
+   "post": 0.24,
+   "levels": {
+    "platform": 0.4,
+    "floor1": 0.75,
+    "head1": 3,
+    "floor2": 3.4,
+    "head2": 5.46,
+    "floor3": 7.15,
+    "head3": 8.62
+   },
+   "base": {
+    "half": [
+     6.4,
+     5.2
+    ],
+    "boulders": [
+     "s",
+     "w"
+    ],
+    "plinth": 0.2,
+    "plinthAt": 0.6
+   },
+   "storey1": {
+    "deck": 0.95,
+    "inner": 3,
+    "lintel": 0.54,
+    "waistRail": 0.8,
+    "shitomi": 0.95,
+    "railing": [
+     "s",
+     "w",
+     "n"
+    ],
+    "gaps": {
+     "w": [
+      -1.2,
+      1.9
+     ],
+     "n": [
+      -1.6,
+      9
+     ]
+    },
+    "steps": [
+     [
+      "e",
+      0.1,
+      1.7
+     ]
+    ],
+    "walls": [
+     {
+      "side": "s",
+      "line": 3,
+      "span": [
+       0,
+       5
+      ],
+      "bays": [
+       "shitomi",
+       "shitomi",
+       "shitomi",
+       "shitomi",
+       "shitomi"
+      ]
+     },
+     {
+      "side": "e",
+      "line": 5,
+      "span": [
+       0,
+       3
+      ],
+      "bays": [
+       "wall",
+       "wall",
+       "door"
+      ]
+     },
+     {
+      "side": "w",
+      "line": 0,
+      "span": [
+       0,
+       3
+      ],
+      "bays": [
+       "wall",
+       "wall",
+       "door"
+      ]
+     },
+     {
+      "side": "n",
+      "line": 0,
+      "span": [
+       0,
+       5
+      ],
+      "bays": [
+       "wall",
+       "wall",
+       "wall",
+       "wall",
+       "wall"
+      ]
+     }
+    ]
+   },
+   "storey2": {
+    "balcony": 0.9,
+    "rail": 0.75,
+    "lintel": 0.45,
+    "waist": 0.55,
+    "posts": [
+     [
+      1,
+      3
+     ],
+     [
+      2,
+      3
+     ],
+     [
+      3,
+      3
+     ],
+     [
+      3,
+      2
+     ],
+     [
+      3,
+      1
+     ]
+    ],
+    "walls": [
+     {
+      "side": "s",
+      "line": 4,
+      "span": [
+       3,
+       5
+      ],
+      "bays": [
+       "maira",
+       "maira"
+      ]
+     },
+     {
+      "side": "s",
+      "line": 3,
+      "span": [
+       0,
+       3
+      ],
+      "bays": [
+       "lattice",
+       "door2",
+       "lattice"
+      ]
+     },
+     {
+      "side": "e",
+      "line": 3,
+      "span": [
+       0,
+       4
+      ],
+      "bays": [
+       "maira",
+       "maira",
+       "maira",
+       "maira"
+      ]
+     },
+     {
+      "side": "e",
+      "line": 5,
+      "span": [
+       0,
+       4
+      ],
+      "bays": [
+       "plank",
+       "plank",
+       "plank",
+       "plank"
+      ]
+     },
+     {
+      "side": "w",
+      "line": 0,
+      "span": [
+       0,
+       3
+      ],
+      "bays": [
+       "plank",
+       "plank",
+       "plank"
+      ]
+     },
+     {
+      "side": "n",
+      "line": 0,
+      "span": [
+       0,
+       5
+      ],
+      "bays": [
+       "plank",
+       "door2",
+       "plank",
+       "plank",
+       "plank"
+      ]
+     }
+    ]
+   },
+   "storey3": {
+    "grid": [
+     6,
+     6,
+     6
+    ],
+    "balcony": 0.92,
+    "rail": 0.59,
+    "doorTop": 0.14,
+    "window": {
+     "w": 0.72,
+     "sill": 0.4,
+     "spring": 0.62,
+     "rise": 0.3
+    },
+    "bays": [
+     "katomado",
+     "sankarado",
+     "katomado"
+    ],
+    "plaque": [
+     0
+    ]
+   },
+   "roof2": {
+    "ao": 7.26,
+    "bo": 5.88,
+    "ai": 3,
+    "bi": 3,
+    "ye": 5.59,
+    "rise": 1.36,
+    "flat": 0.45,
+    "power": 2.2,
+    "lift": 0.5,
+    "between": true,
+    "bells": true
+   },
+   "roof3": {
+    "ao": 4.52,
+    "bo": 4.52,
+    "top": 0.58,
+    "ye": 9,
+    "rise": 2,
+    "flat": 0.3,
+    "power": 2.4,
+    "lift": 0.6,
+    "bells": true
+   },
+   "finial": {
+    "pedestal": 0.58,
+    "bird": 0.95,
+    "only": "bird"
+   },
+   "annex": {
+    "u": [
+     -10.65,
+     -7.6
+    ],
+    "v": [
+     -0.75,
+     1.45
+    ],
+    "floor": 0.9,
+    "eave": 2.55,
+    "ridge": 3.05,
+    "overhang": 0.75,
+    "east": -5.3,
+    "join": -5.95
+   },
+   "phase": "showa",
+   "parts": [
+    "finial"
+   ],
+   "finish": {
+    "finial": "#efcd6c"
+   },
+   "provenance": "interpreted",
+   "note": "The renewed phoenix by Kataoka Hiroyoshi; the sources read do not date its renewal, shown here with the Shōwa restoration."
+  },
+  {
+   "type": "pavilion",
+   "center": [
+    0,
+    0
+   ],
+   "unit": 0.30303,
+   "grid": {
+    "u": [
+     6,
+     9,
+     6,
+     6,
+     6
+    ],
+    "v": [
+     6,
+     6,
+     6,
+     6
+    ]
+   },
+   "post": 0.24,
+   "levels": {
+    "platform": 0.4,
+    "floor1": 0.75,
+    "head1": 3,
+    "floor2": 3.4,
+    "head2": 5.46,
+    "floor3": 7.15,
+    "head3": 8.62
+   },
+   "base": {
+    "half": [
+     6.4,
+     5.2
+    ],
+    "boulders": [
+     "s",
+     "w"
+    ],
+    "plinth": 0.2,
+    "plinthAt": 0.6
+   },
+   "storey1": {
+    "deck": 0.95,
+    "inner": 3,
+    "lintel": 0.54,
+    "waistRail": 0.8,
+    "shitomi": 0.95,
+    "railing": [
+     "s",
+     "w",
+     "n"
+    ],
+    "gaps": {
+     "w": [
+      -1.2,
+      1.9
+     ],
+     "n": [
+      -1.6,
+      9
+     ]
+    },
+    "steps": [
+     [
+      "e",
+      0.1,
+      1.7
+     ]
+    ],
+    "walls": [
+     {
+      "side": "s",
+      "line": 3,
+      "span": [
+       0,
+       5
+      ],
+      "bays": [
+       "shitomi",
+       "shitomi",
+       "shitomi",
+       "shitomi",
+       "shitomi"
+      ]
+     },
+     {
+      "side": "e",
+      "line": 5,
+      "span": [
+       0,
+       3
+      ],
+      "bays": [
+       "wall",
+       "wall",
+       "door"
+      ]
+     },
+     {
+      "side": "w",
+      "line": 0,
+      "span": [
+       0,
+       3
+      ],
+      "bays": [
+       "wall",
+       "wall",
+       "door"
+      ]
+     },
+     {
+      "side": "n",
+      "line": 0,
+      "span": [
+       0,
+       5
+      ],
+      "bays": [
+       "wall",
+       "wall",
+       "wall",
+       "wall",
+       "wall"
+      ]
+     }
+    ]
+   },
+   "storey2": {
+    "balcony": 0.9,
+    "rail": 0.75,
+    "lintel": 0.45,
+    "waist": 0.55,
+    "posts": [
+     [
+      1,
+      3
+     ],
+     [
+      2,
+      3
+     ],
+     [
+      3,
+      3
+     ],
+     [
+      3,
+      2
+     ],
+     [
+      3,
+      1
+     ]
+    ],
+    "walls": [
+     {
+      "side": "s",
+      "line": 4,
+      "span": [
+       3,
+       5
+      ],
+      "bays": [
+       "maira",
+       "maira"
+      ]
+     },
+     {
+      "side": "s",
+      "line": 3,
+      "span": [
+       0,
+       3
+      ],
+      "bays": [
+       "lattice",
+       "door2",
+       "lattice"
+      ]
+     },
+     {
+      "side": "e",
+      "line": 3,
+      "span": [
+       0,
+       4
+      ],
+      "bays": [
+       "maira",
+       "maira",
+       "maira",
+       "maira"
+      ]
+     },
+     {
+      "side": "e",
+      "line": 5,
+      "span": [
+       0,
+       4
+      ],
+      "bays": [
+       "plank",
+       "plank",
+       "plank",
+       "plank"
+      ]
+     },
+     {
+      "side": "w",
+      "line": 0,
+      "span": [
+       0,
+       3
+      ],
+      "bays": [
+       "plank",
+       "plank",
+       "plank"
+      ]
+     },
+     {
+      "side": "n",
+      "line": 0,
+      "span": [
+       0,
+       5
+      ],
+      "bays": [
+       "plank",
+       "door2",
+       "plank",
+       "plank",
+       "plank"
+      ]
+     }
+    ]
+   },
+   "storey3": {
+    "grid": [
+     6,
+     6,
+     6
+    ],
+    "balcony": 0.92,
+    "rail": 0.59,
+    "doorTop": 0.14,
+    "window": {
+     "w": 0.72,
+     "sill": 0.4,
+     "spring": 0.62,
+     "rise": 0.3
+    },
+    "bays": [
+     "katomado",
+     "sankarado",
+     "katomado"
+    ],
+    "plaque": [
+     0
+    ]
+   },
+   "roof2": {
+    "ao": 7.26,
+    "bo": 5.88,
+    "ai": 3,
+    "bi": 3,
+    "ye": 5.59,
+    "rise": 1.36,
+    "flat": 0.45,
+    "power": 2.2,
+    "lift": 0.5,
+    "between": true,
+    "bells": true
+   },
+   "roof3": {
+    "ao": 4.52,
+    "bo": 4.52,
+    "top": 0.58,
+    "ye": 9,
+    "rise": 2,
+    "flat": 0.3,
+    "power": 2.4,
+    "lift": 0.6,
+    "bells": true
+   },
+   "finial": {
+    "pedestal": 0.58,
+    "bird": 0.95
+   },
+   "annex": {
+    "u": [
+     -10.65,
+     -7.6
+    ],
+    "v": [
+     -0.75,
+     1.45
+    ],
+    "floor": 0.9,
+    "eave": 2.55,
+    "ridge": 3.05,
+    "overhang": 0.75,
+    "east": -5.3,
+    "join": -5.95
+   },
+   "phase": "bosai",
+   "parts": [
+    "rods"
+   ],
+   "rods": {
+    "items": [
+     {
+      "roof": 3,
+      "corner": [
+       1,
+       -1
+      ],
+      "dir": [
+       0,
+       -1
+      ],
+      "length": 3.8,
+      "rise": 0.45
+     },
+     {
+      "roof": 3,
+      "corner": [
+       -1,
+       -1
+      ],
+      "dir": [
+       0,
+       -1
+      ],
+      "length": 3.8,
+      "rise": 0.45
+     }
+    ],
+    "down": [
+     1.8,
+     -5.3
+    ]
+   },
+   "finish": {
+    "rods": "#d8b75e"
+   },
+   "provenance": "interpreted",
+   "note": "The two metal rods carried north from the north corners of the top roof, and the conductor down the north side, are seen in the photographs; the sources read do not date or explain them. Shown with the disaster-prevention works of 1988–1990 as a likely lightning protection."
+  },
+  {
+   "type": "pavilion",
+   "center": [
+    0,
+    0
+   ],
+   "unit": 0.30303,
+   "grid": {
+    "u": [
+     6,
+     9,
+     6,
+     6,
+     6
+    ],
+    "v": [
+     6,
+     6,
+     6,
+     6
+    ]
+   },
+   "post": 0.24,
+   "levels": {
+    "platform": 0.4,
+    "floor1": 0.75,
+    "head1": 3,
+    "floor2": 3.4,
+    "head2": 5.46,
+    "floor3": 7.15,
+    "head3": 8.62
+   },
+   "base": {
+    "half": [
+     6.4,
+     5.2
+    ],
+    "boulders": [
+     "s",
+     "w"
+    ],
+    "plinth": 0.2,
+    "plinthAt": 0.6
+   },
+   "storey1": {
+    "deck": 0.95,
+    "inner": 3,
+    "lintel": 0.54,
+    "waistRail": 0.8,
+    "shitomi": 0.95,
+    "railing": [
+     "s",
+     "w",
+     "n"
+    ],
+    "gaps": {
+     "w": [
+      -1.2,
+      1.9
+     ],
+     "n": [
+      -1.6,
+      9
+     ]
+    },
+    "steps": [
+     [
+      "e",
+      0.1,
+      1.7
+     ]
+    ],
+    "walls": [
+     {
+      "side": "s",
+      "line": 3,
+      "span": [
+       0,
+       5
+      ],
+      "bays": [
+       "shitomi",
+       "shitomi",
+       "shitomi",
+       "shitomi",
+       "shitomi"
+      ]
+     },
+     {
+      "side": "e",
+      "line": 5,
+      "span": [
+       0,
+       3
+      ],
+      "bays": [
+       "wall",
+       "wall",
+       "door"
+      ]
+     },
+     {
+      "side": "w",
+      "line": 0,
+      "span": [
+       0,
+       3
+      ],
+      "bays": [
+       "wall",
+       "wall",
+       "door"
+      ]
+     },
+     {
+      "side": "n",
+      "line": 0,
+      "span": [
+       0,
+       5
+      ],
+      "bays": [
+       "wall",
+       "wall",
+       "wall",
+       "wall",
+       "wall"
+      ]
+     }
+    ]
+   },
+   "storey2": {
+    "balcony": 0.9,
+    "rail": 0.75,
+    "lintel": 0.45,
+    "waist": 0.55,
+    "posts": [
+     [
+      1,
+      3
+     ],
+     [
+      2,
+      3
+     ],
+     [
+      3,
+      3
+     ],
+     [
+      3,
+      2
+     ],
+     [
+      3,
+      1
+     ]
+    ],
+    "walls": [
+     {
+      "side": "s",
+      "line": 4,
+      "span": [
+       3,
+       5
+      ],
+      "bays": [
+       "maira",
+       "maira"
+      ]
+     },
+     {
+      "side": "s",
+      "line": 3,
+      "span": [
+       0,
+       3
+      ],
+      "bays": [
+       "lattice",
+       "door2",
+       "lattice"
+      ]
+     },
+     {
+      "side": "e",
+      "line": 3,
+      "span": [
+       0,
+       4
+      ],
+      "bays": [
+       "maira",
+       "maira",
+       "maira",
+       "maira"
+      ]
+     },
+     {
+      "side": "e",
+      "line": 5,
+      "span": [
+       0,
+       4
+      ],
+      "bays": [
+       "plank",
+       "plank",
+       "plank",
+       "plank"
+      ]
+     },
+     {
+      "side": "w",
+      "line": 0,
+      "span": [
+       0,
+       3
+      ],
+      "bays": [
+       "plank",
+       "plank",
+       "plank"
+      ]
+     },
+     {
+      "side": "n",
+      "line": 0,
+      "span": [
+       0,
+       5
+      ],
+      "bays": [
+       "plank",
+       "door2",
+       "plank",
+       "plank",
+       "plank"
+      ]
+     }
+    ]
+   },
+   "storey3": {
+    "grid": [
+     6,
+     6,
+     6
+    ],
+    "balcony": 0.92,
+    "rail": 0.59,
+    "doorTop": 0.14,
+    "window": {
+     "w": 0.72,
+     "sill": 0.4,
+     "spring": 0.62,
+     "rise": 0.3
+    },
+    "bays": [
+     "katomado",
+     "sankarado",
+     "katomado"
+    ],
+    "plaque": [
+     0
+    ]
+   },
+   "roof2": {
+    "ao": 7.26,
+    "bo": 5.88,
+    "ai": 3,
+    "bi": 3,
+    "ye": 5.59,
+    "rise": 1.36,
+    "flat": 0.45,
+    "power": 2.2,
+    "lift": 0.5,
+    "between": true,
+    "bells": true
+   },
+   "roof3": {
+    "ao": 4.52,
+    "bo": 4.52,
+    "top": 0.58,
+    "ye": 9,
+    "rise": 2,
+    "flat": 0.3,
+    "power": 2.4,
+    "lift": 0.6,
+    "bells": true
+   },
+   "finial": {
+    "pedestal": 0.58,
+    "bird": 0.95
+   },
+   "annex": {
+    "u": [
+     -10.65,
+     -7.6
+    ],
+    "v": [
+     -0.75,
+     1.45
+    ],
+    "floor": 0.9,
+    "eave": 2.55,
+    "ridge": 3.05,
+    "overhang": 0.75,
+    "east": -5.3,
+    "join": -5.95
+   },
+   "phase": "roof2020",
+   "parts": [
+    "roof"
+   ],
+   "finish": {
+    "roof": "#4a3629"
+   },
+   "provenance": "measured",
+   "note": "The shingles relaid from September to December 2020 (about 100,000 sawara boards over 320 m²), on the eave corners and heights fitted on the photographs."
+  },
+  {
+   "type": "furnishing",
+   "phase": "reconstruction",
+   "center": [
+    0,
+    0
+   ],
+   "provenance": "interpreted",
+   "note": "The dais at the back of the west three bays of the first storey, with the crowned Shaka seated in the middle and Yoshimitsu in monk's robes to its left, as described; the figures are simple turned volumes, not their carving.",
+   "parts": [
+    {
+     "at": [
+      -1.82,
+      0.9,
+      -2.95
+     ],
+     "size": [
+      5.6,
+      0.75,
+      1
+     ],
+     "kind": "lead",
+     "color": "#201c19"
+    },
+    {
+     "at": [
+      -1.82,
+      1.65,
+      -2.95
+     ],
+     "size": [
+      5.7,
+      0.06,
+      1.08
+     ],
+     "kind": "metal",
+     "color": "#c9a752"
+    },
+    {
+     "at": [
+      -1.82,
+      1.71,
+      -2.95
+     ],
+     "size": [
+      0.75,
+      0.3,
+      0.75
+     ],
+     "kind": "metal",
+     "shape": "flare",
+     "color": "#cfa955"
+    },
+    {
+     "at": [
+      -1.82,
+      2.01,
+      -2.95
+     ],
+     "size": [
+      0.62,
+      0.62,
+      0.5
+     ],
+     "kind": "metal",
+     "shape": "bell",
+     "color": "#d4b05a"
+    },
+    {
+     "at": [
+      -1.82,
+      2.6,
+      -2.95
+     ],
+     "size": [
+      0.26,
+      0.3,
+      0.26
+     ],
+     "kind": "metal",
+     "shape": "ball",
+     "color": "#d4b05a"
+    },
+    {
+     "at": [
+      -1.82,
+      2.05,
+      -3.2
+     ],
+     "size": [
+      0.95,
+      1.05,
+      0.06
+     ],
+     "kind": "metal",
+     "shape": "ball",
+     "color": "#b8954a"
+    },
+    {
+     "at": [
+      -3.7,
+      1.71,
+      -2.95
+     ],
+     "size": [
+      0.62,
+      0.14,
+      0.5
+     ],
+     "kind": "wood",
+     "color": "#3a2a20"
+    },
+    {
+     "at": [
+      -3.7,
+      1.85,
+      -2.95
+     ],
+     "size": [
+      0.55,
+      0.55,
+      0.45
+     ],
+     "kind": "wood",
+     "shape": "bell",
+     "color": "#2c2724"
+    },
+    {
+     "at": [
+      -3.7,
+      2.38,
+      -2.95
+     ],
+     "size": [
+      0.2,
+      0.24,
+      0.2
+     ],
+     "kind": "wood",
+     "shape": "ball",
+     "color": "#b08a6a"
+    }
+   ]
+  }
+ ]
+}
