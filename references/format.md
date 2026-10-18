@@ -29,6 +29,10 @@ Every element says where it comes from, so the viewer's evidence mode can colour
 - `"documented"`: read in the sources and the reference photos, without a measurement;
 - `"interpreted"`: not documented, a reasoned reconstruction; it then needs a `"note"` saying what was interpreted and why.
 
+## Photo reliefs
+
+A `relief` element lays a photograph of carving on the model (see [bricks.md](bricks.md)). Its `image` lives in `<id>.evidence/reliefs/` next to the file and travels with it; its `credit` names the photo's page, author and licence, which validation checks against Wikimedia Commons, and the viewer's evidence mode lists. Its `provenance` is `documented` (the carving is photographed), and its `note` says what it shows. A relief has a phase like any element, `until` to take it down and `rebuild` to set it back.
+
 ## Orientation
 
 Model a building in the frame that suits it (its axis along x, say), then set `"rotate"` (degrees, counter-clockwise seen from above) to turn it onto its real orientation. `rotate` turns the elements, the moment `anchor`s, the worksite scenes and the `visualStyle.decor`; `view` and the reference viewpoints stay geographic (x east, z south), like the measured outline.

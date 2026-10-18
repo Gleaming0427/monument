@@ -29,12 +29,19 @@ await rm(join(out, 'collection.json'));
 const monuments = join(out, 'view', 'monuments');
 await mkdir(monuments, {recursive: true});
 
-// The viewer's evidence mode draws the measured outline: it travels with the monument file.
+// The viewer's evidence mode draws the measured outline, and photo reliefs lay their images on the model:
+// both travel with the monument file.
 async function copyEvidence(dir, d, id) {
   const outline = d.evidence?.plan?.outline;
-  if (typeof outline !== 'string' || !/^[a-z0-9-]+\.evidence\/outline\.json$/.test(outline) || !(await exists(join(dir, outline)))) return;
-  await mkdir(join(monuments, `${id}.evidence`), {recursive: true});
-  await copyFile(join(dir, outline), join(monuments, `${id}.evidence`, 'outline.json'));
+  if (typeof outline === 'string' && /^[a-z0-9-]+\.evidence\/outline\.json$/.test(outline) && await exists(join(dir, outline))) {
+    await mkdir(join(monuments, `${id}.evidence`), {recursive: true});
+    await copyFile(join(dir, outline), join(monuments, `${id}.evidence`, 'outline.json'));
+  }
+  for (const image of new Set(d.elements.filter(e => e.type === 'relief').map(e => e.image))) {
+    if (typeof image !== 'string' || !new RegExp(`^${id}\\.evidence/reliefs/[a-z0-9-]+\\.(jpg|jpeg|png)$`).test(image) || !(await exists(join(dir, image)))) continue;
+    await mkdir(join(monuments, `${id}.evidence`, 'reliefs'), {recursive: true});
+    await copyFile(join(dir, image), join(monuments, image));
+  }
 }
 
 // Collection: curated order and one line each.

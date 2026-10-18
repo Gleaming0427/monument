@@ -52,7 +52,7 @@ async function open(id) {
   // `view.context: true` or the `?context` query parameter.
   const showContext = params.has('context') || data.view?.context === true;
   document.body.classList.remove('empty');
-  stage.load(showContext ? data : {...data, context: undefined});
+  stage.load(showContext ? data : {...data, context: undefined}, {base: response.url});
   $('name').textContent = data.name; $('place').textContent = data.place ?? '';
   document.title = `${data.name} — Monument`;
   $('model-note').textContent = data.modelNote ?? 'Simplified 3D model · sourced dates and figures.';
@@ -104,6 +104,8 @@ async function open(id) {
   if (cam?.length >= 3 && cam.every(Number.isFinite)) { touched = true; stage.autoRotate(false); stage.look(...cam); }
   // ?fov=70: the vertical field of view of the reference photo's lens, for wide-angle shots taken close up.
   if (Number(params.get('fov')) > 10) stage.fov(Number(params.get('fov')));
+  // ?shift=0.2: a photo with straightened verticals, its horizon that many photo heights below the middle.
+  if (Number(params.get('shift'))) stage.shift(Number(params.get('shift')));
 }
 
 function play(on) {
@@ -304,6 +306,15 @@ function buildProof() {
     }
     panel.append(el('h3', {textContent: 'Reference photos'}), el('p', {textContent: 'Each one opens over the model, seen from the photographer\'s place. Drag the divider to compare.'}), grid);
   }
+  // Carving shown as photographs: each one credited, as its licence requires.
+  const reliefs = data.elements.filter(e => e.type === 'relief' && e.credit);
+  if (reliefs.length) {
+    const credits = new Map();
+    for (const e of reliefs) { const c = credits.get(e.credit.file) ?? {...e.credit, names: []}; c.names.push(e.name ?? 'carving'); credits.set(e.credit.file, c); }
+    panel.append(el('h3', {textContent: 'Carving from photographs'}),
+      el('p', {textContent: 'Sculpture too fine to build piece by piece is a photograph laid on the model, straightened and given its depth back.'}),
+      el('ul', {}, ...[...credits.values()].map(c => el('li', {}, `${[...new Set(c.names)].join(', ')}: `, link(c.file, `photo by ${c.author}`), `, ${c.license}`))));
+  }
   if (ev.sources?.length) panel.append(el('h3', {textContent: 'Pages read'}), ...ev.sources.map(s => el('details', {}, el('summary', {}, link(s.url, host(s.url))), el('p', {textContent: s.read ?? ''}))));
   if (ev.uncertainties?.length) panel.append(el('h3', {textContent: 'Interpreted or simplified'}), el('ul', {}, ...ev.uncertainties.map(u => el('li', {textContent: u}))));
   if (data.modelNote) panel.append(el('h3', {textContent: 'In one line'}), el('p', {textContent: data.modelNote}));
@@ -357,7 +368,7 @@ function showPhoto(ref) {
   stage.proof(false);
   layout();
   stage.look(ref.azimuth, ref.elevation, ref.distance, ...(ref.target ?? data.view.target));
-  stage.fov(ref.fov ?? 38);
+  stage.fov(ref.fov ?? 38); stage.shift(ref.shift ?? 0);
   const box = $('photo'), image = box.querySelector('img');
   image.src = commonsImage(ref.url, 1800) ?? ref.url;
   const fit = ref.calibration ? ` · viewpoint fitted on ${ref.calibration.points} points, model within ${ref.calibration.rms}% of the photo's height` : ' · viewpoint from the photo\'s recorded position, not fitted';
@@ -368,7 +379,7 @@ function showPhoto(ref) {
 function hidePhoto() {
   photoRef = null; $('photo').hidden = true;
   document.body.classList.remove('photo');
-  stage.proof(proofOn); stage.fov(); layout();
+  stage.proof(proofOn); stage.fov(); stage.shift(); layout();
 }
 {
   const box = $('photo');
@@ -427,7 +438,7 @@ try {
 window.monument = {
   seek(t) { time = Math.max(0, Math.min(stage.duration, t)); play(false); },
   get duration() { return stage?.duration ?? 0; },
-  get ready() { return Boolean(data); },
+  get ready() { return Boolean(data) && stage.ready; },
 };
 
 // Direct links can change only the fragment without reloading the document.

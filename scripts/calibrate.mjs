@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // Fits a reference photo's aim and lens to points recognised in it:
-//   node scripts/calibrate.mjs monuments/<id>.json --ref <n> --photo <width>,<height> --points '[[x, y, z, px, py], …]' [--frame] [--move] [--write]
+//   node scripts/calibrate.mjs monuments/<id>.json --ref <n> --photo <width>,<height> --points '[[x, y, z, px, py], …]' [--frame] [--eye <m>] [--upright] [--move] [--write]
 // Each point is a place on the building (x east, y up, z south, in metres; with --frame, in the monument's own
 // frame before "rotate") and where it appears in the photo (pixels in an image of the given size). The camera
 // A point may also lie anywhere on a known line: {"ellipse": {"center": [x, z], "radii": [a, b], "rot": radians,
@@ -28,16 +28,22 @@ const rad = Math.PI / 180, turn = (d.rotate ?? 0) * rad;
 const world = ([x, y, z]) => args.includes('--frame') ? [x * Math.cos(turn) + z * Math.sin(turn), y, -x * Math.sin(turn) + z * Math.cos(turn)] : [x, y, z];
 const target = ref.target ?? d.view.target, az = ref.azimuth * rad, el = ref.elevation * rad;
 const C = [target[0] + Math.sin(az) * Math.cos(el) * ref.distance, target[1] + Math.sin(el) * ref.distance, target[2] - Math.cos(az) * Math.cos(el) * ref.distance];
+// --eye <metres>: the camera's height above the ground, read in the photo itself: a horizontal line of the
+// building that shows straight across a curved or receding facade lies at the photographer's eye level.
+if (flag('eye') !== undefined) C[1] = Number(flag('eye'));
 const cross = (a, b) => [a[1] * b[2] - a[2] * b[1], a[2] * b[0] - a[0] * b[2], a[0] * b[1] - a[1] * b[0]], dot = (a, b) => a[0] * b[0] + a[1] * b[1] + a[2] * b[2];
 const unit = a => { const l = Math.hypot(...a); return a.map(v => v / l); };
 // Pinhole camera at C (moved by [dx, dy, dz] with --move) looking along bearing psi (0 = north) and pitch
 // theta, vertical field of view phi; image coordinates in units of the photo's height from its centre.
-const move = args.includes('--move');
+// --upright: the photo's verticals are parallel (a shift lens, or perspective corrected afterwards, as most
+// architecture photos on Commons are). The camera then looks level, and the second unknown is instead the
+// shift: how far below the photo's middle the horizon lies, in photo heights.
+const move = args.includes('--move'), upright = args.includes('--upright');
 const project = ([psi, theta, phi, dx = 0, dy = 0, dz = 0], P) => {
-  const C2 = [C[0] + dx, C[1] + dy, C[2] + dz];
-  const f = [Math.sin(psi) * Math.cos(theta), Math.sin(theta), -Math.cos(psi) * Math.cos(theta)], r = unit(cross(f, [0, 1, 0])), u = cross(r, f);
+  const C2 = [C[0] + dx, C[1] + dy, C[2] + dz], pitch = upright ? 0 : theta;
+  const f = [Math.sin(psi) * Math.cos(pitch), Math.sin(pitch), -Math.cos(psi) * Math.cos(pitch)], r = unit(cross(f, [0, 1, 0])), u = cross(r, f);
   const q = [P[0] - C2[0], P[1] - C2[1], P[2] - C2[2]], depth = dot(q, f), F = .5 / Math.tan(phi / 2);
-  return [F * dot(q, r) / depth, -F * dot(q, u) / depth];
+  return [F * dot(q, r) / depth, -F * dot(q, u) / depth + (upright ? theta : 0)];
 };
 const seen = points.map(p => Array.isArray(p) ? {P: world(p.slice(0, 3)), at: [(p[3] - W / 2) / H, (p[4] - H / 2) / H]} : {curve: p.ellipse, at: [(p.at[0] - W / 2) / H, (p.at[1] - H / 2) / H]});
 // Points along an ellipse (amphitheatre convention: angle 0 at the end of the first axis, turned by rot).
@@ -72,7 +78,7 @@ const gap = p => Math.sqrt(seen.reduce((sum, s) => sum + miss(p, s), 0) / seen.l
 // Nelder-Mead from the reference's current aim and lens.
 const look = unit([target[0] - C[0], target[1] - C[1], target[2] - C[2]]);
 if (move && seen.length < 6) { console.error('--move fits six unknowns: give at least six points.'); process.exit(1); }
-const dims = move ? 6 : 3, steps = [4 * rad, 4 * rad, 6 * rad, 15, 4, 15];
+const dims = move ? 6 : 3, steps = [4 * rad, upright ? .05 : 4 * rad, 6 * rad, 15, 4, 15];
 const fit = start => {
   let simplex = [start];
   for (let i = 0; i < dims; i++) { const p = start.slice(); p[i] += steps[i]; simplex.push(p); }
@@ -88,19 +94,21 @@ const fit = start => {
   return simplex.sort((a, b) => cost(a) - cost(b))[0];
 };
 // Restarted once from its own result, which steadies Nelder-Mead in six dimensions.
-let best = fit([Math.atan2(look[0], -look[2]), Math.asin(look[1]), (ref.fov ?? 38) * rad, ...(move ? [0, 0, 0] : [])]);
+const lens = (ref.fov ?? 38) * rad, pitch0 = Math.asin(look[1]);
+let best = fit([Math.atan2(look[0], -look[2]), upright ? .5 / Math.tan(lens / 2) * Math.tan(pitch0) + (ref.shift ?? 0) : pitch0, lens, ...(move ? [0, 0, 0] : [])]);
 best = fit(best);
 const [psi, theta, phi, dx = 0, dy = 0, dz = 0] = best, rms = gap(best);
 const simplex = [best];
-const f = [Math.sin(psi) * Math.cos(theta), Math.sin(theta), -Math.cos(psi) * Math.cos(theta)], D = ref.distance, Cm = [C[0] + dx, C[1] + dy, C[2] + dz];
+const pitch = upright ? 0 : theta, f = [Math.sin(psi) * Math.cos(pitch), Math.sin(pitch), -Math.cos(psi) * Math.cos(pitch)], D = ref.distance, Cm = [C[0] + dx, C[1] + dy, C[2] + dz];
 const T = Cm.map((v, j) => +(v + f[j] * D).toFixed(1)), back = [Cm[0] - T[0], Cm[1] - T[1], Cm[2] - T[2]];
 if (move) console.log(`camera moved by ${Math.hypot(dx, dz).toFixed(1)} m on the ground and ${dy.toFixed(1)} m in height`);
 const next = {azimuth: +((Math.atan2(back[0], -back[2]) / rad + 360) % 360).toFixed(1), elevation: +(Math.asin(back[1] / Math.hypot(...back)) / rad).toFixed(1), distance: +Math.hypot(...back).toFixed(1), target: T, fov: +(phi / rad).toFixed(1)};
 console.log(`reference ${n}: ${ref.view ?? ref.url}`);
 for (const [i, s] of seen.entries()) console.log(`  point ${i}: off by ${(Math.sqrt(miss(simplex[0], s)) * 100).toFixed(1)}% of the photo's height`);
-console.log(`aim ${next.azimuth}°, ${next.elevation}°, fov ${next.fov}° · rms ${rms.toFixed(1)}% of the photo's height`);
+console.log(`aim ${next.azimuth}°, ${next.elevation}°, fov ${next.fov}°${upright ? `, horizon ${(theta * 100).toFixed(1)}% of the photo's height below its middle` : ''} · rms ${rms.toFixed(1)}% of the photo's height`);
 if (args.includes('--write')) {
   Object.assign(ref, next, {calibration: {points: seen.length, rms: +rms.toFixed(1)}});
+  if (upright) ref.shift = +theta.toFixed(4); else delete ref.shift;
   const indent = /^\{\n( +)/.exec(text)?.[1].length ?? 1;
   await writeFile(path, JSON.stringify(d, null, indent) + (text.endsWith('\n') ? '\n' : ''));
   console.log('Written to the reference.');

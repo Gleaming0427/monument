@@ -87,7 +87,7 @@
    "label": "of iron clamps"
   }
  ],
- "modelNote": "Rings, heights and the standing arc of the outer wall from OpenStreetMap’s 3D outline; dimensions and dates from the sources. Seating, underground galleries and decoration are schematic.",
+ "modelNote": "Rings, heights and the standing arc of the outer wall from OpenStreetMap’s 3D outline; dimensions and dates from the sources; bays, orders, cornices, the attic and the ends of the standing wall read on four reference photos fitted within 0.6–0.7% of their height. Seating, underground galleries and wear are schematic.",
  "evidence": {
   "identity": "Colosseo (Flavian Amphitheatre), Piazza del Colosseo, Rome, Italy (OSM relation 1834818)",
   "origin": [
@@ -112,58 +112,76 @@
    {
     "url": "https://commons.wikimedia.org/wiki/File:KolosseumNorden.jpg",
     "view": "north",
-    "azimuth": 356,
-    "elevation": -7.1,
-    "distance": 133,
+    "azimuth": 359.1,
+    "elevation": 0,
+    "distance": 132.2,
     "target": [
-     -0.94,
-     18,
-     -0.43
+     -8.5,
+     11.3,
+     -4.1
     ],
-    "fov": 62,
-    "camera": "132 m from the centre at ground level (Commons camera location)"
+    "fov": 57.4,
+    "camera": "About 130 m north of the centre (Commons camera location) and 11 m above the ground: the first-storey cornice runs straight across the photo, so the photographer's eye was at about its height.",
+    "calibration": {
+     "points": 32,
+     "rms": 0.7
+    },
+    "shift": 0.2992
    },
    {
-    "url": "https://commons.wikimedia.org/wiki/File:Exteriores_del_Coliseo_01.jpg",
+    "url": "https://commons.wikimedia.org/wiki/File:Coloseum_-_panoramio_-_roliva22.jpg",
     "view": "east",
-    "azimuth": 94,
-    "elevation": -7.2,
-    "distance": 130,
+    "azimuth": 86.5,
+    "elevation": -9.5,
+    "distance": 178.9,
     "target": [
-     88.1,
-     20,
-     25.9
+     2.4,
+     32.5,
+     -5.8
     ],
-    "fov": 55,
-    "camera": "129 m from the centre at ground level (Commons camera location)"
+    "fov": 36.7,
+    "camera": "About 177 m east of the centre (Commons camera location), at eye height: the brick buttress at the end of the standing outer wall, the wall curving away to the north.",
+    "calibration": {
+     "points": 25,
+     "rms": 0.6
+    }
    },
    {
     "url": "https://commons.wikimedia.org/wiki/File:Roma_-_Coliseo_Romano_-_001.jpg",
     "view": "south",
-    "azimuth": 186,
-    "elevation": -5.5,
+    "azimuth": 186.3,
+    "elevation": -16.1,
     "distance": 170.8,
     "target": [
-     -0.94,
-     18,
-     -0.43
+     -2.1,
+     48.8,
+     6.8
     ],
-    "fov": 48,
-    "camera": "Placed 170 m from the centre to match the photo's framing; the Commons camera location (99 m) does not fit what the photo shows"
+    "fov": 47.6,
+    "camera": "About 170 m south of the centre, at eye height.",
+    "calibration": {
+     "points": 20,
+     "rms": 0.6
+    },
+    "positionReason": "Commons records the camera 99 m from the centre, but fitted from there the inner ring needs a 78° lens tilted up 31° and still misses by 1.3%; the photo's horizon at the crowd's heads and the ring's size fit a camera 170 m away, within 0.6%."
    },
    {
     "url": "https://commons.wikimedia.org/wiki/File:The_Colosseum_(Colosseo)_-_Rome,_Italy_2024-03-03_(16).jpg",
     "view": "west",
-    "azimuth": 260,
-    "elevation": -5.8,
-    "distance": 161.8,
+    "azimuth": 251,
+    "elevation": -10.6,
+    "distance": 162.2,
     "target": [
-     -13.8,
-     20,
-     -26.5
+     -13.2,
+     32.1,
+     -22.1
     ],
-    "fov": 42,
-    "camera": "161 m from the centre at ground level (Commons camera location)"
+    "fov": 47.3,
+    "camera": "About 160 m west of the centre (Commons camera location), at eye height.",
+    "calibration": {
+     "points": 11,
+     "rms": 0.7
+    }
    }
   ],
   "features": [
@@ -172,7 +190,7 @@
     "source": "https://en.wikipedia.org/wiki/Colosseum"
    },
    {
-    "text": "Three storeys of arcades framed by engaged columns, under a tall attic with Corinthian pilasters and windows.",
+    "text": "Three storeys of arcades framed by engaged half-columns, Tuscan, Ionic then Corinthian, under a tall attic with flat Corinthian pilasters and windows in every other bay.",
     "source": "https://en.wikipedia.org/wiki/Colosseum"
    },
    {
@@ -203,24 +221,25 @@
   "geometry": "Ellipses fitted by least squares to the OpenStreetMap building parts: centre and axis (19.7° from east towards south) from the inner ring (36 m), fitted within 0.4 m; outer wall 94.0 × 76.2 m semi-axes on its outer edge (0.65 m rms), inner ring 81.2 × 64.5 m, cavea steps 74.0 × 55.2 m (24 m) and 65.5 × 49.6 m (12 m). The standing outer wall runs from 188° to 356° (north side). Arena 87 × 55 m (Wikipedia).",
   "uncertainties": [
    "Storey heights of the outer wall (10.5, 11.8, 11.6 m and a 14.6 m attic) shared from the 48.5 m total.",
-   "80 bays per ring; arches, columns and attic simplified.",
    "Seating raked in one slope; the timber upper gallery and its fire of 217 are not shown.",
    "Underground galleries drawn as parallel walls, not their real plan.",
    "The timber facade scaffold and gin-pole hoists explain the masonry sequence; their exact Roman site layout is interpretive.",
    "Which end dates from 1807 and which from 1827 is not stated in the sources used; the wedge (east) and the stepped arches (west) follow photos.",
-   "Stone weathering, black crusts and clamp pits not drawn; arches, cornices, attic windows and corbels simplified.",
-   "The 1807 wedge: the east photo shows it on the other side of the wall's cut end; drawn as a stepped slope.",
-   "The OpenStreetMap outline stops at the cut end of the outer wall and leaves out the 1807 brick buttress: the buttress alone makes the 14.7 m maximum edge gap of the control plan (90% of the edges are within 1.5 m)."
+   "80 bays per ring; the orders' capitals are simplified turned forms (echinus, volutes, two rows of leaves), not carved.",
+   "Stone weathering and black crusts are not drawn; the clamp pits are scattered, not placed one by one.",
+   "The 1807 buttress is a straight brick slope read on the east photo (from the top of the wall at its end to the ground about 22 m out); the OpenStreetMap outline leaves it out, so it alone makes the control plan's largest edge gap (90% of the edges are within 2 m).",
+   "Seen from the south and the west, the tall west end of the standing outer wall and Valadier's stepped arches stand further north-west in the photos than in the model, while the inner ring fits them within 0.7%: the end's exact position and the length of the stepped arches are not settled.",
+   "The north inner ring stands two storeys high behind the outer wall, as the sky seen through the third-storey arcades in the north photo requires; its exact remaining height there is not measured."
   ],
   "plan": {
    "source": "OpenStreetMap relation 1834818 (building parts with heights)",
    "url": "https://www.openstreetmap.org/relation/1834818",
    "outline": "colosseum.evidence/outline.json",
    "fit": {
-    "p90": 1.8,
-    "max": 14.56,
+    "p90": 2,
+    "max": 15.63,
     "coverage": 1,
-    "overflow": 0.06
+    "overflow": 0.07
    }
   },
   "size": "building",
@@ -318,6 +337,45 @@
      "Arches, cornices and the attic's windows and corbels are simplified; 80 equal bays.",
      "The side of the cut on which the 1807 wedge stands differs from the east photo; the wedge is drawn as a stepped slope.",
      "Restoration scaffolding seen in some photos is not shown."
+    ],
+    "fixed": [
+     "After pass 3 the four reference photos were fitted on the lines of the facade (calibrate.mjs, 20 to 32 points each): the north photo turned out to be perspective-corrected, so its view is now level with the horizon below the middle (shift), within 0.7%; the east reference was replaced by a sharper photo taken where Commons records it; the south view keeps its 170 m position, now argued.",
+     "Engaged half-columns are round, laid in drums with their entasis, Tuscan, Ionic then Corinthian, on pedestals where the storey has a parapet; the attic keeps flat Corinthian pilasters; the entablature has its three bands.",
+     "The bays laid on the east photo show the standing outer wall ending a bay earlier (351°) than drawn: its end and the 1807 buttress were moved there, and the buttress now rises to the top of the wall in a straight slope as the photo shows.",
+     "The north inner ring was lowered to two storeys: in the north photo the sky shows through the third-storey arcades.",
+     "Bricks were dulled towards the photos' colour."
+    ]
+   },
+   {
+    "pass": 4,
+    "captures": [
+     "colosseum.evidence/compare/pass-4/ref-0.jpg",
+     "colosseum.evidence/compare/pass-4/ref-1.jpg",
+     "colosseum.evidence/compare/pass-4/ref-2.jpg",
+     "colosseum.evidence/compare/pass-4/ref-3.jpg"
+    ],
+    "phases": [
+     "colosseum.evidence/compare/pass-4/phase-0.jpg",
+     "colosseum.evidence/compare/pass-4/phase-1.jpg",
+     "colosseum.evidence/compare/pass-4/phase-2.jpg",
+     "colosseum.evidence/compare/pass-4/phase-3.jpg",
+     "colosseum.evidence/compare/pass-4/phase-4.jpg",
+     "colosseum.evidence/compare/pass-4/phase-5.jpg",
+     "colosseum.evidence/compare/pass-4/phase-6.jpg",
+     "colosseum.evidence/compare/pass-4/phase-7.jpg"
+    ],
+    "gaps": [
+     "Ref 0 (north): with its view fitted, the bays fall on the photo's within a few pixels in the middle and drift by up to a quarter of a bay at the far right; the round columns, cornices, attic windows and corbels sit on the photo's; the photo shows the sky through the third-storey arcades, as the model now does.",
+     "Ref 1 (east): the facade, its storeys and its bays lie on the photo's; the 1807 buttress now ends the wall where the photo shows it; its brick is a little redder than the photo's.",
+     "Ref 2 (south): the inner ring's arcades and broken top lie on the photo's; on the left the photo shows the west end of the outer wall, under scaffolding, standing further west than the model's end.",
+     "Ref 3 (west): the inner ring fits the photo within 0.7%; the tall west end of the outer wall and Valadier's stepped arches stand further to the left (north-west) in the photo than in the model.",
+     "Colours: the travertine reads close to the photos; the model has no black crusts or weathering streaks."
+    ],
+    "fixed": [],
+    "remaining": [
+     "The west end of the standing outer wall and the length of Valadier's stepped arches are not settled (see the uncertainties).",
+     "Capitals, corbels and the clamp pits are simplified; no weathering or black crusts.",
+     "Seating, underground galleries and the arena floor are schematic."
     ]
    }
   ]
@@ -568,25 +626,28 @@
    ],
    "arc": [
     198,
-    355.5
+    351
    ],
    "storeys": [
     {
      "height": 10.5,
      "column": true,
-     "arch": 7.05
+     "arch": 7.05,
+     "order": "tuscan"
     },
     {
      "height": 11.8,
      "column": true,
      "arch": 7.8,
-     "sill": 1.2
+     "sill": 1.2,
+     "order": "ionic"
     },
     {
      "height": 11.6,
      "column": true,
      "arch": 7.7,
-     "sill": 1.2
+     "sill": 1.2,
+     "order": "corinthian"
     }
    ],
    "color": "#dcd0b4",
@@ -608,26 +669,29 @@
     75.2
    ],
    "arc": [
-    355.5,
+    351,
     198
    ],
    "storeys": [
     {
      "height": 10.5,
      "column": true,
-     "arch": 7.05
+     "arch": 7.05,
+     "order": "tuscan"
     },
     {
      "height": 11.8,
      "column": true,
      "arch": 7.8,
-     "sill": 1.2
+     "sill": 1.2,
+     "order": "ionic"
     },
     {
      "height": 11.6,
      "column": true,
      "arch": 7.7,
-     "sill": 1.2
+     "sill": 1.2,
+     "order": "corinthian"
     }
    ],
    "until": "earthquake",
@@ -651,7 +715,7 @@
    ],
    "arc": [
     198,
-    355.5
+    351
    ],
    "y0": 33.9,
    "storeys": [
@@ -685,7 +749,7 @@
     75.2
    ],
    "arc": [
-    355.5,
+    351,
     198
    ],
    "y0": 33.9,
@@ -754,7 +818,7 @@
     "depth": 0.12
    },
    "provenance": "measured",
-   "brick": "#a5664a",
+   "brick": "#a26f5c",
    "stubs": true,
    "pits": 4,
    "vaults": [
@@ -790,21 +854,6 @@
      "height": 11.8,
      "arch": 7.8,
      "sill": 1.2
-    },
-    {
-     "height": 7.7,
-     "arch": 6.1,
-     "sill": 0.6
-    },
-    {
-     "kind": "brick",
-     "height": 6,
-     "window": [
-      1.8,
-      2.4
-     ],
-     "windowAt": 3.2,
-     "every": 2
     }
    ],
    "color": "#9a8f79",
@@ -827,7 +876,7 @@
     198,
     355.5
    ],
-   "note": "Behind the standing outer wall: tinted as the gallery's shade, which the renderer does not compute."
+   "note": "Behind the standing outer wall, tinted as the gallery's shade, which the renderer does not compute. It stands two storeys high: from 11 m up, 130 m to the north, the sight line through the outer wall's third-storey arcades would meet it above 24 m, and the photos show the sky there."
   },
   {
    "type": "amphitheatre",
@@ -957,15 +1006,17 @@
    "type": "buttress",
    "phase": "buttresses",
    "at": [
-    88.2,
-    25.3
+    89.4,
+    19.5
    ],
-   "rot": -1.8181,
-   "height": 36,
-   "length": 15,
+   "rot": -1.7271,
+   "height": 48.5,
+   "length": 22,
    "width": 4.8,
-   "color": "#8f5d48",
-   "provenance": "documented"
+   "color": "#b6806a",
+   "provenance": "documented",
+   "course": 0.6,
+   "note": "Its slope is read from the east photo: from the top of the wall at its end down to the ground about 22 m out, in brick."
   },
   {
    "type": "amphitheatre",
@@ -990,19 +1041,22 @@
     {
      "height": 10.5,
      "column": true,
-     "arch": 7.05
+     "arch": 7.05,
+     "order": "tuscan"
     },
     {
      "height": 11.8,
      "column": true,
      "arch": 7.8,
-     "sill": 1.2
+     "sill": 1.2,
+     "order": "ionic"
     },
     {
      "height": 11.6,
      "column": true,
      "arch": 7.7,
-     "sill": 1.2
+     "sill": 1.2,
+     "order": "corinthian"
     }
    ],
    "provenance": "documented",
@@ -1032,13 +1086,15 @@
     {
      "height": 10.5,
      "column": true,
-     "arch": 7.05
+     "arch": 7.05,
+     "order": "tuscan"
     },
     {
      "height": 11.8,
      "column": true,
      "arch": 7.8,
-     "sill": 1.2
+     "sill": 1.2,
+     "order": "ionic"
     }
    ],
    "provenance": "documented",

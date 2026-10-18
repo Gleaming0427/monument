@@ -58,7 +58,7 @@
    "label": "spire"
   }
  ],
- "modelNote": "Placed on the OpenStreetMap footprint and the published dimensions (127 m long, 48 m wide, vaults at 33 m, roofs at 43 m, towers 69 m, spire 96 m); bays, roses and portals are read from photos, sculpture and tracery are simplified, and the first spire's form is interpreted.",
+ "modelNote": "Placed on the OpenStreetMap footprint and the published dimensions (127 m long, 48 m wide, vaults at 33 m, roofs at 43 m, towers 69 m, spire 96 m); bays, roses and portals are measured on photos. The portals, the gallery of kings, the west rose and the statues in niches are free photographs from Wikimedia Commons laid on the model with their depth; other carving is simplified, and the first spire's form is interpreted.",
  "evidence": {
   "size": "building",
   "identity": "Cathédrale Notre-Dame de Paris, 6 parvis Notre-Dame – place Jean-Paul-II, 75004 Paris, France (OpenStreetMap way 201611261; Mérimée PA00086250)",
@@ -211,7 +211,7 @@
   "uncertainties": [
    "The first spire (1220–1230, 78 m) is drawn like Viollet-le-Duc's, smaller: its exact form is not documented in the sources used.",
    "The 12th-century flying buttresses, replaced in the 13th and 14th centuries, and the original transept fronts are not modelled in detail; the transept arms show plain ends until the 1250s fronts.",
-   "Sculpture is reduced to simple figures; the portals' archivolts, the chimeras and the crockets are simplified.",
+   "The west front's carving is shown by photographs of 2014 and 2025, laid on the model: the portals appear as they are today in every phase, so their earlier states and the restorations of the 19th century are not shown (only the gallery of kings is taken down under the Revolution and set back afterwards). Other sculpture (the transept portals, the chimeras, the crockets) is simplified.",
    "The sacristy is drawn as three plain blocks on its OpenStreetMap footprint; its height is estimated. Soufflot's earlier sacristy is not shown.",
    "Interior vaults, the 2019 collapse of part of the vaults and their rebuilding are not shown from outside.",
    "Seen from the north-east, the model and the photo still differ by about 5% of the photo's height after fitting the viewpoint; the cause (the photo's recorded position or the towers' plan) is not settled."
@@ -967,25 +967,53 @@
    "towerTop": 69,
    "portals": [
     {
-     "v": -13.1,
-     "w": 8.4,
-     "spring": 6.6
+     "v": -12.345,
+     "w": 9.19,
+     "spring": 4.97,
+     "rise": 8,
+     "relief": true,
+     "depth": 1.95,
+     "foot": 1.9,
+     "inner": {
+      "v": -11.75,
+      "w": 4.56
+     },
+     "doors": 4.57
     },
     {
-     "v": 0.5,
-     "w": 9.6,
-     "spring": 6.1
+     "v": 0.675,
+     "w": 11.85,
+     "spring": 5.78,
+     "rise": 9.38,
+     "relief": true,
+     "depth": 1.95,
+     "foot": 1.9,
+     "inner": {
+      "v": 0.69,
+      "w": 5.25
+     },
+     "doors": 5.24
     },
     {
-     "v": 13.65,
-     "w": 8.4,
-     "spring": 6.6
+     "v": 13.4375,
+     "w": 9.125,
+     "spring": 5.11,
+     "rise": 8.67,
+     "relief": true,
+     "depth": 1.95,
+     "foot": 1.9,
+     "inner": {
+      "v": 12.84,
+      "w": 5.31
+     },
+     "doors": 5.04
     }
    ],
    "kings": {
     "count": 28,
     "until": "revolution",
-    "rebuild": "restauration"
+    "rebuild": "restauration",
+    "relief": true
    },
    "rose": {
     "v": 0.5,
@@ -997,7 +1025,8 @@
      "#4a2230",
      "#35264a",
      "#1f3440"
-    ]
+    ],
+    "relief": true
    },
    "windowWidth": 5.2,
    "towers": [
@@ -1051,8 +1080,537 @@
     "eave": 34.5,
     "ridge": 43
    },
-   "lead": "#7d868e",
-   "tympanum": "#cdbf9f"
+   "lead": "#7d868e"
+  },
+  {
+   "type": "relief",
+   "name": "Galerie des rois",
+   "provenance": "documented",
+   "note": "The 28 kings remade under Lassus and Viollet-le-Duc, photographed in 2014; the medieval kings pulled down under the Revolution stood in the same niches.",
+   "phase": "facade",
+   "until": "revolution",
+   "rebuild": "restauration",
+   "center": [
+    -66.8,
+    -7.85
+   ],
+   "at": [
+    -0.35,
+    17.925,
+    0.05
+   ],
+   "size": [
+    41,
+    5.35
+   ],
+   "facing": [
+    -1,
+    0
+   ],
+   "depth": 0.6,
+   "image": "notre-dame-de-paris.evidence/reliefs/galerie-des-rois.jpg",
+   "corners": [
+    [
+     105,
+     135
+    ],
+    [
+     3976,
+     135
+    ],
+    [
+     3976,
+     640
+    ],
+    [
+     105,
+     640
+    ]
+   ],
+   "tone": "#ddd1b4",
+   "credit": {
+    "file": "https://commons.wikimedia.org/wiki/File:Paris,_Notre_Dame_--_2014_--_1458-65.jpg",
+    "author": "Dietmar Rabich",
+    "license": "CC BY-SA 4.0"
+   }
+  },
+  {
+   "type": "relief",
+   "name": "Portail de la Vierge",
+   "provenance": "documented",
+   "note": "The Virgin's portal: her death and coronation in the tympanum above the lintel of prophets and kings; its doorway is not centred under its arch, as the photo shows.",
+   "phase": "facade",
+   "center": [
+    -66.8,
+    -7.85
+   ],
+   "at": [
+    0,
+    7.435,
+    -12.345
+   ],
+   "size": [
+    9.19,
+    11.07
+   ],
+   "facing": [
+    -1,
+    0
+   ],
+   "shape": {
+    "kind": "pointed",
+    "spring": 3.07,
+    "rise": 8
+   },
+   "recess": {
+    "width": 4.56,
+    "spring": 4.22,
+    "rise": 4.08,
+    "offset": 0.595,
+    "depth": 1.95
+   },
+   "image": "notre-dame-de-paris.evidence/reliefs/portails.jpg",
+   "corners": [
+    [
+     254.8,
+     245
+    ],
+    [
+     990,
+     245
+    ],
+    [
+     990,
+     1068.6
+    ],
+    [
+     254.8,
+     1068.6
+    ]
+   ],
+   "tone": "#d9cdb0",
+   "credit": {
+    "file": "https://commons.wikimedia.org/wiki/File:Notre_Dame_west_facade_2025-09-02_-_01.jpg",
+    "author": "The wub",
+    "license": "CC BY-SA 4.0",
+    "crop": [
+     550,
+     4450,
+     3800,
+     5600
+    ]
+   }
+  },
+  {
+   "type": "relief",
+   "name": "Portail du Jugement dernier",
+   "provenance": "documented",
+   "note": "The Last Judgement: Christ in judgement above the weighing of souls and the resurrection of the dead on the two lintels, apostles on the jambs.",
+   "phase": "facade",
+   "center": [
+    -66.8,
+    -7.85
+   ],
+   "at": [
+    0,
+    8.53,
+    0.675
+   ],
+   "size": [
+    11.85,
+    13.26
+   ],
+   "facing": [
+    -1,
+    0
+   ],
+   "shape": {
+    "kind": "pointed",
+    "spring": 3.88,
+    "rise": 9.38
+   },
+   "recess": {
+    "width": 5.25,
+    "spring": 4.69,
+    "rise": 4.3,
+    "offset": 0.015,
+    "depth": 1.95
+   },
+   "image": "notre-dame-de-paris.evidence/reliefs/portails.jpg",
+   "corners": [
+    [
+     1190,
+     82.1
+    ],
+    [
+     2138,
+     82.1
+    ],
+    [
+     2138,
+     1068.6
+    ],
+    [
+     1190,
+     1068.6
+    ]
+   ],
+   "tone": "#d9cdb0",
+   "credit": {
+    "file": "https://commons.wikimedia.org/wiki/File:Notre_Dame_west_facade_2025-09-02_-_01.jpg",
+    "author": "The wub",
+    "license": "CC BY-SA 4.0",
+    "crop": [
+     550,
+     4450,
+     3800,
+     5600
+    ]
+   }
+  },
+  {
+   "type": "relief",
+   "name": "Portail Sainte-Anne",
+   "provenance": "documented",
+   "note": "St Anne's portal: the Virgin in majesty under a canopy in the tympanum, above two lintels, saints on the jambs.",
+   "phase": "facade",
+   "center": [
+    -66.8,
+    -7.85
+   ],
+   "at": [
+    0,
+    7.84,
+    13.4375
+   ],
+   "size": [
+    9.125,
+    11.88
+   ],
+   "facing": [
+    -1,
+    0
+   ],
+   "shape": {
+    "kind": "pointed",
+    "spring": 3.21,
+    "rise": 8.67
+   },
+   "recess": {
+    "width": 5.31,
+    "spring": 4.28,
+    "rise": 3.77,
+    "offset": -0.598,
+    "depth": 1.95
+   },
+   "image": "notre-dame-de-paris.evidence/reliefs/portails.jpg",
+   "corners": [
+    [
+     2320,
+     184.8
+    ],
+    [
+     3050,
+     184.8
+    ],
+    [
+     3050,
+     1068.6
+    ],
+    [
+     2320,
+     1068.6
+    ]
+   ],
+   "tone": "#d9cdb0",
+   "credit": {
+    "file": "https://commons.wikimedia.org/wiki/File:Notre_Dame_west_facade_2025-09-02_-_01.jpg",
+    "author": "The wub",
+    "license": "CC BY-SA 4.0",
+    "crop": [
+     550,
+     4450,
+     3800,
+     5600
+    ]
+   }
+  },
+  {
+   "type": "relief",
+   "name": "Rose occidentale",
+   "provenance": "documented",
+   "note": "The west rose, 9.70 m across, with the Virgin and Child between two angels standing on the balustrade before it; photographed in 2014 and set in the rose's opening.",
+   "phase": "facade",
+   "center": [
+    -66.8,
+    -7.85
+   ],
+   "at": [
+    0.7,
+    27,
+    0.5
+   ],
+   "size": [
+    9.7,
+    9.7
+   ],
+   "facing": [
+    -1,
+    0
+   ],
+   "shape": {
+    "kind": "circle"
+   },
+   "depth": 0.3,
+   "image": "notre-dame-de-paris.evidence/reliefs/rose-ouest.jpg",
+   "corners": [
+    [
+     555,
+     800
+    ],
+    [
+     2775,
+     800
+    ],
+    [
+     2775,
+     2790
+    ],
+    [
+     555,
+     2790
+    ]
+   ],
+   "tone": "#d9cdb0",
+   "credit": {
+    "file": "https://commons.wikimedia.org/wiki/File:Paris,_Notre_Dame_--_2014_--_1446.jpg",
+    "author": "Dietmar Rabich",
+    "license": "CC BY-SA 4.0"
+   }
+  },
+  {
+   "type": "relief",
+   "name": "Statue en niche",
+   "provenance": "documented",
+   "note": "One of the four statues standing in niches on the front of the buttresses at the level of the portals, from the 2025 photograph of the front.",
+   "phase": "facade",
+   "center": [
+    -66.8,
+    -7.85
+   ],
+   "at": [
+    -1.5,
+    7.32,
+    -19.75
+   ],
+   "size": [
+    2.2,
+    4.44
+   ],
+   "facing": [
+    -1,
+    0
+   ],
+   "depth": 0.35,
+   "image": "notre-dame-de-paris.evidence/reliefs/portails.jpg",
+   "corners": [
+    [
+     4,
+     500
+    ],
+    [
+     180,
+     500
+    ],
+    [
+     180,
+     830
+    ],
+    [
+     4,
+     830
+    ]
+   ],
+   "tone": "#d9cdb0",
+   "credit": {
+    "file": "https://commons.wikimedia.org/wiki/File:Notre_Dame_west_facade_2025-09-02_-_01.jpg",
+    "author": "The wub",
+    "license": "CC BY-SA 4.0",
+    "crop": [
+     550,
+     4450,
+     3800,
+     5600
+    ]
+   }
+  },
+  {
+   "type": "relief",
+   "name": "Statue en niche",
+   "provenance": "documented",
+   "note": "One of the four statues standing in niches on the front of the buttresses at the level of the portals, from the 2025 photograph of the front.",
+   "phase": "facade",
+   "center": [
+    -66.8,
+    -7.85
+   ],
+   "at": [
+    -1.5,
+    7.32,
+    -6.5
+   ],
+   "size": [
+    2.2,
+    4.44
+   ],
+   "facing": [
+    -1,
+    0
+   ],
+   "depth": 0.35,
+   "image": "notre-dame-de-paris.evidence/reliefs/portails.jpg",
+   "corners": [
+    [
+     1007,
+     500
+    ],
+    [
+     1183,
+     500
+    ],
+    [
+     1183,
+     830
+    ],
+    [
+     1007,
+     830
+    ]
+   ],
+   "tone": "#d9cdb0",
+   "credit": {
+    "file": "https://commons.wikimedia.org/wiki/File:Notre_Dame_west_facade_2025-09-02_-_01.jpg",
+    "author": "The wub",
+    "license": "CC BY-SA 4.0",
+    "crop": [
+     550,
+     4450,
+     3800,
+     5600
+    ]
+   }
+  },
+  {
+   "type": "relief",
+   "name": "Statue en niche",
+   "provenance": "documented",
+   "note": "One of the four statues standing in niches on the front of the buttresses at the level of the portals, from the 2025 photograph of the front.",
+   "phase": "facade",
+   "center": [
+    -66.8,
+    -7.85
+   ],
+   "at": [
+    -1.5,
+    7.32,
+    7.55
+   ],
+   "size": [
+    2.2,
+    4.44
+   ],
+   "facing": [
+    -1,
+    0
+   ],
+   "depth": 0.35,
+   "image": "notre-dame-de-paris.evidence/reliefs/portails.jpg",
+   "corners": [
+    [
+     2136,
+     500
+    ],
+    [
+     2312,
+     500
+    ],
+    [
+     2312,
+     830
+    ],
+    [
+     2136,
+     830
+    ]
+   ],
+   "tone": "#d9cdb0",
+   "credit": {
+    "file": "https://commons.wikimedia.org/wiki/File:Notre_Dame_west_facade_2025-09-02_-_01.jpg",
+    "author": "The wub",
+    "license": "CC BY-SA 4.0",
+    "crop": [
+     550,
+     4450,
+     3800,
+     5600
+    ]
+   }
+  },
+  {
+   "type": "relief",
+   "name": "Statue en niche",
+   "provenance": "documented",
+   "note": "One of the four statues standing in niches on the front of the buttresses at the level of the portals, from the 2025 photograph of the front.",
+   "phase": "facade",
+   "center": [
+    -66.8,
+    -7.85
+   ],
+   "at": [
+    -1.5,
+    7.32,
+    19.75
+   ],
+   "size": [
+    2.2,
+    4.44
+   ],
+   "facing": [
+    -1,
+    0
+   ],
+   "depth": 0.35,
+   "image": "notre-dame-de-paris.evidence/reliefs/portails.jpg",
+   "corners": [
+    [
+     3074,
+     500
+    ],
+    [
+     3250,
+     500
+    ],
+    [
+     3250,
+     830
+    ],
+    [
+     3074,
+     830
+    ]
+   ],
+   "tone": "#d9cdb0",
+   "credit": {
+    "file": "https://commons.wikimedia.org/wiki/File:Notre_Dame_west_facade_2025-09-02_-_01.jpg",
+    "author": "The wub",
+    "license": "CC BY-SA 4.0",
+    "crop": [
+     550,
+     4450,
+     3800,
+     5600
+    ]
+   }
   },
   {
    "type": "roseFront",

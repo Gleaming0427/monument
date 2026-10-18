@@ -188,7 +188,7 @@
    "fit": {
     "p90": 0.5,
     "max": 0.71,
-    "coverage": 0.95,
+    "coverage": 0.94,
     "overflow": 0.01
    }
   },

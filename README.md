@@ -67,9 +67,10 @@ One rule sits at the top of [`SKILL.md`](SKILL.md): **the building is the eviden
 3. **Generate its measured skeleton**: `scaffold.mjs` resolves and downloads the footprint, converts it to metres, chooses a broad family and produces detailed base volumes in seconds ([references/scaffold.md](references/scaffold.md)).
 4. **Read the architecture**: replace its explicit estimates using three useful views and the details that make it recognisable ([references/fidelity.md](references/fidelity.md)).
 5. **Write the timeline**: dated, sourced phases and construction moments ([references/format.md](references/format.md)).
-6. **Build it from bricks**: generators that turn each element into small solid pieces, then sourced human-scale worksite tableaux add workers, materials, hoists, scaffolds, dust and sparks to the relevant phases ([references/bricks.md](references/bricks.md)). A new kind of architecture gets a new brick.
-7. **Compare with the photos**: a standard build uses one focused capture pass; publication adds the complete second pass.
-8. **Report honestly**: what is measured, documented and interpreted, and what still differs.
+6. **Build it from bricks**: generators that turn each element into small solid pieces, square or turned (columns stand on their bases with drums, entasis and the capital of their order), then sourced human-scale worksite tableaux add workers, materials, hoists, scaffolds, dust and sparks to the relevant phases ([references/bricks.md](references/bricks.md)). A new kind of architecture gets a new brick.
+7. **Lay the carving from photographs**: sculpture too fine to build piece by piece (tympana, galleries of statues, roses) is a free photo from Wikimedia Commons, measured, straightened onto the model and given its depth back, a portal's splay included, and credited ([references/bricks.md](references/bricks.md)).
+8. **Compare with the photos**: each reference photo's viewpoint is fitted on lines recognised in it (`calibrate.mjs`), then a standard build uses one focused capture pass; publication adds the complete second pass.
+9. **Report honestly**: what is measured, documented and interpreted, and what still differs.
 
 ## The collection
 
@@ -110,7 +111,7 @@ Monument is a standard [Agent Skill](https://agentskills.io): this repository is
 SKILL.md            the skill: what Claude does when you ask for a building
 references/         monument file format, real-plan method, fidelity loop, bricks
 kit/                the viewer: engine (builder.js), interface, Three.js and fonts, vendored
-scripts/            scaffold, serve, validate, capture, compare, record, publish, build-site
+scripts/            scaffold, serve, validate, capture, compare, calibrate, relief, record, publish, build-site
 examples/           the collection
 community/          the community gallery, one folder per monument
 site/               the website, deployed to GitHub Pages
@@ -129,6 +130,6 @@ site/               the website, deployed to GitHub Pages
 
 Made by [@Gleaming0427](https://x.com/Gleaming0427) with Claude Code.
 
-The format of this skill, of its install and of its website follows [Anatomy](https://skills.wheresryan.sh/anatomy) by Ryan. Built with [Three.js](https://threejs.org) (MIT) and [Manrope](https://github.com/sharanda/manrope) (SIL Open Font License). Footprints and streets: © [OpenStreetMap](https://www.openstreetmap.org/copyright) contributors (ODbL) and IGN BD TOPO (Licence Ouverte). Each monument links to its own sources.
+The format of this skill, of its install and of its website follows [Anatomy](https://skills.wheresryan.sh/anatomy) by Ryan. The carving of Notre-Dame's west front is photographed: the gallery of kings and the west rose by Dietmar Rabich ([1](https://commons.wikimedia.org/wiki/File:Paris,_Notre_Dame_--_2014_--_1458-65.jpg), [2](https://commons.wikimedia.org/wiki/File:Paris,_Notre_Dame_--_2014_--_1446.jpg)) and the portals and statues by The wub ([3](https://commons.wikimedia.org/wiki/File:Notre_Dame_west_facade_2025-09-02_-_01.jpg)), all CC BY-SA 4.0; every relief's credit is in its monument file and in the viewer's evidence mode. Built with [Three.js](https://threejs.org) (MIT) and [Manrope](https://github.com/sharanda/manrope) (SIL Open Font License). Footprints and streets: © [OpenStreetMap](https://www.openstreetmap.org/copyright) contributors (ODbL) and IGN BD TOPO (Licence Ouverte). Each monument links to its own sources.
 
 MIT licence.

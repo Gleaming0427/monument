@@ -29,7 +29,7 @@ const state = r => { const i = r.phase ? d.phases.findIndex(p => p.id === r.phas
 const captures = [], phases = [];
 try {
   for (const [i, r] of refs.entries()) {
-    await browser.open(`${viewer.base}?t=${state(r)}&cam=${cam(r)}${r.fov ? `&fov=${r.fov}` : ''}&clean#${id}`);
+    await browser.open(`${viewer.base}?t=${state(r)}&cam=${cam(r)}${r.fov ? `&fov=${r.fov}` : ''}${r.shift ? `&shift=${r.shift}` : ''}&clean#${id}`);
     const out = join(folder, `ref-${i}.jpg`);
     await writeFile(out, await browser.shot('jpeg'));
     captures.push(relative(dir, out));
@@ -59,11 +59,13 @@ const rows = refs.map((r, i) => `<section><h2>ref ${i} · ${esc(r.view ?? '')} �
 const strip = quick ? '' : `<h2>The end of every phase</h2><div class="strip">${d.phases.map((p, i) => `<figure><img src="phase-${i}.jpg" alt=""><figcaption>${esc(p.when ?? p.from ?? '')} · ${esc(p.title)}</figcaption></figure>`).join('')}</div>`;
 await writeFile(join(folder, 'index.html'), `<!doctype html><meta charset="utf-8"><title>${esc(d.name)} · pass ${pass}</title><style>body{margin:0;padding:16px;background:#111;color:#ddd;font:13px system-ui}section div{display:grid;grid-template-columns:1fr 1fr;gap:8px}img{width:100%;height:46vh;object-fit:contain;background:#222}h2{font-size:14px;margin:18px 0 6px}.strip{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.strip img{height:auto}</style><h1>${esc(d.name)} · comparison pass ${pass}</h1><p>Left: the reference photo. Right: the model from the same viewpoint. Write what differs in evidence.comparisons.</p>${rows}${strip}`);
 
-// Record the pass; keep what was already written about it.
-const evidence = d.evidence, list = evidence.comparisons ??= [], entry = list.find(c => c.pass === pass) ?? (list.push({pass}), list.at(-1));
+// Record the pass; keep what was already written about it. The file is read again first: it may have been
+// edited while the captures were being taken.
+const now = await readFile(path, 'utf8'), current = JSON.parse(now);
+const evidence = current.evidence ??= {}, list = evidence.comparisons ??= [], entry = list.find(c => c.pass === pass) ?? (list.push({pass}), list.at(-1));
 Object.assign(entry, {captures, phases, gaps: entry.gaps ?? [], fixed: entry.fixed ?? []});
 list.sort((a, b) => a.pass - b.pass);
-const indent = /^\{\n( +)/.exec(text)?.[1].length ?? 1;
-await writeFile(path, JSON.stringify(d, null, indent) + (text.endsWith('\n') ? '\n' : ''));
+const indent = /^\{\n( +)/.exec(now)?.[1].length ?? 1;
+await writeFile(path, JSON.stringify(current, null, indent) + (now.endsWith('\n') ? '\n' : ''));
 console.log(`\nSide by side: http://127.0.0.1:4173/monuments/${id}.evidence/compare/pass-${pass}/index.html (with serve.mjs on ${relative(process.cwd(), dir) || '.'})`);
 console.log(`\nPass ${pass} recorded in evidence.comparisons. Now open each photo next to its capture and write in that entry:\n  "gaps": what differs (silhouette, proportions, counts, roofs, openings, colours, ornaments)\n  "fixed": what you changed after looking${pass === 1 ? '' : '\n  "remaining": deliberate simplifications left (also in evidence.uncertainties)'}`);

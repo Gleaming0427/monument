@@ -57,7 +57,14 @@ const open = link => {
         if (response.status < 400) return 'ok';
         if ([404, 410].includes(response.status)) return `answers ${response.status}`;
         if (method === 'GET') return [401, 403, 429, 503].includes(response.status) ? 'ok' : `answers ${response.status}`;
-      } catch (error) { if (method === 'GET') return `cannot be opened (${error.cause?.code ?? error.name})`; }
+      } catch (error) {
+        if (method !== 'GET') continue;
+        // A site that does not answer at all (an outage, a block) is not a page that is gone: the page counts
+        // if the Internet Archive holds a copy of it, which is said; otherwise it cannot be verified.
+        const copy = await fetch(`https://web.archive.org/web/2/${link}`, {method: 'HEAD', headers: UA, redirect: 'manual', signal: AbortSignal.timeout(20000)}).then(r => r.headers.get('location')).catch(() => null);
+        if (/\/web\/\d{14}\//.test(copy ?? '')) { console.warn(`! ${link} does not answer (${error.cause?.code ?? error.name}); the Internet Archive's copy is used: ${copy}`); return 'ok'; }
+        return `cannot be opened (${error.cause?.code ?? error.name}) and has no archived copy`;
+      }
     }
   })());
   return opened.get(link);
@@ -71,6 +78,54 @@ async function commons(titles) {
     for (const page of Object.values(data.query.pages)) pages.set(names.get(page.title) ?? page.title, page);
   }
   return pages;
+}
+// Photo reliefs: the image's size in pixels, read from its header (JPEG or PNG).
+async function imageSize(path) {
+  const data = await readFile(path).catch(() => null);
+  if (!data) return null;
+  if (data.readUInt32BE(0) === 0x89504e47) return [data.readUInt32BE(16), data.readUInt32BE(20)];
+  for (let i = 2; i < data.length - 9;) {
+    if (data[i] !== 0xff) return null;
+    const marker = data[i + 1], length = data.readUInt16BE(i + 2);
+    if (marker >= 0xc0 && marker <= 0xcf && ![0xc4, 0xc8, 0xcc].includes(marker)) return [data.readUInt16BE(i + 7), data.readUInt16BE(i + 5)];
+    i += 2 + length;
+  }
+  return null;
+}
+// Licences a published model may reuse a photo under (and must credit it): see scripts/relief.mjs.
+const FREE = /^(CC0|Public domain|PD|CC BY(-SA)? \d(\.\d)?( [A-Za-z-]+)?|CC-BY(-SA)?-\d(\.\d)?|Licence Ouverte|Etalab)/i;
+async function relief(e, i, file, id, at, strict) {
+  const where = `${at} relief ${i}`;
+  check(new RegExp(`^${id}\\.evidence/reliefs/[a-z0-9-]+\\.(jpg|jpeg|png)$`).test(e.image ?? ''), `${where}: "image" must be a file in ${id}.evidence/reliefs/ (scripts/relief.mjs puts it there)`);
+  const size = typeof e.image === 'string' ? await imageSize(join(dirname(file), e.image)) : null;
+  check(size, `${where}: image ${e.image} not found or not a JPEG/PNG`);
+  check(Array.isArray(e.corners) && e.corners.length === 4 && e.corners.every(c => c?.length === 2 && c.every(Number.isFinite) && (!size || c[0] >= 0 && c[1] >= 0 && c[0] <= size[0] && c[1] <= size[1])), `${where}: "corners" needs four [x, y] points inside the image (top left, top right, bottom right, bottom left)`);
+  check(e.size?.length === 2 && e.size.every(v => Number.isFinite(v) && v > 0), `${where}: "size" needs [width, height] in metres`);
+  check(e.at?.length === 3 && e.at.every(Number.isFinite), `${where}: "at" needs [u, y, v], the panel's centre`);
+  check(e.facing === undefined || e.facing?.length === 2 && e.facing.every(Number.isFinite) && Math.hypot(...e.facing) > 0, `${where}: "facing" must be an outward [u, v] direction`);
+  check(e.shape === undefined || ['rect', 'round', 'pointed', 'circle'].includes(e.shape.kind) && (e.shape.spring === undefined || e.shape.spring >= 0 && e.shape.spring < e.size?.[1]) && (e.shape.rise === undefined || e.shape.rise > 0 && e.shape.rise <= e.size?.[1] - (e.shape.spring ?? 0) + .01), `${where}: "shape" must be {"kind": "rect" | "round" | "pointed" | "circle", "spring": metres above the foot, "rise": the arch's height above it}`);
+  const recess = e.recess;
+  check(recess === undefined || Number.isFinite(recess.depth) && recess.depth > 0 && Number.isFinite(recess.width) && recess.width > 0 && recess.width < e.size?.[0] && (recess.offset === undefined || Math.abs(recess.offset) + recess.width / 2 <= e.size?.[0] / 2), `${where}: "recess" needs a "depth" and an inner "width" that fits inside the panel (with its "offset")`);
+  const credit = e.credit ?? {};
+  // A photo of one's own may stand in a model its owner keeps; the public gallery needs a free licence.
+  check(typeof credit.file === 'string' && credit.file && typeof credit.author === 'string' && credit.author.length > 1 && typeof credit.license === 'string' && credit.license, `${where}: "credit" needs the photo's "file" (its page, or its file name), its "author" and its "license"`);
+  if (strict) check(url(credit.file) && FREE.test(credit.license ?? ''), `${where}: a published model needs a photo with a public page and a free licence (CC0, public domain, CC BY, CC BY-SA, Licence Ouverte); "${credit.license}" is not one`);
+}
+// The credit of every relief matches what Wikimedia Commons records for its file.
+async function reliefCredits(d, at) {
+  const list = d.elements.filter(e => e.type === 'relief' && /commons\.wikimedia\.org\/wiki\/File:/.test(e.credit?.file ?? ''));
+  if (!list.length) return;
+  const titles = list.map(e => decodeURIComponent(/wiki\/(File:[^?#]+)/.exec(e.credit.file)[1]).replaceAll('_', ' '));
+  const query = new URLSearchParams({action: 'query', format: 'json', prop: 'imageinfo', iiprop: 'extmetadata', iiextmetadatafilter: 'LicenseShortName', titles: [...new Set(titles)].join('|')});
+  try {
+    const data = await (await fetch(`https://commons.wikimedia.org/w/api.php?${query}`, {headers: UA, signal: AbortSignal.timeout(30000)})).json(), names = new Map((data.query.normalized ?? []).map(n => [n.to, n.from]));
+    const licences = new Map(Object.values(data.query.pages).map(page => [names.get(page.title) ?? page.title, 'missing' in page ? null : page.imageinfo?.[0]?.extmetadata?.LicenseShortName?.value]));
+    list.forEach((e, i) => {
+      const licence = licences.get(titles[i]);
+      check(licence !== null && licence !== undefined, `${at} relief photo ${titles[i]} does not exist on Wikimedia Commons`);
+      if (licence) check(licence === e.credit.license, `${at} relief photo ${titles[i]}: Commons gives its licence as "${licence}", the credit says "${e.credit.license}"`);
+    });
+  } catch (error) { check(false, `${at} cannot verify the relief photos on Wikimedia Commons: ${error.message}`); }
 }
 const seen = new Map();
 for (const file of (await Promise.all(targets.map(files))).flat()) {
@@ -151,11 +206,12 @@ for (const file of (await Promise.all(targets.map(files))).flat()) {
     }
   }
   const refs = obj => { for (const [key, value] of Object.entries(obj)) {
-    if (['phase', 'until', 'restore'].includes(key) && typeof value === 'string') check(phases.has(value), `${at} unknown phase "${value}"`);
+    if (['phase', 'until', 'restore', 'rebuild'].includes(key) && typeof value === 'string') check(phases.has(value), `${at} unknown phase "${value}"`);
     if (key === 'phases' && value && typeof value === 'object') for (const phase of Object.values(value)) check(phases.has(phase), `${at} unknown phase "${phase}"`);
     if (value && typeof value === 'object') refs(value);
   } };
   for (const e of d.elements) { check(bricks.has(e.type), `${at} unknown brick "${e.type}"`); refs(e); }
+  for (const [i, e] of d.elements.entries()) if (e.type === 'relief') await relief(e, i, file, id, at, strict);
   if (standard) await evidence(d, text, file, id, at, strict);
   console.log(`${id}: ${d.phases.length} phases, ${d.elements.length} elements${standard ? `, ${strict ? 'publication' : 'standard'} evidence checked` : ''}`);
 }
@@ -203,6 +259,7 @@ async function evidence(d, text, file, id, at, strict) {
     check(['measured', 'documented', 'interpreted'].includes(element.provenance), `${at} element ${i} (${element.type}) needs "provenance": "measured", "documented" or "interpreted"`);
     if (element.provenance === 'interpreted') check(typeof element.note === 'string' && element.note.length >= 20, `${at} element ${i} is interpreted: say how in its "note"`);
   }
+  await reliefCredits(d, at);
   // Step 5: reference photos from several sides, and the features that make the building recognisable.
   const photos = Array.isArray(ev.references) ? ev.references : [];
   const photoMinimum = strict ? 4 : 3, sideMinimum = strict ? 3 : 2;
@@ -224,10 +281,12 @@ async function evidence(d, text, file, id, at, strict) {
       const camera = page?.coordinates?.find(c => c.type === 'camera') ?? page?.coordinates?.[0];
       if (camera && origin?.length === 2 && Number.isFinite(r.azimuth)) {
         const x = (camera.lon - origin[1]) * 111320 * Math.cos(origin[0] * Math.PI / 180), z = -(camera.lat - origin[0]) * 110540;
-        const azimuth = (Math.atan2(x, -z) * 180 / Math.PI + 360) % 360, off = Math.abs(((r.azimuth - azimuth) % 360 + 540) % 360 - 180), far = Math.hypot(x, z);
-        check(off <= 30 || far < 20, `${at} reference ${i}: Commons records the camera at azimuth ${Math.round(azimuth)}°, ${Math.round(far)} m away; the reference says ${r.azimuth}°`);
-        const ground = r.distance * Math.cos((r.elevation ?? 0) * Math.PI / 180);
-        check(far < 20 || (ground > far / 2.5 && ground < far * 2.5), `${at} reference ${i}: Commons records the camera ${Math.round(far)} m away; the reference puts it ${Math.round(ground)} m away (put the camera where the photographer stood, and use fov for the lens)`);
+        // Where the reference puts the camera (its target, then back along the view) against where Commons
+        // records it: a phone's position is rough, so a quarter of the distance (25 m at least) is allowed;
+        // beyond that, "positionReason" must say why the photo cannot have been taken there.
+        const far = Math.hypot(x, z), target = r.target ?? d.view.target, az = r.azimuth * Math.PI / 180, el = (r.elevation ?? 0) * Math.PI / 180;
+        const cx = target[0] + Math.sin(az) * Math.cos(el) * r.distance, cz = target[2] - Math.cos(az) * Math.cos(el) * r.distance, gap = Math.hypot(cx - x, cz - z), allowed = Math.max(25, far / 4);
+        check(gap <= allowed || (typeof r.positionReason === 'string' && r.positionReason.length >= 40), `${at} reference ${i}: Commons records the camera at [${Math.round(x)}, ${Math.round(z)}], ${Math.round(far)} m from the centre; the reference puts it ${Math.round(gap)} m from there (${Math.round(allowed)} m allowed). Start from Commons' position and fit the view (calibrate.mjs --move), or say in "positionReason" why the photo cannot have been taken there`);
       }
     }
   } catch (error) { check(false, `${at} cannot verify the reference photos on Wikimedia Commons: ${error.message}`); }

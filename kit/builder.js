@@ -42,7 +42,7 @@ function kit(rand) {
   const tint = (hex, jitter = .1) => new T.Color(hex).multiplyScalar(1 + (rand() - .5) * 2 * jitter);
   const add = (kind, color, phase, order, top, extra) => pieces.push({kind, matrix: m.clone(), color, phase, order, top, ...extra});
   return {
-    pieces, rand, tint,
+    pieces, rand, tint, flats: [],
     box(kind, [x, y, z], [sx, sy, sz], rotY, color, phase, order = y, extra = {}) {
       m.compose(p.set(x, y, z), q.setFromEuler(e.set(0, rotY, 0)), s.set(sx, sy, sz));
       add(kind, color, phase, order, y + sy / 2, extra);
@@ -57,8 +57,96 @@ function kit(rand) {
       m.makeBasis(x, y, z).scale(s.set(...size)).setPosition(pos);
       add(kind, color, phase, order, pos.y, extra);
     },
+    // A turned piece in the box's unit: `size` is [diameter, height, diameter] (an oval when the two differ).
+    // Shapes (SHAPES below): drum, shaft (a monolith tapering by an eighth), flare (wider at the top: an
+    // echinus, a capital's bell), cone, torus (a moulding), ball, octagon, spike (an octagonal cone).
+    turned(shape, kind, [x, y, z], [sx, sy, sz = sx], rotY, color, phase, order = y, extra = {}) {
+      m.compose(p.set(x, y, z), q.setFromEuler(e.set(0, rotY, 0)), s.set(sx, sy, sz));
+      add(kind, color, phase, order, y + sy / 2, {...extra, shape});
+    },
+    // A turned piece lying along `axis` (a volute's bolster, a roll moulding).
+    lying(shape, kind, pos, axis, [d, len], color, phase, order = pos.y, extra = {}) {
+      const a = axis.clone().normalize(), x = Math.abs(a.y) > .9 ? new T.Vector3(1, 0, 0) : new T.Vector3().crossVectors(UP, a).normalize(), z = new T.Vector3().crossVectors(x, a);
+      m.makeBasis(x, a, z).scale(s.set(d, len, d)).setPosition(pos);
+      add(kind, color, phase, order, pos.y + d / 2, {...extra, shape});
+    },
+    // A column standing at [x, y, z]: `height` from the foot of its base to the top of its abacus, `diameter`
+    // at the foot of the shaft, in one of the orders (proportions in diameters, after Vitruvius and Vignola):
+    //   tuscan      square plinth and torus; astragal, echinus and square abacus
+    //   doric       no base; echinus and abacus
+    //   ionic       attic base (plinth, torus, scotia, torus); two volutes either side of the echinus
+    //   corinthian  attic base; a bell wrapped in two rows of acanthus leaves, corner volutes, thin abacus
+    //   romanesque  attic base; a cushion-like bell and a deep abacus, as in Pisa
+    //   gothic      octagonal plinth and moulded base; a crocket capital under an octagonal abacus
+    // The shaft is laid drum by drum (`drum` metres; 0 for a monolith) and tapers by `taper` (a sixth) above
+    // its lower third. `out` [x, z] is the way the column faces: its volutes and leaves are set square to it.
+    column(kind, [x, y, z], {height, diameter: D, order = 'tuscan', drum = 1.2, taper = 1 / 6, out = [0, 1]}, color, phase, extra = {}) {
+      const self = this, yaw = Math.atan2(out[0], out[1]), f = new T.Vector3(out[0], 0, out[1]).normalize(), r = new T.Vector3().crossVectors(UP, f);
+      const at = (dy, side = 0, front = 0) => [x + r.x * side + f.x * front, y + dy, z + r.z * side + f.z * front];
+      const c = () => tint(color, .04);
+      const piece = (shape, dy, size) => self.turned(shape, kind, at(dy + size[1] / 2), size, yaw, c(), phase, y + dy, extra);
+      const block = (dy, w, h) => self.box(kind, at(dy + h / 2), [w, h, w], yaw, c(), phase, y + dy, extra);
+      const small = (shape, dy, side, front, size, turn = 0) => self.turned(shape, kind, at(dy, side, front), size, yaw + turn, c(), phase, y + dy, extra);
+      const attic = ['ionic', 'corinthian', 'romanesque', 'composite'].includes(order);
+      // Base.
+      let b = 0;
+      if (order === 'gothic') { piece('octagon', 0, [D * 1.45, D * .32]); piece('torus', D * .32, [D * 1.28, D * .18]); piece('drum', D * .5, [D * 1.08, D * .08]); b = D * .58; }
+      else if (attic) { block(0, D * 1.38, D * .17); piece('torus', D * .17, [D * 1.3, D * .14]); piece('drum', D * .31, [D * 1.1, D * .08]); piece('torus', D * .39, [D * 1.18, D * .11]); b = D * .5; }
+      else if (order === 'tuscan') { block(0, D * 1.36, D * .25); piece('torus', D * .25, [D * 1.28, D * .22]); b = D * .47; }
+      // Shaft, drum by drum, with its entasis.
+      const cap = {tuscan: .47, doric: .45, ionic: .62, corinthian: 1.17, composite: 1.17, romanesque: .8, gothic: .87}[order] ?? .5;
+      const shaft = Math.max(D, height - b - D * cap), Dt = D * (1 - taper), diameterAt = t => D * (1 - taper * Math.max(0, (t - 1 / 3) / (2 / 3)) ** 1.2);
+      if (drum > 0 && shaft > drum * 1.4) {
+        const n = Math.max(1, Math.round(shaft / drum));
+        for (let i = 0; i < n; i++) piece('drum', b + shaft * i / n, [diameterAt((i + .5) / n), shaft / n * .995]);
+      } else piece(taper > .1 ? 'shaft' : 'drum', b, [D, shaft]);
+      const y0 = b + shaft;
+      // Capital: the astragal ringing the top of the shaft, then the order's own.
+      if (order !== 'doric') piece('torus', y0 - D * .045, [Dt * 1.14, D * .09]);
+      if (order === 'tuscan' || order === 'doric') { piece('flare', y0 + D * .05, [D * 1.3, D * .2]); block(y0 + D * .25, D * 1.36, D * .2); }
+      else if (order === 'ionic') {
+        piece('flare', y0 + D * .05, [D * 1.2, D * .18]);
+        // The volutes either side, their bolsters running back to front, joined by the channel.
+        for (const side of [-1, 1]) self.lying('drum', kind, new T.Vector3(...at(y0 + D * .34, side * D * .52)), f, [D * .4, D * .92], c(), phase, y + y0, extra);
+        self.box(kind, at(y0 + D * .43), [D * 1.04, D * .18, D * .9], yaw, c(), phase, y + y0, extra);
+        block(y0 + D * .52, D * 1.3, D * .1);
+      } else if (order === 'corinthian' || order === 'composite') {
+        piece('flare', y0 + D * .05, [D * 1.22, D * .96]);
+        // Two rows of eight acanthus leaves curling out, the second row between the first.
+        for (const [row, h, lean] of [[0, .36, .47], [1, .6, .55]]) for (let i = 0; i < 8; i++) {
+          const a = (i + row * .5) / 8 * Math.PI * 2;
+          small('ball', y0 + D * (.08 + h * .72), Math.sin(a) * D * lean, Math.cos(a) * D * lean, [D * .3, D * h, D * .22], a);
+        }
+        // Corner volutes under the abacus, and the abacus with its flower.
+        for (const [sx, sz] of [[-1, -1], [-1, 1], [1, -1], [1, 1]]) small('ball', y0 + D * .9, sx * D * .55, sz * D * .55, [D * .26, D * .22]);
+        block(y0 + D * 1.01, D * 1.42, D * .14);
+        small('ball', y0 + D * 1.08, 0, D * .72, [D * .16, D * .16]);
+      } else if (order === 'romanesque') {
+        piece('flare', y0 + D * .05, [D * 1.36, D * .55]);
+        for (const [sx, sz] of [[-1, -1], [-1, 1], [1, -1], [1, 1]]) small('ball', y0 + D * .5, sx * D * .5, sz * D * .5, [D * .3, D * .26]);
+        block(y0 + D * .6, D * 1.46, D * .18);
+      } else if (order === 'gothic') {
+        piece('flare', y0 + D * .05, [D * 1.5, D * .6]);
+        // Crockets curling under the corners of the abacus.
+        for (let i = 0; i < 4; i++) { const a = (i + .5) / 4 * Math.PI * 2; small('ball', y0 + D * .56, Math.sin(a) * D * .62, Math.cos(a) * D * .62, [D * .28, D * .26], a); }
+        piece('octagon', y0 + D * .65, [D * 1.62, D * .2]);
+      }
+    },
   };
 }
+// Turned pieces: one geometry per shape, in the box's unit cube (diameter 1, height 1, centred).
+const flat = geometry => { const g = geometry.toNonIndexed(); g.computeVertexNormals(); return g; };
+export const SHAPES = {
+  box: () => new T.BoxGeometry(1, 1, 1),
+  drum: () => new T.CylinderGeometry(.5, .5, 1, 16),
+  shaft: () => new T.CylinderGeometry(.44, .5, 1, 16),
+  flare: () => new T.CylinderGeometry(.5, .34, 1, 16),
+  cone: () => new T.CylinderGeometry(0, .5, 1, 16),
+  torus: () => { const g = new T.TorusGeometry(.375, .125, 6, 18); g.rotateX(Math.PI / 2); g.scale(1, 4, 1); return g; },
+  ball: () => new T.SphereGeometry(.5, 10, 6),
+  octagon: () => flat(new T.CylinderGeometry(.5, .5, 1, 8).rotateY(Math.PI / 8)),
+  spike: () => flat(new T.CylinderGeometry(0, .5, 1, 8).rotateY(Math.PI / 8)),
+};
 
 // ——— Gothic churches: shared toolkit ———
 // The Gothic bricks share one frame: u along the element's axis, v across it, y up, placed by `center` [x, z]
@@ -82,24 +170,28 @@ function gothic(k, e, P) {
     if (spec?.rebuild) fn(P(spec.rebuild), {});
   };
   // Half-width of an opening at height y, or -1 outside it.
+  // Pointed arches are equilateral unless `rise` (the apex's height above the springing) says otherwise.
+  const radiusOf = (w, rise) => rise ? (w * w / 4 + rise * rise) / w : w;
   const span = (o, y) => {
     if (o.kind === 'circle') { const q = o.r * o.r - (y - o.y) ** 2; return q > 0 ? Math.sqrt(q) : -1; }
     if (y < o.sill) return -1;
     if (y <= o.spring) return o.w / 2;
     if (o.kind === 'rect') return -1;
     if (o.kind === 'round') { const q = (o.w / 2) ** 2 - (y - o.spring) ** 2; return q > 0 ? Math.sqrt(q) : -1; }
-    const q = o.w * o.w - (y - o.spring) ** 2; return q > 0 ? Math.sqrt(q) - o.w / 2 : -1;
+    const r = radiusOf(o.w, o.rise), q = r * r - (y - o.spring) ** 2; return q > 0 ? Math.sqrt(q) - (r - o.w / 2) : -1;
   };
-  const top = o => o.kind === 'circle' ? o.y + o.r : o.kind === 'rect' ? o.spring : o.spring + (o.kind === 'round' ? o.w / 2 : o.w * .866);
+  const top = o => o.kind === 'circle' ? o.y + o.r : o.kind === 'rect' ? o.spring : o.spring + (o.kind === 'round' ? o.w / 2 : o.rise ?? o.w * .866);
 
   // An arch outline (pointed, round or flat) as a chain of stones, centred at s on a wall seen through F.
-  function arch(F, s, w, spring, off, thick, ph, extra, kind = 'pointed', segs = 4) {
+  function arch(F, s, w, spring, off, thick, ph, extra, kind = 'pointed', segs = 4, rise) {
     const pts = [];
     if (kind === 'round') for (let i = 0; i <= 2 * segs; i++) { const a = Math.PI * (1 - i / (2 * segs)); pts.push([s + Math.cos(a) * w / 2, spring + Math.sin(a) * w / 2]); }
     else if (kind === 'rect') pts.push([s - w / 2, spring], [s + w / 2, spring]);
     else {
-      for (let i = 0; i <= segs; i++) { const a = Math.PI - Math.PI / 3 * i / segs; pts.push([s + w / 2 + w * Math.cos(a), spring + w * Math.sin(a)]); }
-      for (let i = 1; i <= segs; i++) { const a = Math.PI / 3 - Math.PI / 3 * i / segs; pts.push([s - w / 2 + w * Math.cos(a), spring + w * Math.sin(a)]); }
+      // Two arcs of radius r, each centred on the springing line on the far side, meeting at the apex.
+      const r = radiusOf(w, rise), end = Math.acos((w / 2 - r) / r);
+      for (let i = 0; i <= segs; i++) { const a = Math.PI - (Math.PI - end) * i / segs; pts.push([s - w / 2 + r + r * Math.cos(a), spring + r * Math.sin(a)]); }
+      for (let i = 1; i <= segs; i++) { const a = (Math.PI - end) * (1 - i / segs); pts.push([s + w / 2 - r + r * Math.cos(a), spring + r * Math.sin(a)]); }
     }
     for (let i = 0; i < pts.length - 1; i++) beam('stone', F(pts[i][0], pts[i][1], off), F(pts[i + 1][0], pts[i + 1][1], off), thick, tint(stone), ph, extra);
   }
@@ -111,6 +203,8 @@ function gothic(k, e, P) {
   }
   // Glass and tracery of one opening. F(s, y, off) is a point on the wall, `off` towards the outside.
   function opening(F, o, t, ph, extra) {
+    // An opening whose glass and tracery are a photo relief (`photo`) stays empty for it.
+    if (o.photo) return;
     const W = o.kind === 'circle' ? 2 * o.r : o.w, y0 = o.kind === 'circle' ? o.y - o.r : o.sill, y1 = top(o), face = t / 2 + .08;
     const [a, b] = [F(o.s - 1, 0, 0), F(o.s + 1, 0, 0)], dir = [(b[0] - a[0]) / 2, (b[2] - a[2]) / 2];
     if (o.door) {
@@ -203,11 +297,18 @@ function gothic(k, e, P) {
     box('stone', [p[0], p[2]], y1 + 1, [.5, 1.6, .5], dir, tint(stone), ph, extra);
     box('stone', [p[0], p[2]], y1 + 1.6, [1.2, .3, .3], dir, tint(stone), ph, extra);
   }
-  // A pinnacle: a short shaft and a stepped spire with a finial, centred on [u, v].
+  // A pinnacle: a square shaft with a gablet on each face, an octagonal spire with crockets up its arrises and
+  // a finial, centred on [u, v].
   function pinnacle(c, y0, h, w, ph = phase, extra = {}) {
+    const [x, , z] = V(c[0], 0, c[1]).toArray(), at = y => [x, y, z];
     box('stone', c, y0 + h * .17, [w, h * .34, w], [1, 0], tint(stone), ph, extra);
-    for (let i = 0; i < 6; i++) { const f = i / 6, s = w * (1 - f * .85); box('stone', c, y0 + h * (.34 + f * .56) + h * .045, [s, h * .09, s], [1, 0], tint(stone), ph, extra); }
-    box('stone', c, y0 + h * .96, [.22, h * .1, .22], [1, 0], tint(stone), ph, extra);
+    k.turned('octagon', 'stone', at(y0 + h * .36), [w * 1.08, h * .04], rot, tint(stone), ph, y0, extra);
+    k.turned('spike', 'stone', at(y0 + h * .38 + h * .28), [w * .92, h * .56], rot, tint(stone), ph, y0 + h * .4, extra);
+    for (let i = 1; i < 4; i++) for (let j = 0; j < 4; j++) {
+      const f = i / 4, a = rot + (j + .5) * Math.PI / 2, r = w * .46 * (1 - f) + .06, y = y0 + h * (.38 + f * .56);
+      k.turned('ball', 'stone', [x + Math.cos(a) * r, y, z - Math.sin(a) * r], [Math.max(.14, w * .16), Math.max(.16, w * .2)], a, tint(stone), ph, y, extra);
+    }
+    k.turned('ball', 'stone', at(y0 + h * .97), [Math.max(.22, w * .28), Math.max(.3, h * .07)], rot, tint(stone), ph, y0 + h, extra);
   }
   // A strip roof over the quad: eave edge e0–e1 at ye up to the ridge edge r0–r1 at yr (r0 = r1 for a cone).
   function panel(A, B, C, D, color, ph, extra, kind = 'lead', strip = 1.25, lift = .12) {
@@ -230,14 +331,21 @@ function gothic(k, e, P) {
     const len = Math.hypot(b[0] - a[0], b[1] - a[1]), n = Math.max(1, Math.round(len / 1.4));
     for (let i = 0; i <= n; i++) { const f = i / n, u = a[0] + (b[0] - a[0]) * f, v = a[1] + (b[1] - a[1]) * f; box('stone', [u, v], y + .55, [.2, .8, .2], [b[0] - a[0], b[1] - a[1]], tint(stone), ph, extra); }
   }
-  // A carved figure on a plinth, facing `out`.
+  // A carved figure on a console, facing `out`: a robe falling in folds to the feet, shoulders and a head.
   function statue([u, v], y, h, out, color, ph = phase, extra = {}) {
-    const dir = [-out[1], out[0]];
-    box('stone', [u, v], y + .15, [h * .34, .3, h * .3], dir, tint(stone), ph, extra);
-    box('stone', [u, v], y + .3 + h * .38, [h * .26, h * .76, h * .2], dir, tint(color, .08), ph, extra);
-    box('stone', [u + out[0] * .03, v + out[1] * .03], y + .3 + h * .85, [h * .14, h * .16, h * .14], dir, tint(color, .08), ph, extra);
+    const dir = [-out[1], out[0]], yaw = rot + Math.atan2(-dir[1], dir[0]), c = () => tint(color, .08);
+    const at = (yy, f = 0) => V(u + out[0] * f, yy, v + out[1] * f).toArray();
+    k.turned('octagon', 'stone', at(y + .15), [h * .34, .3, h * .3], yaw, tint(stone), ph, y, extra);
+    k.turned('shaft', 'stone', at(y + .3 + h * .37), [h * .27, h * .74, h * .2], yaw, c(), ph, y + .3, extra);
+    k.turned('ball', 'stone', at(y + .3 + h * .72), [h * .3, h * .12, h * .2], yaw, c(), ph, y + .3, extra);
+    k.turned('ball', 'stone', at(y + .3 + h * .86, h * .02), [h * .12, h * .17, h * .13], yaw, c(), ph, y + .3, extra);
   }
-  return {V, P, phase, stone, lead, glass, tint, box, beam, life, span, arch, ring, opening, wall, gable, pinnacle, panel, quad, rail, statue};
+  // A round column (or a colonnette) at [u, v] standing at y, `h` to the top of its capital (k.column).
+  function column([u, v], y, h, d, ph = phase, extra = {}, order = 'gothic', drum = 0, out = [-1, 0]) {
+    const p = V(u, y, v), o = V(out[0], 0, out[1]).sub(V(0, 0, 0));
+    k.column('stone', [p.x, y, p.z], {height: h, diameter: d, order, drum, taper: drum ? 0 : .04, out: [o.x, o.z]}, stone, ph, extra);
+  }
+  return {V, P, phase, stone, lead, glass, tint, box, beam, life, span, arch, ring, opening, wall, gable, pinnacle, panel, quad, rail, statue, column};
 }
 
 // ——— Generators (bricks) ———
@@ -472,7 +580,8 @@ export const generators = {
       }
       return ra;
     };
-    const column = (a, r, y, h, d, hex, ph) => { box(a, r, y + .18, [d * 1.5, .36, d * 1.5], hex, ph); box(a, r, y + h / 2, [d, h - .7, d], hex, ph); box(a, r, y + h - .17, [d * 1.55, .34, d * 1.55], hex, ph); };
+    // Round columns: monolithic marble shafts with attic bases and leafy capitals (`order`, corinthian by default).
+    const column = (a, r, y, h, d, hex, ph) => { const p = pos(a, r, y); k.column('stone', [p.x, y, p.z], {height: h, diameter: d, order: e.order ?? 'corinthian', drum: 0, taper: .1, out: [Math.sin(a), Math.cos(a)]}, hex, ph); };
     let y = y0;
     for (const s of e.storeys) {
       const ph = P(s.phase ?? e.phase), h = s.height;
@@ -538,7 +647,8 @@ export const generators = {
         k.oriented('stone', w, x, y, new T.Vector3().crossVectors(x, y), [Math.PI * ra / 7 * 1.12, depth, .75], k.tint(hex, .05), ph, w.y);
       }
     };
-    const step = 2 * Math.PI / bays;
+    // `start`: the angle (degrees) of the first pier, so that the axial entrances fall where they are.
+    const step = 2 * Math.PI / bays, start = (e.start ?? 0) * Math.PI / 180;
     if (part === 'facade') {
       // One ring of the facade, storey by storey, in coursed stone: piers and round arches with their imposts,
       // engaged half-columns with bases and capitals (pilasters on an attic), an entablature and a projecting
@@ -553,7 +663,7 @@ export const generators = {
       for (const s of e.storeys) {
         const H = s.height, E = s.kind === 'brick' ? 0 : s.entablature ?? Math.min(2.2, H * .17), wallHex = s.kind === 'brick' ? brick : color;
         for (let i = 0; i < bays; i++) {
-          const th = i * step; if (!inArc(th) || !inArc(th + step)) continue;
+          const th = start + i * step; if (!inArc(th) || !inArc(th + step)) continue;
           const a = ell(th, radii), b = ell(th + step, radii), m = ell(th + step / 2, radii), bay = a.p.distanceTo(b.p), t = b.p.clone().sub(a.p).normalize();
           const at = (u, out = 0) => m.p.clone().addScaledVector(t, u).addScaledVector(m.n, out);
           const O = s.kind === 'brick' || s.kind === 'attic' ? 0 : bay * (s.open ?? .62), spring = y + (s.arch ?? H * .62) - O / 2;
@@ -583,19 +693,30 @@ export const generators = {
             block(at(0, T2 / 2 - .3), win.y + win.h / 2 + .2, [win.w + .5, .4, .7], t, wallHex);
             block(at(0, T2 / 2 - .3), win.y - win.h / 2 - .15, [win.w + .5, .3, .8], t, wallHex);
           }
-          // Orders: engaged half-columns with base and capital between the arches, pilasters on an attic.
-          if (s.column || s.kind === 'attic') {
-            const p = ringPoint(th, 0), n = a.n, shaft = H - E - (s.kind === 'attic' ? 1.2 : .9);
-            const dd = s.kind === 'attic' ? .35 : .75, wd = s.kind === 'attic' ? .8 : .95;
+          // Orders between the arches: engaged half-columns, round and tapering, carved in the facade's own courses
+          // (`order`: tuscan, ionic, corinthian…; `diameter`), on a pedestal where the storey has a parapet;
+          // flat pilasters on an attic, as the Colosseum's are.
+          const p = ringPoint(th, 0), n = a.n;
+          if (s.column) {
+            const D = s.diameter ?? .95, sill = s.sill ?? 0, q = p.clone().addScaledVector(n, T2 / 2 + D * .06), wq = world(q.x, y, q.z), out = turn(n);
+            if (sill) { const qp = p.clone().addScaledVector(n, T2 / 2 + D * .2), wp = world(qp.x, y + sill / 2, qp.z); k.box('stone', [wp.x, wp.y, wp.z], [D * 1.5, sill, D * .9], yaw(a.t), stone(color, .05), ph, wp.y); }
+            k.column('stone', [wq.x, y + sill, wq.z], {height: H - E - sill, diameter: D, order: s.order ?? 'tuscan', drum: course, out: [out.x, out.z]}, color, ph);
+          } else if (s.kind === 'attic') {
             const col = (yy, hh, w2, d2) => { const q = p.clone().addScaledVector(n, T2 / 2 + d2 / 2 - .1), wq = world(q.x, yy, q.z); k.box('stone', [wq.x, wq.y, wq.z], [w2, hh, d2], yaw(a.t), stone(color, .05), ph, wq.y); };
-            col(y + .2, .4, wd + .35, dd + .3);
-            for (let yc = y + .4; yc < y + .4 + shaft - .05; yc += 1.4) { const hh = Math.min(1.4, y + .4 + shaft - yc); col(yc + hh / 2, hh * .97, wd, dd); }
-            col(y + .4 + shaft + .25, .5, wd + .4, dd + .35);
+            const shaft = H - E - 1.6;
+            col(y + .2, .4, 1.15, .65);
+            for (let yc = y + .4; yc < y + .4 + shaft - .05; yc += course) { const hh = Math.min(course, y + .4 + shaft - yc); col(yc + hh / 2, hh * .97, .8, .35); }
+            // A Corinthian pilaster capital: a flaring block of leaves under the abacus.
+            col(y + .4 + shaft + .3, .6, .95, .45); col(y + .4 + shaft + .75, .3, 1.15, .6);
           }
-          // Entablature and cornice; on an attic, three corbels per bay for the awning masts.
+          // Entablature in three bands (architrave, frieze, projecting cornice); on an attic, three corbels per
+          // bay for the awning masts.
           if (E) {
-            block(at(0, .25), y + H - E + (E - .55) / 2, [bay * 1.02, E - .55, T2 + .5], t, color);
-            block(at(0, .55), y + H - .27, [bay * 1.04, .55, T2 + 1.3], t, color);
+            const y1 = y + H - E;
+            block(at(0, .3), y1 + E * .18, [bay * 1.01, E * .34, T2 + .6], t, color);
+            block(at(0, .15), y1 + E * .5, [bay * 1.01, E * .3, T2 + .3], t, color);
+            block(at(0, .5), y1 + E * .74, [bay * 1.03, E * .18, T2 + 1], t, color);
+            block(at(0, .75), y1 + E * .91, [bay * 1.04, E * .18, T2 + 1.5], t, color);
           }
           if (s.kind === 'attic') for (const f of [-1 / 3, 0, 1 / 3]) block(at(f * bay, T2 / 2 + .45), y + H - E - 1.4, [.55, .75, .9], t, color);
           // Pits where the iron clamps were hacked out of the joints.
@@ -622,7 +743,7 @@ export const generators = {
         }
       }
       if (e.walls !== false) for (let i = 0; i < bays; i++) {
-        const th = i * step; if (!inArc(th)) continue;
+        const th = start + i * step; if (!inArc(th)) continue;
         const a = ell(th, from.radii).p, b = ell(th, to.radii).p;
         const w = e.wallWidth ?? 1.2;
         k.beam('stone', world(a.x, from.height - 2, a.z), world(b.x, to.height - 1, b.z), w, k.tint(brick, .07), ph);
@@ -640,6 +761,23 @@ export const generators = {
       if (podium > 0) for (let i = 0; i < bays * 2; i++) { const th = (i + .5) * step / 2, {p, t} = ell(th, [a, b]), len = p.distanceTo(ell(th + step / 2, [a, b]).p); put(p, podium / 2, [len * 1.05, podium, 1.2], t, color); }
       if (e.hypogeum) for (let z = -b * .78; z <= b * .78 + .01; z += 3.4) { const half = a * Math.sqrt(Math.max(0, 1 - (z / b) ** 2)) * .88; put(new T.Vector3(0, 0, z), 1.1, [half * 2, 2.2, .7], new T.Vector3(1, 0, 0), brick); }
     }
+  },
+
+  // A photograph of carved work laid on a face of the monument: a tympanum, a gallery of statues, a frieze,
+  // whatever is too fine to build piece by piece. The photo is rectified in the viewer from four points
+  // (`corners`, in the image file's pixels: top left, top right, bottom right, bottom left of the carved
+  // panel), cut to its outline (`shape`: rect, round or pointed, with `spring` in metres above its foot),
+  // given its depth back (its light and shade read as relief, `depth` metres) and toned to the stone around
+  // it (`tone`, a colour; the element's `color` by default). It is placed like the other bricks: `center`,
+  // `rot`, then `at` [u, y, v] (the panel's centre), `size` [width, height] and `facing` [u, v] (outwards).
+  // `image` is a path next to the monument file; `credit` names the photo's file page, author and licence.
+  // It has a phase like any piece, and `until`/`rebuild` like a Gothic part.
+  relief(k, e, P) {
+    const [cx, cz] = e.center ?? [0, 0], rot = e.rot ?? 0, co = Math.cos(rot), si = Math.sin(rot), [u, y, v] = e.at, [fu, fv] = e.facing ?? [-1, 0];
+    const position = new T.Vector3(cx + u * co + v * si, y, cz - u * si + v * co), normal = new T.Vector3(fu * co + fv * si, 0, -fu * si + fv * co).normalize();
+    const record = phase => ({phase, position: position.clone().addScaledVector(normal, e.offset ?? .04), yaw: Math.atan2(normal.x, normal.z), spec: e});
+    k.flats.push({...record(P(e.phase)), until: e.until ? P(e.until) : undefined});
+    if (e.rebuild) k.flats.push(record(P(e.rebuild)));
   },
 
   // A sloping masonry buttress propping the end of a wall: courses shorten as they rise. `rot` turns it
@@ -1077,8 +1215,8 @@ export const generators = {
               G.gable([a[0] + (b[0] - a[0]) * f, a[1] + (b[1] - a[1]) * f], [b[0] + (a[0] - b[0]) * f, b[1] + (a[1] - b[1]) * f], chapels.wall - .4, chapels.wall + chapels.gables.height, .6, out, chapelPhase);
             }
           }
-          // The arcade piers, seen while the aisles are open.
-          for (const d of [vessel.half - .2, (vessel.half + aisles.half) / 2]) for (let y = 0; y < (d < vessel.half ? base : aisles.wall) - .1; y += 3) G.box('stone', at(s0, d), y + 1.5, [1.3, 2.95, 1.3], s0.n, G.tint(G.stone), G.phase);
+          // The arcade piers, seen while the aisles are open: round columns laid drum by drum (`piers`: diameter).
+          for (const d of [vessel.half - .2, (vessel.half + aisles.half) / 2]) G.column(at(s0, d), 0, d < vessel.half ? base : aisles.wall, e.piers ?? 1.3, G.phase, {}, 'gothic', .9, s0.n);
         }
         // The main roof, eave to ridge (a half cone around a hemicycle), and its crest.
         G.life(roof, (ph, extra) => {
@@ -1120,39 +1258,51 @@ export const generators = {
     const ph = y => P((e.bands ?? []).find(b => y < b.to)?.phase ?? e.phase);
     const front = (y0, y1, openings) => G.wall([t / 2, -hw], [t / 2, hw], y0, y1, t, out, openings, ph(y0));
     // Portals: deep pointed arches stepping in, a tympanum above the doors.
-    front(0, L.kings, e.portals.map(p => ({kind: 'pointed', s: hw + p.v, w: p.w, sill: 0, spring: p.spring, glass: false})));
+    front(0, L.kings, e.portals.map(p => ({kind: 'pointed', s: hw + p.v, w: p.w, sill: 0, spring: p.spring, rise: p.rise, glass: false})));
     for (const p of e.portals) {
+      // A portal whose carving is a photo relief (`relief: true`, with a recess of the same `depth`): the brick
+      // keeps the opening, the back wall with its doors (`inner`: {v, w} of the doorway, `doors`: their height)
+      // and the plain splayed socle below the photo's `foot`; the relief carries archivolts, statues and tympanum.
+      if (p.relief) {
+        const D = p.depth ?? 1.95, foot = p.foot ?? 1.9, inner = p.inner ?? {v: p.v, w: p.w * .45}, left = p.v - p.w / 2;
+        const leaves = [-1, 1].map(side => ({kind: 'rect', s: inner.v + side * inner.w / 4 - left, w: inner.w * .35, sill: 0, spring: p.doors ?? p.spring * .85, door: '#4a3b2f', margin: 0}));
+        G.wall([D + .35, left], [D + .35, p.v + p.w / 2], 0, p.spring + (p.rise ?? p.w * .866), .6, out, leaves, ph(0));
+        for (const side of [-1, 1]) G.wall([.2, p.v + side * (p.w / 2 - .2)], [D, inner.v + side * inner.w / 2], 0, foot, .45, out, [], ph(0));
+        continue;
+      }
       // Archivolts stepping in through the wall, statues in the splayed jambs, the doors and their trumeau,
       // and a tympanum carved in registers above the lintel.
       const n = e.archivolts ?? 5, lintel = p.spring * .72;
       for (let i = 0; i < n; i++) G.arch((s, y, off) => [i * (t - .5) / n + .25, y, p.v + s], 0, p.w - .2 - i * .5, p.spring, 0, .62, ph(0), {}, 'pointed', 6);
       for (const side of [-1, 1]) for (let i = 0; i < 3; i++) {
         const v = p.v + side * (p.w / 2 - .45 - i * .5), u = .45 + i * .6;
-        G.beam('stone', [u, 0, v], [u, p.spring, v], .32, G.tint(G.stone), ph(0));
+        G.column([u, v], 0, p.spring, .34, ph(0));
         G.statue([u - .25, v], .9, 2.9, out, e.sculpture ?? G.stone, ph(0));
       }
       G.wall([t - .3, p.v - p.w / 2], [t - .3, p.v + p.w / 2], 0, p.spring + p.w * .87, .6, out, [{kind: 'rect', s: p.w / 2 - p.w * .21, w: p.w * .3, sill: 0, spring: lintel, door: '#4a3b2f', margin: 0}, {kind: 'rect', s: p.w / 2 + p.w * .21, w: p.w * .3, sill: 0, spring: lintel, door: '#4a3b2f', margin: 0}], ph(0));
       G.box('stone', [t - .75, p.v], lintel / 2, [.5, lintel, .9], [1, 0], G.tint(G.stone), ph(0));
       G.statue([t - 1.15, p.v], 1.2, Math.min(3.2, lintel - 1.6), out, e.sculpture ?? G.stone, ph(0));
-      for (const y of [lintel + .25, lintel + 2.3, lintel + 4.3]) {
+      // With `tympanum: false` on a portal, its carving is a photo relief.
+      if (p.tympanum !== false) for (const y of [lintel + .25, lintel + 2.3, lintel + 4.3]) {
         const hw2 = G.span({kind: 'pointed', w: p.w - .2 - (n - 1) * .5, sill: 0, spring: p.spring}, y);
         if (hw2 > .5) G.beam('stone', [t - .65, y, p.v - hw2], [t - .65, y, p.v + hw2], .45, G.tint(e.tympanum ?? G.stone), ph(0));
       }
     }
     // The gallery of kings: a ledge, a row of niches and their statues (taken down and remade if asked).
     front(L.kings, L.rose, []);
-    G.beam('stone', [-.5, L.kings + .2, -hw], [-.5, L.kings + .2, hw], .8, G.tint(G.stone), ph(L.kings));
+    if (!e.kings?.relief) G.beam('stone', [-.5, L.kings + .2, -hw], [-.5, L.kings + .2, hw], .8, G.tint(G.stone), ph(L.kings));
+    // With `kings.relief`, the gallery is a photo relief (a `relief` element): the band stays flat for it.
     const kings = e.kings ?? {count: 28};
-    for (let i = 0; i < kings.count; i++) {
+    for (let i = 0; i < (kings.relief ? 0 : kings.count); i++) {
       const v = -hw + 1 + (2 * hw - 2) * (i + .5) / kings.count, y = L.kings + .5;
       G.arch((s, yy, off) => [-.25, yy, v + s], 0, (2 * hw - 2) / kings.count * .9, L.rose - 1.4, 0, .22, ph(L.kings), {}, 'pointed', 2);
       G.life({phase: kings.phase ?? e.bands?.find(b => L.kings < b.to)?.phase ?? e.phase, until: kings.until, rebuild: kings.rebuild}, (p, extra) => G.statue([-.45, v], y, L.rose - L.kings - 1.6, out, kings.color ?? G.stone, p, extra));
     }
     // The rose level: the rose in the middle, a tall twin window in each tower section, the Virgin's balustrade.
-    front(L.rose, L.gallery, [{kind: 'circle', s: hw + e.rose.v, y: e.rose.y, r: e.rose.r, colors: e.rose.colors}, ...e.towers.map(tw => ({kind: 'pointed', s: hw + tw.v, w: e.windowWidth ?? 5.2, sill: L.rose + 1.6, spring: L.gallery - 5.2, twin: true}))]);
+    front(L.rose, L.gallery, [{kind: 'circle', s: hw + e.rose.v, y: e.rose.y, r: e.rose.r, colors: e.rose.colors, photo: e.rose.relief}, ...e.towers.map(tw => ({kind: 'pointed', s: hw + tw.v, w: e.windowWidth ?? 5.2, sill: L.rose + 1.6, spring: L.gallery - 5.2, twin: true}))]);
     G.rail([-.6, -hw], [-.6, hw], L.rose, ph(L.rose));
     // The high gallery: slender colonnettes and arches before the towers' walls, open between the towers.
-    for (let v = -hw + .6; v <= hw - .5; v += 1.15) G.beam('stone', [.3, L.gallery + .4, v], [.3, L.gallery + 6.2, v], .3, G.tint(G.stone), ph(L.gallery));
+    for (let v = -hw + .6; v <= hw - .5; v += 1.15) G.column([.3, v], L.gallery + .4, 5.8, .3, ph(L.gallery));
     for (let v = -hw + .6; v < hw - 1.6; v += 1.15) G.arch((s, y, off) => [.3, y, v + .575 + s], 0, 1.1, L.gallery + 6.2, 0, .22, ph(L.gallery), {}, 'pointed', 2);
     G.beam('stone', [.3, L.gallery + .3, -hw], [.3, L.gallery + .3, hw], .6, G.tint(G.stone), ph(L.gallery));
     G.beam('stone', [.3, L.gallery + 7.4, -hw], [.3, L.gallery + 7.4, hw], .7, G.tint(G.stone), ph(L.gallery));
@@ -1172,6 +1322,7 @@ export const generators = {
     // Front buttresses up to the high gallery, stepping back.
     for (const v of e.buttresses ?? []) for (let y = 0; y < L.top - 1; y += 1.1) {
       const h = Math.min(1.1, L.top - 1 - y), depth = y < L.kings ? 1.5 : y < L.gallery ? 1 : .6;
+      if (kings.relief && y + h > L.kings + .3 && y < L.rose - .2) continue;
       G.box('stone', [-depth / 2 + .2, v], y + h / 2, [depth + .4, h * .96, 2.3], [1, 0], G.tint(G.stone), ph(y));
     }
     // The towers: four walls with two tall louvred openings each, corner buttresses, a balustrade and a terrace.
@@ -1269,10 +1420,11 @@ export function buildPieces(data) {
   const P = id => { if (!(id in index)) throw new Error(`Unknown phase: ${id}`); return index[id]; };
   const k = kit(random(data.seed ?? 7));
   for (const [elementIndex, element] of data.elements.entries()) {
-    const before = k.pieces.length;
+    const before = k.pieces.length, flatsBefore = k.flats.length;
     if(!generators[element.type])throw new Error(`Unknown brick: ${element.type}. Add a generator before loading this monument.`);
     generators[element.type](k, element, P);
     for (const piece of k.pieces.slice(before)) piece.element = elementIndex;
+    for (const flat of k.flats.slice(flatsBefore)) flat.element = elementIndex;
     if(element.type === "timberFrame")for(const piece of k.pieces.slice(before))piece.structural=true;
     if(element.until)for(const piece of k.pieces.slice(before))piece.until=P(element.until);
     if(element.lean)for(const piece of k.pieces.slice(before))piece.lean=1;
@@ -1284,8 +1436,12 @@ export function buildPieces(data) {
       }
     }
   }
-  if (data.rotate) { const turn = new T.Matrix4().makeRotationY(data.rotate * Math.PI / 180); for (const piece of k.pieces) piece.matrix.premultiply(turn); }
-  return {pieces: k.pieces, P, index};
+  if (data.rotate) {
+    const turn = new T.Matrix4().makeRotationY(data.rotate * Math.PI / 180);
+    for (const piece of k.pieces) piece.matrix.premultiply(turn);
+    for (const flat of k.flats) { flat.position.applyMatrix4(turn); flat.yaw += data.rotate * Math.PI / 180; }
+  }
+  return {pieces: k.pieces, reliefs: k.flats, P, index};
 }
 
 export function createStage(host) {
@@ -1710,9 +1866,149 @@ export function createStage(host) {
     return mat;
   }
 
+  // ——— Photo reliefs ———
+  // A carved panel from a photograph: one quad, rectified by a homography from the four corners the panel
+  // has in the photo, cut to its outline, its light and shade read as height (parallax and normals), toned so
+  // that its mean colour is the stone's around it. It grows, falls and is rebuilt like the pieces.
+  const reliefLoader = new T.TextureLoader();
+  let reliefsPending = 0, reliefGeneration = 0;
+  // Unit square (u right, v up) to the photo's texture coordinates, through its four corners (Heckbert).
+  function homography(corners, width, height) {
+    const [tl, tr, br, bl] = corners.map(([x, y]) => [x / width, 1 - y / height]), [[x0, y0], [x1, y1], [x2, y2], [x3, y3]] = [bl, br, tr, tl];
+    const sx = x0 - x1 + x2 - x3, sy = y0 - y1 + y2 - y3, dx1 = x1 - x2, dx2 = x3 - x2, dy1 = y1 - y2, dy2 = y3 - y2, den = dx1 * dy2 - dx2 * dy1;
+    const g = Math.abs(sx) + Math.abs(sy) < 1e-12 ? 0 : (sx * dy2 - dx2 * sy) / den, h = Math.abs(sx) + Math.abs(sy) < 1e-12 ? 0 : (dx1 * sy - sx * dy1) / den;
+    return new T.Matrix3().set(x1 - x0 + g * x1, x3 - x0 + h * x3, x0, y1 - y0 + g * y1, y3 - y0 + h * y3, y0, g, h, 1);
+  }
+  // The photo's colour over the panel, in linear light, for toning it to the stone: the mean of its lit
+  // faces (the brighter 60 to 97% of it), so that the carving's shadows and dark doorways stay darker than
+  // the wall, as they are, instead of brightening the whole relief.
+  function meanColour(image, H, inside = () => true) {
+    const canvas = document.createElement('canvas'), size = 96; canvas.width = canvas.height = size;
+    const context = canvas.getContext('2d', {willReadFrequently: true}); context.drawImage(image, 0, 0, size, size);
+    const pixels = context.getImageData(0, 0, size, size).data, linear = c => (c /= 255) <= .04045 ? c / 12.92 : ((c + .055) / 1.055) ** 2.4, samples = [];
+    for (let i = 0; i < 48; i++) for (let j = 0; j < 48; j++) {
+      if (!inside((i + .5) / 48, (j + .5) / 48)) continue;
+      const q = new T.Vector3((i + .5) / 48, (j + .5) / 48, 1).applyMatrix3(H), x = Math.floor(q.x / q.z * size), y = Math.floor((1 - q.y / q.z) * size);
+      if (x < 0 || y < 0 || x >= size || y >= size) continue;
+      const k = (y * size + x) * 4, rgb = [0, 1, 2].map(c => linear(pixels[k + c]));
+      samples.push([.2126 * rgb[0] + .7152 * rgb[1] + .0722 * rgb[2], ...rgb]);
+    }
+    if (!samples.length) return new T.Color(1, 1, 1);
+    samples.sort((a, b) => a[0] - b[0]);
+    const kept = samples.slice(Math.floor(samples.length * .6), Math.max(Math.floor(samples.length * .6) + 1, Math.floor(samples.length * .97)));
+    const sum = kept.reduce((m, s2) => [m[0] + s2[1], m[1] + s2[2], m[2] + s2[3]], [0, 0, 0]);
+    return new T.Color(sum[0] / kept.length, sum[1] / kept.length, sum[2] / kept.length);
+  }
+  // The stone around a relief is its colour times the stone's albedo map (mixed at 70%, as the pieces'
+  // shader does): the relief is toned to that, so it is neither brighter nor duller than its wall.
+  const albedoGain = async () => {
+    const texture = pbrOptions('stone', visual, renderer).pbr?.albedo;
+    if (!texture) return new T.Color(1, 1, 1);
+    for (let i = 0; i < 200 && !texture.image?.width; i++) await new Promise(done => setTimeout(done, 50));
+    if (!texture.image?.width) return new T.Color(1, 1, 1);
+    const mean = meanColour(texture.image, new T.Matrix3());
+    return new T.Color(.3 + .7 * mean.r, .3 + .7 * mean.g, .3 + .7 * mean.b);
+  };
+  // The panel's outline in metres (x from its centre, y from its foot): rect, round, pointed (with `rise`) or circle.
+  const SHAPES2D = {rect: 0, round: 1, pointed: 2, circle: 3};
+  function insideOutline(o, x, y) {
+    const {kind = 'rect', w, h, spring = 0, rise, cx = 0} = o; x -= cx;
+    if (Math.abs(x) > w / 2 || y < 0 || y > h) return false;
+    if (kind === 'circle') return (x / (w / 2)) ** 2 + ((y - h / 2) / (h / 2)) ** 2 <= 1;
+    if (kind === 'rect' || y <= spring) return true;
+    if (kind === 'round') return x * x + (y - spring) ** 2 <= w * w / 4;
+    const a = rise || h - spring, r = (w * w / 4 + a * a) / w, d = Math.abs(x) + r - w / 2;
+    return d * d + (y - spring) ** 2 <= r * r;
+  }
+  function makeRelief(flat, birth, death, base) {
+    const spec = flat.spec, [w, h] = spec.size, recess = spec.recess, outline = {kind: 'rect', ...spec.shape, w, h};
+    // A recessed panel (a portal's splay) is a funnel: each point goes back by how far it lies between the
+    // outline (on the wall face) and the inner outline (`recess`: width, spring, rise, offset, at `depth`).
+    const geometry = new T.PlaneGeometry(w, h, recess ? 80 : 1, recess ? Math.round(80 * h / w) : 1), count = geometry.attributes.position.count;
+    if (recess) {
+      const inner = {kind: outline.kind, w: recess.width, h, spring: recess.spring ?? outline.spring, rise: recess.rise, cx: recess.offset ?? 0};
+      const at = f => ({kind: outline.kind, h, w: w + (inner.w - w) * f, spring: (outline.spring ?? 0) + ((inner.spring ?? 0) - (outline.spring ?? 0)) * f, rise: (outline.rise || h - (outline.spring ?? 0)) + ((inner.rise || h - inner.spring) - (outline.rise || h - (outline.spring ?? 0))) * f, cx: inner.cx * f});
+      const position = geometry.attributes.position;
+      for (let i = 0; i < count; i++) {
+        const x = Math.max(-w / 2 + 1e-4, Math.min(w / 2 - 1e-4, position.getX(i))), y = Math.max(1e-4, Math.min(h - 1e-4, position.getY(i) + h / 2));
+        let f = 0;
+        if (insideOutline(at(1), x, y)) f = 1;
+        else if (insideOutline(at(0), x, y)) { let lo = 0, hi = 1; for (let k2 = 0; k2 < 14; k2++) { const mid = (lo + hi) / 2; if (insideOutline(at(mid), x, y)) lo = mid; else hi = mid; } f = lo; }
+        position.setZ(i, -recess.depth * f);
+      }
+      geometry.computeVertexNormals();
+    }
+    const life = new Float32Array(count * 2); for (let i = 0; i < count; i++) { life[i * 2] = birth; life[i * 2 + 1] = death; }
+    geometry.setAttribute('aLife', new T.BufferAttribute(life, 2));
+    geometry.setAttribute('aSeed', new T.BufferAttribute(new Float32Array(count), 1));
+    geometry.setAttribute('aLean', new T.BufferAttribute(new Float32Array(count), 1));
+    geometry.setAttribute('aProof', new T.BufferAttribute(new Float32Array(count).fill(provenanceOf(spec)), 1));
+    geometry.setAttribute('aReliefUv', geometry.attributes.uv.clone());
+    const local = {uPhoto: {value: null}, uHomography: {value: new T.Matrix3()}, uSize: {value: new T.Vector2(w, h)}, uPixels: {value: new T.Vector2(512, 512)},
+      uShape: {value: new T.Vector3(SHAPES2D[outline.kind] ?? 0, outline.spring ?? 0, outline.rise ?? 0)}, uTone: {value: new T.Color(1, 1, 1)}, uDepth: {value: spec.depth ?? (recess ? .12 : .25)}};
+    const material = new T.MeshStandardMaterial({color: '#ffffff', roughness: .92, metalness: 0});
+    material.customProgramCacheKey = () => 'relief';
+    material.onBeforeCompile = shader => {
+      Object.assign(shader.uniforms, uniforms, local);
+      growVertex(shader, null);
+      shader.vertexShader = shader.vertexShader
+        .replace('#include <common>', `#include <common>
+          attribute vec2 aReliefUv; attribute float aProof; varying vec2 vReliefUv; varying vec3 vReliefView,vReliefT,vReliefB; varying float vProof;`)
+        .replace('#include <begin_vertex>', `#include <begin_vertex>
+          vReliefUv=aReliefUv; vProof=aProof;
+          vec3 reliefTo=cameraPosition-(modelMatrix*vec4(position,1.)).xyz;
+          vReliefView=vec3(dot(reliefTo,normalize(modelMatrix[0].xyz)),dot(reliefTo,normalize(modelMatrix[1].xyz)),dot(reliefTo,normalize(modelMatrix[2].xyz)));
+          vReliefT=normalize((modelViewMatrix*vec4(1.,0.,0.,0.)).xyz); vReliefB=normalize((modelViewMatrix*vec4(0.,1.,0.,0.)).xyz);`);
+      shader.fragmentShader = shader.fragmentShader
+        .replace('#include <common>', `#include <common>
+          uniform sampler2D uPhoto; uniform mat3 uHomography; uniform vec2 uSize,uPixels; uniform vec3 uShape,uTone; uniform float uDepth,uProof;
+          varying vec2 vReliefUv; varying vec3 vReliefView,vReliefT,vReliefB; varying float vProof;
+          vec2 photoAt(vec2 p){vec3 q=uHomography*vec3(p,1.);return q.xy/q.z;}
+          float heightAt(vec2 p){return dot(texture2D(uPhoto,photoAt(p)).rgb,vec3(.2126,.7152,.0722));}
+          bool insidePanel(vec2 p){
+            if(p.x<0.||p.x>1.||p.y<0.||p.y>1.)return false;
+            float x=(p.x-.5)*uSize.x,y=p.y*uSize.y-uShape.y;
+            if(uShape.x>2.5){float ey=(p.y-.5)*2.;return 4.*x*x/(uSize.x*uSize.x)+ey*ey<=1.;}
+            if(uShape.x<.5||y<=0.)return true;
+            if(uShape.x<1.5)return x*x+y*y<=uSize.x*uSize.x*.25;
+            float a=uShape.z>0.?uShape.z:uSize.y-uShape.y,r=(uSize.x*uSize.x*.25+a*a)/uSize.x,d=abs(x)+r-uSize.x*.5;return d*d+y*y<=r*r;}`)
+        .replace('#include <map_fragment>', `vec3 reliefView=normalize(vReliefView);
+          vec2 rp=vReliefUv;
+          rp+=reliefView.xy/max(reliefView.z,.35)*(heightAt(rp)-.5)*uDepth/uSize;
+          if(!insidePanel(rp))discard;
+          diffuseColor.rgb*=texture2D(uPhoto,photoAt(rp)).rgb*uTone;`)
+        .replace('#include <color_fragment>', `#include <color_fragment>
+          if(uProof>0.){vec3 proof=vProof<.5?vec3(.2,.78,.62):vProof<1.5?vec3(.38,.53,1.):vProof<2.5?vec3(1.,.66,.25):vec3(.5,.5,.52);
+            diffuseColor.rgb=mix(diffuseColor.rgb,proof*.9,.72*uProof);}`)
+        .replace('#include <normal_fragment_maps>', `#include <normal_fragment_maps>
+          {vec2 e=1.5/uPixels;float hx=heightAt(rp+vec2(e.x,0.))-heightAt(rp-vec2(e.x,0.)),hy=heightAt(rp+vec2(0.,e.y))-heightAt(rp-vec2(0.,e.y));
+           vec3 slope=vec3(-hx*uDepth/(2.*e.x*uSize.x),-hy*uDepth/(2.*e.y*uSize.y),1.);
+           normal=normalize(vReliefT*clamp(slope.x,-2.,2.)+vReliefB*clamp(slope.y,-2.,2.)+normal);}`);
+    };
+    const mesh = new T.Mesh(geometry, material);
+    mesh.position.copy(flat.position); mesh.rotation.y = flat.yaw; mesh.visible = false; mesh.frustumCulled = false;
+    mesh.receiveShadow = Boolean(visual.quality.shadows);
+    mesh.userData.relief = {element: flat.element, phase: flat.phase, birth, death};
+    reliefsPending++;
+    const generation = reliefGeneration;
+    reliefLoader.load(new URL(spec.image, base).href, async texture => {
+      texture.colorSpace = T.SRGBColorSpace; texture.anisotropy = renderer.capabilities.getMaxAnisotropy();
+      const {width, height} = texture.image, H = homography(spec.corners, width, height), [tl, tr, br, bl] = spec.corners;
+      local.uPhoto.value = texture; local.uHomography.value = H;
+      local.uPixels.value.set(Math.max(64, (Math.hypot(tr[0] - tl[0], tr[1] - tl[1]) + Math.hypot(br[0] - bl[0], br[1] - bl[1])) / 2), Math.max(64, (Math.hypot(bl[0] - tl[0], bl[1] - tl[1]) + Math.hypot(br[0] - tr[0], br[1] - tr[1])) / 2));
+      if (generation !== reliefGeneration) return texture.dispose();
+      material.userData.photo = texture;
+      const mean = meanColour(texture.image, H, (u, v) => insideOutline(outline, (u - .5) * w, v * h)), tone = new T.Color(spec.tone ?? spec.color ?? '#cfc3a6').multiply(await albedoGain());
+      if (generation !== reliefGeneration) return;
+      local.uTone.value.setRGB(tone.r / Math.max(.02, mean.r), tone.g / Math.max(.02, mean.g), tone.b / Math.max(.02, mean.b));
+      mesh.visible = true; reliefsPending--;
+    }, undefined, () => { if (generation !== reliefGeneration) return; console.warn(`Relief image not found: ${spec.image}`); reliefsPending--; });
+    scene.add(mesh); meshes.push(mesh);
+  }
+
   function clear() {
-    for (const mesh of meshes) { scene.remove(mesh); mesh.geometry.dispose(); mesh.material.dispose(); mesh.customDepthMaterial?.dispose(); }
-    meshes.length = 0;
+    for (const mesh of meshes) { scene.remove(mesh); mesh.geometry.dispose(); mesh.material.dispose(); mesh.customDepthMaterial?.dispose(); mesh.material.userData?.photo?.dispose(); }
+    meshes.length = 0; reliefsPending = 0; reliefGeneration++;
     if (outlineGroup) { scene.remove(outlineGroup); outlineGroup.traverse(o => { o.geometry?.dispose(); o.material?.dispose(); }); outlineGroup = null; }
     for (const {group, scaffoldSets} of siteGroups) { scene.remove(group); for (const set of scaffoldSets) set.mesh.dispose(); }
     siteGroups.length = 0; siteActors.length = 0; siteDust.length = 0; siteRigs.length = 0;
@@ -1721,7 +2017,8 @@ export function createStage(host) {
     ground.material = planGroundMaterial; ground.receiveShadow = false;
   }
 
-  function load(data) {
+  // `base`: the monument file's URL, against which its photo reliefs are found.
+  function load(data, {base = location.href} = {}) {
     clear();
     monument = data; moved = false; turnY = (data.rotate ?? 0) * Math.PI / 180;
     visual = resolveVisualStyle(data.visualStyle ?? {quality: 'basic'});
@@ -1746,7 +2043,7 @@ export function createStage(host) {
       uniforms.uLeanPivot.value.set(...(leaning.pivot ?? [0, 0, 0]));
       uniforms.uLeanAxis.value.crossVectors(UP, new T.Vector3(...(leaning.toward ?? [0, 0, 1])).normalize()).normalize();
     }
-    const {pieces: built, P, index} = buildPieces(data), k = {pieces: built, rand: random((data.seed ?? 7) + 1)};
+    const {pieces: built, reliefs, P, index} = buildPieces(data), k = {pieces: built, rand: random((data.seed ?? 7) + 1)};
     builtPieces = built;
     total = data.phases.length;
     // Within each phase, pieces are laid from the bottom up.
@@ -1758,9 +2055,10 @@ export function createStage(host) {
     });
     const death = phase => phase + .1 + .5 * k.rand();
     const groups = {};
-    for (const piece of k.pieces) (groups[piece.kind] ??= []).push(piece);
-    for (const [kind, list] of Object.entries(groups)) {
-      const geometry = new T.BoxGeometry(1, 1, 1), life = new Float32Array(list.length * 2), seed = new Float32Array(list.length), lean = new Float32Array(list.length), proof = new Float32Array(list.length);
+    // One instanced mesh per material and shape.
+    for (const piece of k.pieces) (groups[`${piece.kind}|${piece.shape ?? 'box'}`] ??= []).push(piece);
+    for (const [key, list] of Object.entries(groups)) {
+      const [kind, shape] = key.split('|'), geometry = (SHAPES[shape] ?? SHAPES.box)(), life = new Float32Array(list.length * 2), seed = new Float32Array(list.length), lean = new Float32Array(list.length), proof = new Float32Array(list.length);
       geometry.setAttribute('uv1', geometry.attributes.uv);
       const mesh = new T.InstancedMesh(geometry, material(kind), list.length);
       list.forEach((piece, i) => {
@@ -1777,6 +2075,11 @@ export function createStage(host) {
       mesh.castShadow = mesh.receiveShadow = Boolean(visual.quality.shadows);
       mesh.customDepthMaterial = shadowMaterial();
       scene.add(mesh); meshes.push(mesh);
+    }
+    // A relief is set in place once the masonry of its phase has risen to its middle.
+    for (const flat of reliefs) {
+      const below = byPhase[flat.phase].filter(piece => piece.matrix.elements[13] <= flat.position.y), birth = below.reduce((m, piece) => Math.max(m, piece.birth), flat.phase + .3);
+      makeRelief(flat, Math.min(flat.phase + .95, birth + .01), flat.until === undefined ? 1e6 : death(flat.until), base);
     }
     // Optional real context. The app hides this layer by default so it cannot compete with the monument.
     if (data.context) {
@@ -1901,6 +2204,8 @@ export function createStage(host) {
       return {x: (v.x * .5 + .5) * host.clientWidth, y: (-v.y * .5 + .5) * host.clientHeight, visible: v.z < 1 && Math.abs(v.x) < 1.1 && Math.abs(v.y) < 1.1};
     },
     get duration() { return total; },
+    // True once every photo relief has its image (or has given up on it).
+    get ready() { return reliefsPending === 0; },
     setTime(t) {
       uniforms.uTime.value = t;
       if (leaning) uniforms.uLeanAngle.value = lerp(leaning.track, t) * Math.PI / 180;
@@ -1945,6 +2250,9 @@ export function createStage(host) {
     },
     // Vertical field of view of a reference photo's lens, in degrees (38 by default).
     fov(degrees = 38) { camera.fov = degrees; camera.updateProjectionMatrix(); },
+    // A photo whose verticals were straightened (a shift lens, or perspective correction afterwards) was taken
+    // looking level with its centre moved: the horizon lies `shift` photo heights below the middle.
+    shift(amount = 0) { if (amount) camera.setViewOffset(1, 1, 0, -amount, 1, 1); else camera.clearViewOffset(); },
     // Evidence mode: tint the pieces by provenance; the measured outline drawn on the ground.
     proof(on) { uniforms.uProof.value = on ? 1 : 0; },
     outline(shapes) {
@@ -1963,8 +2271,10 @@ export function createStage(host) {
     pick(x, y, t) {
       const rect = renderer.domElement.getBoundingClientRect(), ray = new T.Raycaster();
       ray.setFromCamera(new T.Vector2((x - rect.left) / rect.width * 2 - 1, -(y - rect.top) / rect.height * 2 + 1), camera);
-      const hits = ray.intersectObjects(meshes.filter(m => m.userData.pieces), false).sort((a, b) => a.distance - b.distance);
+      const hits = ray.intersectObjects(meshes.filter(m => m.userData.pieces || m.userData.relief && m.visible), false).sort((a, b) => a.distance - b.distance);
       for (const hit of hits) {
+        const relief = hit.object.userData.relief;
+        if (relief) { if (relief.birth <= t && relief.death > t) return {element: relief.element, phase: relief.phase, kind: 'relief', point: hit.point.toArray()}; continue; }
         const piece = hit.object.userData.pieces[hit.instanceId];
         if (piece && piece.birth <= t && piece.death > t) return {element: piece.element, phase: piece.phase, kind: piece.kind, point: hit.point.toArray()};
       }
