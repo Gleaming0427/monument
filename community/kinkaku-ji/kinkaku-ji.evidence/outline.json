@@ -1,0 +1,90 @@
+{
+ "source": "OpenStreetMap way 403406104 (the eave of the main roof, building:part 5.9\u20136.0 m) and ways 403098076, 403093737 (the S\u014dsei's roof and floor)",
+ "url": "https://www.openstreetmap.org/way/403406104",
+ "attribution": "\u00a9 OpenStreetMap contributors, ODbL",
+ "origin": [
+  35.03950995,
+  135.7284555
+ ],
+ "polygons": [
+  [
+   [
+    8.32,
+    -5.99
+   ],
+   [
+    -7.5,
+    -6.88
+   ],
+   [
+    -8.21,
+    5.7
+   ],
+   [
+    7.12,
+    6.56
+   ],
+   [
+    7.52,
+    -0.4
+   ],
+   [
+    8.02,
+    -0.8
+   ]
+  ],
+  [
+   [
+    -11.98,
+    2.36
+   ],
+   [
+    -8.3,
+    2.56
+   ],
+   [
+    -8.07,
+    -1.79
+   ],
+   [
+    -11.73,
+    -1.98
+   ],
+   [
+    -11.84,
+    -0.09
+   ],
+   [
+    -11.89,
+    0.53
+   ]
+  ],
+  [
+   [
+    -7.48,
+    -0.78
+   ],
+   [
+    -11.9,
+    -1.04
+   ],
+   [
+    -11.95,
+    0.05
+   ],
+   [
+    -11.97,
+    0.66
+   ],
+   [
+    -12.0,
+    1.59
+   ],
+   [
+    -7.58,
+    1.83
+   ]
+  ]
+ ],
+ "note": "The same mapper traced the roof above the eave as way 403406103, 16.5 \u00d7 13.3 m; the eave layer used here is 15.9 \u00d7 12.6 m. Three calibrated photographs place the eave corners at about 14.5 \u00d7 11.8 m."
+}
