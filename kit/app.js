@@ -104,8 +104,9 @@ async function open(id) {
   // same spot (azimuth in degrees from north, 180 = seen from the south). ?clean hides the interface.
   const cam = params.get('cam')?.split(',').map(Number);
   if (cam?.length >= 3 && cam.every(Number.isFinite)) { touched = true; stage.autoRotate(false); stage.look(...cam); }
-  // ?fov=70: the vertical field of view of the reference photo's lens, for wide-angle shots taken close up.
-  if (Number(params.get('fov')) > 10) stage.fov(Number(params.get('fov')));
+  // ?fov=70: the vertical field of view of the reference photo's lens, from a wide angle close up to a long
+  // lens a few hundred metres away (calibrate.mjs fits a few degrees).
+  if (Number(params.get('fov')) >= 1) stage.fov(Number(params.get('fov')));
   // ?shift=0.2: a photo with straightened verticals, its horizon that many photo heights below the middle.
   if (Number(params.get('shift'))) stage.shift(Number(params.get('shift')));
 }
