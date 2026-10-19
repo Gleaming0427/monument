@@ -40,10 +40,10 @@ const exists = path => stat(path).then(() => true, () => false);
 // Words that betray facts taken from a search engine's summary instead of a page that was read.
 const HEARSAY = /search[- ](result|snippet)|\bsnippets?\b|search engine|summari[sz]ing (the )?(search|results)/i;
 const VISUAL_QUALITY = new Set(['basic', 'standard', 'cinematic']);
-const MATERIAL_PRESETS = new Set(['gothic-limestone', 'roman-weathered', 'marble-italian', 'historic-masonry', 'industrial-iron']);
-const ENVIRONMENT_PRESETS = new Set(['gothic-urban', 'mediterranean-lawn', 'roman-ruins', 'exposition-grounds', 'museum-neutral']);
-const SURFACE_MATERIALS = new Set(['limestone-paris', 'limestone-weathered', 'marble-white', 'sandstone-warm', 'granite-grey', 'brick-roman', 'oak-aged', 'slate-aged', 'terracotta-aged']);
-const DECOR_TYPES = new Set(['tree-oak', 'tree-cypress', 'tree-olive', 'stone-blocks', 'cart-medieval', 'amphora']);
+const MATERIAL_PRESETS = new Set(['gothic-limestone', 'roman-weathered', 'marble-italian', 'historic-masonry', 'industrial-iron', 'japanese-timber', 'vernacular-timber']);
+const SURFACE_MATERIALS = new Set(['limestone-paris', 'limestone-weathered', 'marble-white', 'sandstone-warm', 'granite-grey', 'brick-roman', 'oak-aged', 'slate-aged', 'terracotta-aged',
+  'hinoki', 'cedar', 'wood-weathered', 'wood-rough', 'wood-old',
+  'plaster-white', 'plaster-rough', 'shingle-wood', 'shingle-mossy', 'thatch', 'tile-clay', 'stone-japanese', 'rock-mossy', 'bark-pine', 'bark-cedar', 'gold-leaf']);
 // Links are opened, not trusted: a page cited must answer, a reference photo must exist on Wikimedia
 // Commons and, when Commons records where it was taken, the declared viewpoint must match that place.
 const UA = {'User-Agent': 'monument-skill/1.0 (+https://github.com/Gleaming0427/monument)'};
@@ -147,26 +147,16 @@ for (const file of (await Promise.all(targets.map(files))).flat()) {
     bricks = new Set([...kit, ...bricksOf(source)]);
   }
   const phases = new Set(d.phases.map(p => p.id));
+  // The viewer shows the monument alone in the studio: its grounds, water and setting are not drawn.
+  check(d.water === undefined, `${at} "water" was removed: the viewer shows the monument alone in the studio`);
+  for (const key of ['light', 'water', 'dots']) check(d.view?.[key] === undefined, `${at} view.${key} was removed: the studio has one light and no ground`);
   check(phases.size === d.phases.length, `${at} duplicate phase id`);
   if (d.visualStyle) {
     const style = d.visualStyle;
     check(VISUAL_QUALITY.has(style.quality), `${at} visualStyle.quality must be "basic", "standard" or "cinematic"`);
     check(MATERIAL_PRESETS.has(style.materialPreset), `${at} visualStyle.materialPreset is not in the bundled material library`);
-    check(ENVIRONMENT_PRESETS.has(style.environmentPreset), `${at} visualStyle.environmentPreset is not in the bundled environment library`);
     for (const [surface, material] of Object.entries(style.surfaces ?? {})) check(SURFACE_MATERIALS.has(material), `${at} visualStyle.surfaces.${surface} uses unknown material "${material}"`);
-    check(style.vegetation === undefined || typeof style.vegetation === 'boolean', `${at} visualStyle.vegetation must be true or false`);
-    check(style.presentation === undefined || ['site', 'studio'].includes(style.presentation), `${at} visualStyle.presentation must be "site" or "studio"`);
-    check((style.props ?? []).every(type => DECOR_TYPES.has(type)), `${at} visualStyle.props contains an unknown prop`);
-    if (style.environment?.from) check(phases.has(style.environment.from), `${at} visualStyle.environment.from names unknown phase "${style.environment.from}"`);
-    if (style.environment?.count !== undefined) check(Number.isInteger(style.environment.count) && style.environment.count >= 0 && style.environment.count <= 24, `${at} visualStyle.environment.count must be 0–24`);
-    if (style.environment?.exclusion !== undefined) check(Number.isFinite(style.environment.exclusion) && style.environment.exclusion >= .25 && style.environment.exclusion <= 1, `${at} visualStyle.environment.exclusion must be 0.25–1`);
-    check(Array.isArray(style.decor ?? []), `${at} visualStyle.decor must be an array`);
-    for (const [i, item] of (style.decor ?? []).entries()) {
-      check(DECOR_TYPES.has(item?.type), `${at} visualStyle.decor ${i} has unknown type`);
-      check(item?.at?.length === 2 && item.at.every(Number.isFinite), `${at} visualStyle.decor ${i} needs at: [x, z]`);
-      if (item?.from) check(phases.has(item.from), `${at} visualStyle.decor ${i} from names unknown phase "${item.from}"`);
-      if (item?.until) check(phases.has(item.until), `${at} visualStyle.decor ${i} until names unknown phase "${item.until}"`);
-    }
+    for (const key of ['environmentPreset', 'environment', 'vegetation', 'decor', 'props', 'presentation', 'diorama']) check(style[key] === undefined, `${at} visualStyle.${key} was removed: the viewer only shows the studio (references/visual-style.md)`);
   }
   for (const p of d.phases) {
     check(url(p.source), `${at} phase ${p.id} needs a source URL`);
@@ -318,6 +308,5 @@ async function evidence(d, text, file, id, at, strict) {
   const last = passes.at(-1);
   if (last) check(Array.isArray(last.remaining), `${at} the last pass needs "remaining": the simplifications left, or []`);
   if (last?.remaining?.length) check((ev.uncertainties ?? []).length > 0, `${at} the remaining gaps must also be in evidence.uncertainties`);
-  check(['day', 'golden'].includes(d.view?.light), `${at} view.light must be chosen, "day" or "golden" (references/fidelity.md)`);
   check(typeof d.modelNote === 'string' && d.modelNote.length > 20, `${at} modelNote must say what is measured and what is interpreted`);
 }

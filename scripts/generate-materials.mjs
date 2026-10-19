@@ -9,7 +9,7 @@ import {fileURLToPath} from 'node:url';
 
 const root = fileURLToPath(new URL('..', import.meta.url));
 const out = join(root, 'kit', 'assets', 'materials');
-const size = Math.max(128, Math.min(1024, Number(process.argv[2]) || 256));
+let size = Math.max(128, Math.min(1024, Number(process.argv[2]) || 256));
 const clamp = value => Math.max(0, Math.min(255, Math.round(value)));
 const mix = (a, b, t) => a + (b - a) * t;
 const smooth = t => t * t * (3 - 2 * t);
@@ -32,7 +32,7 @@ const crcTable = Array.from({length: 256}, (_, n) => { let c = n; for (let k = 0
 const crc32 = buffer => { let c = 0xffffffff; for (const byte of buffer) c = crcTable[(c ^ byte) & 255] ^ c >>> 8; return (c ^ 0xffffffff) >>> 0; };
 const chunk = (type, data) => { const name = Buffer.from(type), length = Buffer.alloc(4), crc = Buffer.alloc(4); length.writeUInt32BE(data.length); crc.writeUInt32BE(crc32(Buffer.concat([name, data]))); return Buffer.concat([length, name, data, crc]); };
 const png = (pixels, channels = 3) => {
-  const head = Buffer.alloc(13); head.writeUInt32BE(size, 0); head.writeUInt32BE(size, 4); head[8] = 8; head[9] = channels === 1 ? 0 : 2;
+  const head = Buffer.alloc(13); head.writeUInt32BE(size, 0); head.writeUInt32BE(size, 4); head[8] = 8; head[9] = channels === 1 ? 0 : channels === 4 ? 6 : 2;
   const raw = Buffer.alloc((size * channels + 1) * size);
   for (let y = 0; y < size; y++) { const row = y * (size * channels + 1); raw[row] = 0; pixels.copy(raw, row + 1, y * size * channels, (y + 1) * size * channels); }
   return Buffer.concat([Buffer.from('\x89PNG\r\n\x1a\n', 'binary'), chunk('IHDR', head), chunk('IDAT', deflateSync(raw, {level: 9})), chunk('IEND', Buffer.alloc(0))]);
@@ -111,14 +111,18 @@ await Promise.all([
     const n = fbm(x, y, 146), fleck = noise(x, y, 64, 155), v = (n - .5) * 30 + (fleck > .9 ? 24 : 0);
     return {color: [151 + v, 76 + v * .55, 48 + v * .4], height: .37 + n * .42, roughness: .78 + fleck * .12};
   }, 2.7),
-  material('cobblestone', (x, y) => {
-    const bw = size / 7, bh = size / 9, row = Math.floor(y / bh), xx = (x + (row % 2) * bw / 2) % bw, yy = y % bh, edge = Math.min(xx, bw - xx, yy, bh - yy), mortar = edge < size / 90, n = fbm(x, y, 174), cell = hash(Math.floor((x + (row % 2) * bw / 2) / bw), row, 181), c = 105 + cell * 45 + (n - .5) * 18;
-    return {color: mortar ? [75, 72, 66] : [c, c - 2, c - 7], height: mortar ? .12 : .48 + Math.min(1, edge / (size / 55)) * .3, roughness: .86 + n * .08};
-  }, 4.5),
-  material('dry-grass', (x, y) => {
-    const n = fbm(x, y, 203), blade = noise(x, y, 96, 211), green = Math.max(0, n - .46), v = (blade - .5) * 22;
-    return {color: [126 + v - green * 45, 112 + v + green * 18, 68 + v * .55], height: .25 + n * .45 + blade * .2, roughness: .9};
-  }, 3.4),
 ]);
 
-console.log(`Generated ${11 * 4} PBR maps at ${size}×${size} in ${out}`);
+console.log(`Generated ${9 * 4} PBR maps at ${size}×${size} in ${out}`);
+
+// ——— Surfaces no photograph gives, at 512 px whatever the argument ———
+size = 512;
+// Gold leaf: squares of beaten leaf (kinpaku, 10.9 cm) laid in rows on lacquer, six to a tile of 0.654 m, each
+// a little lighter or darker, their edges overlapping in thin seams, the leaf wrinkled where it was pressed.
+await material('gold-leaf', (x, y) => {
+  const cell = size / 6, cx = Math.floor(x / cell), cy = Math.floor(y / cell), u = x - cx * cell, v = y - cy * cell;
+  const seam = Math.min(u, v) < 1.6 ? 1 : 0, tone = (hash(cx, cy, 401) - .5) * 16, wrinkle = (noise(x, y, 48, 409) - .5) * 10 + (noise(x, y, 160, 411) - .5) * 5;
+  const c = [229, 187, 92].map((k, i) => k + tone * (i === 2 ? .5 : 1) + wrinkle - seam * 14);
+  return {color: c, height: .5 + wrinkle / 60 + seam * .12, roughness: .26 + (noise(x, y, 32, 419) - .5) * .12 + seam * .18};
+}, 1.4);
+console.log('Generated gold-leaf.');

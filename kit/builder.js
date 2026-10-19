@@ -5,7 +5,9 @@ import {RenderPass} from 'three/addons/postprocessing/RenderPass.js';
 import {UnrealBloomPass} from 'three/addons/postprocessing/UnrealBloomPass.js';
 import {OutputPass} from 'three/addons/postprocessing/OutputPass.js';
 import {GTAOPass} from 'three/addons/postprocessing/GTAOPass.js';
-import {resolveVisualStyle, pbrOptions, groundOptions, createEnvironment, disposeEnvironment} from './visuals.js';
+import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
+import {clone as cloneSkinned} from 'three/addons/utils/SkeletonUtils.js';
+import {resolveVisualStyle, pbrOptions} from './visuals.js';
 
 // Construction engine: a monument file (phases + elements) becomes thousands of instanced pieces.
 // Each piece is born (and sometimes removed) on the timeline; the shader drops it into place and
@@ -25,6 +27,11 @@ const KINDS = {
   cloth: {roughness: .9, metalness: 0},
   glass: {roughness: .16, metalness: .25},
   lead: {roughness: .72, metalness: .12},
+  // Lime or clay plaster, wooden shingles and thatch, gold leaf on lacquer (it mirrors the studio), tree bark.
+  plaster: {roughness: .92, metalness: 0},
+  shingle: {roughness: .86, metalness: 0},
+  gilt: {roughness: .44, metalness: .5},
+  bark: {roughness: .95, metalness: 0},
 };
 
 function random(seed) {
@@ -1833,60 +1840,15 @@ export function createStage(host) {
   const uniforms = {uProof: {value: 0}, uTime: {value: 0}, uFly: {value: FLY}, uDrop: {value: 30}, uNight: {value: 0}, uSparkle: {value: 0}, uClock: {value: 0}, uHeight: {value: 100}, uNightColor: {value: new T.Color('#ff9a2e')},
     // One leaning group per monument (a tower sinking on soft ground): pivot, axis and angle over time.
     uLeanPivot: {value: new T.Vector3()}, uLeanAxis: {value: new T.Vector3(1, 0, 0)}, uLeanAngle: {value: 0}};
-  // Sky, distant ground and fog share one horizon colour: no visible seam.
-  const DUSK = new T.Color().setRGB(.15, .105, .13), NIGHT = new T.Color().setRGB(.03, .042, .085);
-  const horizon = {value: DUSK.clone()}, zenith = {value: new T.Color('#1b213d')}, sunGlow = {value: new T.Color('#9d4e24')};
-  let dayHorizon = DUSK.clone(), fogFactor = .4;
-
-  // Sky: dusk gradient, darker at night.
-  const sky = new T.Mesh(new T.SphereGeometry(4000, 32, 16), new T.ShaderMaterial({
-    side: T.BackSide, depthWrite: false, uniforms: {uNight: uniforms.uNight, uHorizon: horizon, uZenith: zenith, uSunGlow: sunGlow},
-    vertexShader: 'varying vec3 vDir;void main(){vDir=normalize(position);gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}',
-    fragmentShader: `uniform float uNight;uniform vec3 uHorizon,uZenith,uSunGlow;varying vec3 vDir;void main(){
-      float h=max(vDir.y,0.);vec3 zen=mix(uZenith,vec3(.004,.006,.016),uNight);
-      vec3 c=mix(uHorizon,zen,smoothstep(0.,.55,h));
-      c+=uSunGlow*pow(max(dot(vDir,normalize(vec3(-.6,.12,.5))),0.),18.)*(1.-uNight);
-      gl_FragColor=vec4(c,1.);}`,
-  }));
-  scene.add(sky);
-  scene.fog = new T.FogExp2(DUSK.clone(), .0011);
-
-  // Sol : mosaïque de losanges, comme un plan qui devient monument.
-  const groundGeometry = new T.PlaneGeometry(1, 1); groundGeometry.setAttribute('uv1', groundGeometry.attributes.uv);
-  const planGroundMaterial = new T.ShaderMaterial({
-    uniforms: {uStep: {value: 4}, uRadius: {value: 600}, uNight: uniforms.uNight, uHorizon: horizon, uWater: {value: 0}},
-    vertexShader: 'varying vec2 vXZ;void main(){vec4 w=modelMatrix*vec4(position,1.);vXZ=w.xz;gl_Position=projectionMatrix*viewMatrix*w;}',
-    fragmentShader: `uniform float uStep,uRadius,uNight,uWater;uniform vec3 uHorizon;varying vec2 vXZ;
-      void main(){vec2 g=vXZ/uStep,cell=floor(g)+.5,f=g-cell;float d=abs(f.x)+abs(f.y),aa=fwidth(d)+.002;
-      float shape=mix(1.-smoothstep(.22-aa,.22+aa,d),.1,clamp(fwidth(g.x)*2.5-.8,0.,1.));
-      float r=length(vXZ),fall=max(0.,1.-r/uRadius);vec3 base=mix(vec3(.03,.026,.034),vec3(.008,.011,.022),uNight);
-      vec3 dot=mix(vec3(.5,.38,.26),vec3(.2,.3,.6),uNight)*.3;
-      base=mix(base,vec3(.012,.026,.05),uWater);dot=mix(dot,vec3(.16,.32,.52)*.32,uWater);
-      vec3 c=base+dot*shape*fall*fall;
-      gl_FragColor=vec4(mix(c,uHorizon,smoothstep(uRadius*.5,uRadius*2.4,r)),1.);}`,
-  });
-  const ground = new T.Mesh(groundGeometry, planGroundMaterial);
-  ground.rotation.x = -Math.PI / 2;
-  scene.add(ground);
-
-  const hemi = new T.HemisphereLight('#9fb4e0', '#3a2a1c', .7);
-  const sun = new T.DirectionalLight('#ffcf9a', 3.1);
-  const rim = new T.DirectionalLight('#5c7cff', .9);
-  const ambient = new T.AmbientLight('#dbe6ef', 0);
-  scene.add(hemi, sun, rim, ambient);
-  // Low golden sun by default; view.light = "day" gives a higher, neutral daylight for buildings whose
-  // whiteness is a feature (plaster, marble) and that golden light would turn beige.
-  const LIGHTS = {
-    golden: {sun: '#ffcf9a', sunI: 3.1, sky: '#9fb4e0', hemiI: .7, dir: [-1.2, .55, .9]},
-    day: {sun: '#fff4e8', sunI: 2.5, sky: '#c4d6f6', hemiI: 1.15, dir: [.5, 1.1, 1], rimI: .3},
-    'cool-day': {sun: '#fff5e8', sunI: 3.05, sky: '#c4d9ee', hemiI: 1.72, dir: [-.65, 1.15, .7], rimI: .22},
-    'clear-day': {sun: '#fff0d2', sunI: 3.2, sky: '#c3dcf1', hemiI: 1.58, dir: [-.9, 1.05, .55], rimI: .28},
-    'warm-day': {sun: '#ffe0b8', sunI: 3.35, sky: '#c8dced', hemiI: 1.62, dir: [-1.1, .92, .6], rimI: .42},
-  };
-  // Studio, on request: the monument alone on a seamless paper backdrop, in soft high-key light, with its
-  // shadow and the darkening where it meets the floor, as a model photographed in a studio. "site", the
-  // default, keeps the sky, the ground and the trees of the environment preset.
-  LIGHTS.studio = {sun: '#fff3e2', sunI: 3.1, sky: '#fbf8f2', hemiI: .95, dir: [-.8, 1.25, .95], rimI: .1};
+  // The studio: the monument alone on a seamless paper backdrop, in soft high-key light, with its shadow and the
+  // darkening where it meets the floor, as a model photographed in a studio. At night the paper turns blue-black.
+  const LIGHT = {sun: '#fff3e2', sunI: 3.1, sky: '#fbf8f2', floor: '#d4cbbb', hemiI: .95, rimI: .1, ambient: .12};
+  const hemi = new T.HemisphereLight(LIGHT.sky, LIGHT.floor, LIGHT.hemiI);
+  const sun = new T.DirectionalLight(LIGHT.sun, LIGHT.sunI);
+  const rim = new T.DirectionalLight('#5c7cff', LIGHT.rimI);
+  const ambient = new T.AmbientLight('#dbe6ef', LIGHT.ambient);
+  scene.add(hemi, sun, rim, ambient, sun.target);
+  renderer.toneMappingExposure = 1.02; renderer.shadowMap.type = T.PCFSoftShadowMap;
   // The linear colour that ACES tone mapping (as three.js applies it, at this exposure) turns into `target`:
   // the backdrop then shows exactly as paper.
   const acesInverse = (target, exposure) => {
@@ -1897,17 +1859,19 @@ export function createStage(host) {
     for (let i = 0; i < 200; i++) { const out = forward(v); v = v.map((x, j) => Math.max(0, x + (goal[j] - out[j]) * (1 + x))); }
     return new T.Color(...v);
   };
-  const PAPER = new T.Color('#f4f1ea'), studioFloor = new T.Mesh(new T.CircleGeometry(1, 96), new T.ShadowMaterial({color: '#4a3f30', opacity: .26}));
-  studioFloor.rotation.x = -Math.PI / 2; studioFloor.position.y = .01; studioFloor.receiveShadow = true; studioFloor.visible = false; scene.add(studioFloor);
-  let studio = false, presentationAsked = null, paper = PAPER.clone();
-  scene.add(sun.target);
-  let light = LIGHTS.golden;
-  let visual = resolveVisualStyle({quality: 'basic'}), realisticGroundMaterial = null, environmentGroup = null, environmentTimed = [], baseBloom = .5, ambientBase = 0;
+  const NIGHT = new T.Color().setRGB(.03, .042, .085), paper = acesInverse(new T.Color('#f4f1ea'), renderer.toneMappingExposure);
+  scene.background = paper.clone();
+  // A light haze of the paper's colour softens what lies far behind the monument.
+  scene.fog = new T.FogExp2(paper.clone(), .0011);
+  const studioFloor = new T.Mesh(new T.CircleGeometry(1, 96), new T.ShadowMaterial({color: '#4a3f30', opacity: .26}));
+  studioFloor.rotation.x = -Math.PI / 2; studioFloor.position.y = .01; studioFloor.receiveShadow = true; scene.add(studioFloor);
+  let visual = resolveVisualStyle({quality: 'basic'});
 
   const meshes = [];
   // Human-scale construction tableaux, described and sourced per phase. They are deliberately kept
   // outside buildPieces(): workers, dust and temporary tools must not alter plan or height checks.
   const siteGroups = [], siteActors = [], siteDust = [], siteRigs = [];
+  let siteGeneration = 0, lastClock;
   const siteBox = new T.BoxGeometry(1, 1, 1), siteCylinder = new T.CylinderGeometry(1, 1, 1, 8), siteHead = new T.SphereGeometry(1, 12, 8);
   const siteMaterials = new Map();
   const siteMaterial = (color, kind = 'matte') => {
@@ -1923,23 +1887,74 @@ export function createStage(host) {
     mesh.quaternion.setFromUnitVectors(UP, direction.normalize()); return mesh;
   };
 
-  function makeWorker(parent, x, z, turn, palette, role, offset) {
-    const actor = new T.Group(); actor.position.set(x, 0, z); actor.rotation.y = turn; parent.add(actor);
+  // ——— Figures ———
+  // Workers are animated characters (kit/assets/characters, CC0 by Quaternius; credits in sources.json there): a
+  // craftsman in shirt and trousers before the industrial age, a builder in helmet and vest after it. Each is
+  // dressed in the scene's palette, holds a mallet or shoulders a load, and plays its own animation (working,
+  // striking, walking to and fro). Until a model has loaded, or where it cannot load, a simple stand-in shows.
+  const CHARACTERS = {traditional: 'worker-traditional.glb', modern: 'worker-modern.glb'}, characterAssets = {};
+  let charactersPending = 0;
+  const loadCharacter = era => characterAssets[era] ??= new Promise(resolve => {
+    charactersPending++;
+    new GLTFLoader().load(new URL(`./assets/characters/${CHARACTERS[era] ?? CHARACTERS.traditional}`, import.meta.url).href,
+      gltf => { charactersPending--; resolve(gltf); }, undefined, () => { charactersPending--; resolve(null); });
+  });
+  const ROLE_CLIP = {mason: 'Interact', lift: 'Sword_Slash', carry: 'Walk', idle: 'Idle'};
+  function standIn(actor, palette, role, offset) {
     const cloth = siteMaterial(palette[Math.floor(offset) % palette.length]), skin = siteMaterial('#9a6949'), dark = siteMaterial('#3c342d'), stone = siteMaterial('#a89a83');
-    siteMesh(actor, siteCylinder, cloth, [0, 1.14, 0], [.19, .58, .19]);
-    siteMesh(actor, siteHead, skin, [0, 1.59, 0], [.14, .16, .14]);
-    siteMesh(actor, siteBox, dark, [0, 1.72, 0], [.22, .07, .2]);
-    siteBeam(actor, [-.1, .84, 0], [-.11, .1, .02], .065, dark);
-    siteBeam(actor, [.1, .84, 0], [.13, .1, -.02], .065, dark);
+    const body = new T.Group(); actor.add(body);
+    siteMesh(body, siteCylinder, cloth, [0, 1.14, 0], [.19, .58, .19]);
+    siteMesh(body, siteHead, skin, [0, 1.59, 0], [.14, .16, .14]);
+    siteMesh(body, siteBox, dark, [0, 1.72, 0], [.22, .07, .2]);
+    siteBeam(body, [-.1, .84, 0], [-.11, .1, .02], .065, dark);
+    siteBeam(body, [.1, .84, 0], [.13, .1, -.02], .065, dark);
     const arms = [];
     for (const side of [-1, 1]) {
-      const pivot = new T.Group(); pivot.position.set(side * .2, 1.38, 0); actor.add(pivot);
+      const pivot = new T.Group(); pivot.position.set(side * .2, 1.38, 0); body.add(pivot);
       siteMesh(pivot, siteCylinder, skin, [0, -.24, 0], [.055, .48, .055]);
       pivot.rotation.z = side * (role === 'lift' ? 2.45 : role === 'carry' ? 1.3 : .45); arms.push(pivot);
     }
-    if (role === 'carry') siteMesh(actor, siteBox, stone, [0, 1.03, .28], [.5, .2, .28]);
-    if (role === 'mason') { actor.scale.y = .82; siteMesh(actor, siteBox, stone, [0, .35, .45], [.32, .2, .34]); }
-    actor.userData = {baseY: 0, baseTurn: turn, offset, arms, role}; siteActors.push(actor);
+    if (role === 'carry') siteMesh(body, siteBox, stone, [0, 1.03, .28], [.5, .2, .28]);
+    if (role === 'mason') { body.scale.y = .82; siteMesh(body, siteBox, stone, [0, .35, .45], [.32, .2, .34]); }
+    return {body, arms};
+  }
+  function makeWorker(parent, x, z, turn, palette, role, offset, era = 'traditional') {
+    const actor = new T.Group(); actor.position.set(x, 0, z); actor.rotation.y = turn; parent.add(actor);
+    const {body, arms} = standIn(actor, palette, role, offset);
+    actor.userData = {baseY: 0, baseTurn: turn, offset, arms, role, base: [x, z]}; siteActors.push(actor);
+    const generation = siteGeneration;
+    loadCharacter(era).then(gltf => {
+      if (!gltf || generation !== siteGeneration) return;
+      const figure = cloneSkinned(gltf.scene), shirt = new T.Color(palette[Math.floor(offset) % palette.length]), trousers = new T.Color(palette[(Math.floor(offset) + 2) % palette.length]).multiplyScalar(.7);
+      figure.traverse(o => {
+        if (!o.isMesh) return;
+        o.castShadow = o.receiveShadow = true; o.frustumCulled = false;
+        const dress = m => {
+          const c = m.clone(); c.roughness = .9; c.metalness = 0; c.clippingPlanes = sectionPlanes;
+          if (['Beige', 'Worker_Vest'].includes(m.name)) c.color.copy(shirt);
+          if (['LightBlue', 'Brown2'].includes(m.name)) c.color.copy(trousers);
+          return c;
+        };
+        o.material = Array.isArray(o.material) ? o.material.map(dress) : dress(o.material);
+      });
+      // A figure stands 1.7 m tall, whatever the model's own units.
+      figure.updateMatrixWorld(true);
+      const head = new T.Vector3(); figure.getObjectByName('Head')?.getWorldPosition(head);
+      figure.scale.multiplyScalar(head.y > 0 ? 1.55 / head.y : 1);
+      const mixer = new T.AnimationMixer(figure), clip = gltf.animations.find(a => a.name.endsWith(`|${ROLE_CLIP[role] ?? 'Idle'}`)) ?? gltf.animations[0];
+      if (clip) { const action = mixer.clipAction(clip); action.time = (offset * 1.37) % clip.duration; action.timeScale = .8 + (offset % 1) * .3; action.play(); }
+      // The tool in the right hand: a mallet to strike or work, a load on the shoulder to carry.
+      const hand = figure.getObjectByName('Wrist.R');
+      if (hand) {
+        figure.updateMatrixWorld(true);
+        const tool = new T.Group(), k = 1 / hand.getWorldScale(new T.Vector3()).x, wood = siteMaterial('#6b4a2e');
+        if (role === 'carry') siteMesh(tool, siteBox, siteMaterial('#a08060'), [0, .12, 0], [.22, .22, 1.6]);
+        else { siteMesh(tool, siteCylinder, wood, [0, -.12, .05], [.022, .38, .022]); siteMesh(tool, siteBox, wood, [0, -.3, .05], [.1, .1, .2]); }
+        tool.scale.setScalar(k); hand.add(tool);
+      }
+      body.removeFromParent(); actor.add(figure);
+      actor.userData.arms = null; actor.userData.mixer = mixer; actor.userData.walker = role === 'carry';
+    });
   }
 
   // ——— Scaffolds fitted to the work ———
@@ -1951,6 +1966,8 @@ export function createStage(host) {
   // foot, and it comes down when the phase ends. Timber poles with putlogs into the wall before the industrial
   // age (`material: "timber"`), steel tubes on two rows of standards with guard rails after (`"steel"`).
   const ZERO = new T.Matrix4().makeScale(0, 0, 0);
+  // A worksite's figures: `figures` ("traditional" or "modern"), or modern where the scaffold is of steel tubes.
+  const eraOf = spec => spec.figures ?? (typeof spec.scaffold === 'object' && spec.scaffold.material === 'steel' ? 'modern' : 'traditional');
   function fitScaffold(group, site, spec, phase) {
     const cfg = typeof spec.scaffold === 'object' ? spec.scaffold : {}, kind = cfg.kind ?? 'facade', steel = cfg.material === 'steel';
     const lift = cfg.levelHeight ?? 2, gap = cfg.gap ?? .45, depth = cfg.depth ?? (steel ? 1.1 : 1.3), base = cfg.base ?? 0, ceiling = cfg.height !== undefined ? base + cfg.height : Infinity;
@@ -2064,7 +2081,7 @@ export function createStage(host) {
       if (deck.i % 5 !== 2) continue;
       const next = decks.find(d => d.i === deck.i && d.y > deck.y), pos = P(deck.i + .5, edge(deck.i) + gap + depth * .45, deck.y + .1);
       const before = siteActors.length;
-      makeWorker(group, pos.x, pos.z, -(mid - half + (deck.i + .5) * width) + Math.PI / 2, palette, n % 2 ? 'mason' : 'lift', n * 1.3);
+      makeWorker(group, pos.x, pos.z, -(mid - half + (deck.i + .5) * width) + Math.PI / 2, palette, n % 2 ? 'mason' : 'lift', n * 1.3, eraOf(spec));
       const actor = siteActors[before];
       if (actor) { actor.userData.baseY = deck.y + .1; actor.userData.siteReveal = deck.reveal; actor.userData.siteHide = next?.reveal ?? 1.01; site.scaffoldParts.push(actor); }
     }
@@ -2126,7 +2143,7 @@ export function createStage(host) {
     const workerCount = Math.max(0, Math.min(18, Math.round(spec.workers ?? 6)));
     for (let i = 0; i < workerCount; i++) {
       const angle = -Math.PI * .1 + (i + .5) / Math.max(1, workerCount) * Math.PI * 1.2, distance = radius * (.45 + rand() * .28);
-      makeWorker(group, Math.cos(angle) * distance, Math.sin(angle) * distance, -angle + Math.PI / 2 + (rand() - .5) * .5, palette, ['mason', 'carry', 'lift'][i % 3], i * 1.7 + rand());
+      makeWorker(group, Math.cos(angle) * distance, Math.sin(angle) * distance, -angle + Math.PI / 2 + (rand() - .5) * .5, palette, ['mason', 'carry', 'lift'][i % 3], i * 1.7 + rand(), eraOf(spec));
     }
 
     const dustAmount = Math.max(0, Math.min(1, spec.dust ?? .35)), count = Math.round(120 * dustAmount);
@@ -2184,6 +2201,8 @@ export function createStage(host) {
 
   function material(kind) {
     const {pbr, ...surface} = pbrOptions(kind, visual, renderer), mat = new T.MeshStandardMaterial({color: '#ffffff', ...KINDS[kind], ...surface, clippingPlanes: sectionPlanes});
+    // Gold leaf reflects the studio round it: without it a metal looks dark and olive.
+    if (kind === 'gilt') { mat.userData.gilt = true; mat.envMapIntensity = .85; }
     // Every kind compiles its own program: three.js would otherwise reuse a textured (PBR) program for a
     // plain material with the same parameters, which then samples a stray texture.
     mat.customProgramCacheKey = () => `piece:${kind}:${pbr ? ['albedo', 'normal', 'roughness', 'ao'].map(key => pbr[key] ? key[0] : '-').join('') : 'plain'}`;
@@ -2404,33 +2423,21 @@ export function createStage(host) {
     meshes.length = 0; reliefsPending = 0; reliefGeneration++;
     if (outlineGroup) { scene.remove(outlineGroup); outlineGroup.traverse(o => { o.geometry?.dispose(); o.material?.dispose(); }); outlineGroup = null; }
     for (const {group, scaffoldSets} of siteGroups) { scene.remove(group); for (const set of scaffoldSets) set.mesh.dispose(); }
-    siteGroups.length = 0; siteActors.length = 0; siteDust.length = 0; siteRigs.length = 0;
-    if (environmentGroup) { scene.remove(environmentGroup); disposeEnvironment(environmentGroup); environmentGroup = null; environmentTimed = []; }
-    if (realisticGroundMaterial) { for (const key of ['map', 'normalMap', 'roughnessMap', 'aoMap']) realisticGroundMaterial[key]?.dispose(); realisticGroundMaterial.dispose(); realisticGroundMaterial = null; }
-    ground.material = planGroundMaterial; ground.receiveShadow = false;
+    siteGroups.length = 0; siteActors.length = 0; siteDust.length = 0; siteRigs.length = 0; siteGeneration++;
   }
 
-  // Studio or site presentation (see LIGHTS.studio). The backdrop's colour is set so that, once tone mapped,
-  // it shows as warm paper.
-  function present(mode) {
-    studio = mode === 'studio';
-    const environment = visual.environment, radius = monument.view.radius;
-    sky.visible = !studio; ground.visible = !studio; studioFloor.visible = studio; if (environmentGroup) environmentGroup.visible = !studio;
-    renderer.toneMappingExposure = studio ? 1.02 : visual.qualityName === 'basic' ? 1.05 : visual.qualityName === 'cinematic' ? 1.18 : 1.24;
-    if (studio) paper.copy(acesInverse(PAPER, renderer.toneMappingExposure));
-    scene.background = studio ? paper.clone() : null;
-    light = studio ? LIGHTS.studio : LIGHTS[environment?.light ?? monument.view.light] ?? LIGHTS.golden;
-    sun.color.set(light.sun); hemi.color.set(light.sky); hemi.groundColor.set(studio ? '#d4cbbb' : environment?.groundLight ?? '#3a2a1c');
-    sun.position.set(...light.dir.map(v => v * radius)); sun.target.position.set(0, 0, 0);
-    renderer.shadowMap.type = studio ? T.PCFSoftShadowMap : T.PCFShadowMap; renderer.shadowMap.needsUpdate = true;
-    if (visual.quality.shadows) sun.shadow.mapSize.setScalar(studio ? Math.max(2048, visual.quality.shadows) : visual.quality.shadows);
-    if (sun.shadow.map) { sun.shadow.map.dispose(); sun.shadow.map = null; }
-    sun.castShadow = Boolean(visual.quality.shadows);
-    baseBloom = studio ? 0 : visual.qualityName === 'basic' ? .5 : visual.qualityName === 'cinematic' ? .28 : .18;
-    ambientBase = studio ? .12 : visual.qualityName === 'basic' ? 0 : visual.qualityName === 'cinematic' ? .5 : .44;
-    fogFactor = studio ? .12 : environment?.fog ?? .4;
-    if (studio) scene.fog.color.copy(paper);
-    return studio;
+  // What gold leaf mirrors: the studio round it, its paper walls, a brighter ceiling and the paper floor.
+  let studioEnvironmentMap = null;
+  function studioEnvironment() {
+    if (studioEnvironmentMap) return studioEnvironmentMap;
+    const envScene = new T.Scene(), sphere = new T.Mesh(new T.SphereGeometry(10, 32, 16), new T.ShaderMaterial({side: T.BackSide, uniforms: {h: {value: paper.clone()}, z: {value: new T.Color(LIGHT.sky)}, g: {value: new T.Color(LIGHT.floor)}},
+      vertexShader: 'varying vec3 d;void main(){d=normalize(position);gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}',
+      fragmentShader: 'uniform vec3 h,z,g;varying vec3 d;void main(){gl_FragColor=vec4(d.y>0.?mix(h,z,smoothstep(0.,.6,d.y)):mix(h,g,smoothstep(0.,.25,-d.y)),1.);}'}));
+    envScene.add(sphere);
+    const pmrem = new T.PMREMGenerator(renderer);
+    studioEnvironmentMap = pmrem.fromScene(envScene, .02).texture;
+    pmrem.dispose(); sphere.geometry.dispose(); sphere.material.dispose();
+    return studioEnvironmentMap;
   }
 
   // `base`: the monument file's URL, against which its photo reliefs are found.
@@ -2438,10 +2445,8 @@ export function createStage(host) {
     clear();
     monument = data; moved = false; turnY = (data.rotate ?? 0) * Math.PI / 180;
     visual = resolveVisualStyle(data.visualStyle ?? {quality: 'basic'});
-    if (turnY) visual = {...visual, decor: visual.decor.map(spec => { const p = toWorld(spec.at ?? [0, 0]); return {...spec, at: [p.x, p.z], ...(spec.rot !== undefined ? {rot: spec.rot + turnY} : {})}; })};
     renderer.setPixelRatio(Math.min(PIXEL_RATIO, visual.quality.pixelRatio));
-    renderer.toneMappingExposure = visual.qualityName === 'basic' ? 1.05 : visual.qualityName === 'cinematic' ? 1.18 : 1.24;
-    renderer.shadowMap.enabled = Boolean(visual.quality.shadows); renderer.shadowMap.type = T.PCFShadowMap;
+    renderer.shadowMap.enabled = Boolean(visual.quality.shadows); renderer.shadowMap.needsUpdate = true;
     ao.enabled = Boolean(visual.quality.ao);
     if (ao.enabled) {
       const reach = Math.max(1.5, Math.min(5, (data.view.radius ?? 60) * .025));
@@ -2449,9 +2454,9 @@ export function createStage(host) {
       ao.updatePdMaterial({radius: 5, rings: 2, samples: 16});
       ao.blendIntensity = .95;
     }
-    sun.castShadow = Boolean(visual.quality.shadows); sun.shadow.mapSize.setScalar(visual.quality.shadows || 512);
-    baseBloom = visual.qualityName === 'basic' ? .5 : visual.qualityName === 'cinematic' ? .28 : .18;
-    ambientBase = visual.qualityName === 'basic' ? 0 : visual.qualityName === 'cinematic' ? .5 : .44;
+    // Soft studio shadows, 2048 px at least.
+    if (sun.shadow.map) { sun.shadow.map.dispose(); sun.shadow.map = null; }
+    sun.castShadow = Boolean(visual.quality.shadows); sun.shadow.mapSize.setScalar(Math.max(2048, visual.quality.shadows || 512));
     // An element with `lean` tilts with all its pieces: angle (degrees) over time from `track`, towards `toward`.
     leaning = data.elements.find(element => element.lean)?.lean ?? null;
     uniforms.uLeanAngle.value = 0;
@@ -2459,7 +2464,7 @@ export function createStage(host) {
       uniforms.uLeanPivot.value.set(...(leaning.pivot ?? [0, 0, 0]));
       uniforms.uLeanAxis.value.crossVectors(UP, new T.Vector3(...(leaning.toward ?? [0, 0, 1])).normalize()).normalize();
     }
-    const {pieces: built, reliefs, P, index} = buildPieces(data), k = {pieces: built, rand: random((data.seed ?? 7) + 1)};
+    const {pieces: built, reliefs, P} = buildPieces(data), k = {pieces: built, rand: random((data.seed ?? 7) + 1)};
     builtPieces = built;
     total = data.phases.length;
     // Within each phase, pieces are laid from the bottom up.
@@ -2533,27 +2538,13 @@ export function createStage(host) {
     uniforms.uDrop.value = data.view.drop ?? radius * .12;
     uniforms.uHeight.value = data.view.height ?? radius;
     uniforms.uNightColor.value.set(data.view.night ?? '#ff9a2e');
-    ground.scale.set(radius * 40, radius * 40, 1);
-    const realisticGround = !data.view.water && groundOptions(visual, renderer, radius);
-    if (realisticGround) { realisticGroundMaterial = new T.MeshStandardMaterial(realisticGround); realisticGroundMaterial.fog = true; ground.material = realisticGroundMaterial; ground.receiveShadow = Boolean(visual.quality.shadows); }
-    else { ground.material = planGroundMaterial; planGroundMaterial.uniforms.uStep.value = data.view.dots ?? radius / 60; planGroundMaterial.uniforms.uRadius.value = radius * 3.2; planGroundMaterial.uniforms.uWater.value = data.view.water ? 1 : 0; }
-    const environment = visual.environment;
-    dayHorizon = new T.Color(environment?.horizon ?? DUSK); horizon.value.copy(dayHorizon); zenith.value.set(environment?.zenith ?? '#1b213d'); sunGlow.value.set(environment ? '#6b3a20' : '#9d4e24'); fogFactor = environment?.fog ?? .4;
-    light = LIGHTS[environment?.light ?? data.view.light] ?? LIGHTS.golden;
-    sun.color.set(light.sun); hemi.color.set(light.sky); hemi.groundColor.set(environment?.groundLight ?? '#3a2a1c');
-    sun.position.set(...light.dir.map(v => v * radius));
     rim.position.set(radius, radius * .4, -radius);
     if (visual.quality.shadows) {
       const shadow = sun.shadow.camera; shadow.left = shadow.bottom = -radius * 1.45; shadow.right = shadow.top = radius * 1.45; shadow.near = 1; shadow.far = radius * 5; shadow.updateProjectionMatrix(); sun.shadow.bias = -.00015;
     }
-    // The reference photos' cameras on the ground: the decorative trees keep out of their views.
-    const sights = (data.evidence?.references ?? []).filter(r => [r.azimuth, r.elevation, r.distance].every(Number.isFinite)).map(r => {
-      const [tx, , tz] = r.target ?? data.view.target, az = r.azimuth * Math.PI / 180, across = Math.cos(r.elevation * Math.PI / 180) * r.distance;
-      return {camera: [tx + Math.sin(az) * across, tz - Math.cos(az) * across], target: [tx, tz], fov: (r.fov ?? 38) * Math.PI / 180};
-    });
-    const builtEnvironment = createEnvironment(visual, data.view, data.seed ?? 7, index, sights); environmentGroup = builtEnvironment.group; environmentTimed = builtEnvironment.timed; scene.add(environmentGroup);
+    // Gold leaf mirrors the studio.
+    for (const mesh of meshes) if (mesh.material?.userData?.gilt) { mesh.material.envMap = studioEnvironment(); mesh.material.needsUpdate = true; }
     studioFloor.scale.setScalar(radius * 30);
-    present(presentationAsked ?? data.visualStyle?.presentation ?? 'site');
     home();
     if (data.view.start) {
       const dir = camera.position.clone().sub(controls.target).normalize();
@@ -2579,7 +2570,7 @@ export function createStage(host) {
     const dir = new T.Vector3(...(monument.view.direction ?? [.55, .32, .78])).normalize(), d = fit();
     camera.position.copy(controls.target).addScaledVector(dir, d);
     controls.minDistance = d * .35; controls.maxDistance = d * 2.2;
-    scene.fog.density = fogFactor / d;
+    scene.fog.density = .12 / d;
     controls.update();
   }
 
@@ -2641,11 +2632,8 @@ export function createStage(host) {
     // The section view on or off.
     section(on) { sectioning = Boolean(on); sectionPlanes.length = 0; if (sectioning) sectionPlanes.push(sectionPlane); return sectioning; },
     get sectioning() { return sectioning; },
-    // "site" (the default: sky, ground and trees) or "studio"; remembered for the next monument loaded.
-    presentation(mode) { presentationAsked = mode; return monument ? present(mode) : mode === 'studio'; },
-    get studio() { return studio; },
     // True once every photo relief has its image (or has given up on it).
-    get ready() { return reliefsPending === 0; },
+    get ready() { return reliefsPending === 0 && charactersPending === 0; },
     setTime(t) {
       uniforms.uTime.value = t;
       if (leaning) uniforms.uLeanAngle.value = lerp(leaning.track, t) * Math.PI / 180;
@@ -2653,12 +2641,10 @@ export function createStage(host) {
       const night = phase?.mood === 'night' ? Math.min(1, (t - Math.floor(t)) * 3 + (t >= total ? 1 : 0)) : 0;
       uniforms.uNight.value = night;
       uniforms.uSparkle.value = phase?.sparkle ? night : 0;
-      sun.intensity = light.sunI * (1 - night * .92); hemi.intensity = light.hemiI * (1 - night * .75); ambient.intensity = ambientBase * (1 - night * .7); rim.intensity = (light.rimI ?? .9) - night * .3;
-      bloom.strength = baseBloom + night * .35; bloom.enabled = !studio || night > 0;
-      horizon.value.copy(dayHorizon).lerp(NIGHT, night);
-      if (studio) { scene.background.copy(paper).lerp(NIGHT, night * .9); scene.fog.color.copy(scene.background); }
-      else scene.fog.color.copy(horizon.value);
-      for (const item of environmentTimed) item.object.visible = !studio && t >= item.from && t < item.until;
+      sun.intensity = LIGHT.sunI * (1 - night * .92); hemi.intensity = LIGHT.hemiI * (1 - night * .75); ambient.intensity = LIGHT.ambient * (1 - night * .7); rim.intensity = LIGHT.rimI - night * .3;
+      // Bloom only for the night lighting; the paper darkens to night blue.
+      bloom.strength = night * .35; bloom.enabled = night > 0;
+      scene.background.copy(paper).lerp(NIGHT, night * .9); scene.fog.color.copy(scene.background);
       const phaseIndex = Math.min(total - 1, Math.floor(t));
       for (const site of siteGroups) {
         // A worksite shows during its phase only: the finished building stands clear of it.
@@ -2729,22 +2715,28 @@ export function createStage(host) {
     },
     autoRotate(on) { controls.autoRotate = on; },
     render(clock) {
+      if (lastClock === undefined) lastClock = clock;
       uniforms.uClock.value = clock;
       if (sectioning) {
         const n = controls.target.clone().sub(camera.position).setY(0);
         if (n.lengthSq() > 1e-6) sectionPlane.setFromNormalAndCoplanarPoint(n.normalize(), controls.target);
       }
-      // In the studio the key light turns with the camera: always from the front left, high, as a
-      // photographer would set it, so every view shows the forms modelled by light and shade.
-      if (studio && monument) {
+      // The key light turns with the camera: always from the front left, high, as a photographer would
+      // set it, so every view shows the forms modelled by light and shade.
+      if (monument) {
         const d = camera.position.clone().sub(controls.target), az = Math.atan2(d.x, d.z) - .85, el = .82, R = monument.view.radius * 2.5;
         sun.target.position.copy(controls.target).setY(0);
         sun.position.set(controls.target.x + Math.sin(az) * Math.cos(el) * R, Math.sin(el) * R, controls.target.z + Math.cos(az) * Math.cos(el) * R);
       }
+      const dt = Math.min(.1, Math.max(0, clock - lastClock)); lastClock = clock;
       for (const actor of siteActors) if (actor.parent?.visible) {
         const u = actor.userData;
         if (u.hoist) actor.position.y = u.baseY + Math.sin(clock * .65 + u.offset) * .35;
-        else {
+        else if (u.mixer) {
+          u.mixer.update(dt);
+          // A carrier walks 3 m out along its heading and back, turning at each end.
+          if (u.walker) { const w = (clock * .22 + u.offset) % 2, out = w < 1 ? w : 2 - w, dir = u.baseTurn; actor.position.set(u.base[0] + Math.sin(dir) * out * 3, u.baseY, u.base[1] + Math.cos(dir) * out * 3); actor.rotation.y = w < 1 ? dir : dir + Math.PI; }
+        } else {
           const wave = Math.sin(clock * 2.1 + u.offset);
           actor.position.y = u.baseY + Math.abs(wave) * .018; actor.rotation.y = u.baseTurn + wave * .025;
           u.arms?.forEach((arm, i) => { const base = u.role === 'lift' ? 2.45 : u.role === 'carry' ? 1.3 : .45; arm.rotation.z = (i ? -1 : 1) * (base + wave * (u.role === 'mason' ? .4 : .12)); });

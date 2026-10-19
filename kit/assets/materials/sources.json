@@ -1,0 +1,292 @@
+{
+ "hinoki": {
+  "source": "https://polyhaven.com/a/hinoki_planks",
+  "authors": [
+   "Charlotte Baglioni"
+  ],
+  "license": "CC0",
+  "tile": [
+   1.89,
+   1.89
+  ],
+  "maps": [
+   "albedo",
+   "normal",
+   "roughness",
+   "ao"
+  ],
+  "roughness": 0.78,
+  "normalScale": 0.55
+ },
+ "cedar": {
+  "source": "https://polyhaven.com/a/japanese_cedar_planks",
+  "authors": [
+   "Charlotte Baglioni",
+   "Rico Cilliers"
+  ],
+  "license": "CC0",
+  "tile": [
+   1.13,
+   1.13
+  ],
+  "maps": [
+   "albedo",
+   "normal",
+   "roughness",
+   "ao"
+  ],
+  "roughness": 0.8,
+  "normalScale": 0.6
+ },
+ "wood-weathered": {
+  "source": "https://polyhaven.com/a/weathered_planks",
+  "authors": [
+   "Dario Barresi",
+   "Dimitrios Savva"
+  ],
+  "license": "CC0",
+  "tile": [
+   2,
+   2
+  ],
+  "maps": [
+   "albedo",
+   "normal",
+   "roughness",
+   "ao"
+  ],
+  "roughness": 0.88,
+  "normalScale": 0.8
+ },
+ "wood-rough": {
+  "source": "https://polyhaven.com/a/rough_wood",
+  "authors": [
+   "Rob Tuytel"
+  ],
+  "license": "CC0",
+  "tile": [
+   0.5,
+   0.5
+  ],
+  "maps": [
+   "albedo",
+   "normal",
+   "roughness",
+   "ao"
+  ],
+  "roughness": 0.9,
+  "normalScale": 0.9
+ },
+ "wood-old": {
+  "source": "https://polyhaven.com/a/old_planks_02",
+  "authors": [
+   "Rob Tuytel"
+  ],
+  "license": "CC0",
+  "tile": [
+   2,
+   2
+  ],
+  "maps": [
+   "albedo",
+   "normal",
+   "roughness",
+   "ao"
+  ],
+  "roughness": 0.86,
+  "normalScale": 0.7
+ },
+ "plaster-white": {
+  "source": "https://polyhaven.com/a/plastered_wall",
+  "authors": [
+   "Amal Kumar"
+  ],
+  "license": "CC0",
+  "tile": [
+   2,
+   2
+  ],
+  "maps": [
+   "albedo",
+   "normal",
+   "roughness",
+   "ao"
+  ],
+  "roughness": 0.9,
+  "normalScale": 0.35
+ },
+ "plaster-rough": {
+  "source": "https://polyhaven.com/a/white_rough_plaster",
+  "authors": [
+   "Rob Tuytel"
+  ],
+  "license": "CC0",
+  "tile": [
+   1,
+   1
+  ],
+  "maps": [
+   "albedo",
+   "normal",
+   "roughness",
+   "ao"
+  ],
+  "roughness": 0.92,
+  "normalScale": 0.6
+ },
+ "shingle-wood": {
+  "source": "https://polyhaven.com/a/roof_slates_02",
+  "authors": [
+   "Rob Tuytel"
+  ],
+  "license": "CC0",
+  "tile": [
+   3,
+   3
+  ],
+  "maps": [
+   "albedo",
+   "normal",
+   "roughness",
+   "ao"
+  ],
+  "roughness": 0.86,
+  "normalScale": 0.9
+ },
+ "shingle-mossy": {
+  "source": "https://polyhaven.com/a/roof_07",
+  "authors": [
+   "Rob Tuytel"
+  ],
+  "license": "CC0",
+  "tile": [
+   2,
+   2
+  ],
+  "maps": [
+   "albedo",
+   "normal",
+   "roughness",
+   "ao"
+  ],
+  "roughness": 0.9,
+  "normalScale": 0.9
+ },
+ "thatch": {
+  "source": "https://polyhaven.com/a/thatch_roof_angled",
+  "authors": [
+   "Rob Tuytel",
+   "Dimitrios Savva"
+  ],
+  "license": "CC0",
+  "tile": [
+   0.54,
+   0.54
+  ],
+  "maps": [
+   "albedo",
+   "normal",
+   "roughness",
+   "ao"
+  ],
+  "roughness": 0.95,
+  "normalScale": 1
+ },
+ "tile-clay": {
+  "source": "https://polyhaven.com/a/clay_roof_tiles",
+  "authors": [
+   "Amal Kumar"
+  ],
+  "license": "CC0",
+  "tile": [
+   4,
+   4
+  ],
+  "maps": [
+   "albedo",
+   "normal",
+   "roughness",
+   "ao"
+  ],
+  "roughness": 0.8,
+  "normalScale": 0.9
+ },
+ "stone-japanese": {
+  "source": "https://polyhaven.com/a/japanese_stone_wall",
+  "authors": [
+   "Rico Cilliers",
+   "Charlotte Baglioni",
+   "Dario Barresi"
+  ],
+  "license": "CC0",
+  "tile": [
+   1.9,
+   1.9
+  ],
+  "maps": [
+   "albedo",
+   "normal",
+   "roughness",
+   "ao"
+  ],
+  "roughness": 0.88,
+  "normalScale": 0.9
+ },
+ "rock-mossy": {
+  "source": "https://polyhaven.com/a/mossy_rock",
+  "authors": [
+   "Rob Tuytel"
+  ],
+  "license": "CC0",
+  "tile": [
+   3,
+   3
+  ],
+  "maps": [
+   "albedo",
+   "normal",
+   "roughness",
+   "ao"
+  ],
+  "roughness": 0.9,
+  "normalScale": 0.9
+ },
+ "bark-pine": {
+  "source": "https://polyhaven.com/a/pine_bark",
+  "authors": [
+   "Dimitrios Savva"
+  ],
+  "license": "CC0",
+  "tile": [
+   2,
+   2
+  ],
+  "maps": [
+   "albedo",
+   "normal",
+   "roughness",
+   "ao"
+  ],
+  "roughness": 0.95,
+  "normalScale": 1
+ },
+ "bark-cedar": {
+  "source": "https://polyhaven.com/a/japanese_cedar_bark",
+  "authors": [
+   "Charlotte Baglioni"
+  ],
+  "license": "CC0",
+  "tile": [
+   1,
+   2
+  ],
+  "maps": [
+   "albedo",
+   "normal",
+   "roughness",
+   "ao"
+  ],
+  "roughness": 0.95,
+  "normalScale": 1
+ }
+}

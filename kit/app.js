@@ -52,13 +52,9 @@ async function open(id) {
   // `view.context: true` or the `?context` query parameter.
   const showContext = params.has('context') || data.view?.context === true;
   document.body.classList.remove('empty');
-  // ?studio shows the monument alone on a paper backdrop; ?site, the default, in its setting (sky, ground, trees).
-  if (params.has('site') || params.has('studio')) stage.presentation(params.has('site') ? 'site' : 'studio');
   stage.load(showContext ? data : {...data, context: undefined}, {base: response.url});
-  document.body.classList.toggle('studio', stage.studio);
   // ?section opens the monument on the side facing the camera.
   if (params.has('section')) { sectionChosen = true; stage.section(true); $('section-toggle').setAttribute('aria-pressed', 'true'); }
-  $('studio-toggle').setAttribute('aria-pressed', String(stage.studio));
   $('name').textContent = data.name; $('place').textContent = data.place ?? '';
   document.title = `${data.name} — Monument`;
   $('model-note').textContent = data.modelNote ?? 'Simplified 3D model · sourced dates and figures.';
@@ -353,7 +349,6 @@ async function setProof(on) {
 }
 $('proof-toggle').onclick = () => setProof(!proofOn);
 $('section-toggle').onclick = () => { sectionChosen = true; const on = stage.section(!stage.sectioning); $('section-toggle').setAttribute('aria-pressed', String(on)); };
-$('studio-toggle').onclick = () => { const on = stage.presentation(stage.studio ? 'site' : 'studio'); document.body.classList.toggle('studio', on); $('studio-toggle').setAttribute('aria-pressed', String(on)); };
 
 // A click (not a drag) on the scene, in evidence mode, names the piece under it.
 let downAt = null;

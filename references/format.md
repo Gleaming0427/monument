@@ -6,8 +6,8 @@ One building = one JSON file, `monuments/<id>.json` in the user's project (`exam
 {
   "id": "golden-gate", "name": "Golden Gate Bridge", "place": "San Francisco · California · USA", "seed": 1937,
   "view": {"target": [0, 95, 0], "distance": 1500, "width": 2100, "radius": 1100, "height": 227,
-           "start": {"target": [640, 40, 0], "distance": 420}, "water": true},
-  "visualStyle": {"quality": "standard", "materialPreset": "historic-masonry", "environmentPreset": "museum-neutral", "vegetation": false},
+           "start": {"target": [640, 40, 0], "distance": 420}},
+  "visualStyle": {"quality": "standard", "materialPreset": "historic-masonry"},
   "live": [{"label": "Height", "kind": "height", "unit": "m"}],
   "facts": [{"value": "1,280 m", "label": "main span"}],
   "modelNote": "What is measured, what is read from photos, what is simplified.",
@@ -35,7 +35,7 @@ A `relief` element lays a photograph of carving on the model (see [bricks.md](br
 
 ## Orientation
 
-Model a building in the frame that suits it (its axis along x, say), then set `"rotate"` (degrees, counter-clockwise seen from above) to turn it onto its real orientation. `rotate` turns the elements, the moment `anchor`s, the worksite scenes and the `visualStyle.decor`; `view` and the reference viewpoints stay geographic (x east, z south), like the measured outline.
+Model a building in the frame that suits it (its axis along x, say), then set `"rotate"` (degrees, counter-clockwise seen from above) to turn it onto its real orientation. `rotate` turns the elements, the moment `anchor`s and the worksite scenes; `view` and the reference viewpoints stay geographic (x east, z south), like the measured outline.
 
 ## Phases
 
@@ -50,7 +50,7 @@ At least two construction phases in a standard build carry `scene`, unless the w
 
 - `craft`: `masonry`, `timber`, `metal`, `earth`, `restoration` or `mixed`; this chooses the restrained material and particle language.
 - `at`: `[x, z]` centre of the activity. `focus`: `[x, y, z]` point the camera should feel close to. `distance` sets the human-scale camera distance in metres; frame at least one worker and the detail being built. `radius` controls the spread and `height` the work reached.
-- `workers`: 0–18. Figures communicate human scale; do not use them to assert an unsupported workforce count.
+- `workers`: 0–18. Figures communicate human scale; do not use them to assert an unsupported workforce count. `figures`: `"traditional"` (shirt, trousers, hat) or `"modern"` (helmet and vest); by default modern where the scaffold is of steel. `clothes`: the palette they are dressed in.
 - `materials`, `scaffold`, `hoist`: include only what the scene's source supports. Temporary structures grow during the phase, so describe their geometry instead of using `true`.
   - `scaffold`: fitted to the work. It follows the outer face of the pieces laid during the phase at a constant gap, rises lift by lift as the masonry beside it reaches each lift's foot, and comes down when the phase ends. `kind`: `facade` (over `width` metres of wall centred on the scene, around the monument's centre), `ring` (around the scene's centre: an apse, a round tower; `arc` and `start` in degrees, `radius` for its reach) or `tower` (all round the scene's centre: a pier, a tower, a spire; `width` for its reach). `base` (metres): where it stands, for a scaffold set on a roof or on a lower storey; `height`: the highest piece it serves above `base`; `rise: "first"`: put up before the work, for a restoration or a spire built inside its cage; `material`: `timber` (poles, putlogs into the wall, plank decks, braces, ladders, before the industrial age) or `steel` (tubes on two rows of standards, transoms, boards, toe boards and guard rails); `levelHeight` (2 m), `gap` from the wall (0.45 m), `depth` of the decks, `zone` (3 m: how deep the outer face is).
   - `hoist.kind`: `gin-pole`, `treadwheel` or `steam-crane`. Without `offset`, it stands just outside the scaffold with its boom over the wall. Use `height`, `offset: [x, z]`, and `from`/`to` for the base height followed during the phase. `start` and `end` (0–1) limit the moving interval.
@@ -70,15 +70,13 @@ At least two construction phases in a standard build carry `scene`, unless the w
 ## view
 
 - `target`, `distance`: the final framing. `width`: horizontal extent to frame. `start`: a close shot at the beginning; the camera pulls back to the final framing.
-- `radius`, `height`, `dots`, `drop`: scale of the ground pattern, of the drop animation and of the height readout.
+- `radius`, `height`, `drop`: scale of the studio floor and its shadows, of the drop animation and of the height readout.
 - `direction`: the camera's starting direction.
-- `water`: the ground becomes water.
-- `light`: `"day"` for a higher, neutral daylight when whiteness is a feature (plaster, marble); the default is a low golden sun.
 - `night`: colour of the metal's illumination, used only with a `"mood": "night"` phase.
 
 ## visualStyle
 
-Standard builds use the bundled semi-realistic PBR library. Set `quality`, `materialPreset` and `environmentPreset`; add dated vegetation or props only when useful. The complete catalog and schema are in [visual-style.md](visual-style.md).
+Standard builds use the bundled semi-realistic PBR library. Set `quality` and `materialPreset`, and `surfaces` where the building needs it. The viewer shows the monument alone in the studio: no sky, ground, vegetation, water or surroundings. The complete catalog and schema are in [visual-style.md](visual-style.md).
 
 ## live and facts
 

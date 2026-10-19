@@ -14,7 +14,6 @@
   "width": 150,
   "radius": 95,
   "height": 96,
-  "dots": 2.2,
   "drop": 10,
   "direction": [
    -0.66,
@@ -28,14 +27,11 @@
     4.4
    ],
    "distance": 120
-  },
-  "light": "day"
+  }
  },
  "visualStyle": {
   "quality": "standard",
-  "materialPreset": "gothic-limestone",
-  "environmentPreset": "gothic-urban",
-  "vegetation": false
+  "materialPreset": "gothic-limestone"
  },
  "live": [
   {

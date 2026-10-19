@@ -13,7 +13,6 @@
   "width": 40,
   "radius": 40,
   "height": 57,
-  "dots": 1.2,
   "drop": 5,
   "direction": [
    0.78,
@@ -27,19 +26,11 @@
     0
    ],
    "distance": 48
-  },
-  "light": "day"
+  }
  },
  "visualStyle": {
   "quality": "standard",
-  "materialPreset": "marble-italian",
-  "environmentPreset": "mediterranean-lawn",
-  "vegetation": true,
-  "environment": {
-   "from": "saved",
-   "count": 5,
-   "exclusion": 0.68
-  }
+  "materialPreset": "marble-italian"
  },
  "live": [
   {

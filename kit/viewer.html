@@ -6,7 +6,6 @@ for(const key of ["embed","clean","caption"])if(new URLSearchParams(location.sea
  <a href="../" class="brand">Monument</a>
  <div class="building"><b id="name"></b><span id="place"></span></div>
  <button id="section-toggle" class="chip" aria-pressed="false" title="Cut the monument open on the side facing you, to see inside">Section</button>
- <button id="studio-toggle" class="chip" aria-pressed="false" title="The monument alone on a studio backdrop, or in its setting">Studio</button>
  <button id="proof-toggle" class="chip" aria-pressed="false" title="Where every piece comes from">Evidence</button>
 </header>
 <aside id="proof" hidden aria-label="Evidence"></aside>
@@ -41,6 +40,6 @@ for(const key of ["embed","clean","caption"])if(new URLSearchParams(location.sea
  </div>
 </footer>
 <script>// Opened as a file, the page cannot load its modules: say what to do instead.
-if(location.protocol==='file:')addEventListener('DOMContentLoaded',()=>{const f=document.getElementById('fallback');f.hidden=false;document.body.style.cssText='margin:0;background:#07080f;color:#f4efe6;font:16px/1.5 system-ui,sans-serif';f.style.cssText='max-width:560px;margin:20vh auto;padding:20px;border:1px solid #333;border-radius:14px';f.innerHTML='Open this page through the local server: run <code>node scripts/serve.mjs</code> in the skill folder, then go to <a href="http://127.0.0.1:4173/">http://127.0.0.1:4173</a>.';});</script>
+if(location.protocol==='file:')addEventListener('DOMContentLoaded',()=>{const f=document.getElementById('fallback');f.hidden=false;document.body.style.cssText='margin:0;background:#f4f1ea;color:#1b1a1f;font:16px/1.5 system-ui,sans-serif';f.style.cssText='max-width:560px;margin:20vh auto;padding:20px;border:1px solid rgba(45,38,28,.13);border-radius:14px';f.innerHTML='Open this page through the local server: run <code>node scripts/serve.mjs</code> in the skill folder, then go to <a href="http://127.0.0.1:4173/">http://127.0.0.1:4173</a>.';});</script>
 <script type="module" src="kit/app.js"></script>
 </body></html>
