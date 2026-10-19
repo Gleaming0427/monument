@@ -1,0 +1,30 @@
+{
+  "source": "OpenStreetMap way 910010406",
+  "url": "https://www.openstreetmap.org/way/910010406",
+  "attribution": "© OpenStreetMap contributors, ODbL",
+  "query": "Parthenon, Athens, Greece",
+  "origin": [
+    37.9715033,
+    23.7266177
+  ],
+  "polygons": [
+    [
+      [
+        -39.18,
+        -8.28
+      ],
+      [
+        -31.57,
+        24.49
+      ],
+      [
+        39.18,
+        8.28
+      ],
+      [
+        31.57,
+        -24.49
+      ]
+    ]
+  ]
+}

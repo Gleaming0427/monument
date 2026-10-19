@@ -1,0 +1,98 @@
+{
+  "place_id": 55838505,
+  "licence": "Data © OpenStreetMap contributors, ODbL 1.0. http://osm.org/copyright",
+  "osm_type": "way",
+  "osm_id": 910010406,
+  "lat": "37.9715034",
+  "lon": "23.7266177",
+  "category": "historic",
+  "type": "temple",
+  "place_rank": 30,
+  "importance": 0.5950633650074045,
+  "addresstype": "historic",
+  "name": "Παρθενών",
+  "display_name": "Παρθενών, Περίπατος Ακρόπολης (Νότια κλιτύς), Αναφιώτικα, Πετράλωνα, 3η Κοινότητα Αθηνών, Αθήνα, Δήμος Αθηναίων, Περιφερειακή Ενότητα Κεντρικού Τομέα Αθηνών, Περιφέρεια Αττικής, Αποκεντρωμένη Διοίκηση Αττικής, 117 42, Ελλάς",
+  "address": {
+    "historic": "Παρθενών",
+    "road": "Περίπατος Ακρόπολης (Νότια κλιτύς)",
+    "neighbourhood": "Αναφιώτικα",
+    "suburb": "Πετράλωνα",
+    "city_district": "3η Κοινότητα Αθηνών",
+    "city": "Αθήνα",
+    "municipality": "Δήμος Αθηναίων",
+    "county": "Περιφερειακή Ενότητα Κεντρικού Τομέα Αθηνών",
+    "state": "Περιφέρεια Αττικής",
+    "ISO3166-2-lvl5": "GR-I",
+    "postcode": "117 42",
+    "country": "Ελλάς",
+    "country_code": "gr"
+  },
+  "extratags": {
+    "ruins": "temple",
+    "tourism": "attraction",
+    "building": "yes",
+    "wikidata": "Q10288",
+    "ruin_type": "temple",
+    "wikipedia": "el:Παρθενώνας",
+    "wheelchair": "limited",
+    "building:part": "no",
+    "historic:period": "classical_greece",
+    "historic:civilization": "ancient_greek"
+  },
+  "namedetails": {
+    "name": "Παρθενών",
+    "name:ar": "البارثينون",
+    "name:ca": "Partenó",
+    "name:cs": "Parthenón",
+    "name:de": "Parthenon",
+    "name:el": "Παρθενώνας",
+    "name:en": "Parthenon",
+    "name:es": "Partenón",
+    "name:fr": "Parthenon",
+    "name:hi": "पार्थेनन",
+    "name:hr": "Partenon",
+    "name:it": "Partenone",
+    "name:la": "Parthenon",
+    "name:ml": "പാർഥെനോൺ",
+    "name:pl": "Partenon",
+    "name:pt": "Pártenon",
+    "name:ru": "Парфенон",
+    "name:tr": "Partenon",
+    "name:uk": "Парфенон",
+    "name:zh": "帕特农神庙",
+    "int_name": "Parthenon"
+  },
+  "boundingbox": [
+    "37.9712818",
+    "37.9717249",
+    "23.7261712",
+    "23.7270641"
+  ],
+  "geojson": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          23.7261712,
+          37.9715783
+        ],
+        [
+          23.7262579,
+          37.9712818
+        ],
+        [
+          23.7270641,
+          37.9714284
+        ],
+        [
+          23.7269774,
+          37.9717249
+        ],
+        [
+          23.7261712,
+          37.9715783
+        ]
+      ]
+    ]
+  }
+}
