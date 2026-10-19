@@ -111,17 +111,9 @@ await Promise.all([
     const n = fbm(x, y, 146), fleck = noise(x, y, 64, 155), v = (n - .5) * 30 + (fleck > .9 ? 24 : 0);
     return {color: [151 + v, 76 + v * .55, 48 + v * .4], height: .37 + n * .42, roughness: .78 + fleck * .12};
   }, 2.7),
-  material('cobblestone', (x, y) => {
-    const bw = size / 7, bh = size / 9, row = Math.floor(y / bh), xx = (x + (row % 2) * bw / 2) % bw, yy = y % bh, edge = Math.min(xx, bw - xx, yy, bh - yy), mortar = edge < size / 90, n = fbm(x, y, 174), cell = hash(Math.floor((x + (row % 2) * bw / 2) / bw), row, 181), c = 105 + cell * 45 + (n - .5) * 18;
-    return {color: mortar ? [75, 72, 66] : [c, c - 2, c - 7], height: mortar ? .12 : .48 + Math.min(1, edge / (size / 55)) * .3, roughness: .86 + n * .08};
-  }, 4.5),
-  material('dry-grass', (x, y) => {
-    const n = fbm(x, y, 203), blade = noise(x, y, 96, 211), green = Math.max(0, n - .46), v = (blade - .5) * 22;
-    return {color: [126 + v - green * 45, 112 + v + green * 18, 68 + v * .55], height: .25 + n * .45 + blade * .2, roughness: .9};
-  }, 3.4),
 ]);
 
-console.log(`Generated ${11 * 4} PBR maps at ${size}×${size} in ${out}`);
+console.log(`Generated ${9 * 4} PBR maps at ${size}×${size} in ${out}`);
 
 // ——— Surfaces no photograph gives, at 512 px whatever the argument ———
 size = 512;
@@ -133,54 +125,4 @@ await material('gold-leaf', (x, y) => {
   const c = [229, 187, 92].map((k, i) => k + tone * (i === 2 ? .5 : 1) + wrinkle - seam * 14);
   return {color: c, height: .5 + wrinkle / 60 + seam * .12, roughness: .26 + (noise(x, y, 32, 419) - .5) * .12 + seam * .18};
 }, 1.4);
-// Water: a tileable field of small ripples (only its normal map is used).
-await material('water-ripple', (x, y) => {
-  const t = (a, b, p, s) => Math.sin((x * a + y * b) / size * Math.PI * 2 * p + s);
-  const h = .5 + .16 * t(1, .3, 3, .4) + .12 * t(-.4, 1, 5, 1.7) + .08 * t(.8, -.7, 9, 2.9) + .1 * (fbm(x, y, 431) - .5);
-  return {color: [60, 90, 84], height: h, roughness: .05};
-}, 5);
-
-// ——— Cut-out atlases (RGBA) for foliage and grass cards ———
-// Four quadrants each: small leaves of a clipped shrub, pine needles in tufts, maple leaves, and broad leaves
-// (foliage.png); four tufts of grass blades (grass.png). Drawn leaf by leaf, later ones over earlier ones.
-function atlas(id, quadrants) {
-  size = 1024;
-  const pixels = Buffer.alloc(size * size * 4), half = size / 2;
-  const plot = (x, y, color) => {
-    x = Math.round(x); y = Math.round(y);
-    if (x < 0 || y < 0 || x >= size || y >= size) return;
-    const i = (y * size + x) * 4; pixels[i] = clamp(color[0]); pixels[i + 1] = clamp(color[1]); pixels[i + 2] = clamp(color[2]); pixels[i + 3] = 255;
-  };
-  // A leaf from (x, y) along angle a: length l, half-width w at its widest, a darker midrib.
-  const leaf = (q, x, y, a, l, w, color, lobes = 0) => {
-    const ox = (q % 2) * half, oy = Math.floor(q / 2) * half, ca = Math.cos(a), sa = Math.sin(a), r = Math.ceil(l + w);
-    for (let py = -r; py <= r; py++) for (let px = -r; px <= r; px++) {
-      const u = (px * ca + py * sa) / l, v = -px * sa + py * ca;
-      if (u < 0 || u > 1) continue;
-      let width = w * Math.sin(Math.PI * Math.min(1, u * 1.08)) ** .8;
-      if (lobes) width *= .55 + .45 * Math.abs(Math.cos(Math.atan2(v, u * l) * lobes));
-      if (Math.abs(v) > width) continue;
-      const shade = 1 - Math.abs(v) / Math.max(1, width) * .22 - (Math.abs(v) < .9 ? .16 : 0);
-      plot(ox + x + px, oy + y + py, color.map(c => c * shade));
-    }
-  };
-  quadrants.forEach((draw, q) => draw((x, y, a, l, w, color, lobes) => leaf(q, x, y, a, l, w, color, lobes)));
-  return mkdir(join(out, id), {recursive: true}).then(() => writeFile(join(out, id, 'albedo.png'), png(pixels, 4)));
-}
-const greens = (seed, base) => { let k = seed; return () => { k++; const t = hash(k, 7, seed); return base.map((c, i) => c * (.78 + t * .4) + (i === 1 ? t * 10 : 0)); }; };
-await atlas('foliage', [
-  // Clipped shrub (box, azalea): many small leaves in a dense, round clump with a ragged edge.
-  leaf => { const g = greens(3, [62, 96, 44]); for (let i = 0; i < 1500; i++) { const a = hash(i, 1, 5) * Math.PI * 2, r = Math.sqrt(hash(i, 2, 5)) * 236; leaf(256 + Math.cos(a) * r, 256 + Math.sin(a) * r, hash(i, 3, 5) * Math.PI * 2, 13 + hash(i, 4, 5) * 9, 4 + hash(i, 6, 5) * 2.5, g()); } },
-  // Pine needles in tufts along short twigs, dark blue-green.
-  leaf => { const g = greens(11, [38, 66, 46]); for (let t = 0; t < 26; t++) { const a0 = hash(t, 1, 13) * Math.PI * 2, r0 = Math.sqrt(hash(t, 2, 13)) * 160, cx = 256 + Math.cos(a0) * r0, cy = 256 + Math.sin(a0) * r0; for (let i = 0; i < 46; i++) { const a = hash(t * 64 + i, 3, 13) * Math.PI * 2; leaf(cx, cy, a, 50 + hash(t * 64 + i, 4, 13) * 40, 1.4, g()); } } },
-  // Maple: five-lobed leaves, loosely overlapping.
-  leaf => { const g = greens(19, [74, 112, 46]); for (let i = 0; i < 160; i++) { const a = hash(i, 1, 21) * Math.PI * 2, r = Math.sqrt(hash(i, 2, 21)) * 215; leaf(256 + Math.cos(a) * r, 256 + Math.sin(a) * r, hash(i, 3, 21) * Math.PI * 2, 30 + hash(i, 4, 21) * 14, 16, g(), 2.5); } },
-  // Broad leaves of a wild shrub.
-  leaf => { const g = greens(29, [70, 104, 50]); for (let i = 0; i < 520; i++) { const a = hash(i, 1, 31) * Math.PI * 2, r = Math.sqrt(hash(i, 2, 31)) * 232; leaf(256 + Math.cos(a) * r, 256 + Math.sin(a) * r, hash(i, 3, 31) * Math.PI * 2, 22 + hash(i, 4, 31) * 16, 7 + hash(i, 6, 31) * 4, g()); } },
-]);
-await atlas('grass', [0, 1, 2, 3].map(q => leaf => {
-  const g = greens(41 + q, q === 3 ? [116, 122, 70] : [74, 112, 52]);
-  // Blades rise from the bottom edge, tapering and leaning; drawn as thin leaves pointing up.
-  for (let i = 0; i < 220; i++) { const x = 40 + hash(i, 1, 43 + q) * 432, lean = (hash(i, 2, 43 + q) - .5) * .7; leaf(x, 506, -Math.PI / 2 + lean, 150 + hash(i, 3, 43 + q) * 320 * (q === 1 ? .6 : 1), 2.4 + hash(i, 4, 43 + q) * 2, g()); }
-}));
-console.log('Generated gold-leaf, water-ripple, and the foliage and grass atlases.');
+console.log('Generated gold-leaf.');

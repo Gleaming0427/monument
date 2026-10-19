@@ -15,14 +15,6 @@ const out = join(root, 'kit', 'assets', 'materials');
 const UA = {'User-Agent': 'monument-skill/1.0 (+https://github.com/Gleaming0427/monument)'};
 // Library id → Poly Haven asset, with the roughness and normal strength the engine starts from.
 export const SURFACES = {
-  'grass-lawn': {source: 'leafy_grass', roughness: .95, normalScale: .8},
-  'grass-wild': {source: 'forrest_ground_01', roughness: .95, normalScale: .9},
-  'moss-carpet': {source: 'aerial_grass_rock', roughness: .96, normalScale: .7},
-  'gravel-raked': {source: 'raked_dirt', roughness: .93, normalScale: 1},
-  'gravel-fine': {source: 'gravel_floor', roughness: .92, normalScale: 1},
-  'forest-floor': {source: 'forest_ground_04', roughness: .95, normalScale: .9},
-  'soil-section': {source: 'excavated_soil_wall', roughness: .95, normalScale: 1},
-  'pond-mud': {source: 'mud_forest', roughness: .8, normalScale: .8},
   'hinoki': {source: 'hinoki_planks', roughness: .78, normalScale: .55},
   'cedar': {source: 'japanese_cedar_planks', roughness: .8, normalScale: .6},
   'wood-weathered': {source: 'weathered_planks', roughness: .88, normalScale: .8},

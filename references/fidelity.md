@@ -12,7 +12,7 @@ Someone who knows the building should recognise it at first glance, find its pro
 
 - Measures: footprint within 1–2 m, heights within 1 m, exact numbers of storeys, bays, towers and roofs.
 - Shapes: the exact type of each roof, profiles (batter, curves, setbacks), shape and rhythm of the openings, telling ornaments.
-- Materials and colours read from the photos, never generic tints. Choose `view.light` so the main material reads true (`"day"` for white plaster or marble).
+- Materials and colours read from the photos, never generic tints.
 - Round is round: columns, drums, piers with a round plan, turrets and finials are turned pieces (`k.turned`, `k.column` with the building's order), never square posts. A column has its base, its shaft (in drums or a monolith, with its entasis) and its capital.
 - Sculpture is photographed, not invented: tympana, statues, friezes and carved roses that boxes cannot render are `relief` elements, free photos rectified onto the model with their depth (a portal's splay as a `recess`). Measure them on the same scale as the model (a known width in the photo), check them with `scripts/relief.mjs --check`, and credit each photo ([bricks.md](bricks.md)). A relief shows the carving as photographed: say so in `evidence.uncertainties` when it stands for earlier states too.
 - Never transplant an element from another tradition: no European windows on a Japanese keep, no generic pitched roof on a dome.

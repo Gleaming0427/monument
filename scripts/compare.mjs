@@ -32,8 +32,7 @@ const captures = [], overlays = [], phases = [];
 const photo = (url, width = 900) => { const m = /commons\.wikimedia\.org\/wiki\/(File:.+)$/.exec(url); return m ? `https://commons.wikimedia.org/wiki/Special:FilePath/${m[1].slice(5)}?width=${width}` : null; };
 try {
   for (const [i, r] of refs.entries()) {
-    // A photo shows the place itself: the capture is taken in the site presentation, whatever the file's own.
-    await browser.open(`${viewer.base}?t=${state(r)}&cam=${cam(r)}${r.fov ? `&fov=${r.fov}` : ''}${r.shift ? `&shift=${r.shift}` : ''}&clean&site#${id}`);
+    await browser.open(`${viewer.base}?t=${state(r)}&cam=${cam(r)}${r.fov ? `&fov=${r.fov}` : ''}${r.shift ? `&shift=${r.shift}` : ''}&clean#${id}`);
     const out = join(folder, `ref-${i}.jpg`);
     await writeFile(out, await browser.shot('jpeg'));
     captures.push(relative(dir, out));

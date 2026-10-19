@@ -52,16 +52,9 @@ async function open(id) {
   // `view.context: true` or the `?context` query parameter.
   const showContext = params.has('context') || data.view?.context === true;
   document.body.classList.remove('empty');
-  // ?studio shows the monument alone on a paper backdrop; ?diorama, on its square of ground cut out as a model;
-  // ?site, the default, in its setting (sky, ground, trees).
-  if (params.has('site') || params.has('studio') || params.has('diorama')) stage.presentation(params.has('site') ? 'site' : params.has('studio') ? 'studio' : 'diorama');
   stage.load(showContext ? data : {...data, context: undefined}, {base: response.url});
-  document.body.classList.toggle('studio', stage.studio);
-  $('diorama-toggle').hidden = !stage.hasModel;
-  $('diorama-toggle').setAttribute('aria-pressed', String(stage.diorama));
   // ?section opens the monument on the side facing the camera.
   if (params.has('section')) { sectionChosen = true; stage.section(true); $('section-toggle').setAttribute('aria-pressed', 'true'); }
-  $('studio-toggle').setAttribute('aria-pressed', String(stage.studio));
   $('name').textContent = data.name; $('place').textContent = data.place ?? '';
   document.title = `${data.name} — Monument`;
   $('model-note').textContent = data.modelNote ?? 'Simplified 3D model · sourced dates and figures.';
@@ -356,8 +349,6 @@ async function setProof(on) {
 }
 $('proof-toggle').onclick = () => setProof(!proofOn);
 $('section-toggle').onclick = () => { sectionChosen = true; const on = stage.section(!stage.sectioning); $('section-toggle').setAttribute('aria-pressed', String(on)); };
-$('studio-toggle').onclick = () => { const on = stage.presentation(stage.studio ? 'site' : 'studio'); document.body.classList.toggle('studio', on); $('studio-toggle').setAttribute('aria-pressed', String(on)); $('diorama-toggle').setAttribute('aria-pressed', 'false'); };
-$('diorama-toggle').onclick = () => { stage.presentation(stage.diorama ? 'site' : 'diorama'); document.body.classList.toggle('studio', false); $('diorama-toggle').setAttribute('aria-pressed', String(stage.diorama)); $('studio-toggle').setAttribute('aria-pressed', 'false'); };
 
 // A click (not a drag) on the scene, in evidence mode, names the piece under it.
 let downAt = null;

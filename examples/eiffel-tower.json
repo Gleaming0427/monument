@@ -21,32 +21,16 @@
   "distance": 610,
   "radius": 170,
   "height": 300,
-  "dots": 3.2,
   "drop": 24,
   "direction": [
    0.62,
    0.3,
    0.74
-  ],
-  "light": "golden"
+  ]
  },
  "visualStyle": {
   "quality": "standard",
-  "materialPreset": "industrial-iron",
-  "environmentPreset": "exposition-grounds",
-  "vegetation": false,
-  "decor": [
-   {
-    "type": "stone-blocks",
-    "at": [
-     58,
-     44
-    ],
-    "scale": 1.5,
-    "from": "fondations",
-    "until": "piliers"
-   }
-  ]
+  "materialPreset": "industrial-iron"
  },
  "live": [
   {

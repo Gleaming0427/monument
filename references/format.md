@@ -6,8 +6,8 @@ One building = one JSON file, `monuments/<id>.json` in the user's project (`exam
 {
   "id": "golden-gate", "name": "Golden Gate Bridge", "place": "San Francisco · California · USA", "seed": 1937,
   "view": {"target": [0, 95, 0], "distance": 1500, "width": 2100, "radius": 1100, "height": 227,
-           "start": {"target": [640, 40, 0], "distance": 420}, "water": true},
-  "visualStyle": {"quality": "standard", "materialPreset": "historic-masonry", "environmentPreset": "museum-neutral", "vegetation": false},
+           "start": {"target": [640, 40, 0], "distance": 420}},
+  "visualStyle": {"quality": "standard", "materialPreset": "historic-masonry"},
   "live": [{"label": "Height", "kind": "height", "unit": "m"}],
   "facts": [{"value": "1,280 m", "label": "main span"}],
   "modelNote": "What is measured, what is read from photos, what is simplified.",
@@ -35,7 +35,7 @@ A `relief` element lays a photograph of carving on the model (see [bricks.md](br
 
 ## Orientation
 
-Model a building in the frame that suits it (its axis along x, say), then set `"rotate"` (degrees, counter-clockwise seen from above) to turn it onto its real orientation. `rotate` turns the elements, the moment `anchor`s, the worksite scenes and the `visualStyle.decor`; `view` and the reference viewpoints stay geographic (x east, z south), like the measured outline.
+Model a building in the frame that suits it (its axis along x, say), then set `"rotate"` (degrees, counter-clockwise seen from above) to turn it onto its real orientation. `rotate` turns the elements, the moment `anchor`s and the worksite scenes; `view` and the reference viewpoints stay geographic (x east, z south), like the measured outline.
 
 ## Phases
 
@@ -70,19 +70,13 @@ At least two construction phases in a standard build carry `scene`, unless the w
 ## view
 
 - `target`, `distance`: the final framing. `width`: horizontal extent to frame. `start`: a close shot at the beginning; the camera pulls back to the final framing.
-- `radius`, `height`, `dots`, `drop`: scale of the ground pattern, of the drop animation and of the height readout.
+- `radius`, `height`, `drop`: scale of the studio floor and its shadows, of the drop animation and of the height readout.
 - `direction`: the camera's starting direction.
-- `water`: the ground becomes water.
-- `light`: `"day"` for a higher, neutral daylight when whiteness is a feature (plaster, marble); the default is a low golden sun.
 - `night`: colour of the metal's illumination, used only with a `"mood": "night"` phase.
 
 ## visualStyle
 
-Standard builds use the bundled semi-realistic PBR library. Set `quality`, `materialPreset` and `environmentPreset`; add dated vegetation or props only when useful. The complete catalog and schema are in [visual-style.md](visual-style.md).
-
-## water (optional)
-
-`"water": [{"points": [[x, z], …], "holes": [[[x, z], …]], "level": -0.05, "depth": 1.2, "shore": 3, "tint": "green"}]`: the ponds, moats and rivers that belong to the monument's own grounds, in the geographic frame of the outline (from the same map extract: an OpenStreetMap `natural=water` outline and its islands as `holes`). `level` is the water's surface (metres, the ground being 0), `depth` the bed's depth, reached `shore` metres from the bank, and `tint` `"clear"`, `"blue"`, `"green"` or a colour (the environment preset's by default). The water carves the terrain, mirrors the sky, ripples, and shows its bed; in the diorama it shows in section on the cut sides. A depth that is not documented is said so in `evidence.uncertainties`.
+Standard builds use the bundled semi-realistic PBR library. Set `quality` and `materialPreset`, and `surfaces` where the building needs it. The viewer shows the monument alone in the studio: no sky, ground, vegetation, water or surroundings. The complete catalog and schema are in [visual-style.md](visual-style.md).
 
 ## live and facts
 

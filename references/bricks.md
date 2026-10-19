@@ -2,7 +2,7 @@
 
 A brick is a generator in `kit/builder.js` (object `generators`) that turns one element of a monument file into many small solid pieces. Reuse a brick only when it renders the requested building faithfully; otherwise write a new one (below).
 
-Units are metres. `x` points east, `z` points south, `y` up; the ground (or water) is at `y = 0`. `rot` turns an element around the vertical axis, in radians.
+Units are metres. `x` points east, `z` points south, `y` up; the ground (the studio floor) is at `y = 0`. `rot` turns an element around the vertical axis, in radians.
 
 | Type | What it builds | Main parameters |
 | --- | --- | --- |
@@ -72,7 +72,7 @@ Everything that happens to a building is tied to a phase:
 ## Adding a brick
 
 Write a generator `name(k, e, P)` modelled on the existing ones:
-- `k.box`, `k.beam`, `k.oriented`, `k.turned`, `k.lying` or `k.column` for every piece, with its colour from `k.tint`, and its kind: `stone`, `wood`, `slate`, `tile`, `plaster`, `shingle`, `gilt` (gold leaf, mirroring the sky), `bark`, `metal`, `lead`, `glass` or `cloth`, each dressed with the monument's surface for it (visual-style.md);
+- `k.box`, `k.beam`, `k.oriented`, `k.turned`, `k.lying` or `k.column` for every piece, with its colour from `k.tint`, and its kind: `stone`, `wood`, `slate`, `tile`, `plaster`, `shingle`, `gilt` (gold leaf, mirroring the studio), `bark`, `metal`, `lead`, `glass` or `cloth`, each dressed with the monument's surface for it (visual-style.md);
 - `P(e.phase)` for its phase;
 - the `order` argument sets the laying order inside the phase: bottom to top by default, or out from the towers, as for the bridge.
 

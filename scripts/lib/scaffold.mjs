@@ -230,11 +230,10 @@ function seedOf(value) {
 }
 
 function visualStyleForFamily(family) {
-  if (family === 'religious') return {quality: 'standard', materialPreset: 'gothic-limestone', environmentPreset: 'gothic-urban', vegetation: false};
-  if (family === 'amphitheatre') return {quality: 'standard', materialPreset: 'roman-weathered', environmentPreset: 'roman-ruins', vegetation: false};
-  if (family === 'modern' || family === 'bridge') return {quality: 'standard', materialPreset: 'industrial-iron', environmentPreset: 'museum-neutral', vegetation: false};
-  if (family === 'tower') return {quality: 'standard', materialPreset: 'historic-masonry', environmentPreset: 'museum-neutral', vegetation: false};
-  return {quality: 'standard', materialPreset: 'historic-masonry', environmentPreset: 'gothic-urban', vegetation: false};
+  if (family === 'religious') return {quality: 'standard', materialPreset: 'gothic-limestone'};
+  if (family === 'amphitheatre') return {quality: 'standard', materialPreset: 'roman-weathered'};
+  if (family === 'modern' || family === 'bridge') return {quality: 'standard', materialPreset: 'industrial-iron'};
+  return {quality: 'standard', materialPreset: 'historic-masonry'};
 }
 
 export function createDraft({query, result, ring, requestedFamily = 'auto', id, height, floors}) {
@@ -257,7 +256,7 @@ export function createDraft({query, result, ring, requestedFamily = 'auto', id, 
     name: nameOf(result, query),
     place: placeOf(result),
     seed: seedOf(monumentId),
-    view: {target: [round(rect.center[0]), round(dims.height * .42), round(rect.center[1])], distance: round(Math.max(dims.height * 2.2, radius * 3.4, 32)), width: round(rect.width), radius: round(radius), height: dims.height, light: 'day'},
+    view: {target: [round(rect.center[0]), round(dims.height * .42), round(rect.center[1])], distance: round(Math.max(dims.height * 2.2, radius * 3.4, 32)), width: round(rect.width), radius: round(radius), height: dims.height},
     visualStyle: visualStyleForFamily(choice.family),
     live: [{label: 'draft height', kind: 'height', unit: 'm'}],
     facts: [{value: `${rect.width} × ${rect.depth} m`, label: 'oriented footprint box'}, {value: choice.family, label: 'automatic architecture family'}],
