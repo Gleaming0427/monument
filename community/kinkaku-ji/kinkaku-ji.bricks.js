@@ -20,7 +20,7 @@ import * as T from 'three';
 const ROLES = ['base', 'timber', 'plaster', 'core', 'skin', 'lacquer', 'roof', 'frame', 'finial', 'annex', 'rods'];
 const FINISH = {base: '#9b968c', timber: '#4b3729', plaster: '#ecebe4', core: '#1e1b19', skin: '#e2bd5f', lacquer: '#1b1918',
   roof: '#4a4038', frame: '#94724f', finial: '#e2bd5f', pedestal: '#23211f', annex: '#4b3729', bracket: '#2a2522', ceiling: '#3d2f26'};
-const KIND = {base: 'tile', timber: 'wood', plaster: 'stone', core: 'wood', skin: 'cloth', lacquer: 'lead', roof: 'wood', frame: 'wood', finial: 'metal', annex: 'wood'};
+const KIND = {base: 'stone', timber: 'wood', plaster: 'plaster', core: 'wood', skin: 'gilt', lacquer: 'lead', roof: 'shingle', frame: 'wood', finial: 'gilt', annex: 'wood'};
 // Faces: outward normal n, tangent t (west to east, or north to south), as [u, v].
 const FACES = {s: {n: [0, 1], t: [1, 0]}, n: {n: [0, -1], t: [1, 0]}, e: {n: [1, 0], t: [0, 1]}, w: {n: [-1, 0], t: [0, 1]}};
 const cumulate = (bays, unit) => { const out = [0]; for (const b of bays) out.push(out.at(-1) + b * unit); const half = out.at(-1) / 2; return out.map(x => +(x - half).toFixed(4)); };
@@ -462,7 +462,7 @@ function storeyedPavilion(k, e, P) {
   if (A && on('annex')) {
     const [u0, u1] = A.u, [v0, v1] = A.v, fl = A.floor;
     for (const u of [u0, u1]) for (const v of [v0, v1]) {
-      put('annex', [u, .12, v], [.4, .24, .4], {color: '#8b867c', kind: 'tile'});
+      put('annex', [u, .12, v], [.4, .24, .4], {color: '#8b867c', kind: 'stone'});
       put('annex', [u, (.24 + A.eave) / 2, v], [.18, A.eave - .24, .18]);
     }
     // The floor runs on to the veranda of the first storey (`join`), over a boarded apron.
@@ -484,7 +484,7 @@ function storeyedPavilion(k, e, P) {
         const t0 = i / rows, t1 = (i + 1) / rows, tm = (t0 + t1) / 2, y = A.eave - .05 + (A.ridge - A.eave + .05) * tm, v = vm + sv * hv * (1 - tm);
         const p = V(( ue + uw) / 2, y + .05, v), du = V(ue, 0, 0).sub(V(uw, 0, 0)), ds = V(0, (A.ridge - A.eave) / rows, -sv * hv / rows).sub(V(0, 0, 0));
         const x = du.clone().normalize(), nrm = new T.Vector3().crossVectors(ds, du).normalize(); if (nrm.y < 0) nrm.negate();
-        if (on('annex')) k.oriented('wood', p, x, nrm, new T.Vector3().crossVectors(x, nrm).normalize(), [ue - uw + .05, .1, ds.length() * 1.2], k.tint(F.roof, .06), ph, A.eave + i * .01, extra);
+        if (on('annex')) k.oriented('shingle', p, x, nrm, new T.Vector3().crossVectors(x, nrm).normalize(), [ue - uw + .05, .1, ds.length() * 1.2], k.tint(F.roof, .06), ph, A.eave + i * .01, extra);
       }
       beam('annex', [uw - .05, A.eave - .1, vm + sv * hv], [uw - .05, A.ridge + .08, vm], .14, {color: '#3e2d22'});
       put('annex', [(ue + uw) / 2, A.eave - .12, vm + sv * hv], [ue - uw, .18, .1], {color: '#3e2d22'});
@@ -496,30 +496,6 @@ function storeyedPavilion(k, e, P) {
   }
 }
 
-// ——— A garden pond: its water as a level sheet, cut to the measured outline ———
-// `points` the outline ([x, z]), `holes` its islands; `level` the water's height; only the part within `radius`
-// of `focus` is laid, in rows `step` metres deep.
-function gardenPond(k, e, P) {
-  const step = e.step ?? .5, level = e.level ?? .02, [fx, fz] = e.focus ?? [0, 0], R = e.radius ?? 40;
-  // Row by row, the stretches of water between the crossings of the shore (islands included, so that they stay
-  // dry), each laid as one sheet clipped to the circle.
-  const rings = [e.points, ...(e.holes ?? [])];
-  for (let z = fz - R + step / 2; z < fz + R; z += step) {
-    const xs = [];
-    for (const ring of rings) for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
-      const [xi, zi] = ring[i], [xj, zj] = ring[j];
-      if ((zi > z) !== (zj > z)) xs.push(xi + (z - zi) * (xj - xi) / (zj - zi));
-    }
-    xs.sort((a, b) => a - b);
-    const half = Math.sqrt(Math.max(0, R * R - (z - fz) ** 2));
-    for (let i = 0; i + 1 < xs.length; i += 2) {
-      const a = Math.max(xs[i], fx - half), b = Math.min(xs[i + 1], fx + half);
-      if (b - a > .05) k.box('lead', [(a + b) / 2, level - .03, z], [b - a, .06, step + .01], 0, k.tint(e.color ?? '#566a5e', .01), P(e.phase), -1);
-    }
-  }
-}
-
 export default {
   pavilion(k, e, P) { storeyedPavilion(k, e, P); },
-  pond(k, e, P) { gardenPond(k, e, P); },
 };
