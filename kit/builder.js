@@ -2673,6 +2673,8 @@ export function createStage(host) {
       moved = true; controls.maxPolarAngle = Math.PI * .97; controls.minDistance = Math.min(controls.minDistance, distance); controls.maxDistance = Math.max(controls.maxDistance, distance);
       if (target.length === 3) controls.target.set(...target); else controls.target.set(...monument.view.target);
       camera.position.copy(controls.target).add(new T.Vector3(Math.sin(az) * Math.cos(el), Math.sin(el), -Math.cos(az) * Math.cos(el)).multiplyScalar(distance));
+      // The haze follows the distance: a long lens far away sees the monument as clearly as the overall view.
+      scene.fog.density = .12 / Math.max(fit(), distance);
       controls.update();
     },
     // Vertical field of view of a reference photo's lens, in degrees (38 by default).
