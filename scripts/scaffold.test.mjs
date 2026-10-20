@@ -23,6 +23,7 @@ assert.equal(ring.length, 4);
 const draft = createDraft({query: 'Palais consulaire de Toulouse, Toulouse, France', result: palace, ring});
 assert.equal(draft.id, 'palais-consulaire-de-toulouse');
 assert.equal(draft.evidence.generated.family, 'civic');
+assert.deepEqual(draft.evidence.detailReview, {version: 1, status: 'pending', items: []});
 assert.equal(draft.view.height, 21);
 assert.equal(draft.visualStyle.quality, 'standard');
 assert.equal(draft.visualStyle.materialPreset, 'historic-masonry');
