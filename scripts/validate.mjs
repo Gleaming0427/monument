@@ -4,8 +4,8 @@
 // Every phase and moment must cite a source, every element must use a known brick, and every brick of
 // the kit must be documented in references/bricks.md, or the next monument will not find it.
 // --standard checks the focused local workflow: measured outline, two sources, three reference views,
-// recognisable close details, sourced worksite scenes and one comparison pass. --strict adds the wider
-// source/photo set, phase captures and a second comparison pass.
+// recognisable close details, a photo-to-element detail ledger, sourced worksite scenes and one comparison
+// pass. --strict adds the wider source/photo set, phase captures and a second comparison pass.
 import {readFile, readdir, stat} from 'node:fs/promises';
 import {join, resolve, dirname, basename} from 'node:path';
 import {fileURLToPath} from 'node:url';
@@ -292,9 +292,37 @@ async function evidence(d, text, file, id, at, strict) {
     }
   } catch (error) { check(false, `${at} cannot verify the reference photos on Wikimedia Commons: ${error.message}`); }
   const features = Array.isArray(ev.features) ? ev.features : [];
-  check(features.length >= 8 && features.every(f => f && typeof f.text === 'string' && url(f.source)), `${at} evidence.features needs at least 8 recognisable features, including close details, each {"text", "source"}`);
-  // Standard: one focused final-view pass. Publication: two passes and phase captures.
   const passes = Array.isArray(ev.comparisons) ? ev.comparisons : [];
+  check(features.length >= 8 && features.every(f => f && typeof f.text === 'string' && url(f.source)), `${at} evidence.features needs at least 8 recognisable features, including close details, each {"text", "source"}`);
+  // New scaffolded builds carry a detail ledger. It makes every claimed feature traceable to both a
+  // reference photograph and a specific model element, so a plausible generic facade cannot pass as detail.
+  const review = ev.detailReview;
+  if (review !== undefined) {
+    check(review && review.version === 1, `${at} evidence.detailReview needs version 1`);
+    check(review?.status === 'complete', `${at} evidence.detailReview is ${review?.status ?? 'missing'}: inspect the close details before validation`);
+    const items = Array.isArray(review?.items) ? review.items : [];
+    check(items.length >= features.length, `${at} evidence.detailReview needs one photo-to-element row for every evidence.features entry`);
+    const mapped = new Set();
+    for (const [i, item] of items.entries()) {
+      const featureIndex = features.findIndex(feature => feature?.text === item?.feature && feature?.source === item?.source);
+      check(featureIndex >= 0, `${at} detailReview item ${i}: feature and source must exactly match an evidence.features entry`);
+      if (featureIndex >= 0) mapped.add(featureIndex);
+      check(Number.isInteger(item?.reference) && item.reference >= 0 && item.reference < photos.length, `${at} detailReview item ${i}: reference must index a reference photo that shows the feature`);
+      check(Number.isInteger(item?.element) && item.element >= 0 && item.element < d.elements.length, `${at} detailReview item ${i}: element must index the modelled feature`);
+      check(['geometry', 'relief', 'material'].includes(item?.method), `${at} detailReview item ${i}: method must be geometry, relief, or material`);
+      if (item?.method === 'relief' && Number.isInteger(item?.element)) check(d.elements[item.element]?.type === 'relief', `${at} detailReview item ${i}: a relief method must point to a relief element`);
+      check(typeof item?.model === 'string' && item.model.length >= 18, `${at} detailReview item ${i}: describe the specific geometry, relief, or material modelled`);
+      check(item?.checked === true, `${at} detailReview item ${i}: mark checked only after close-view comparison`);
+      check(['matched', 'named simplification'].includes(item?.result), `${at} detailReview item ${i}: result must be matched or named simplification`);
+      if (item?.result === 'named simplification') {
+        const needle = String(item?.feature ?? '').toLowerCase();
+        const named = [...ev.uncertainties ?? [], ...passes.flatMap(pass => pass.remaining ?? [])].some(value => String(value).toLowerCase().includes(needle));
+        check(named, `${at} detailReview item ${i}: name its simplification in the final remaining gaps and evidence.uncertainties`);
+      }
+    }
+    check(mapped.size >= features.length, `${at} evidence.detailReview must cover every evidence.features entry exactly enough to audit it`);
+  }
+  // Standard: one focused final-view pass. Publication: two passes and phase captures.
   const passMinimum = strict ? 2 : 1;
   check(passes.length >= passMinimum, `${at} evidence.comparisons needs at least ${passMinimum} pass${passMinimum > 1 ? 'es' : ''}`);
   for (const c of passes) {

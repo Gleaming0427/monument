@@ -1,19 +1,20 @@
 #!/usr/bin/env node
-// One pass of the photo comparison: node scripts/compare.mjs monuments/<id>.json --pass <n> [--quick]
+// One pass of the photo comparison: node scripts/compare.mjs monuments/<id>.json --pass <n> [--quick] [--resume]
 // For every reference photo in evidence.references (azimuth, elevation, distance, target), photographs the
 // model from the same viewpoint, in the state the photo shows (its "phase", by default the last daylight
 // one). Publication mode also captures every phase; --quick skips those.
 // Each capture is also taken with the photo laid over it at half strength (overlay-<n>.jpg), when the photo
 // can be loaded. The pass is recorded in evidence.comparisons with its captures; the gaps seen between each
 // photo and its capture, and what was fixed, are then written there by whoever looks at them.
-import {readFile, writeFile, mkdir} from 'node:fs/promises';
+import {readFile, writeFile, mkdir, access} from 'node:fs/promises';
 import {dirname, join, basename, resolve, relative} from 'node:path';
 import {startViewer, openBrowser} from './lib/browser.mjs';
 
 const args = process.argv.slice(2), flag = name => { const i = args.indexOf(`--${name}`); return i >= 0 ? args[i + 1] : undefined; };
 const file = args.find(arg => arg.endsWith('.json')), pass = Number(flag('pass'));
-if (!file || !(pass >= 1)) { console.error('Usage: node scripts/compare.mjs monuments/<id>.json --pass <n> [--quick]'); process.exit(1); }
+if (!file || !(pass >= 1)) { console.error('Usage: node scripts/compare.mjs monuments/<id>.json --pass <n> [--quick] [--resume]'); process.exit(1); }
 const quick = args.includes('--quick');
+const resume = args.includes('--resume');
 const path = resolve(file), dir = dirname(path), id = basename(path, '.json'), text = await readFile(path, 'utf8'), d = JSON.parse(text);
 const refs = d.evidence?.references ?? [];
 if (refs.length < 1) { console.error('evidence.references is empty: find the reference photos first (see references/fidelity.md).'); process.exit(1); }
@@ -32,8 +33,15 @@ const captures = [], overlays = [], phases = [];
 const photo = (url, width = 900) => { const m = /commons\.wikimedia\.org\/wiki\/(File:.+)$/.exec(url); return m ? `https://commons.wikimedia.org/wiki/Special:FilePath/${m[1].slice(5)}?width=${width}` : null; };
 try {
   for (const [i, r] of refs.entries()) {
-    await browser.open(`${viewer.base}?t=${state(r)}&cam=${cam(r)}${r.fov ? `&fov=${r.fov}` : ''}${r.shift ? `&shift=${r.shift}` : ''}&clean#${id}`);
     const out = join(folder, `ref-${i}.jpg`);
+    const laid = join(folder, `overlay-${i}.jpg`);
+    if (resume && await access(out).then(() => true, () => false)) {
+      captures.push(relative(dir, out));
+      if (await access(laid).then(() => true, () => false)) overlays.push(relative(dir, laid));
+      console.log(`ref ${i} · reused ${out}`);
+      continue;
+    }
+    await browser.open(`${viewer.base}?t=${state(r)}&cam=${cam(r)}${r.fov ? `&fov=${r.fov}` : ''}${r.shift ? `&shift=${r.shift}` : ''}&clean#${id}`);
     await writeFile(out, await browser.shot('jpeg'));
     captures.push(relative(dir, out));
     console.log(`ref ${i} · ${r.view ?? ''} ${r.azimuth}° · photo ${r.url}\n        model ${out}`);
@@ -47,7 +55,6 @@ try {
       img.src = ${JSON.stringify(src)}; document.body.append(img); setTimeout(() => done(false), 30000);
     })`)) {
       await browser.settle();
-      const laid = join(folder, `overlay-${i}.jpg`);
       await writeFile(laid, await browser.shot('jpeg'));
       overlays.push(relative(dir, laid));
     } else console.log('        (the photo could not be laid over the model)');
@@ -58,9 +65,13 @@ try {
     const overall = [Math.atan2(along[0], -along[2]) * 180 / Math.PI, Math.asin(along[1] / len) * 180 / Math.PI, v.distance, ...v.target].map(n => +n.toFixed(2)).join(',');
     await browser.open(`${viewer.base}?t=0.001&cam=${overall}&clean&caption#${id}`);
     for (let i = 0; i < d.phases.length; i++) {
+      const out = join(folder, `phase-${i}.jpg`);
+      if (resume && await access(out).then(() => true, () => false)) {
+        phases.push(relative(dir, out));
+        continue;
+      }
       await browser.run(`monument.seek(${i + .97})`);
       await browser.settle();
-      const out = join(folder, `phase-${i}.jpg`);
       await writeFile(out, await browser.shot('jpeg', 75));
       phases.push(relative(dir, out));
     }
