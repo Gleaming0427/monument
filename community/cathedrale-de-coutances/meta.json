@@ -1,0 +1,8 @@
+{
+  "title": "Cathédrale Notre-Dame de Coutances",
+  "id": "cathedrale-de-coutances",
+  "author": "Gleaming0427",
+  "model": "Codex / GPT-5",
+  "prompt": "Refaire la modélisation détaillée de la cathédrale Notre-Dame de Coutances, avec des colonnes et détails architecturaux réellement volumétriques, puis préparer une pull request propre vers Monument.",
+  "date": "2026-10-20"
+}
