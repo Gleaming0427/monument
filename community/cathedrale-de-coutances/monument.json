@@ -1,0 +1,3441 @@
+{
+ "id": "cathedrale-de-coutances",
+ "name": "Cathédrale Notre-Dame de Coutances",
+ "place": "Coutances · Manche · France",
+ "seed": 1056,
+ "view": {
+  "target": [
+   -0.5,
+   27,
+   1.9
+  ],
+  "distance": 235,
+  "width": 118,
+  "radius": 75,
+  "height": 77,
+  "drop": 10,
+  "direction": [
+   -0.62,
+   0.36,
+   0.7
+  ],
+  "start": {
+   "target": [
+    -46,
+    14,
+    -10.5
+   ],
+   "distance": 95
+  }
+ },
+ "visualStyle": {
+  "quality": "standard",
+  "materialPreset": "gothic-limestone",
+  "surfaces": {
+   "slate": "slate-aged"
+  }
+ },
+ "live": [
+  {
+   "label": "Height",
+   "kind": "height",
+   "unit": "m"
+  }
+ ],
+ "facts": [
+  {
+   "value": "95.17 m",
+   "label": "long outside"
+  },
+  {
+   "value": "77 m",
+   "label": "north-west spire"
+  },
+  {
+   "value": "57.45 m",
+   "label": "lantern tower"
+  }
+ ],
+ "modelNote": "Measured: the footprint (OpenStreetMap), the documented heights (spires 77 and 75 m, lantern 57.45 m, nave vault 21.90 m) and the heights read on four Commons photographs fitted to the model. Documented but simplified: towers, lantern, double ambulatory, porches. Interpreted: the Romanesque cathedral, the roof frames, the annexes and the tribune.",
+ "evidence": {
+  "size": "building",
+  "identity": "Cathédrale Notre-Dame de Coutances, rue du Puits Notre-Dame, 50200 Coutances, Manche, France (OpenStreetMap way 68663205; Mérimée PA00110375)",
+  "sources": [
+   {
+    "url": "https://fr.wikipedia.org/wiki/Cath%C3%A9drale_Notre-Dame_de_Coutances",
+    "read": "French Wikipedia: Romanesque cathedral of bishops Robert and Geoffroy de Montbray dedicated 1056; Gothic rebuilding from 1208 west to east, nave and front recasing the Romanesque walls and towers, transept begun c. 1208, choir c. 1220–1238, porches after 1228, nave chapels c. 1270 and 1291–1315, Sylvestre de La Cervelle 1371–1386; dimensions (95.17 m long, nave vault 21.90 m, spires 77 and 75 m, lantern 40.85 m inside and 57.45 m outside); the towers, lantern, chevet, porches and transept fronts described; organ installed 1812, altar 1755–1757; collapse of 1800; fire of June 1944."
+   },
+   {
+    "url": "https://mcid.mcah.columbia.edu/mapping-gothic/coutances-cathedrale-notre-dame",
+    "read": "Mapping Gothic France (Columbia): nave begun c. 1190, choir and transept under bishop Hugh, finished c. 1235; three-storey nave with triforium and clerestory passage, quadripartite vaults; choir with a pyramidal elevation like Bourges, a double ambulatory round a seven-segment hemicycle, its inner aisle with its own triforium and clerestory; deeper axial chapel rebuilt in the 14th century."
+   },
+   {
+    "url": "https://mondes-normands.caen.fr/angleterre/Patrimoine_architectural/Normandie/Cotentin/coutances/1513CoutancesCathe/index.htm",
+    "read": "Mondes normands (Université de Caen): rebuilt from 1030 and completed by Geoffroy de Montbray, dedicated 1056; the Gothic church keeps the Romanesque plan (aisled nave, transept, two west towers and a crossing tower); the square west towers with octagonal upper rooms survive inside the Gothic walls."
+   },
+   {
+    "url": "https://www.pop.culture.gouv.fr/notice/merimee/PA00110375",
+    "read": "Mérimée notice PA00110375: cathedral, main campaign 13th century, listed in 1862, owned by the State."
+   },
+   {
+    "url": "https://en.wikipedia.org/wiki/Coutances_Cathedral",
+    "read": "English Wikipedia: Gothic cathedral begun by Hugues de Morville c. 1210 on the Romanesque fabric; octagonal lantern over 57 m high, designed to light the centre of the cathedral; organ of 1728 with four manuals and 51 stops."
+   },
+   {
+    "url": "https://en.wikipedia.org/wiki/Treadwheel_crane",
+    "read": "Treadwheel crane: reintroduced in the High Middle Ages, first recorded in France about 1225, pivotal for Gothic cathedrals; set up on the ground, then moved to the roof beams once tie beams joined the walls, and moved bay by bay."
+   },
+   {
+    "url": "https://fr.wikipedia.org/wiki/Trou_de_boulin",
+    "read": "Trou de boulin: the putlog, a horizontal timber set in a hole left in the masonry, carries the planks of the scaffold; the holes show where the scaffold was fixed and were often left open."
+   },
+   {
+    "url": "https://www.openstreetmap.org/way/68663205",
+    "read": "OpenStreetMap way 68663205: the cathedral's outline, used for the plan and the bays."
+   }
+  ],
+  "plan": {
+   "source": "OpenStreetMap way 68663205",
+   "url": "https://www.openstreetmap.org/way/68663205",
+   "outline": "cathedrale-de-coutances.evidence/outline.json",
+   "tolerance": 3,
+   "fit": {
+    "p90": 1.5,
+    "max": 2.5,
+    "coverage": 0.98,
+    "overflow": 0.05
+   }
+  },
+  "references": [
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:Cath%C3%A9drale_Notre-Dame_de_Coutances_(nov_2011).jpg",
+    "view": "west, the front from the parvis (Xfigpower, 2011, CC BY-SA 3.0)",
+    "azimuth": 272.8,
+    "elevation": -18.1,
+    "distance": 77,
+    "target": [
+     -45.5,
+     25.7,
+     -9.1
+    ],
+    "fov": 52.1,
+    "calibration": {
+     "points": 8,
+     "rms": 0.7
+    }
+   },
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:FranceNormandieCoutancesCathNotreDameChevet.jpg",
+    "view": "east, the chevet from the lawn behind it (Ikmo-ned, 2008, CC BY-SA 3.0)",
+    "azimuth": 106.3,
+    "elevation": -14.7,
+    "distance": 45.7,
+    "target": [
+     39.2,
+     18.6,
+     11.5
+    ],
+    "fov": 55.7,
+    "calibration": {
+     "points": 10,
+     "rms": 1.1
+    },
+    "positionReason": "Commons places the camera 9 m from the axial chapel, where the 9.8 m-wide chapel would fill the whole frame; in the photograph it fills a fifth of the width, so the photographer stood about 35 m east of it, on the lawn behind the chevet, where the fit on ten points puts the camera."
+   },
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:50200_Coutances,_France_-_panoramio_(1).jpg",
+    "view": "north-east, the chevet and the north side (cowbridgeguide.co.uk, 2014, CC BY 3.0)",
+    "azimuth": 78.3,
+    "elevation": -13.7,
+    "distance": 66.7,
+    "target": [
+     21,
+     17.1,
+     4.1
+    ],
+    "fov": 48.6,
+    "calibration": {
+     "points": 7,
+     "rms": 1.6
+    }
+   },
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:Bas-c%C3%B4t%C3%A9_sud_cath%C3%A9drale_Coutances_2a.jpg",
+    "view": "south, the nave chapels and the towers (Giogo, CC BY-SA 3.0)",
+    "azimuth": 151.8,
+    "elevation": -25.9,
+    "distance": 45.9,
+    "target": [
+     -26.7,
+     21.2,
+     3
+    ],
+    "fov": 60.4,
+    "calibration": {
+     "points": 8,
+     "rms": 1.4
+    }
+   }
+  ],
+  "features": [
+   {
+    "text": "Two west towers, square then octagonal with a twin opening in every face, each spire ringed by fifteen points: open turrets, a stair turret with three smaller ones, four gabled niches; octagonal stone spires dressed with pointed scales, 77 m (north-west) and 75 m (south-west).",
+    "source": "https://fr.wikipedia.org/wiki/Cath%C3%A9drale_Notre-Dame_de_Coutances"
+   },
+   {
+    "text": "Tall blind lancets running up the towers without intermediate ornament, the vertiginous verticals of the Norman style; the north tower's arcades in two storeys, the south tower's in one.",
+    "source": "https://fr.wikipedia.org/wiki/Cath%C3%A9drale_Notre-Dame_de_Coutances"
+   },
+   {
+    "text": "Central portal with a trumeau, sinking into the wall under archivolts on colonnettes; its tympanum of the Virgin destroyed at the Revolution.",
+    "source": "https://fr.wikipedia.org/wiki/Cath%C3%A9drale_Notre-Dame_de_Coutances"
+   },
+   {
+    "text": "The terrace over the central portal and the great window of the nave with its rose of six branches, crowned by the gallery of roses: six twin arcades under a diadem of roses (14th century).",
+    "source": "https://fr.wikipedia.org/wiki/Cath%C3%A9drale_Notre-Dame_de_Coutances"
+   },
+   {
+    "text": "The octagonal lantern tower \"le Plomb\" on pendentives, flanked by four stair turrets, 57.45 m outside and 40.85 m under its vault of sixteen ribs.",
+    "source": "https://fr.wikipedia.org/wiki/Cath%C3%A9drale_Notre-Dame_de_Coutances"
+   },
+   {
+    "text": "A pyramidal choir: double ambulatory, the inner aisle with its own windows, the outer one a ring of chapels, round a hemicycle of twelve paired columns.",
+    "source": "https://mcid.mcah.columbia.edu/mapping-gothic/coutances-cathedrale-notre-dame"
+   },
+   {
+    "text": "Flying buttresses of the chevet leaping in one span; four square Norman turrets marking the choir from the apse.",
+    "source": "https://fr.wikipedia.org/wiki/Cath%C3%A9drale_Notre-Dame_de_Coutances"
+   },
+   {
+    "text": "The Circata, the axial chapel enlarged in the 14th century, open by its tall windows, its buttresses without the pinnacles meant to crown them.",
+    "source": "https://fr.wikipedia.org/wiki/Cath%C3%A9drale_Notre-Dame_de_Coutances"
+   },
+   {
+    "text": "Chapels between the nave's buttresses with great windows; each buttress carries two pinnacles.",
+    "source": "https://fr.wikipedia.org/wiki/Cath%C3%A9drale_Notre-Dame_de_Coutances"
+   },
+   {
+    "text": "Transept ends opened by three tall lancets under a gable of seven lancets between two turrets clad with shafts.",
+    "source": "https://fr.wikipedia.org/wiki/Cath%C3%A9drale_Notre-Dame_de_Coutances"
+   },
+   {
+    "text": "Lateral porches north and south at the foot of the towers, the south one two bays deep, their tympana of the Virgin.",
+    "source": "https://fr.wikipedia.org/wiki/Cath%C3%A9drale_Notre-Dame_de_Coutances"
+   },
+   {
+    "text": "Inside: the organ case over the central portal, the pink marble high altar of 1755–1757 before the hemicycle.",
+    "source": "https://fr.wikipedia.org/wiki/Cath%C3%A9drale_Notre-Dame_de_Coutances"
+   }
+  ],
+  "detailReview": {
+   "version": 1,
+   "status": "complete",
+   "items": [
+    {
+     "feature": "Two west towers, square then octagonal with a twin opening in every face, each spire ringed by fifteen points: open turrets, a stair turret with three smaller ones, four gabled niches; octagonal stone spires dressed with pointed scales, 77 m (north-west) and 75 m (south-west).",
+     "source": "https://fr.wikipedia.org/wiki/Cath%C3%A9drale_Notre-Dame_de_Coutances",
+     "reference": 0,
+     "element": 14,
+     "method": "geometry",
+     "model": "Square shafts, octagonal belfries, twin openings, clustered fillettes and separately coursed stone spires.",
+     "checked": true,
+     "result": "matched"
+    },
+    {
+     "feature": "Tall blind lancets running up the towers without intermediate ornament, the vertiginous verticals of the Norman style; the north tower's arcades in two storeys, the south tower's in one.",
+     "source": "https://fr.wikipedia.org/wiki/Cath%C3%A9drale_Notre-Dame_de_Coutances",
+     "reference": 0,
+     "element": 14,
+     "method": "geometry",
+     "model": "Individual tower registers carry the photographed tall blind-lancet rhythm and unequal arcade staging.",
+     "checked": true,
+     "result": "matched"
+    },
+    {
+     "feature": "Central portal with a trumeau, sinking into the wall under archivolts on colonnettes; its tympanum of the Virgin destroyed at the Revolution.",
+     "source": "https://fr.wikipedia.org/wiki/Cath%C3%A9drale_Notre-Dame_de_Coutances",
+     "reference": 0,
+     "element": 43,
+     "method": "relief",
+     "model": "Rectified portal photograph sits in a recessed pointed panel, framed by four real orders of arches and Gothic colonnettes.",
+     "checked": true,
+     "result": "matched"
+    },
+    {
+     "feature": "The terrace over the central portal and the great window of the nave with its rose of six branches, crowned by the gallery of roses: six twin arcades under a diadem of roses (14th century).",
+     "source": "https://fr.wikipedia.org/wiki/Cath%C3%A9drale_Notre-Dame_de_Coutances",
+     "reference": 0,
+     "element": 44,
+     "method": "relief",
+     "model": "Rectified great-window relief retains the six-branch rose, four lights, balcony and adjacent buttress profile at the measured facade scale.",
+     "checked": true,
+     "result": "matched"
+    },
+    {
+     "feature": "The octagonal lantern tower \"le Plomb\" on pendentives, flanked by four stair turrets, 57.45 m outside and 40.85 m under its vault of sixteen ribs.",
+     "source": "https://fr.wikipedia.org/wiki/Cath%C3%A9drale_Notre-Dame_de_Coutances",
+     "reference": 2,
+     "element": 23,
+     "method": "geometry",
+     "model": "Four compound piers and pendentives rise into an octagonal lantern with sixteen ribs, corner turrets and measured roof height.",
+     "checked": true,
+     "result": "matched"
+    },
+    {
+     "feature": "A pyramidal choir: double ambulatory, the inner aisle with its own windows, the outer one a ring of chapels, round a hemicycle of twelve paired columns.",
+     "source": "https://mcid.mcah.columbia.edu/mapping-gothic/coutances-cathedrale-notre-dame",
+     "reference": 1,
+     "element": 25,
+     "method": "geometry",
+     "model": "Seven-sided hemicycle is carried by two distinct rings of Gothic columns, beneath separate inner-aisle and clerestory levels.",
+     "checked": true,
+     "result": "matched"
+    },
+    {
+     "feature": "Flying buttresses of the chevet leaping in one span; four square Norman turrets marking the choir from the apse.",
+     "source": "https://fr.wikipedia.org/wiki/Cath%C3%A9drale_Notre-Dame_de_Coutances",
+     "reference": 1,
+     "element": 31,
+     "method": "geometry",
+     "model": "Single-span flyers have independently stepped piers and pinnacles around the polygonal choir.",
+     "checked": true,
+     "result": "matched"
+    },
+    {
+     "feature": "The Circata, the axial chapel enlarged in the 14th century, open by its tall windows, its buttresses without the pinnacles meant to crown them.",
+     "source": "https://fr.wikipedia.org/wiki/Cath%C3%A9drale_Notre-Dame_de_Coutances",
+     "reference": 1,
+     "element": 42,
+     "method": "geometry",
+     "model": "The enlarged axial chapel has its separate low polygon, tall openings and intentionally unpinnacled buttresses.",
+     "checked": true,
+     "result": "matched"
+    },
+    {
+     "feature": "Chapels between the nave's buttresses with great windows; each buttress carries two pinnacles.",
+     "source": "https://fr.wikipedia.org/wiki/Cath%C3%A9drale_Notre-Dame_de_Coutances",
+     "reference": 3,
+     "element": 18,
+     "method": "geometry",
+     "model": "Nave chapels align to the measured bays, with a lower and upper separate pinnacle on every buttress.",
+     "checked": true,
+     "result": "matched"
+    },
+    {
+     "feature": "Transept ends opened by three tall lancets under a gable of seven lancets between two turrets clad with shafts.",
+     "source": "https://fr.wikipedia.org/wiki/Cath%C3%A9drale_Notre-Dame_de_Coutances",
+     "reference": 3,
+     "element": 22,
+     "method": "geometry",
+     "model": "Each transept front has three deep pointed windows, a seven-lancet gable field and paired shaft-clad turrets.",
+     "checked": true,
+     "result": "matched"
+    },
+    {
+     "feature": "Lateral porches north and south at the foot of the towers, the south one two bays deep, their tympana of the Virgin.",
+     "source": "https://fr.wikipedia.org/wiki/Cath%C3%A9drale_Notre-Dame_de_Coutances",
+     "reference": 3,
+     "element": 38,
+     "method": "geometry",
+     "model": "The deeper south porch and its shallower northern counterpart are separate vaulted masses with sourced tympanum reliefs.",
+     "checked": true,
+     "result": "matched"
+    },
+    {
+     "feature": "Inside: the organ case over the central portal, the pink marble high altar of 1755–1757 before the hemicycle.",
+     "source": "https://fr.wikipedia.org/wiki/Cath%C3%A9drale_Notre-Dame_de_Coutances",
+     "reference": 0,
+     "element": 48,
+     "method": "relief",
+     "model": "The photographed organ case is a credited relief over a separately modelled tribune with genuine Corinthian wooden columns.",
+     "checked": true,
+     "result": "matched"
+    }
+   ]
+  },
+  "comparisons": [
+   {
+    "pass": 1,
+    "captures": [
+     "cathedrale-de-coutances.evidence/compare/pass-1/ref-0.jpg",
+     "cathedrale-de-coutances.evidence/compare/pass-1/ref-1.jpg",
+     "cathedrale-de-coutances.evidence/compare/pass-1/ref-2.jpg",
+     "cathedrale-de-coutances.evidence/compare/pass-1/ref-3.jpg"
+    ],
+    "overlays": [
+     "cathedrale-de-coutances.evidence/compare/pass-1/overlay-0.jpg",
+     "cathedrale-de-coutances.evidence/compare/pass-1/overlay-1.jpg",
+     "cathedrale-de-coutances.evidence/compare/pass-1/overlay-2.jpg",
+     "cathedrale-de-coutances.evidence/compare/pass-1/overlay-3.jpg"
+    ],
+    "phases": [
+     "cathedrale-de-coutances.evidence/compare/pass-1/phase-0.jpg",
+     "cathedrale-de-coutances.evidence/compare/pass-1/phase-1.jpg",
+     "cathedrale-de-coutances.evidence/compare/pass-1/phase-2.jpg",
+     "cathedrale-de-coutances.evidence/compare/pass-1/phase-3.jpg",
+     "cathedrale-de-coutances.evidence/compare/pass-1/phase-4.jpg",
+     "cathedrale-de-coutances.evidence/compare/pass-1/phase-5.jpg",
+     "cathedrale-de-coutances.evidence/compare/pass-1/phase-6.jpg",
+     "cathedrale-de-coutances.evidence/compare/pass-1/phase-7.jpg",
+     "cathedrale-de-coutances.evidence/compare/pass-1/phase-8.jpg"
+    ],
+    "gaps": [
+     "The four calibrated exterior views align on the principal silhouette, bay rhythm, tower spacing, lantern and chevet; the west photograph nevertheless showed that the portal relief alone did not give the archivolts and jambs enough physical depth at close range.",
+     "The north-east and south overlays retain small local differences in sculpture, parapets and weathered stone that cannot be resolved from the available photographs without inventing unsupported survey detail."
+    ],
+    "fixed": [
+     "Added four genuine three-dimensional Gothic archivolt orders in front of the west portal relief, each carried by paired base-shaft-capital columns rather than flat strips or texture-only decoration.",
+     "Checked the section and interior views so structural supports remain true round columns with distinct bases, shafts and capitals, and completed a feature-by-feature review against all twelve cited details."
+    ]
+   },
+   {
+    "pass": 2,
+    "captures": [
+     "cathedrale-de-coutances.evidence/compare/pass-2/ref-0.jpg",
+     "cathedrale-de-coutances.evidence/compare/pass-2/ref-1.jpg",
+     "cathedrale-de-coutances.evidence/compare/pass-2/ref-2.jpg",
+     "cathedrale-de-coutances.evidence/compare/pass-2/ref-3.jpg"
+    ],
+    "overlays": [
+     "cathedrale-de-coutances.evidence/compare/pass-2/overlay-0.jpg",
+     "cathedrale-de-coutances.evidence/compare/pass-2/overlay-1.jpg",
+     "cathedrale-de-coutances.evidence/compare/pass-2/overlay-2.jpg",
+     "cathedrale-de-coutances.evidence/compare/pass-2/overlay-3.jpg"
+    ],
+    "phases": [
+     "cathedrale-de-coutances.evidence/compare/pass-2/phase-0.jpg",
+     "cathedrale-de-coutances.evidence/compare/pass-2/phase-1.jpg",
+     "cathedrale-de-coutances.evidence/compare/pass-2/phase-2.jpg",
+     "cathedrale-de-coutances.evidence/compare/pass-2/phase-3.jpg",
+     "cathedrale-de-coutances.evidence/compare/pass-2/phase-4.jpg",
+     "cathedrale-de-coutances.evidence/compare/pass-2/phase-5.jpg",
+     "cathedrale-de-coutances.evidence/compare/pass-2/phase-6.jpg",
+     "cathedrale-de-coutances.evidence/compare/pass-2/phase-7.jpg",
+     "cathedrale-de-coutances.evidence/compare/pass-2/phase-8.jpg"
+    ],
+    "gaps": [
+     "After the portal correction, the calibrated west, east, north-east and south comparisons preserve the measured silhouette and major opening counts; the remaining visible differences are confined mainly to sculpture, erosion and details for which no measured survey was found."
+    ],
+    "fixed": [
+     "Re-rendered the corrected west façade, retained the unchanged calibrated side and chevet comparisons, and captured the end of all nine construction and transformation phases with the final geometry."
+    ],
+    "remaining": [
+     "The Romanesque cathedral (1030s–1056) is a reasoned massing on the Gothic nave's lines: its heights, openings, crossing tower, transept, apsidioles and short aisled choir are interpreted; its choir plan is too uncertain to restore.",
+     "No survey of the roof frames was found: they are drawn on the system of Gothic France from about 1220.",
+     "The west portal, south porch and Circata sculpture is shown through credited photographic reliefs over measured architectural openings; worn or hidden carving is not invented as unsupported geometry."
+    ]
+   }
+  ],
+  "uncertainties": [
+   "The Romanesque cathedral (1030s–1056) is a reasoned massing on the Gothic nave's lines: its heights, openings, crossing tower, transept, apsidioles and short aisled choir are interpreted; its choir plan is too uncertain to restore.",
+   "The dates of the west spires and of the lantern are not given in the sources read: they are shown with the nave (spires) and the transept (lantern) campaigns.",
+   "The worksites are interpreted from general sources on medieval scaffolds and treadwheel cranes; no account of Coutances' own worksites was found.",
+   "No survey of the roof frames was found: they are drawn on the system of Gothic France from about 1220.",
+   "The sacristy and chapter house before the north transept and the chapel of St John against the south transept are drawn on their outlines with interpreted heights and dates (shown with the nave chapels).",
+   "The organ case's date is not given in the sources read: it is shown with the organ installed in 1812; the tribune's depth and the altar's depth are not measured.",
+   "The roof of the lantern burnt in 1944 is shown remade in the same phase: the date of its remaking is not in the sources read.",
+   "The first axial chapel of the 13th century, replaced in the 14th, is interpreted as a short apsed chapel.",
+   "Reliefs show the carving as photographed today (2011–2023), including the bare tympanum of the central portal and the mutilated porch tympana.",
+   "The porch tympana were photographed from below: their size and outline are read on the porches and are approximate."
+  ],
+  "generated": {
+   "query": "Cathédrale Notre-Dame de Coutances, Coutances, France",
+   "family": "religious",
+   "familyReason": "the name or OpenStreetMap tags identify a religious building",
+   "heightSource": "family estimate",
+   "levelsSource": "family estimate"
+  },
+  "geometry": "Plan: the OpenStreetMap outline turned onto the nave's axis (104.5° from north) gives the bays (six of 4.8 m in the nave, three of 5.2 m in the choir), the towers, porches, transept annexes, the hemicycle and the Circata. Heights: spires (77, 75 m), lantern (57.45 m outside, 40.85 m inside) and nave vault (21.90 m) from the sources; the others read on four Commons photographs whose viewpoints were fitted to the model with calibrate.mjs (west front: galerie top 29.8 m, rose 18.8 m, belfries 30.8–47.5 m; chevet: outer ambulatory 7.2 m, inner 15.2 m, clerestory 25 m, apse roof 31.8 m, Circata 9 m; south side: chapels 9.7 m, nave eave 22.4 m). The spires stand about 1.4 m inward of the towers' outline, as both the west and the north-east photos show."
+ },
+ "phases": [
+  {
+   "id": "romane",
+   "when": "c. 1030–1056",
+   "title": "The Romanesque cathedral",
+   "text": "Bishop Robert rebuilds the cathedral and Geoffroy de Montbray completes it; it is dedicated to Our Lady in 1056, in the presence of Duke William. Its massing here is a reasoned reconstruction.",
+   "source": "https://mondes-normands.caen.fr/angleterre/Patrimoine_architectural/Normandie/Cotentin/coutances/1513CoutancesCathe/index.htm",
+   "moments": [
+    {
+     "at": 0.45,
+     "tag": "Plan",
+     "title": "The plan of Bernay",
+     "text": "The church follows the Benedictine plan of Bernay: a nave of arcades, tribunes and high windows, a lantern over the crossing, transept arms opening into apsidioles, and a choir with two aisles but no ambulatory.",
+     "anchor": [
+      6.5,
+      9,
+      -8.1
+     ],
+     "source": "https://fr.wikipedia.org/wiki/Cath%C3%A9drale_Notre-Dame_de_Coutances"
+    },
+    {
+     "at": 0.8,
+     "tag": "Patron",
+     "title": "Gifts from England",
+     "text": "Geoffroy de Montbray, bishop from 1049, sent gifts of every kind to his chapter \"for the building of the church\" as soon as he had landed in England with William.",
+     "anchor": [
+      -20,
+      20,
+      1.4
+     ],
+     "source": "https://fr.wikipedia.org/wiki/Cath%C3%A9drale_Notre-Dame_de_Coutances"
+    }
+   ]
+  },
+  {
+   "id": "nef",
+   "when": "c. 1190–1230",
+   "title": "A Gothic skin on Romanesque walls",
+   "text": "The cathedral is rebuilt from west to east, Hugues de Morville being bishop from 1208: the nave and the west front keep their Romanesque walls and towers inside a facing of fine limestone. The towers turn octagonal and carry stone spires.",
+   "source": "https://fr.wikipedia.org/wiki/Cath%C3%A9drale_Notre-Dame_de_Coutances",
+   "scene": {
+    "craft": "masonry",
+    "at": [
+     -40.2,
+     -8.75
+    ],
+    "focus": [
+     -40.2,
+     24,
+     -8.75
+    ],
+    "distance": 62,
+    "radius": 15,
+    "height": 31,
+    "workers": 10,
+    "materials": true,
+    "scaffold": {
+     "kind": "tower",
+     "width": 13,
+     "height": 30.8,
+     "material": "timber"
+    },
+    "hoist": {
+     "kind": "gin-pole",
+     "height": 12,
+     "from": 0,
+     "to": 26
+    },
+    "dust": 0.35,
+    "source": "https://fr.wikipedia.org/wiki/Trou_de_boulin"
+   },
+   "moments": [
+    {
+     "at": 0.25,
+     "tag": "Technique",
+     "title": "The old walls inside the new",
+     "text": "The walls of the Romanesque nave and aisles, and the west front with its two towers, are kept and hidden under the Gothic facing; only the nave keeps the Romanesque dimensions and foundations.",
+     "anchor": [
+      -22,
+      13,
+      6.2
+     ],
+     "source": "https://fr.wikipedia.org/wiki/Cath%C3%A9drale_Notre-Dame_de_Coutances",
+     "distance": 38
+    },
+    {
+     "at": 0.55,
+     "tag": "Site",
+     "title": "Timbers in the wall",
+     "text": "Medieval scaffolds were hung on the walls: horizontal timbers, the putlogs, set in holes left in the masonry, carried the planks, and the holes often stayed open when the scaffold came down.",
+     "anchor": [
+      -46.4,
+      15,
+      -10.5
+     ],
+     "source": "https://fr.wikipedia.org/wiki/Trou_de_boulin",
+     "distance": 22
+    },
+    {
+     "at": 0.85,
+     "tag": "Form",
+     "title": "Fifteen points round a spire",
+     "text": "Each tower turns octagonal with a twin opening in every face; open turrets on three corners, a stair turret with three smaller ones on the fourth and four gabled niches ring each spire with fifteen points.",
+     "anchor": [
+      -40.2,
+      52,
+      -7.35
+     ],
+     "source": "https://fr.wikipedia.org/wiki/Cath%C3%A9drale_Notre-Dame_de_Coutances",
+     "distance": 42
+    }
+   ]
+  },
+  {
+   "id": "transept",
+   "when": "c. 1208–1235",
+   "title": "Transept and lantern tower",
+   "text": "The Romanesque transept and lantern are pulled down, and then its choir; the new transept, begun about 1208, is nearing completion about 1225. Over the crossing rises the lantern called \"le Plomb\", 40.85 m high inside and 57.45 m outside.",
+   "source": "https://fr.wikipedia.org/wiki/Cath%C3%A9drale_Notre-Dame_de_Coutances",
+   "scene": {
+    "craft": "masonry",
+    "at": [
+     0.9,
+     1.5
+    ],
+    "focus": [
+     0.9,
+     46,
+     1.5
+    ],
+    "distance": 68,
+    "radius": 12,
+    "height": 56,
+    "workers": 8,
+    "materials": true,
+    "scaffold": {
+     "kind": "tower",
+     "width": 16,
+     "base": 30,
+     "height": 27,
+     "material": "timber"
+    },
+    "hoist": {
+     "kind": "treadwheel",
+     "height": 8,
+     "from": 30,
+     "to": 50
+    },
+    "dust": 0.3,
+    "source": "https://en.wikipedia.org/wiki/Treadwheel_crane"
+   },
+   "moments": [
+    {
+     "at": 0.3,
+     "tag": "Structure",
+     "title": "A square that turns octagonal",
+     "text": "Four piers about fifteen metres round carry the crossing; triangular pendentives turn the square into an octagon of two storeys, lit by twin openings and sixteen lancets under a vault of sixteen ribs.",
+     "anchor": [
+      0.9,
+      34,
+      1.5
+     ],
+     "source": "https://fr.wikipedia.org/wiki/Cath%C3%A9drale_Notre-Dame_de_Coutances",
+     "inside": true,
+     "look": [
+      200,
+      30
+     ],
+     "distance": 34
+    },
+    {
+     "at": 0.65,
+     "tag": "Technique",
+     "title": "A crane on the roof beams",
+     "text": "Treadwheel cranes, first recorded in France about 1225, stood on the ground and were moved up to the roof beams once the walls were tied, wandering with the work.",
+     "anchor": [
+      0.9,
+      40,
+      1.5
+     ],
+     "source": "https://en.wikipedia.org/wiki/Treadwheel_crane",
+     "distance": 36
+    },
+    {
+     "at": 0.9,
+     "tag": "Light",
+     "title": "Light in the middle of the church",
+     "text": "The octagonal lantern was designed to throw an intense light into the centre of the cathedral; it is partly corbelled out over the pendentives.",
+     "anchor": [
+      0.9,
+      47,
+      1.5
+     ],
+     "source": "https://en.wikipedia.org/wiki/Coutances_Cathedral"
+    }
+   ]
+  },
+  {
+   "id": "choeur",
+   "when": "c. 1220–1238",
+   "title": "Choir and double ambulatory",
+   "text": "The choir rises in steps like Bourges: a low outer aisle of chapels, a taller inner aisle with its own windows, and a high clerestory propped by flying buttresses in one span. It seems finished about 1235, before Hugues de Morville is buried there.",
+   "source": "https://mcid.mcah.columbia.edu/mapping-gothic/coutances-cathedrale-notre-dame",
+   "scene": {
+    "craft": "masonry",
+    "at": [
+     23,
+     2
+    ],
+    "focus": [
+     32,
+     12,
+     2
+    ],
+    "distance": 58,
+    "radius": 18,
+    "height": 25,
+    "workers": 12,
+    "materials": true,
+    "scaffold": {
+     "kind": "ring",
+     "radius": 16.5,
+     "arc": 200,
+     "start": -100,
+     "material": "timber"
+    },
+    "hoist": {
+     "kind": "treadwheel",
+     "height": 9,
+     "from": 0,
+     "to": 19
+    },
+    "dust": 0.35,
+    "source": "https://en.wikipedia.org/wiki/Treadwheel_crane"
+   },
+   "moments": [
+    {
+     "at": 0.3,
+     "tag": "Plan",
+     "title": "Two ambulatories made from one",
+     "text": "The double ambulatory came from taking away the partitions between the radiating chapels: the outer aisle is a ring of chapels opened into one another.",
+     "anchor": [
+      33.5,
+      4,
+      11.5
+     ],
+     "source": "https://fr.wikipedia.org/wiki/Cath%C3%A9drale_Notre-Dame_de_Coutances",
+     "inside": true,
+     "look": [
+      150,
+      18
+     ],
+     "distance": 26
+    },
+    {
+     "at": 0.6,
+     "tag": "Form",
+     "title": "Twin columns round the hemicycle",
+     "text": "Twelve columns in pairs, one behind the other, make a double ring round the hemicycle: the architect doubled the tall columns of the abbey church of Hambye.",
+     "anchor": [
+      24.5,
+      6,
+      2
+     ],
+     "source": "https://fr.wikipedia.org/wiki/Cath%C3%A9drale_Notre-Dame_de_Coutances",
+     "inside": true,
+     "look": [
+      284.5,
+      12
+     ],
+     "distance": 24
+    },
+    {
+     "at": 0.88,
+     "tag": "Figure",
+     "title": "A bishop buried in his choir",
+     "text": "Hugues de Morville, bishop from 1208 to 1238, founded the chapels of St George and St Thomas Becket in 1223 and was buried in the choir.",
+     "anchor": [
+      15,
+      3,
+      2
+     ],
+     "source": "https://fr.wikipedia.org/wiki/Cath%C3%A9drale_Notre-Dame_de_Coutances"
+    }
+   ]
+  },
+  {
+   "id": "porches",
+   "when": "after 1228",
+   "title": "The lateral porches",
+   "text": "Porches open north and south at the foot of the towers, built after 1228 by masons who had worked on the cloister of Mont-Saint-Michel. The south porch, two bays deep, shows the Virgin among the symbols of the evangelists.",
+   "source": "https://fr.wikipedia.org/wiki/Cath%C3%A9drale_Notre-Dame_de_Coutances",
+   "moments": [
+    {
+     "at": 0.55,
+     "tag": "Craft",
+     "title": "Masons from the Mont",
+     "text": "The porches are dated after 1228 because masons of the cloister of Mont-Saint-Michel, finished that year, worked on them.",
+     "anchor": [
+      -38.4,
+      7,
+      21.9
+     ],
+     "source": "https://fr.wikipedia.org/wiki/Cath%C3%A9drale_Notre-Dame_de_Coutances",
+     "distance": 26
+    },
+    {
+     "at": 0.85,
+     "tag": "Carving",
+     "title": "A Virgin without a head",
+     "text": "In the north porch, smaller than its twin, Mary sits in the tympanum between two angels; her head and theirs are gone.",
+     "anchor": [
+      -38.1,
+      5.5,
+      -14.5
+     ],
+     "source": "https://fr.wikipedia.org/wiki/Cath%C3%A9drale_Notre-Dame_de_Coutances",
+     "distance": 16
+    }
+   ]
+  },
+  {
+   "id": "chapelles",
+   "when": "c. 1270–1315",
+   "title": "Chapels between the buttresses",
+   "text": "From about 1270 chapels are built out between the buttresses of the nave, on the north side first, then on the south under Robert d'Harcourt (1291–1315). Their great windows fill each bay.",
+   "source": "https://fr.wikipedia.org/wiki/Cath%C3%A9drale_Notre-Dame_de_Coutances",
+   "moments": [
+    {
+     "at": 0.5,
+     "tag": "Patrons",
+     "title": "The Hauteville in stone",
+     "text": "Statues of the Tancrède de Hauteville family, who helped pay for the building, stand under canopies on the piers of the north chapels.",
+     "anchor": [
+      -20,
+      6,
+      -16.6
+     ],
+     "source": "https://fr.wikipedia.org/wiki/Cath%C3%A9drale_Notre-Dame_de_Coutances",
+     "distance": 26
+    },
+    {
+     "at": 0.8,
+     "tag": "Form",
+     "title": "Two pinnacles to a buttress",
+     "text": "Each buttress of the nave carries two pinnacles: one outside at the level of the chapels' walls, the other halfway up before it abuts the high gallery of the triforium.",
+     "anchor": [
+      -15.2,
+      12,
+      19.6
+     ],
+     "source": "https://fr.wikipedia.org/wiki/Cath%C3%A9drale_Notre-Dame_de_Coutances",
+     "distance": 24
+    }
+   ]
+  },
+  {
+   "id": "cervelle",
+   "when": "1371–1386",
+   "title": "Sylvestre de La Cervelle",
+   "text": "After the siege of 1356, bishop Sylvestre de La Cervelle, a cousin of Du Guesclin, rebuilds walls and columns, crowns the west front with a gallery of roses and enlarges the axial chapel, the Circata.",
+   "source": "https://fr.wikipedia.org/wiki/Cath%C3%A9drale_Notre-Dame_de_Coutances",
+   "scene": {
+    "craft": "masonry",
+    "at": [
+     44,
+     2
+    ],
+    "focus": [
+     45,
+     6,
+     2
+    ],
+    "distance": 40,
+    "radius": 9,
+    "height": 10,
+    "workers": 8,
+    "materials": true,
+    "scaffold": {
+     "kind": "ring",
+     "radius": 6.5,
+     "arc": 200,
+     "start": -100,
+     "material": "timber"
+    },
+    "hoist": {
+     "kind": "gin-pole",
+     "height": 9,
+     "from": 0,
+     "to": 7
+    },
+    "dust": 0.3,
+    "source": "https://fr.wikipedia.org/wiki/Trou_de_boulin"
+   },
+   "moments": [
+    {
+     "at": 0.35,
+     "tag": "Funds",
+     "title": "1,600 gold francs",
+     "text": "King Charles V grants the bishop 1,600 gold francs for the repairs.",
+     "anchor": [
+      -47.5,
+      25,
+      1.2
+     ],
+     "source": "https://fr.wikipedia.org/wiki/Cath%C3%A9drale_Notre-Dame_de_Coutances",
+     "distance": 34
+    },
+    {
+     "at": 0.8,
+     "tag": "Tomb",
+     "title": "Buried in his chapel",
+     "text": "Sylvestre de La Cervelle, who died in 1386, lies in the Circata he enlarged, with the bishops of the 19th century.",
+     "anchor": [
+      44,
+      3,
+      2
+     ],
+     "source": "https://fr.wikipedia.org/wiki/Cath%C3%A9drale_Notre-Dame_de_Coutances",
+     "inside": true,
+     "look": [
+      104.5,
+      15
+     ],
+     "distance": 20
+    }
+   ]
+  },
+  {
+   "id": "empire",
+   "when": "1800–1812",
+   "title": "Organ and high altar",
+   "text": "The organ built in 1720 for the abbey of Savigny is set up in 1812 on the oak case carved by Louis Le Guillard and Jacques Picard over the central portal. The pink marble high altar of 1755–1757 is said to have been brought from Spain under the First Empire.",
+   "source": "https://fr.wikipedia.org/wiki/Cath%C3%A9drale_Notre-Dame_de_Coutances",
+   "moments": [
+    {
+     "at": 0.25,
+     "tag": "Collapse",
+     "title": "Two bays fall in",
+     "text": "In 1800 the two western bays of the nave fall in; they are rebuilt by Doublet.",
+     "anchor": [
+      -31,
+      18,
+      1.4
+     ],
+     "source": "https://fr.wikipedia.org/wiki/Cath%C3%A9drale_Notre-Dame_de_Coutances",
+     "inside": true,
+     "look": [
+      74.5,
+      15
+     ],
+     "distance": 30
+    },
+    {
+     "at": 0.6,
+     "tag": "Inside",
+     "title": "An organ from Savigny",
+     "text": "Four keyboards, fifty-one stops and about 3,500 pipes stand in the case over the central portal; an organ has played in the cathedral since 1468.",
+     "anchor": [
+      -41.5,
+      14,
+      1.2
+     ],
+     "source": "https://fr.wikipedia.org/wiki/Cath%C3%A9drale_Notre-Dame_de_Coutances",
+     "inside": true,
+     "look": [
+      104.5,
+      8
+     ],
+     "distance": 30
+    },
+    {
+     "at": 0.85,
+     "tag": "Inside",
+     "title": "One of the largest altars in France",
+     "text": "The Louis XV altar of pink marble by the Marseilles sculptors Antoine Duparc and his son Raphaël, gilded garlands carried by cherubs, stands before six pairs of columns.",
+     "anchor": [
+      20.4,
+      1.6,
+      2
+     ],
+     "source": "https://fr.wikipedia.org/wiki/Cath%C3%A9drale_Notre-Dame_de_Coutances",
+     "inside": true,
+     "look": [
+      284.5,
+      8
+     ],
+     "distance": 16
+    }
+   ]
+  },
+  {
+   "id": "guerre",
+   "when": "June 1944",
+   "title": "The lantern's roof on fire",
+   "text": "In the bombing of June 1944 the lantern's roof catches fire and the blaze stops only in the bell chamber; the south porch's tympanum is the part most damaged. The roof is remade afterwards (its date is not in the sources read).",
+   "source": "https://fr.wikipedia.org/wiki/Cath%C3%A9drale_Notre-Dame_de_Coutances",
+   "moments": [
+    {
+     "at": 0.3,
+     "tag": "War",
+     "title": "The fire stops in the bell chamber",
+     "text": "The roof of the lantern burns in June 1944; the fire goes no further than the bell chamber under it.",
+     "anchor": [
+      0.9,
+      56,
+      1.5
+     ],
+     "source": "https://fr.wikipedia.org/wiki/Cath%C3%A9drale_Notre-Dame_de_Coutances",
+     "distance": 40
+    },
+    {
+     "at": 0.7,
+     "tag": "Rescue",
+     "title": "A window taken down in time",
+     "text": "The Last Judgement window of the south transept, taken down in 1942, escapes the bombs.",
+     "anchor": [
+      0.9,
+      14,
+      16.9
+     ],
+     "source": "https://fr.wikipedia.org/wiki/Cath%C3%A9drale_Notre-Dame_de_Coutances",
+     "distance": 30
+    }
+   ]
+  }
+ ],
+ "elements": [
+  {
+   "type": "chevetLevel",
+   "name": "Nef romane",
+   "note": "The Romanesque cathedral dedicated in 1056 is known only by its plan type (Bernay), its three-storey nave and its towers: heights, openings and roofs are a reasoned massing on the Gothic nave's own lines, which kept the Romanesque dimensions and foundations.",
+   "provenance": "interpreted",
+   "phase": "romane",
+   "color": "#c9bfa8",
+   "arch": "round",
+   "center": [
+    0,
+    1.4
+   ],
+   "from": -34.4,
+   "to": -5.6,
+   "bays": 6,
+   "half": 4.8,
+   "thick": 0.7,
+   "wall": 19.5,
+   "base": {
+    "spring": 6.2,
+    "columns": 1.3
+   },
+   "windows": [
+    {
+     "width": 2.6,
+     "sill": 8.6,
+     "spring": 11.2,
+     "glass": false
+    },
+    {
+     "width": 1.3,
+     "sill": 15.4,
+     "spring": 17.6
+    }
+   ],
+   "roof": {
+    "ridge": 26.5,
+    "until": "nef"
+   },
+   "keepBelow": 14,
+   "upper": {
+    "until": "nef"
+   },
+   "lower": {
+    "until": "transept"
+   }
+  },
+  {
+   "type": "chevetLevel",
+   "name": "Travée des tours romane",
+   "note": "The Romanesque cathedral dedicated in 1056 is known only by its plan type (Bernay), its three-storey nave and its towers: heights, openings and roofs are a reasoned massing on the Gothic nave's own lines, which kept the Romanesque dimensions and foundations.",
+   "provenance": "interpreted",
+   "phase": "romane",
+   "color": "#c9bfa8",
+   "arch": "round",
+   "center": [
+    0,
+    1.4
+   ],
+   "from": -45.6,
+   "to": -34.4,
+   "bays": 1,
+   "half": 4.8,
+   "thick": 0.7,
+   "wall": 19.5,
+   "windows": [
+    {
+     "width": 1.3,
+     "sill": 15.4,
+     "spring": 17.6
+    }
+   ],
+   "roof": {
+    "ridge": 26.5,
+    "until": "nef"
+   },
+   "ends": [
+    "from"
+   ],
+   "door": {
+    "at": "from",
+    "w": 3.2,
+    "spring": 5.5
+   },
+   "keepBelow": 14,
+   "upper": {
+    "until": "nef"
+   },
+   "lower": {
+    "until": "transept"
+   },
+   "rail": false
+  },
+  {
+   "type": "chevetLevel",
+   "name": "Bas-côtés romans",
+   "note": "The Romanesque cathedral dedicated in 1056 is known only by its plan type (Bernay), its three-storey nave and its towers: heights, openings and roofs are a reasoned massing on the Gothic nave's own lines, which kept the Romanesque dimensions and foundations.",
+   "provenance": "interpreted",
+   "phase": "romane",
+   "color": "#c9bfa8",
+   "arch": "round",
+   "center": [
+    0,
+    1.4
+   ],
+   "from": -34.4,
+   "to": -5.6,
+   "bays": 6,
+   "half": 10,
+   "thick": 0.7,
+   "wall": 13,
+   "windows": [
+    {
+     "width": 1.3,
+     "sill": 3.2,
+     "spring": 5.8
+    },
+    {
+     "width": 1.3,
+     "sill": 8.8,
+     "spring": 11.2
+    }
+   ],
+   "roof": {
+    "inner": 5.3,
+    "top": 15.2,
+    "until": "nef"
+   },
+   "lower": {
+    "until": "transept"
+   },
+   "rail": false
+  },
+  {
+   "type": "romanesqueTower",
+   "name": "Tour romane nord",
+   "note": "The Romanesque cathedral dedicated in 1056 is known only by its plan type (Bernay), its three-storey nave and its towers: heights, openings and roofs are a reasoned massing on the Gothic nave's own lines, which kept the Romanesque dimensions and foundations. Their square foot and octagonal upper room are described inside the Gothic towers.",
+   "provenance": "interpreted",
+   "phase": "romane",
+   "color": "#c9bfa8",
+   "center": [
+    -40.2,
+    -9.15
+   ],
+   "stages": [
+    {
+     "shape": "square",
+     "half": 4.1,
+     "top": 19.5,
+     "thick": 1.2,
+     "openings": {
+      "count": 1,
+      "width": 1.2,
+      "sill": 14.5,
+      "spring": 17
+     }
+    },
+    {
+     "shape": "octagon",
+     "half": 3.7,
+     "top": 27,
+     "thick": 1,
+     "openings": {
+      "count": 1,
+      "width": 1.4,
+      "sill": 21.5,
+      "spring": 24.5,
+      "louvres": "#5a5650"
+     }
+    }
+   ],
+   "roof": {
+    "top": 31
+   },
+   "keepBelow": 27,
+   "upper": {
+    "until": "nef"
+   },
+   "lower": {
+    "until": "transept"
+   }
+  },
+  {
+   "type": "romanesqueTower",
+   "name": "Tour romane sud",
+   "note": "The Romanesque cathedral dedicated in 1056 is known only by its plan type (Bernay), its three-storey nave and its towers: heights, openings and roofs are a reasoned massing on the Gothic nave's own lines, which kept the Romanesque dimensions and foundations. Their square foot and octagonal upper room are described inside the Gothic towers.",
+   "provenance": "interpreted",
+   "phase": "romane",
+   "color": "#c9bfa8",
+   "center": [
+    -40.35,
+    11.6
+   ],
+   "stages": [
+    {
+     "shape": "square",
+     "half": 4.1,
+     "top": 19.5,
+     "thick": 1.2,
+     "openings": {
+      "count": 1,
+      "width": 1.2,
+      "sill": 14.5,
+      "spring": 17
+     }
+    },
+    {
+     "shape": "octagon",
+     "half": 3.7,
+     "top": 27,
+     "thick": 1,
+     "openings": {
+      "count": 1,
+      "width": 1.4,
+      "sill": 21.5,
+      "spring": 24.5,
+      "louvres": "#5a5650"
+     }
+    }
+   ],
+   "roof": {
+    "top": 31
+   },
+   "keepBelow": 27,
+   "upper": {
+    "until": "nef"
+   },
+   "lower": {
+    "until": "transept"
+   }
+  },
+  {
+   "type": "romanesqueTower",
+   "name": "Tour-lanterne romane",
+   "note": "The Romanesque cathedral dedicated in 1056 is known only by its plan type (Bernay), its three-storey nave and its towers: heights, openings and roofs are a reasoned massing on the Gothic nave's own lines, which kept the Romanesque dimensions and foundations.",
+   "provenance": "interpreted",
+   "phase": "romane",
+   "color": "#c9bfa8",
+   "center": [
+    0.9,
+    1.4
+   ],
+   "stages": [
+    {
+     "shape": "square",
+     "half": 5.6,
+     "top": 19.5,
+     "thick": 1.4,
+     "openings": {
+      "count": 1,
+      "width": 8,
+      "sill": 0,
+      "spring": 12.5
+     }
+    },
+    {
+     "shape": "square",
+     "half": 5.6,
+     "top": 31,
+     "thick": 1.2,
+     "openings": {
+      "count": 3,
+      "width": 1.2,
+      "sill": 23.5,
+      "spring": 27
+     }
+    }
+   ],
+   "roof": {
+    "top": 36
+   },
+   "lower": {
+    "until": "transept"
+   }
+  },
+  {
+   "type": "chevetLevel",
+   "name": "Croisillon roman nord",
+   "note": "The Romanesque cathedral dedicated in 1056 is known only by its plan type (Bernay), its three-storey nave and its towers: heights, openings and roofs are a reasoned massing on the Gothic nave's own lines, which kept the Romanesque dimensions and foundations.",
+   "provenance": "interpreted",
+   "phase": "romane",
+   "color": "#c9bfa8",
+   "arch": "round",
+   "center": [
+    0.9,
+    1.4
+   ],
+   "rot": 1.5708,
+   "from": 5.6,
+   "to": 13.5,
+   "bays": 2,
+   "half": 5.6,
+   "thick": 0.9,
+   "wall": 19.5,
+   "windows": {
+    "width": 1.4,
+    "sill": 12,
+    "spring": 15
+   },
+   "roof": {
+    "ridge": 26.5,
+    "until": "transept"
+   },
+   "ends": [
+    "to"
+   ],
+   "lower": {
+    "until": "transept"
+   },
+   "rail": false
+  },
+  {
+   "type": "chevetLevel",
+   "name": "Absidiole romane nord",
+   "note": "The Romanesque cathedral dedicated in 1056 is known only by its plan type (Bernay), its three-storey nave and its towers: heights, openings and roofs are a reasoned massing on the Gothic nave's own lines, which kept the Romanesque dimensions and foundations.",
+   "provenance": "interpreted",
+   "phase": "romane",
+   "color": "#c9bfa8",
+   "arch": "round",
+   "center": [
+    6.5,
+    -8.1
+   ],
+   "apse": {
+    "sides": 5
+   },
+   "half": 2.8,
+   "thick": 0.8,
+   "wall": 8.5,
+   "windows": {
+    "width": 1,
+    "sill": 3,
+    "spring": 5.5
+   },
+   "roof": {
+    "ridge": 11.5,
+    "until": "transept"
+   },
+   "lower": {
+    "until": "transept"
+   },
+   "rail": false
+  },
+  {
+   "type": "chevetLevel",
+   "name": "Croisillon roman sud",
+   "note": "The Romanesque cathedral dedicated in 1056 is known only by its plan type (Bernay), its three-storey nave and its towers: heights, openings and roofs are a reasoned massing on the Gothic nave's own lines, which kept the Romanesque dimensions and foundations.",
+   "provenance": "interpreted",
+   "phase": "romane",
+   "color": "#c9bfa8",
+   "arch": "round",
+   "center": [
+    0.9,
+    1.4
+   ],
+   "rot": 1.5708,
+   "from": -13.5,
+   "to": -5.6,
+   "bays": 2,
+   "half": 5.6,
+   "thick": 0.9,
+   "wall": 19.5,
+   "windows": {
+    "width": 1.4,
+    "sill": 12,
+    "spring": 15
+   },
+   "roof": {
+    "ridge": 26.5,
+    "until": "transept"
+   },
+   "ends": [
+    "from"
+   ],
+   "lower": {
+    "until": "transept"
+   },
+   "rail": false
+  },
+  {
+   "type": "chevetLevel",
+   "name": "Absidiole romane sud",
+   "note": "The Romanesque cathedral dedicated in 1056 is known only by its plan type (Bernay), its three-storey nave and its towers: heights, openings and roofs are a reasoned massing on the Gothic nave's own lines, which kept the Romanesque dimensions and foundations.",
+   "provenance": "interpreted",
+   "phase": "romane",
+   "color": "#c9bfa8",
+   "arch": "round",
+   "center": [
+    6.5,
+    10.9
+   ],
+   "apse": {
+    "sides": 5
+   },
+   "half": 2.8,
+   "thick": 0.8,
+   "wall": 8.5,
+   "windows": {
+    "width": 1,
+    "sill": 3,
+    "spring": 5.5
+   },
+   "roof": {
+    "ridge": 11.5,
+    "until": "transept"
+   },
+   "lower": {
+    "until": "transept"
+   },
+   "rail": false
+  },
+  {
+   "type": "chevetLevel",
+   "name": "Chœur roman",
+   "note": "The Romanesque cathedral dedicated in 1056 is known only by its plan type (Bernay), its three-storey nave and its towers: heights, openings and roofs are a reasoned massing on the Gothic nave's own lines, which kept the Romanesque dimensions and foundations. The choir had no ambulatory but two aisles; its plan is too uncertain to be restored, so it is drawn short.",
+   "provenance": "interpreted",
+   "phase": "romane",
+   "color": "#c9bfa8",
+   "arch": "round",
+   "center": [
+    0,
+    1.4
+   ],
+   "from": 8.3,
+   "to": 16,
+   "bays": 2,
+   "half": 4.8,
+   "thick": 0.8,
+   "wall": 19.5,
+   "base": {
+    "spring": 6.2,
+    "columns": 1.2,
+    "ends": [
+     false,
+     true
+    ]
+   },
+   "windows": [
+    {
+     "width": 1.3,
+     "sill": 15.4,
+     "spring": 17.6
+    }
+   ],
+   "roof": {
+    "ridge": 26.5,
+    "until": "choeur"
+   },
+   "lower": {
+    "until": "choeur"
+   }
+  },
+  {
+   "type": "chevetLevel",
+   "name": "Abside romane",
+   "note": "The Romanesque cathedral dedicated in 1056 is known only by its plan type (Bernay), its three-storey nave and its towers: heights, openings and roofs are a reasoned massing on the Gothic nave's own lines, which kept the Romanesque dimensions and foundations.",
+   "provenance": "interpreted",
+   "phase": "romane",
+   "color": "#c9bfa8",
+   "arch": "round",
+   "center": [
+    16,
+    1.4
+   ],
+   "apse": {
+    "sides": 5
+   },
+   "half": 4.8,
+   "thick": 0.8,
+   "wall": 19.5,
+   "windows": {
+    "width": 1.3,
+    "sill": 13,
+    "spring": 16
+   },
+   "roof": {
+    "ridge": 26.5,
+    "until": "choeur"
+   },
+   "lower": {
+    "until": "choeur"
+   }
+  },
+  {
+   "type": "chevetLevel",
+   "name": "Collatéraux du chœur roman",
+   "note": "The Romanesque cathedral dedicated in 1056 is known only by its plan type (Bernay), its three-storey nave and its towers: heights, openings and roofs are a reasoned massing on the Gothic nave's own lines, which kept the Romanesque dimensions and foundations.",
+   "provenance": "interpreted",
+   "phase": "romane",
+   "color": "#c9bfa8",
+   "arch": "round",
+   "center": [
+    0,
+    1.4
+   ],
+   "from": 8.3,
+   "to": 16,
+   "bays": 2,
+   "half": 9.6,
+   "thick": 0.8,
+   "wall": 11,
+   "windows": {
+    "width": 1.3,
+    "sill": 3.5,
+    "spring": 6.5
+   },
+   "roof": {
+    "inner": 5.3,
+    "top": 14.6,
+    "until": "choeur"
+   },
+   "ends": [
+    "to"
+   ],
+   "lower": {
+    "until": "choeur"
+   },
+   "rail": false
+  },
+  {
+   "type": "slateBasilica",
+   "name": "Nef gothique",
+   "provenance": "measured",
+   "phase": "nef",
+   "color": "#cfc6b1",
+   "glass": "#36414e",
+   "center": [
+    0,
+    1.4
+   ],
+   "from": -34.4,
+   "to": -5.6,
+   "bays": 6,
+   "vessel": {
+    "half": 4.8,
+    "eave": 22.6,
+    "ridge": 30,
+    "thick": 1.2,
+    "windows": {
+     "width": 3,
+     "sill": 15.8,
+     "spring": 19.6
+    },
+    "vault": {
+     "spring": 15.2,
+     "crown": 21.9,
+     "extend": [
+      11.2,
+      0
+     ]
+    },
+    "arcade": {
+     "spring": 7.6
+    },
+    "tribune": {
+     "width": 3.2,
+     "sill": 10.6,
+     "spring": 13.1
+    }
+   },
+   "roof": {
+    "extend": [
+     11.4,
+     0
+    ],
+    "color": "#4f5660"
+   },
+   "piers": 1.6,
+   "aisles": {
+    "half": 10.2,
+    "wall": 10.5,
+    "top": 14.8,
+    "windows": {
+     "width": 2.2,
+     "sill": 3.5,
+     "spring": 7.5
+    },
+    "vault": {
+     "spring": 7,
+     "crown": 10
+    }
+   },
+   "chapels": {
+    "half": 17.4,
+    "wall": 9.7,
+    "phase": "chapelles",
+    "windows": {
+     "width": 3.6,
+     "sill": 1.3,
+     "spring": 5.6
+    },
+    "vault": {
+     "spring": 5,
+     "crown": 8.8
+    }
+   },
+   "buttresses": {
+    "half": 18.3,
+    "width": 1.4,
+    "top": 19.5,
+    "step": 2.6,
+    "pinnacle": 4.5,
+    "ends": false
+   },
+   "flyers": {
+    "from": 17.5,
+    "to": 21.6,
+    "thick": 0.8,
+    "drop": 3.2
+   }
+  },
+  {
+   "type": "spiredTower",
+   "name": "Tour nord",
+   "provenance": "measured",
+   "phase": "nef",
+   "color": "#cfc6b1",
+   "thick": 1.8,
+   "belfry": {
+    "top": 47.5,
+    "r": 3.9,
+    "openings": {
+     "width": 2.3,
+     "sill": 34.5,
+     "spring": 40.1
+    }
+   },
+   "fillettes": {
+    "r": 1.2,
+    "top": 47.2,
+    "tip": 52.5,
+    "inset": 1.3
+   },
+   "lucarnes": {
+    "width": 1.7,
+    "height": 5
+   },
+   "balcony": {
+    "face": [
+     -1,
+     0
+    ],
+    "y": 9.65
+   },
+   "center": [
+    -40.2,
+    -8.75
+   ],
+   "size": [
+    11.6,
+    10.7
+   ],
+   "axis": [
+    0,
+    1.4
+   ],
+   "shaft": {
+    "top": 30.8,
+    "registers": [
+     19.3,
+     26.8,
+     30.8
+    ],
+    "arches": 4,
+    "buttress": 2.2
+   },
+   "stair": {
+    "corner": [
+     -1,
+     -1
+    ],
+    "r": 1.6,
+    "from": 20,
+    "top": 48.5,
+    "tip": 54.5,
+    "small": {
+     "r": 0.55,
+     "top": 48.8,
+     "tip": 52.3,
+     "below": 6
+    }
+   },
+   "spire": {
+    "top": 74.2,
+    "cross": 77
+   },
+   "inner": [
+    [
+     1,
+     0
+    ],
+    [
+     0,
+     1
+    ]
+   ],
+   "portal": [
+    {
+     "face": [
+      -1,
+      0
+     ],
+     "w": 3.2,
+     "spring": 6.4,
+     "rise": 2.4,
+     "door": 2.8,
+     "window": {
+      "w": 2.4,
+      "sill": 3.6,
+      "spring": 6.3
+     }
+    },
+    {
+     "face": [
+      0,
+      -1
+     ],
+     "at": 2.1,
+     "w": 4.4,
+     "spring": 3.93,
+     "rise": 3.57,
+     "door": 3,
+     "doorWidth": 2.4
+    }
+   ]
+  },
+  {
+   "type": "spiredTower",
+   "name": "Tour sud",
+   "provenance": "measured",
+   "phase": "nef",
+   "color": "#cfc6b1",
+   "thick": 1.8,
+   "belfry": {
+    "top": 47.5,
+    "r": 3.9,
+    "openings": {
+     "width": 2.3,
+     "sill": 34.5,
+     "spring": 40.1
+    }
+   },
+   "fillettes": {
+    "r": 1.2,
+    "top": 47.2,
+    "tip": 52.5,
+    "inset": 1.3
+   },
+   "lucarnes": {
+    "width": 1.7,
+    "height": 5
+   },
+   "balcony": {
+    "face": [
+     -1,
+     0
+    ],
+    "y": 9.65
+   },
+   "center": [
+    -40.35,
+    11.4
+   ],
+   "size": [
+    11.9,
+    10.4
+   ],
+   "axis": [
+    0,
+    -1.4
+   ],
+   "shaft": {
+    "top": 30.8,
+    "registers": [
+     26.3,
+     30.8
+    ],
+    "arches": 4,
+    "buttress": 2.2
+   },
+   "stair": {
+    "corner": [
+     -1,
+     1
+    ],
+    "r": 1.6,
+    "from": 20,
+    "top": 48.5,
+    "tip": 54.5,
+    "small": {
+     "r": 0.55,
+     "top": 48.8,
+     "tip": 52.3,
+     "below": 6
+    }
+   },
+   "spire": {
+    "top": 72.6,
+    "cross": 75
+   },
+   "inner": [
+    [
+     1,
+     0
+    ],
+    [
+     0,
+     -1
+    ]
+   ],
+   "portal": [
+    {
+     "face": [
+      -1,
+      0
+     ],
+     "w": 3.2,
+     "spring": 6.4,
+     "rise": 2.4,
+     "door": 2.8,
+     "window": {
+      "w": 2.4,
+      "sill": 3.6,
+      "spring": 6.3
+     }
+    },
+    {
+     "face": [
+      0,
+      1
+     ],
+     "at": 1.95,
+     "w": 5.6,
+     "spring": 4.66,
+     "rise": 4.44,
+     "door": 3.5,
+     "doorWidth": 3
+    }
+   ]
+  },
+  {
+   "type": "westCentre",
+   "name": "Façade occidentale",
+   "provenance": "documented",
+   "phase": "nef",
+   "color": "#cfc6b1",
+   "glass": "#36414e",
+   "center": [
+    -47.3,
+    1.2
+   ],
+   "width": 10.8,
+   "thick": 2.4,
+   "bands": [
+    {
+     "to": 21.3,
+     "phase": "nef"
+    },
+    {
+     "to": 99,
+     "phase": "cervelle"
+    }
+   ],
+   "portal": {
+    "w": 7.2,
+    "spring": 4.8,
+    "rise": 4.4,
+    "relief": true,
+    "depth": 2,
+    "inner": 4,
+    "doors": 3.67,
+    "foot": 0.3
+   },
+   "terrace": 9.65,
+   "window": {
+    "w": 5.2,
+    "sill": 11,
+    "spring": 15.1,
+    "rise": 4.2,
+    "relief": true
+   },
+   "gallery": {
+    "from": 21.5,
+    "to": 28.6,
+    "count": 6,
+    "depth": 0.9,
+    "relief": true
+   },
+   "clochetons": {
+    "top": 30.5,
+    "pinnacle": 5.8,
+    "inset": 0.9
+   },
+   "gable": {
+    "at": 2.6,
+    "half": 5.4,
+    "eave": 22.6,
+    "ridge": 30
+   }
+  },
+  {
+   "type": "chevetLevel",
+   "name": "Murs des tribunes au-dessus des chapelles",
+   "provenance": "interpreted",
+   "phase": "chapelles",
+   "color": "#cfc6b1",
+   "glass": "#36414e",
+   "note": "The upper walls of the old aisles, seen above the chapel roofs with a balustrade in the photographs; their openings onto the chapels below are drawn as plain arches.",
+   "center": [
+    0,
+    1.4
+   ],
+   "from": -34.4,
+   "to": -5.6,
+   "bays": 6,
+   "half": 10.2,
+   "thick": 0.9,
+   "wall": 14,
+   "base": {
+    "spring": 7.6,
+    "rise": 2.2,
+    "columns": 1.2,
+    "ends": [
+     false,
+     false
+    ]
+   }
+  },
+  {
+   "type": "pinnacles",
+   "name": "Pinacles des contreforts",
+   "provenance": "documented",
+   "phase": "chapelles",
+   "color": "#cfc6b1",
+   "center": [
+    0,
+    1.4
+   ],
+   "at": [
+    [
+     -29.6,
+     -17.6,
+     9.7,
+     4.2,
+     1.1
+    ],
+    [
+     -29.6,
+     17.6,
+     9.7,
+     4.2,
+     1.1
+    ],
+    [
+     -24.8,
+     -17.6,
+     9.7,
+     4.2,
+     1.1
+    ],
+    [
+     -24.8,
+     17.6,
+     9.7,
+     4.2,
+     1.1
+    ],
+    [
+     -20,
+     -17.6,
+     9.7,
+     4.2,
+     1.1
+    ],
+    [
+     -20,
+     17.6,
+     9.7,
+     4.2,
+     1.1
+    ],
+    [
+     -15.2,
+     -17.6,
+     9.7,
+     4.2,
+     1.1
+    ],
+    [
+     -15.2,
+     17.6,
+     9.7,
+     4.2,
+     1.1
+    ],
+    [
+     -10.4,
+     -17.6,
+     9.7,
+     4.2,
+     1.1
+    ],
+    [
+     -10.4,
+     17.6,
+     9.7,
+     4.2,
+     1.1
+    ]
+   ]
+  },
+  {
+   "type": "chevetLevel",
+   "name": "Croisillon nord",
+   "provenance": "measured",
+   "phase": "transept",
+   "color": "#cfc6b1",
+   "glass": "#36414e",
+   "center": [
+    0.9,
+    1.4
+   ],
+   "rot": 1.5708,
+   "from": 7.2,
+   "to": 15.5,
+   "bays": 2,
+   "half": 6.6,
+   "thick": 1.3,
+   "wall": 22.6,
+   "base": {
+    "spring": 9,
+    "rise": 4,
+    "columns": 1.3,
+    "ends": [
+     false,
+     false
+    ]
+   },
+   "windows": {
+    "width": 3.2,
+    "sill": 14.5,
+    "spring": 19.6,
+    "twin": true
+   },
+   "roof": {
+    "ridge": 30.6
+   },
+   "vault": {
+    "spring": 15.2,
+    "crown": 21.9
+   }
+  },
+  {
+   "type": "transeptFront",
+   "name": "Pignon du croisillon nord",
+   "provenance": "documented",
+   "phase": "transept",
+   "color": "#cfc6b1",
+   "glass": "#36414e",
+   "center": [
+    0.9,
+    -14.1
+   ],
+   "rot": -1.5708,
+   "width": 14.6,
+   "thick": 1.8,
+   "eave": 22.6,
+   "apex": 31.4,
+   "windows": {
+    "count": 3,
+    "width": 2.7,
+    "sill": 13.5,
+    "spring": 19.4,
+    "middle": 0
+   },
+   "gable": {
+    "count": 7
+   },
+   "turrets": {
+    "width": 2.6,
+    "top": 29.5,
+    "tip": 37.5
+   }
+  },
+  {
+   "type": "chevetLevel",
+   "name": "Croisillon sud",
+   "provenance": "measured",
+   "phase": "transept",
+   "color": "#cfc6b1",
+   "glass": "#36414e",
+   "center": [
+    0.9,
+    1.4
+   ],
+   "rot": 1.5708,
+   "from": -15.5,
+   "to": -7.2,
+   "bays": 2,
+   "half": 6.6,
+   "thick": 1.3,
+   "wall": 22.6,
+   "base": {
+    "spring": 9,
+    "rise": 4,
+    "columns": 1.3,
+    "ends": [
+     false,
+     false
+    ]
+   },
+   "windows": {
+    "width": 3.2,
+    "sill": 14.5,
+    "spring": 19.6,
+    "twin": true
+   },
+   "roof": {
+    "ridge": 30.6
+   },
+   "vault": {
+    "spring": 15.2,
+    "crown": 21.9
+   }
+  },
+  {
+   "type": "transeptFront",
+   "name": "Pignon du croisillon sud",
+   "provenance": "documented",
+   "phase": "transept",
+   "color": "#cfc6b1",
+   "glass": "#36414e",
+   "center": [
+    0.9,
+    16.9
+   ],
+   "rot": 1.5708,
+   "width": 14.6,
+   "thick": 1.8,
+   "eave": 22.6,
+   "apex": 31.4,
+   "windows": {
+    "count": 3,
+    "width": 2.7,
+    "sill": 8.5,
+    "spring": 19.4,
+    "middle": 0
+   },
+   "gable": {
+    "count": 7
+   },
+   "turrets": {
+    "width": 2.6,
+    "top": 29.5,
+    "tip": 37.5
+   }
+  },
+  {
+   "type": "lanternTower",
+   "name": "Tour-lanterne (« le Plomb »)",
+   "provenance": "measured",
+   "phase": "transept",
+   "color": "#cfc6b1",
+   "glass": "#36414e",
+   "center": [
+    0.9,
+    1.5
+   ],
+   "half": 7.3,
+   "thick": 1.8,
+   "arches": {
+    "spring": 14.5,
+    "rise": 6.5,
+    "piers": 3.2
+   },
+   "square": 33,
+   "octagon": {
+    "r": 6.3,
+    "top": 56.3,
+    "lower": {
+     "width": 2.3,
+     "sill": 34,
+     "spring": 37.4
+    },
+    "upper": {
+     "width": 2.7,
+     "sill": 42.4,
+     "spring": 52.2
+    }
+   },
+   "vault": {
+    "spring": 37.8,
+    "crown": 40.85,
+    "ribs": 16,
+    "ring": 1.3
+   },
+   "roof": {
+    "top": 57.2,
+    "until": "guerre",
+    "rebuild": "guerre"
+   },
+   "turrets": {
+    "r": 1.55,
+    "at": 5.45,
+    "from": 22.6,
+    "top": 51.3,
+    "tip": 59
+   }
+  },
+  {
+   "type": "chevetLevel",
+   "name": "Chœur, vaisseau central",
+   "provenance": "measured",
+   "phase": "choeur",
+   "color": "#cfc6b1",
+   "glass": "#36414e",
+   "center": [
+    0,
+    2
+   ],
+   "from": 7.4,
+   "to": 23,
+   "bays": 3,
+   "half": 5.3,
+   "thick": 1.2,
+   "wall": 25,
+   "roof": {
+    "ridge": 31.8
+   },
+   "vault": {
+    "spring": 16.5,
+    "crown": 23.2
+   },
+   "base": {
+    "spring": 9.5,
+    "rise": 3.5,
+    "columns": 1.1,
+    "ends": [
+     false,
+     false
+    ]
+   },
+   "windows": {
+    "width": 3,
+    "sill": 17.6,
+    "spring": 22,
+    "twin": true
+   }
+  },
+  {
+   "type": "chevetLevel",
+   "name": "Rond-point du chœur",
+   "provenance": "measured",
+   "phase": "choeur",
+   "color": "#cfc6b1",
+   "glass": "#36414e",
+   "center": [
+    23,
+    2
+   ],
+   "apse": {
+    "sides": 7,
+    "start": -90,
+    "end": 90
+   },
+   "half": 5.3,
+   "thick": 1.2,
+   "wall": 25,
+   "roof": {
+    "ridge": 31.8
+   },
+   "vault": {
+    "spring": 16.5,
+    "crown": 23.2
+   },
+   "base": {
+    "spring": 9.5,
+    "rise": 3,
+    "columns": 0.9,
+    "twin": true,
+    "ends": [
+     true,
+     true
+    ]
+   },
+   "windows": {
+    "width": 1.4,
+    "sill": 17.6,
+    "spring": 22
+   }
+  },
+  {
+   "type": "chevetLevel",
+   "name": "Déambulatoire intérieur (droit)",
+   "provenance": "measured",
+   "phase": "choeur",
+   "color": "#cfc6b1",
+   "glass": "#36414e",
+   "center": [
+    0,
+    2
+   ],
+   "from": 7.4,
+   "to": 23,
+   "bays": 3,
+   "half": 10.4,
+   "thick": 1,
+   "wall": 15.2,
+   "roof": {
+    "inner": 5.9,
+    "top": 17.2
+   },
+   "windows": {
+    "width": 1.9,
+    "sill": 11.3,
+    "spring": 13.4,
+    "twin": true
+   },
+   "vault": {
+    "spring": 9.5,
+    "crown": 14.4,
+    "inner": 5.9
+   },
+   "base": {
+    "spring": 5.2,
+    "rise": 2.4,
+    "columns": 0.8,
+    "ends": [
+     false,
+     false
+    ]
+   }
+  },
+  {
+   "type": "chevetLevel",
+   "name": "Déambulatoire intérieur (hémicycle)",
+   "provenance": "measured",
+   "phase": "choeur",
+   "color": "#cfc6b1",
+   "glass": "#36414e",
+   "center": [
+    23,
+    2
+   ],
+   "apse": {
+    "sides": 7,
+    "start": -90,
+    "end": 90
+   },
+   "half": 10.4,
+   "thick": 1,
+   "wall": 15.2,
+   "roof": {
+    "inner": 5.9,
+    "top": 17.2
+   },
+   "windows": {
+    "width": 1.9,
+    "sill": 11.3,
+    "spring": 13.4,
+    "twin": true
+   },
+   "vault": {
+    "spring": 9.5,
+    "crown": 14.4,
+    "inner": 5.9
+   },
+   "base": {
+    "spring": 5.2,
+    "rise": 2.2,
+    "columns": 0.8,
+    "ends": [
+     true,
+     true
+    ]
+   }
+  },
+  {
+   "type": "chevetLevel",
+   "name": "Déambulatoire extérieur et chapelles (droit)",
+   "provenance": "measured",
+   "phase": "choeur",
+   "color": "#cfc6b1",
+   "glass": "#36414e",
+   "center": [
+    0,
+    2
+   ],
+   "from": 7.4,
+   "to": 23,
+   "bays": 3,
+   "half": 15,
+   "thick": 1.2,
+   "wall": 7.2,
+   "roof": {
+    "inner": 10.9,
+    "top": 11
+   },
+   "windows": {
+    "width": 2.6,
+    "sill": 1.2,
+    "spring": 5
+   },
+   "vault": {
+    "spring": 4.6,
+    "crown": 7.9,
+    "inner": 10.4
+   }
+  },
+  {
+   "type": "chevetLevel",
+   "name": "Déambulatoire extérieur et chapelles (hémicycle)",
+   "provenance": "measured",
+   "phase": "choeur",
+   "color": "#cfc6b1",
+   "glass": "#36414e",
+   "center": [
+    23,
+    2
+   ],
+   "apse": {
+    "sides": 7,
+    "start": -90,
+    "end": 90
+   },
+   "half": 15,
+   "thick": 1.2,
+   "wall": 7.2,
+   "roof": {
+    "inner": 10.9,
+    "top": 11
+   },
+   "windows": {
+    "width": 2.6,
+    "sill": 1.2,
+    "spring": 5
+   },
+   "vault": {
+    "spring": 4.6,
+    "crown": 7.9,
+    "inner": 10.4
+   },
+   "skip": [
+    3
+   ]
+  },
+  {
+   "type": "flyingButtresses",
+   "name": "Arcs-boutants du chœur",
+   "provenance": "measured",
+   "phase": "choeur",
+   "color": "#cfc6b1",
+   "glass": "#36414e",
+   "center": [
+    0,
+    2
+   ],
+   "from": 7.4,
+   "to": 23,
+   "bays": 3,
+   "ends": false,
+   "pier": {
+    "from": 14.4,
+    "to": 17,
+    "width": 1.5,
+    "top": 20,
+    "steps": [
+     [
+      7.2,
+      0.9
+     ]
+    ]
+   },
+   "pinnacle": 3.5,
+   "flyer": {
+    "to": 5.95,
+    "foot": 19.8,
+    "head": 21.4,
+    "drop": 2.2,
+    "thick": 0.8
+   }
+  },
+  {
+   "type": "flyingButtresses",
+   "name": "Arcs-boutants du rond-point",
+   "provenance": "measured",
+   "phase": "choeur",
+   "color": "#cfc6b1",
+   "glass": "#36414e",
+   "center": [
+    23,
+    2
+   ],
+   "apse": {
+    "sides": 7,
+    "start": -90,
+    "end": 90
+   },
+   "skip": [
+    3,
+    4
+   ],
+   "pier": {
+    "from": 14.4,
+    "to": 17,
+    "width": 1.5,
+    "top": 20,
+    "steps": [
+     [
+      7.2,
+      0.9
+     ]
+    ]
+   },
+   "pinnacle": 3.5,
+   "flyer": {
+    "to": 5.95,
+    "foot": 19.8,
+    "head": 21.4,
+    "drop": 2.2,
+    "thick": 0.8
+   }
+  },
+  {
+   "type": "turret",
+   "name": "Tourelle normande",
+   "provenance": "measured",
+   "phase": "choeur",
+   "color": "#cfc6b1",
+   "center": [
+    23,
+    2
+   ],
+   "at": [
+    0,
+    -6.6
+   ],
+   "size": 2.6,
+   "top": 28.8,
+   "tip": 38,
+   "y0": 0,
+   "arcade": 7
+  },
+  {
+   "type": "turret",
+   "name": "Tourelle normande",
+   "provenance": "measured",
+   "phase": "choeur",
+   "color": "#cfc6b1",
+   "center": [
+    23,
+    2
+   ],
+   "at": [
+    0,
+    6.6
+   ],
+   "size": 2.6,
+   "top": 28.8,
+   "tip": 38,
+   "y0": 0,
+   "arcade": 7
+  },
+  {
+   "type": "turret",
+   "name": "Tourelle normande",
+   "provenance": "measured",
+   "phase": "choeur",
+   "color": "#cfc6b1",
+   "center": [
+    23,
+    2
+   ],
+   "at": [
+    0,
+    -16
+   ],
+   "size": 2.3,
+   "top": 26.8,
+   "tip": 32,
+   "y0": 10,
+   "arcade": 7
+  },
+  {
+   "type": "turret",
+   "name": "Tourelle normande",
+   "provenance": "measured",
+   "phase": "choeur",
+   "color": "#cfc6b1",
+   "center": [
+    23,
+    2
+   ],
+   "at": [
+    0,
+    16
+   ],
+   "size": 2.3,
+   "top": 26.8,
+   "tip": 32,
+   "y0": 10,
+   "arcade": 7
+  },
+  {
+   "type": "chevetLevel",
+   "name": "Chapelle axiale du XIIIe siècle",
+   "provenance": "interpreted",
+   "phase": "choeur",
+   "until": "cervelle",
+   "color": "#cfc6b1",
+   "glass": "#36414e",
+   "note": "The first axial chapel, rebuilt and enlarged in the 14th century, is not described in the sources used: drawn as a short apsed chapel, like the later one but smaller.",
+   "center": [
+    37.6,
+    2
+   ],
+   "apse": {
+    "sides": 5
+   },
+   "half": 3.4,
+   "thick": 1,
+   "wall": 7.2,
+   "windows": {
+    "width": 1.6,
+    "sill": 2,
+    "spring": 5.2
+   },
+   "roof": {
+    "ridge": 11
+   }
+  },
+  {
+   "type": "porch",
+   "name": "Porche nord",
+   "provenance": "documented",
+   "phase": "porches",
+   "color": "#cfc6b1",
+   "center": [
+    -38.1,
+    -17.6
+   ],
+   "rot": -1.5708,
+   "width": 7.4,
+   "depth": 3.5,
+   "eave": 8.5,
+   "apex": 12,
+   "opening": {
+    "w": 3.4,
+    "spring": 4.6,
+    "rise": 2.8
+   },
+   "bays": 1
+  },
+  {
+   "type": "porch",
+   "name": "Porche sud",
+   "provenance": "documented",
+   "phase": "porches",
+   "color": "#cfc6b1",
+   "center": [
+    -38.4,
+    21.9
+   ],
+   "rot": 1.5708,
+   "width": 10.2,
+   "depth": 5.3,
+   "eave": 10.5,
+   "apex": 15,
+   "opening": {
+    "w": 4.8,
+    "spring": 5.6,
+    "rise": 3.4
+   },
+   "bays": 2,
+   "niches": true
+  },
+  {
+   "type": "chevetLevel",
+   "name": "Sacristie et salle capitulaire",
+   "provenance": "interpreted",
+   "phase": "chapelles",
+   "color": "#cfc6b1",
+   "glass": "#36414e",
+   "note": "Two-storey annex before the north transept (sacristy below, chapter house above) on its outline; its date is not given in the sources used (it shortens the 13th-century north window), and its height, windows and roof are read loosely from photographs.",
+   "center": [
+    4.85,
+    -18.5
+   ],
+   "from": -9.25,
+   "to": 9.25,
+   "bays": 3,
+   "sides": [
+    -1
+   ],
+   "half": 4.4,
+   "thick": 1.1,
+   "wall": 12.5,
+   "windows": [
+    {
+     "width": 1.2,
+     "sill": 2.5,
+     "spring": 5
+    },
+    {
+     "width": 1.2,
+     "sill": 7.6,
+     "spring": 10.6
+    }
+   ],
+   "roof": {
+    "ridge": 17
+   },
+   "ends": [
+    "from",
+    "to"
+   ]
+  },
+  {
+   "type": "chevetLevel",
+   "name": "Chapelle Saint-Jean",
+   "provenance": "interpreted",
+   "phase": "chapelles",
+   "color": "#cfc6b1",
+   "glass": "#36414e",
+   "note": "Single-storey chapel against the south transept on its outline; its date is not given in the sources used, and its height, windows and roof are interpreted.",
+   "center": [
+    1.7,
+    21
+   ],
+   "from": -7.3,
+   "to": 7.3,
+   "bays": 3,
+   "sides": [
+    1
+   ],
+   "half": 4.1,
+   "thick": 1.1,
+   "wall": 8,
+   "windows": {
+    "width": 2,
+    "sill": 2.5,
+    "spring": 5.6
+   },
+   "roof": {
+    "ridge": 12.5
+   },
+   "ends": [
+    "from",
+    "to"
+   ]
+  },
+  {
+   "type": "chevetLevel",
+   "name": "Circata (chapelle axiale)",
+   "provenance": "measured",
+   "phase": "cervelle",
+   "color": "#cfc6b1",
+   "glass": "#36414e",
+   "center": [
+    0,
+    2
+   ],
+   "from": 37.6,
+   "to": 47,
+   "bays": 2,
+   "half": 4.4,
+   "thick": 1.1,
+   "wall": 9,
+   "roof": {
+    "ridge": 14
+   },
+   "vault": {
+    "spring": 5.6,
+    "crown": 8.4
+   },
+   "windows": {
+    "width": 2,
+    "sill": 2.5,
+    "spring": 6.2,
+    "twin": true
+   }
+  },
+  {
+   "type": "chevetLevel",
+   "name": "Circata (chevet)",
+   "provenance": "measured",
+   "phase": "cervelle",
+   "color": "#cfc6b1",
+   "glass": "#36414e",
+   "center": [
+    47,
+    2
+   ],
+   "apse": {
+    "sides": 3
+   },
+   "half": 4.4,
+   "thick": 1.1,
+   "wall": 9,
+   "roof": {
+    "ridge": 14
+   },
+   "vault": {
+    "spring": 5.6,
+    "crown": 8.4
+   },
+   "windows": {
+    "width": 1.9,
+    "sill": 2.5,
+    "spring": 6.2,
+    "twin": true
+   }
+  },
+  {
+   "type": "relief",
+   "name": "Portail central",
+   "provenance": "documented",
+   "note": "The central portal photographed frontally in 2023: archivolts on colonnettes, the trumeau between two doors, and the bare tympanum whose Virgin was destroyed at the Revolution, with its two friezes; scaled on the measured apex (9.2 m) and the terrace above it.",
+   "phase": "nef",
+   "center": [
+    -47.3,
+    1.2
+   ],
+   "at": [
+    0,
+    4.6,
+    0
+   ],
+   "size": [
+    7.2,
+    9.2
+   ],
+   "facing": [
+    -1,
+    0
+   ],
+   "image": "cathedrale-de-coutances.evidence/reliefs/portail-central.jpg",
+   "corners": [
+    [
+     352,
+     1057
+    ],
+    [
+     1672,
+     1057
+    ],
+    [
+     1672,
+     2745
+    ],
+    [
+     352,
+     2745
+    ]
+   ],
+   "tone": "#d6ccb2",
+   "credit": {
+    "file": "https://commons.wikimedia.org/wiki/File:Coutances_(50)_Cath%C3%A9drale_Notre-Dame_-_Fa%C3%A7ade_occidentale_-_03.jpg",
+    "author": "GO69",
+    "license": "CC BY-SA 4.0"
+   },
+   "shape": {
+    "kind": "pointed",
+    "spring": 4.8,
+    "rise": 4.4
+   },
+   "recess": {
+    "width": 4.25,
+    "spring": 4.57,
+    "rise": 3.07,
+    "offset": 0,
+    "depth": 2
+   }
+  },
+  {
+   "type": "relief",
+   "name": "Grande fenêtre",
+   "provenance": "documented",
+   "note": "The great window of the nave between the terrace and the gallery: four lights under a rose of six branches, framed by archivolts and the pinnacled buttresses; scaled between the terrace balustrade (10.8 m) and the foot of the gallery (22.4 m), both measured on the west photo.",
+   "phase": "nef",
+   "center": [
+    -47.3,
+    1.2
+   ],
+   "at": [
+    0,
+    16.6,
+    0
+   ],
+   "size": [
+    7.8,
+    11.6
+   ],
+   "facing": [
+    -1,
+    0
+   ],
+   "image": "cathedrale-de-coutances.evidence/reliefs/grande-fenetre.jpg",
+   "corners": [
+    [
+     382,
+     1012
+    ],
+    [
+     1560,
+     1012
+    ],
+    [
+     1560,
+     2760
+    ],
+    [
+     382,
+     2760
+    ]
+   ],
+   "tone": "#d6ccb2",
+   "credit": {
+    "file": "https://commons.wikimedia.org/wiki/File:Coutances_(50)_Cath%C3%A9drale_Notre-Dame_-_Fa%C3%A7ade_occidentale_-_04.jpg",
+    "author": "GO69",
+    "license": "CC BY-SA 4.0"
+   },
+   "depth": 0.4
+  },
+  {
+   "type": "relief",
+   "name": "Galerie des roses",
+   "provenance": "documented",
+   "note": "The gallery of roses added by Sylvestre de La Cervelle: six twin arcades under gablets pierced with roses, from the same photograph; laid in the gallery’s front plane, 0.9 m before the wall.",
+   "phase": "cervelle",
+   "center": [
+    -47.3,
+    1.2
+   ],
+   "at": [
+    -0.9,
+    25.5,
+    0
+   ],
+   "size": [
+    7.65,
+    6.2
+   ],
+   "facing": [
+    -1,
+    0
+   ],
+   "image": "cathedrale-de-coutances.evidence/reliefs/grande-fenetre.jpg",
+   "corners": [
+    [
+     398,
+     315
+    ],
+    [
+     1545,
+     315
+    ],
+    [
+     1545,
+     1012
+    ],
+    [
+     398,
+     1012
+    ]
+   ],
+   "tone": "#d6ccb2",
+   "credit": {
+    "file": "https://commons.wikimedia.org/wiki/File:Coutances_(50)_Cath%C3%A9drale_Notre-Dame_-_Fa%C3%A7ade_occidentale_-_04.jpg",
+    "author": "GO69",
+    "license": "CC BY-SA 4.0"
+   },
+   "depth": 0.8
+  },
+  {
+   "type": "relief",
+   "name": "Tympan du porche sud",
+   "provenance": "documented",
+   "note": "The south porch’s tympanum: the Virgin among the symbols of the four evangelists, mutilated, the part most damaged in 1944; photographed from below in 2011, its size is read on the porch and is approximate.",
+   "phase": "porches",
+   "center": [
+    -40.35,
+    11.4
+   ],
+   "at": [
+    1.95,
+    6.3,
+    5.2
+   ],
+   "size": [
+    5.6,
+    5.6
+   ],
+   "facing": [
+    0,
+    1
+   ],
+   "image": "cathedrale-de-coutances.evidence/reliefs/tympan-sud.jpg",
+   "corners": [
+    [
+     204,
+     48
+    ],
+    [
+     2196,
+     48
+    ],
+    [
+     2196,
+     1500
+    ],
+    [
+     204,
+     1500
+    ]
+   ],
+   "tone": "#d3c6a8",
+   "credit": {
+    "file": "https://commons.wikimedia.org/wiki/File:Cath%C3%A9drale_Notre-Dame_de_Coutances_(nov_2011)_-_Tympan_du_portail_m%C3%A9ridional.jpg",
+    "author": "Xfigpower",
+    "license": "CC BY-SA 3.0"
+   },
+   "shape": {
+    "kind": "pointed",
+    "spring": 1.16,
+    "rise": 4.44
+   },
+   "offset": 0.35
+  },
+  {
+   "type": "relief",
+   "name": "Tympan du porche nord",
+   "provenance": "documented",
+   "note": "The north porch’s tympanum: Mary seated, her head gone, between two headless angels; photographed from below in 2011, its size is read on the smaller porch and is approximate.",
+   "phase": "porches",
+   "center": [
+    -40.2,
+    -8.75
+   ],
+   "at": [
+    2.1,
+    5.25,
+    -5.35
+   ],
+   "size": [
+    4.4,
+    4.5
+   ],
+   "facing": [
+    0,
+    -1
+   ],
+   "image": "cathedrale-de-coutances.evidence/reliefs/tympan-nord.jpg",
+   "corners": [
+    [
+     204,
+     48
+    ],
+    [
+     2196,
+     48
+    ],
+    [
+     2196,
+     1500
+    ],
+    [
+     204,
+     1500
+    ]
+   ],
+   "tone": "#d3c6a8",
+   "credit": {
+    "file": "https://commons.wikimedia.org/wiki/File:Cath%C3%A9drale_Notre-Dame_de_Coutances_(nov_2011)_-_Tympan_du_portail_septentrional.jpg",
+    "author": "Xfigpower",
+    "license": "CC BY-SA 3.0"
+   },
+   "shape": {
+    "kind": "pointed",
+    "spring": 0.93,
+    "rise": 3.57
+   },
+   "offset": 0.35
+  },
+  {
+   "type": "relief",
+   "name": "Grand orgue",
+   "provenance": "documented",
+   "note": "The organ case over the central portal, oak carved by the Caen sculptors Louis Le Guillard and Jacques Picard, with its atlantes and trumpeting angels, photographed from the nave; scaled on the nave between its piers (8 m).",
+   "phase": "empire",
+   "center": [
+    -47.3,
+    1.2
+   ],
+   "at": [
+    5,
+    14.95,
+    0
+   ],
+   "size": [
+    7.5,
+    13.3
+   ],
+   "facing": [
+    1,
+    0
+   ],
+   "image": "cathedrale-de-coutances.evidence/reliefs/orgue.jpg",
+   "corners": [
+    [
+     150,
+     180
+    ],
+    [
+     990,
+     180
+    ],
+    [
+     990,
+     1668
+    ],
+    [
+     150,
+     1668
+    ]
+   ],
+   "tone": "#b8a58c",
+   "credit": {
+    "file": "https://commons.wikimedia.org/wiki/File:Orgue_de_tribune,_buffet_d%27orgue_-_Cath%C3%A9drale_Notre-Dame_de_Coutances.jpg",
+    "author": "JackyM59",
+    "license": "CC BY-SA 4.0"
+   },
+   "depth": 0.5
+  },
+  {
+   "type": "relief",
+   "name": "Maître-autel",
+   "provenance": "documented",
+   "note": "The Louis XV high altar of pink marble by Antoine and Raphaël Duparc (1755–1757), its gilded garlands and kneeling angels, photographed from the choir; scaled on its steps, so its size is approximate.",
+   "phase": "empire",
+   "center": [
+    0,
+    2
+   ],
+   "at": [
+    21,
+    1.22,
+    0
+   ],
+   "size": [
+    4.44,
+    2.44
+   ],
+   "facing": [
+    -1,
+    0
+   ],
+   "image": "cathedrale-de-coutances.evidence/reliefs/maitre-autel.jpg",
+   "corners": [
+    [
+     295,
+     640
+    ],
+    [
+     1670,
+     640
+    ],
+    [
+     1670,
+     1395
+    ],
+    [
+     295,
+     1395
+    ]
+   ],
+   "tone": "#d9c6b6",
+   "credit": {
+    "file": "https://commons.wikimedia.org/wiki/File:Coutances_(50)_Cath%C3%A9drale_Notre-Dame_-_Int%C3%A9rieur_-_Ma%C3%AEtre-autel_-_01.jpg",
+    "author": "GO69",
+    "license": "CC BY-SA 4.0"
+   },
+   "depth": 0.4
+  },
+  {
+   "type": "furnishing",
+   "name": "Tribune et buffet d’orgue",
+   "provenance": "interpreted",
+   "phase": "empire",
+   "center": [
+    -47.3,
+    1.2
+   ],
+   "color": "#5b3f2c",
+   "note": "The tribune over the central portal and the mass of the organ case behind its photograph: the tribune’s depth and the case’s are not measured; widths and heights are read on the photograph, scaled on the nave between its piers (8 m).",
+   "parts": [
+    {
+     "at": [
+      4,
+      8,
+      0
+     ],
+     "size": [
+      3.2,
+      0.6,
+      8.2
+     ],
+     "kind": "wood"
+    },
+    {
+     "at": [
+      3.8,
+      8.6,
+      0
+     ],
+     "size": [
+      2.2,
+      10.9,
+      7.2
+     ],
+     "kind": "wood"
+    },
+    {
+     "at": [
+      4.4,
+      8.6,
+      -3
+     ],
+     "size": [
+      1.6,
+      11.2,
+      1.3
+     ],
+     "kind": "wood",
+     "shape": "drum"
+    },
+    {
+     "at": [
+      4.4,
+      8.6,
+      3
+     ],
+     "size": [
+      1.6,
+      11.2,
+      1.3
+     ],
+     "kind": "wood",
+     "shape": "drum"
+    }
+   ]
+  },
+  {
+   "type": "columns",
+   "name": "Colonnes de la tribune",
+   "provenance": "documented",
+   "phase": "empire",
+   "center": [
+    -47.3,
+    1.2
+   ],
+   "kind": "wood",
+   "order": "corinthian",
+   "color": "#6b4a33",
+   "columns": [
+    [
+     5.3,
+     0,
+     -3,
+     8,
+     0.5
+    ],
+    [
+     5.3,
+     0,
+     -2.3,
+     8,
+     0.5
+    ],
+    [
+     5.3,
+     0,
+     2.4,
+     8,
+     0.5
+    ],
+    [
+     5.3,
+     0,
+     3,
+     8,
+     0.5
+    ]
+   ]
+  },
+  {
+   "type": "furnishing",
+   "name": "Maître-autel",
+   "provenance": "interpreted",
+   "phase": "empire",
+   "center": [
+    0,
+    2
+   ],
+   "color": "#c9a9a0",
+   "note": "The mass of the high altar behind its photograph, on three marble steps; its depth is not measured.",
+   "parts": [
+    {
+     "at": [
+      21.7,
+      0,
+      0
+     ],
+     "size": [
+      1.4,
+      0.5,
+      4.6
+     ],
+     "kind": "stone",
+     "color": "#b9aea2"
+    },
+    {
+     "at": [
+      21.75,
+      0.5,
+      0
+     ],
+     "size": [
+      1.1,
+      1.9,
+      4.2
+     ],
+     "kind": "stone"
+    }
+   ]
+  },
+  {
+   "type": "roofFrame",
+   "name": "Charpente de la nef",
+   "provenance": "interpreted",
+   "note": "No survey of the cathedral’s roof frames was found in the sources read: drawn on the system of Gothic France from about 1220, every rafter pair a truss and a principal truss with tie beam and king post at every bay; the spans and heights are the model’s.",
+   "phase": "nef",
+   "system": "chevrons-formant-fermes",
+   "fermettes": 4,
+   "color": "#6a4e34",
+   "center": [
+    0,
+    1.4
+   ],
+   "from": -45.8,
+   "to": -5.6,
+   "main": 4.8,
+   "half": 5.6,
+   "eave": 22.6,
+   "ridge": 30
+  },
+  {
+   "type": "roofFrame",
+   "name": "Charpente du croisillon nord",
+   "provenance": "interpreted",
+   "note": "No survey of the cathedral’s roof frames was found in the sources read: drawn on the system of Gothic France from about 1220, every rafter pair a truss and a principal truss with tie beam and king post at every bay; the spans and heights are the model’s.",
+   "phase": "transept",
+   "system": "chevrons-formant-fermes",
+   "fermettes": 4,
+   "color": "#6a4e34",
+   "center": [
+    0.9,
+    1.4
+   ],
+   "rot": 1.5708,
+   "from": 7.2,
+   "to": 15.5,
+   "main": 4.15,
+   "half": 7.4,
+   "eave": 22.6,
+   "ridge": 30.6
+  },
+  {
+   "type": "roofFrame",
+   "name": "Charpente du croisillon sud",
+   "provenance": "interpreted",
+   "note": "No survey of the cathedral’s roof frames was found in the sources read: drawn on the system of Gothic France from about 1220, every rafter pair a truss and a principal truss with tie beam and king post at every bay; the spans and heights are the model’s.",
+   "phase": "transept",
+   "system": "chevrons-formant-fermes",
+   "fermettes": 4,
+   "color": "#6a4e34",
+   "center": [
+    0.9,
+    1.4
+   ],
+   "rot": 1.5708,
+   "from": -15.5,
+   "to": -7.2,
+   "main": 4.15,
+   "half": 7.4,
+   "eave": 22.6,
+   "ridge": 30.6
+  },
+  {
+   "type": "roofFrame",
+   "name": "Charpente du chœur",
+   "provenance": "interpreted",
+   "note": "No survey of the cathedral’s roof frames was found in the sources read: drawn on the system of Gothic France from about 1220, every rafter pair a truss and a principal truss with tie beam and king post at every bay; the spans and heights are the model’s.",
+   "phase": "choeur",
+   "system": "chevrons-formant-fermes",
+   "fermettes": 4,
+   "color": "#6a4e34",
+   "center": [
+    0,
+    2
+   ],
+   "from": 7.4,
+   "to": 23,
+   "main": 5.2,
+   "half": 6.1,
+   "eave": 25,
+   "ridge": 31.8
+  },
+  {
+   "type": "roofFrame",
+   "name": "Charpente du rond-point",
+   "provenance": "interpreted",
+   "note": "No survey of the cathedral’s roof frames was found in the sources read: drawn on the system of Gothic France from about 1220, every rafter pair a truss and a principal truss with tie beam and king post at every bay; the spans and heights are the model’s.",
+   "phase": "choeur",
+   "system": "chevrons-formant-fermes",
+   "fermettes": 4,
+   "color": "#6a4e34",
+   "center": [
+    23,
+    2
+   ],
+   "apse": {
+    "sides": 7,
+    "start": -90,
+    "end": 90
+   },
+   "half": 6.1,
+   "eave": 25,
+   "ridge": 31.8
+  },
+  {
+   "type": "roofFrame",
+   "name": "Charpente de la Circata",
+   "provenance": "interpreted",
+   "note": "No survey of the cathedral’s roof frames was found in the sources read: drawn on the system of Gothic France from about 1220, every rafter pair a truss and a principal truss with tie beam and king post at every bay; the spans and heights are the model’s.",
+   "phase": "cervelle",
+   "system": "chevrons-formant-fermes",
+   "fermettes": 4,
+   "color": "#6a4e34",
+   "center": [
+    0,
+    2
+   ],
+   "from": 37.6,
+   "to": 47,
+   "main": 4.7,
+   "half": 5.2,
+   "eave": 9,
+   "ridge": 14
+  }
+ ],
+ "rotate": -14.5,
+ "bricks": "cathedrale-de-coutances.bricks.js"
+}
