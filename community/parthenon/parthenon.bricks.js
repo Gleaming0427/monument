@@ -37,19 +37,24 @@ import {SHAPES} from '../kit/builder.js';
 
 const ECHINUS = [[0, -.5], [.36, -.5], [.385, -.34], [.43, -.12], [.475, .14], [.497, .36], [.5, .5], [0, .5]];
 // A drum of a fluted shaft: 20 concave flutes meeting in sharp arrises, narrowing a little to its top as one
-// drum of a tapering shaft does. And the echinus, the cushion of a Doric capital.
+// drum of a tapering shaft does. The high segment count matters in close views: restoration drums and the
+// rounded neck of the capital must read as cylinders, not as low-poly rectangular posts.
 SHAPES.flutedDrum ??= () => {
-  const flutes = 20, g = new T.CylinderGeometry(.5 * .985, .5, 1, flutes * 6, 1).toNonIndexed(), p = g.attributes.position;
+  const flutes = 20, g = new T.CylinderGeometry(.5 * .988, .5, 1, flutes * 12, 1).toNonIndexed(), p = g.attributes.position;
   for (let i = 0; i < p.count; i++) {
     const x = p.getX(i), z = p.getZ(i), r = Math.hypot(x, z);
     if (r < 1e-4) continue;
-    const f = ((Math.atan2(z, x) / (2 * Math.PI) * flutes) % 1 + 1) % 1, m = 1 - .075 * Math.sin(Math.PI * f);
+    const f = ((Math.atan2(z, x) / (2 * Math.PI) * flutes) % 1 + 1) % 1;
+    // Broad concave channels with a crisp arris, while retaining a circular outer envelope.
+    const m = 1 - .058 * Math.sin(Math.PI * f) ** .78;
     p.setX(i, x * m); p.setZ(i, z * m);
   }
   g.computeVertexNormals();
   return g;
 };
-SHAPES.echinus ??= () => new T.LatheGeometry(ECHINUS.map(([x, y]) => new T.Vector2(x, y)), 28);
+SHAPES.doricDrum ??= () => new T.CylinderGeometry(.5 * .988, .5, 1, 96, 1);
+SHAPES.doricRing ??= () => new T.CylinderGeometry(.5, .5, 1, 96, 1);
+SHAPES.echinus ??= () => new T.LatheGeometry(ECHINUS.map(([x, y]) => new T.Vector2(x, y)), 64);
 
 // Axis positions of n columns over a length: normal spacing a, corner spacing c (the contraction).
 const axes = (n, a, c, len) => {
@@ -128,13 +133,13 @@ function doricTemple(k, e, P) {
     const shift = y => { const f = leanBy * (y - y0) / height; return [-lean[0] * f, -lean[1] * f]; };
     for (let i = from; i < Math.min(n, to); i++) {
       const y = y0 + hd * (i + .5), [su, sv] = shift(y), isNew = fresh && rng() < (fresh.share ?? .3);
-      const shape = flutes && (!isNew || fresh.flutes !== false) ? 'flutedDrum' : 'drum';
+      const shape = flutes && (!isNew || fresh.flutes !== false) ? 'flutedDrum' : 'doricDrum';
       turned(shape, 'stone', u + su, y, v + sv, [diameterAt(i / n), hd * .996, diameterAt(i / n)], tint(isNew ? fresh.color : c0, isNew ? .025 : .055));
     }
     if (to <= n) return;
     const yc = y0 + shaft, [su, sv] = shift(yc + cap / 2), ab = abacus ?? Dm * 1.08;
     // Annulets, echinus and abacus.
-    for (let a = 0; a < 3; a++) turned('drum', 'stone', u + su, yc + .02 + a * .035, v + sv, [dt * 1.035, .028, dt * 1.035], tint(c0, .03));
+    for (let a = 0; a < 3; a++) turned('doricRing', 'stone', u + su, yc + .02 + a * .035, v + sv, [dt * 1.035, .028, dt * 1.035], tint(c0, .03));
     turned('echinus', 'stone', u + su, yc + .11 + cap * .21, v + sv, [ab * .985, cap * .42, ab * .985], tint(c0, .04));
     box('stone', u + su, yc + .11 + cap * .42 + (cap - .11 - cap * .42) / 2, v + sv, [ab, cap - .11 - cap * .42, ab], tint(c0, .04));
   }
@@ -469,7 +474,7 @@ function doricTemple(k, e, P) {
       const ou2 = axes(O.flank, (ol - 2) / (O.flank - 1), (ol - 2) / (O.flank - 1), ol), ov2 = axes(O.front, (ob - 2) / (O.front - 1), (ob - 2) / (O.front - 1), ob);
       for (let i = 0; i < O.flank; i++) for (let j = 0; j < O.front; j++) {
         if (i > 0 && i < O.flank - 1 && j > 0 && j < O.front - 1) continue;
-        for (let d = 0; d < (O.drums ?? 2); d++) turned('drum', 'stone', ou + ou2[i], 3 * r + d * (O.drum ?? 1.05) + (O.drum ?? 1.05) / 2, ov + ov2[j], [O.diameter, (O.drum ?? 1.05) * .99, O.diameter], tint('#e7dcc6', .04));
+        for (let d = 0; d < (O.drums ?? 2); d++) turned('doricDrum', 'stone', ou + ou2[i], 3 * r + d * (O.drum ?? 1.05) + (O.drum ?? 1.05) / 2, ov + ov2[j], [O.diameter, (O.drum ?? 1.05) * .99, O.diameter], tint('#e7dcc6', .04));
       }
     }
   }
@@ -482,7 +487,7 @@ function doricTemple(k, e, P) {
       // `drums`: the share of fallen drums; `low`: the highest a block lies (under a metre, a ground course).
       if (rng() < (zone.drums ?? .4)) {
         const d = C.diameter * (.8 + rng() * .2), len = .7 + rng() * .4, a = rng() * Math.PI;
-        k.lying(rng() < .6 ? 'flutedDrum' : 'drum', 'stone', new T.Vector3(p.x, (zone.y ?? 0) + d / 2, p.z), new T.Vector3(Math.cos(a), 0, Math.sin(a)), [d, len], tint(color, .07), ph, 0, extra);
+        k.lying(rng() < .6 ? 'flutedDrum' : 'doricDrum', 'stone', new T.Vector3(p.x, (zone.y ?? 0) + d / 2, p.z), new T.Vector3(Math.cos(a), 0, Math.sin(a)), [d, len], tint(color, .07), ph, 0, extra);
       } else {
         const l = .8 + rng() * 1.2, h = .35 + rng() * ((zone.low ?? 1) - .4), w = .5 + rng() * .7;
         k.box('stone', [p.x, (zone.y ?? 0) + h / 2, p.z], [l, h, w], rng() * Math.PI, tint(color, .08), ph, 0, extra);

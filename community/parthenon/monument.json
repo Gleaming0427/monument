@@ -356,7 +356,9 @@
           "Ref 3 (south): the west group, the four broken columns and the east group fit; the photo\u2019s scaffolding and crane of 2020 are gone from the final state.",
           "Ref 4 (south-east, 2015): the columns, the gap and the east front fit the telephoto; below them the model shows its krepis where the photo shows the Acropolis\u2019s south wall in front, and the modern crane stands elsewhere than the kit\u2019s crane model."
         ],
-        "fixed": [],
+        "fixed": [
+          "Column geometry refined after close inspection: the twenty-flute shafts use a smoother circular envelope, while unfluted ancient and restoration drums, capital annulets and echinoi use dedicated round high-resolution geometry; the square Doric abacus remains intentionally square."
+        ],
         "remaining": [
           "The rock of the Acropolis, its walls and its other monuments are not modelled (studio).",
           "The flanks\u2019 cornice is kept only at the corners; a few blocks survive between them on the north side.",
