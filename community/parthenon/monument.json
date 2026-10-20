@@ -258,6 +258,122 @@
         "source": "https://acropolisrestoration.ysma.gr/wp-content/uploads/2025/05/06_PARTHENWN_EN.pdf"
       }
     ],
+    "detailReview": {
+      "version": 1,
+      "status": "complete",
+      "items": [
+        {
+          "feature": "A Doric peripteral temple of 8 by 17 columns, 46 in all, with an inner row of six columns at each end.",
+          "source": "https://acropolisrestoration.ysma.gr/wp-content/uploads/2025/05/06_PARTHENWN_EN.pdf",
+          "reference": 0,
+          "element": 3,
+          "method": "geometry",
+          "model": "The measured peristyle contains 46 individually built Doric columns on an 8-by-17 grid; separate six-column pronaos and opisthodomos rows stand inside the two fronts.",
+          "checked": true,
+          "result": "matched"
+        },
+        {
+          "feature": "Stylobate 69.51 \u00d7 30.86 m on three steps.",
+          "source": "https://de.wikipedia.org/wiki/Parthenon",
+          "reference": 0,
+          "element": 2,
+          "method": "geometry",
+          "model": "Three separately coursed marble steps terminate in the documented 69.51 by 30.86 metre stylobate, including individually jointed perimeter and paving blocks.",
+          "checked": true,
+          "result": "matched"
+        },
+        {
+          "feature": "Columns 10.43 m high and 1.90 m across, in 10\u201312 drums with 20 flutes; corner columns 4.3 cm thicker and the corner bays closed up by 61.5 cm.",
+          "source": "https://de.wikipedia.org/wiki/Parthenon",
+          "reference": 2,
+          "element": 3,
+          "method": "geometry",
+          "model": "Every shaft is assembled drum by drum to 10.43 metres, with a smooth circular envelope, twenty concave flutes and entasis; the corner diameter and contracted terminal intercolumniation use their documented offsets.",
+          "checked": true,
+          "result": "matched"
+        },
+        {
+          "feature": "An entablature 3.29 m high with 92 metopes between triglyphs: 14 on each front, 32 on each flank.",
+          "source": "https://en.wikipedia.org/wiki/Parthenon",
+          "reference": 0,
+          "element": 11,
+          "method": "geometry",
+          "model": "The complete 3.29 metre Doric entablature builds architrave courses, taenia, regulae with six guttae, 92 metope bays, grooved triglyphs, geison, mutules and eighteen pendant guttae under every mutule.",
+          "checked": true,
+          "result": "matched"
+        },
+        {
+          "feature": "Pediments 28.35 m wide, 3.46 m high and 0.91 m deep, under raking cornices.",
+          "source": "https://de.wikipedia.org/wiki/Parthenon",
+          "reference": 1,
+          "element": 18,
+          "method": "geometry",
+          "model": "Both pediments use the measured width, rise and depth, with individually coursed tympana beneath separate raking geisa and simas; surviving gaps are state-specific.",
+          "checked": true,
+          "result": "matched"
+        },
+        {
+          "feature": "No straight lines: the stylobate rises 60 mm on the short sides and 110 mm on the long ones; the columns lean 7.4 cm inwards.",
+          "source": "https://de.wikipedia.org/wiki/Parthenon",
+          "reference": 2,
+          "element": 3,
+          "method": "geometry",
+          "model": "A continuous two-axis lift carries the stylobate and all superstructure through the documented 60 and 110 millimetre curvature, while each column axis converges inward by 7.4 centimetres from base to capital.",
+          "checked": true,
+          "result": "matched"
+        },
+        {
+          "feature": "A roof of marble tiles with antefixes (anthemia) and lion-head spouts.",
+          "source": "https://www.visitgreece.gr/en/experiences/culture/archaeological-sites-monuments/parthenon",
+          "reference": 0,
+          "element": 21,
+          "method": "geometry",
+          "model": "The two roof slopes are laid in separate marble pan tiles and convex half-round cover tiles; every cover-tile row terminates in an extruded palmette antefix, with separately modelled mane-and-muzzle lion-head spouts at the pediment feet.",
+          "checked": true,
+          "result": "matched"
+        },
+        {
+          "feature": "A continuous Ionic frieze 160 m long round the top of the cella, over the porches.",
+          "source": "https://acropolisrestoration.ysma.gr/wp-content/uploads/2025/05/06_PARTHENWN_EN.pdf",
+          "reference": 0,
+          "element": 26,
+          "method": "geometry",
+          "model": "A continuous, separately coursed frieze band follows the full cella perimeter and crosses both six-column porches at the documented level below its crown.",
+          "checked": true,
+          "result": "matched"
+        },
+        {
+          "feature": "Inside, a two-storey Doric colonnade in a \u03a0 round the statue; a back room with four Ionic columns.",
+          "source": "https://www.visitgreece.gr/en/experiences/culture/archaeological-sites-monuments/parthenon",
+          "reference": 0,
+          "element": 28,
+          "method": "geometry",
+          "model": "The naos carries two superposed Doric orders on a three-sided pi-shaped plan around Athena and her basin; the western chamber is independently supported by four full Ionic columns.",
+          "checked": true,
+          "result": "matched"
+        },
+        {
+          "feature": "Close details: cedar centring pieces between drums, iron clamps sealed in lead.",
+          "source": "https://www.pbs.org/wgbh/nova/parthenon/rest-nf.html",
+          "reference": 3,
+          "element": 3,
+          "method": "material",
+          "model": "The construction sequence exposes the stacked drum joints and gives dedicated close moments to the paired cedar centring keys and lead-sheathed iron clamps, keeping these normally hidden techniques legible without pretending they remain externally visible.",
+          "checked": true,
+          "result": "matched"
+        },
+        {
+          "feature": "Today the north colonnade stands complete with new white marble among the ancient drums, the south side has its gap of 1687, and the middle of the east pediment is gone.",
+          "source": "https://acropolisrestoration.ysma.gr/wp-content/uploads/2025/05/06_PARTHENWN_EN.pdf",
+          "reference": 2,
+          "element": 7,
+          "method": "geometry",
+          "model": "The final state combines the completed north colonnade with drum-level new-marble replacements, the photographed southern loss and partial stumps, and a separately omitted central sector of the east pediment.",
+          "checked": true,
+          "result": "matched"
+        }
+      ]
+    },
     "geometry": "The outline of the lowest step (OpenStreetMap) gives the place and orientation (12.9\u00b0 north of east); stylobate, columns, intercolumniation, entablature, pediment and curvature from de.wikipedia; step heights and the state of the ruin read on four Commons photos fitted with calibrate.mjs.",
     "comparisons": [
       {
@@ -357,7 +473,7 @@
           "Ref 4 (south-east, 2015): the columns, the gap and the east front fit the telephoto; below them the model shows its krepis where the photo shows the Acropolis\u2019s south wall in front, and the modern crane stands elsewhere than the kit\u2019s crane model."
         ],
         "fixed": [
-          "Column geometry refined after close inspection: the twenty-flute shafts use a smoother circular envelope, while unfluted ancient and restoration drums, capital annulets and echinoi use dedicated round high-resolution geometry; the square Doric abacus remains intentionally square."
+          "Rebuilt and re-audited the architectural detail system after close inspection: twenty-flute shafts now use a smooth circular envelope; plain drums, capital annulets and echinoi use dedicated high-resolution round geometry; regulae and porch bands carry moulded guttae; every mutule carries three rows of six pendant guttae; marble and later terracotta roofs use curved cover tiles; every eave row terminates in a modelled anthemion antefix; and the sima ends carry dedicated mane-and-muzzle lion spouts. The Doric abacus remains intentionally square."
         ],
         "remaining": [
           "The rock of the Acropolis, its walls and its other monuments are not modelled (studio).",
