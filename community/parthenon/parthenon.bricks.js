@@ -38,50 +38,53 @@ import {SHAPES} from '../kit/builder.js';
 const ECHINUS = [[0, -.5], [.36, -.5], [.385, -.34], [.43, -.12], [.475, .14], [.497, .36], [.5, .5], [0, .5]];
 const GUTTA = [[0, -.5], [.31, -.5], [.46, -.3], [.5, .24], [.4, .5], [0, .5]];
 // A drum of a fluted shaft: 20 concave flutes meeting in sharp arrises, narrowing a little to its top as one
-// drum of a tapering shaft does. The high segment count matters in close views: restoration drums and the
-// rounded neck of the capital must read as cylinders, not as low-poly rectangular posts.
-SHAPES.flutedDrum ??= () => {
-  const flutes = 20, g = new T.CylinderGeometry(.5 * .988, .5, 1, flutes * 12, 1).toNonIndexed(), p = g.attributes.position;
-  for (let i = 0; i < p.count; i++) {
-    const x = p.getX(i), z = p.getZ(i), r = Math.hypot(x, z);
-    if (r < 1e-4) continue;
-    const f = ((Math.atan2(z, x) / (2 * Math.PI) * flutes) % 1 + 1) % 1;
-    // Broad concave channels with a crisp arris, while retaining a circular outer envelope.
-    const m = 1 - .058 * Math.sin(Math.PI * f) ** .78;
-    p.setX(i, x * m); p.setZ(i, z * m);
-  }
-  g.computeVertexNormals();
-  return g;
+// drum of a tapering shaft does. These monument-specific names are exported explicitly: the gallery copies
+// them into the active renderer's shape registry, so an unknown shape can never silently fall back to a box.
+export const shapes = {
+  parthenonFlutedDrum: () => {
+    const flutes = 20, g = new T.CylinderGeometry(.5 * .988, .5, 1, flutes * 16, 1), p = g.attributes.position;
+    for (let i = 0; i < p.count; i++) {
+      const x = p.getX(i), z = p.getZ(i), r = Math.hypot(x, z);
+      if (r < 1e-4) continue;
+      const f = ((Math.atan2(z, x) / (2 * Math.PI) * flutes) % 1 + 1) % 1;
+      // Twenty broad concave channels return to the true circular envelope at each sharp arris.
+      const m = 1 - .07 * Math.sin(Math.PI * f) ** .82;
+      p.setX(i, x * m); p.setZ(i, z * m);
+    }
+    g.computeVertexNormals();
+    return g;
+  },
+  parthenonDoricDrum: () => new T.CylinderGeometry(.5 * .988, .5, 1, 128, 1),
+  parthenonDoricRing: () => new T.CylinderGeometry(.5, .5, 1, 128, 1),
+  parthenonEchinus: () => new T.LatheGeometry(ECHINUS.map(([x, y]) => new T.Vector2(x, y)), 96),
+  parthenonDoricGutta: () => new T.LatheGeometry(GUTTA.map(([x, y]) => new T.Vector2(x, y)), 32),
+  parthenonCoverTile: () => {
+    // Convex half-cylinder used for the marble or terracotta cover tiles. Rotate the open cylinder so its
+    // crown follows the roof normal when `lying` aligns its long axis with the fall of the roof.
+    const g = new T.CylinderGeometry(.5, .5, 1, 32, 1, true, 0, Math.PI);
+    g.rotateY(Math.PI / 2); g.computeVertexNormals(); return g;
+  },
+  parthenonAnthemion: () => {
+    const s = new T.Shape();
+    s.moveTo(-.5, -.5); s.lineTo(-.46, -.08); s.lineTo(-.3, .18); s.lineTo(-.42, .42);
+    s.lineTo(-.18, .34); s.lineTo(0, .5); s.lineTo(.18, .34); s.lineTo(.42, .42);
+    s.lineTo(.3, .18); s.lineTo(.46, -.08); s.lineTo(.5, -.5); s.closePath();
+    const g = new T.ExtrudeGeometry(s, {depth: 1, bevelEnabled: true, bevelSegments: 2, bevelSize: .035, bevelThickness: .035, curveSegments: 2});
+    g.translate(0, 0, -.5); g.computeVertexNormals(); return g;
+  },
+  parthenonLionSpout: () => {
+    // Frontal silhouette of the leonine water spouts fixed to the sima: pointed ears, a broad mane and jaw.
+    // The projecting muzzle is a separate turned member below, so this is not a token sphere at the eave.
+    const s = new T.Shape();
+    s.moveTo(-.18, -.5); s.lineTo(-.38, -.38); s.lineTo(-.48, -.12); s.lineTo(-.4, .15);
+    s.lineTo(-.5, .46); s.lineTo(-.2, .36); s.lineTo(0, .5); s.lineTo(.2, .36);
+    s.lineTo(.5, .46); s.lineTo(.4, .15); s.lineTo(.48, -.12); s.lineTo(.38, -.38);
+    s.lineTo(.18, -.5); s.closePath();
+    const g = new T.ExtrudeGeometry(s, {depth: 1, bevelEnabled: true, bevelSegments: 3, bevelSize: .045, bevelThickness: .045, curveSegments: 3});
+    g.translate(0, 0, -.5); g.computeVertexNormals(); return g;
+  },
 };
-SHAPES.doricDrum ??= () => new T.CylinderGeometry(.5 * .988, .5, 1, 96, 1);
-SHAPES.doricRing ??= () => new T.CylinderGeometry(.5, .5, 1, 96, 1);
-SHAPES.echinus ??= () => new T.LatheGeometry(ECHINUS.map(([x, y]) => new T.Vector2(x, y)), 64);
-SHAPES.doricGutta ??= () => new T.LatheGeometry(GUTTA.map(([x, y]) => new T.Vector2(x, y)), 24);
-SHAPES.coverTile ??= () => {
-  // Convex half-cylinder used for the marble or terracotta cover tiles. Rotate the open cylinder so its
-  // crown follows the roof normal when `lying` aligns its long axis with the fall of the roof.
-  const g = new T.CylinderGeometry(.5, .5, 1, 32, 1, true, 0, Math.PI);
-  g.rotateY(Math.PI / 2); g.computeVertexNormals(); return g;
-};
-SHAPES.anthemion ??= () => {
-  const s = new T.Shape();
-  s.moveTo(-.5, -.5); s.lineTo(-.46, -.08); s.lineTo(-.3, .18); s.lineTo(-.42, .42);
-  s.lineTo(-.18, .34); s.lineTo(0, .5); s.lineTo(.18, .34); s.lineTo(.42, .42);
-  s.lineTo(.3, .18); s.lineTo(.46, -.08); s.lineTo(.5, -.5); s.closePath();
-  const g = new T.ExtrudeGeometry(s, {depth: 1, bevelEnabled: true, bevelSegments: 2, bevelSize: .035, bevelThickness: .035, curveSegments: 2});
-  g.translate(0, 0, -.5); g.computeVertexNormals(); return g;
-};
-SHAPES.lionSpout ??= () => {
-  // Frontal silhouette of the leonine water spouts fixed to the sima: pointed ears, a broad mane and jaw.
-  // The projecting muzzle is a separate turned member below, so this is not a token sphere at the eave.
-  const s = new T.Shape();
-  s.moveTo(-.18, -.5); s.lineTo(-.38, -.38); s.lineTo(-.48, -.12); s.lineTo(-.4, .15);
-  s.lineTo(-.5, .46); s.lineTo(-.2, .36); s.lineTo(0, .5); s.lineTo(.2, .36);
-  s.lineTo(.5, .46); s.lineTo(.4, .15); s.lineTo(.48, -.12); s.lineTo(.38, -.38);
-  s.lineTo(.18, -.5); s.closePath();
-  const g = new T.ExtrudeGeometry(s, {depth: 1, bevelEnabled: true, bevelSegments: 3, bevelSize: .045, bevelThickness: .045, curveSegments: 3});
-  g.translate(0, 0, -.5); g.computeVertexNormals(); return g;
-};
+Object.assign(SHAPES, shapes);
 
 // Axis positions of n columns over a length: normal spacing a, corner spacing c (the contraction).
 const axes = (n, a, c, len) => {
@@ -164,14 +167,14 @@ function doricTemple(k, e, P) {
     const shift = y => { const f = leanBy * (y - y0) / height; return [-lean[0] * f, -lean[1] * f]; };
     for (let i = from; i < Math.min(n, to); i++) {
       const y = y0 + hd * (i + .5), [su, sv] = shift(y), isNew = fresh && rng() < (fresh.share ?? .3);
-      const shape = flutes && (!isNew || fresh.flutes !== false) ? 'flutedDrum' : 'doricDrum';
+      const shape = flutes && (!isNew || fresh.flutes !== false) ? 'parthenonFlutedDrum' : 'parthenonDoricDrum';
       turned(shape, 'stone', u + su, y, v + sv, [diameterAt(i / n), hd * .996, diameterAt(i / n)], tint(isNew ? fresh.color : c0, isNew ? .025 : .055));
     }
     if (to <= n) return;
     const yc = y0 + shaft, [su, sv] = shift(yc + cap / 2), ab = abacus ?? Dm * 1.08;
     // Annulets, echinus and abacus.
-    for (let a = 0; a < 3; a++) turned('doricRing', 'stone', u + su, yc + .02 + a * .035, v + sv, [dt * 1.035, .028, dt * 1.035], tint(c0, .03));
-    turned('echinus', 'stone', u + su, yc + .11 + cap * .21, v + sv, [ab * .985, cap * .42, ab * .985], tint(c0, .04));
+    for (let a = 0; a < 3; a++) turned('parthenonDoricRing', 'stone', u + su, yc + .02 + a * .035, v + sv, [dt * 1.035, .028, dt * 1.035], tint(c0, .03));
+    turned('parthenonEchinus', 'stone', u + su, yc + .11 + cap * .21, v + sv, [ab * .985, cap * .42, ab * .985], tint(c0, .04));
     box('stone', u + su, yc + .11 + cap * .42 + (cap - .11 - cap * .42) / 2, v + sv, [ab, cap - .11 - cap * .42, ab], tint(c0, .04));
   }
   const freshFor = id => e.fresh && (!e.fresh.only || pick(e.fresh.only, [id]).has(id)) ? e.fresh : null;
@@ -256,7 +259,7 @@ function doricTemple(k, e, P) {
           }
           if (inSeg(t) && layers.has('architrave')) {
             sideBox(sd, t, tw, yFrieze - .17, .06, -.05, .06);
-            for (let g = 0; g < 6; g++) { const [u, v] = at(sd, t + (g - 2.5) / 6 * tw * .86, -.02); turned('doricGutta', 'stone', u, yFrieze - .215, v, [.075, .09, .075], tint(color, .03)); }
+            for (let g = 0; g < 6; g++) { const [u, v] = at(sd, t + (g - 2.5) / 6 * tw * .86, -.02); turned('parthenonDoricGutta', 'stone', u, yFrieze - .215, v, [.075, .09, .075], tint(color, .03)); }
           }
           if (i < centres.length - 1 && layers.has('frieze')) {
             const a = Math.max(t0, t + tw / 2), b = Math.min(t1, centres[i + 1] - tw / 2);
@@ -274,7 +277,7 @@ function doricTemple(k, e, P) {
             // Eighteen pendant guttae under each mutule, in the canonical three rows of six.
             for (let row = 0; row < 3; row++) for (let g = 0; g < 6; g++) {
               const along = t + (g - 2.5) / 6 * tw * .82, depth = -pr + .16 + row * Math.max(.12, (pr - .28) / 2), [u, v] = at(sd, along, depth);
-              turned('doricGutta', 'stone', u, yGeison - .125, v, [.055, .085, .055], tint(color, .025));
+              turned('parthenonDoricGutta', 'stone', u, yGeison - .125, v, [.055, .085, .055], tint(color, .025));
             }
           }
         }
@@ -312,9 +315,9 @@ function doricTemple(k, e, P) {
         }
         if (!skip(side * (half - .2))) {
           const u = sgn * (faceU + pr - .1), y = yTop + (P2.width / 2 - half) * slope + .9, v = side * (half - .2), p = W(u, y + lift(u, v), v), c = tint(color, .04);
-          k.turned('lionSpout', 'stone', [p.x, p.y, p.z], [.52, .48, .32], rot + Math.PI / 2, c, ph, p.y - .24, extra);
+          k.turned('parthenonLionSpout', 'stone', [p.x, p.y, p.z], [.52, .48, .32], rot + Math.PI / 2, c, ph, p.y - .24, extra);
           const muzzle = W(u + sgn * .2, y - .08 + lift(u, v), v);
-          k.lying('doricGutta', 'stone', muzzle, D(sgn, 0, 0), [.22, .3], c, ph, muzzle.y - .11, extra);
+          k.lying('parthenonDoricGutta', 'stone', muzzle, D(sgn, 0, 0), [.22, .3], c, ph, muzzle.y - .11, extra);
         }
       }
       // The floor of the pediment (the horizontal geison's top, where the statues stand).
@@ -331,11 +334,11 @@ function doricTemple(k, e, P) {
         for (let i = 0; i < nu; i++) {
           const u = u0 + (i + .5) * (u1 - u0) / nu;
           sloped(kind, [u, y, v], [1, 0, 0], nrm, [(u1 - u0) / nu * .97, .07, tl * 1.04], tint(roofColor, .04));
-          lying('coverTile', kind, u0 + i * (u1 - u0) / nu, y + .09, v, [0, -slope, side], [.17, tl * 1.04], tint(roofColor, .05));
+          lying('parthenonCoverTile', kind, u0 + i * (u1 - u0) / nu, y + .09, v, [0, -slope, side], [.17, tl * 1.04], tint(roofColor, .05));
         }
       }
       // Antefixes along the eave, one at the foot of every row of cover tiles.
-      for (let i = 0; i <= nu; i++) turned('anthemion', 'stone', u0 + i * (u1 - u0) / nu, yEave + .27, side * (half - .04), [.34, .44, .09], tint(color, .045));
+      for (let i = 0; i <= nu; i++) turned('parthenonAnthemion', 'stone', u0 + i * (u1 - u0) / nu, yEave + .27, side * (half - .04), [.34, .44, .09], tint(color, .045));
     }
     for (let i = 0; i < nu; i++) box(kind, u0 + (i + .5) * (u1 - u0) / nu, yRidge + .2, 0, [(u1 - u0) / nu * .98, .2, .5], tint(roofColor, .05));
   }
@@ -404,7 +407,7 @@ function doricTemple(k, e, P) {
       run(a, b, friezeTop, crownTop - friezeTop, 1.25, tint(color, .03));
     }
     // The regulae and guttae along the porch front's architrave, a Doric touch under the Ionic frieze.
-    for (let v = -w + .6; v < w - .5; v += 1.06) { box('stone', uo + sgn * .82, sekosTop - .1, v, [.06, .06, .7], tint(color, .03)); for (let g = 0; g < 6; g++) turned('doricGutta', 'stone', uo + sgn * .82, sekosTop - .17, v + (g - 2.5) * .11, [.065, .08, .065], tint(color, .03)); }
+    for (let v = -w + .6; v < w - .5; v += 1.06) { box('stone', uo + sgn * .82, sekosTop - .1, v, [.06, .06, .7], tint(color, .03)); for (let g = 0; g < 6; g++) turned('parthenonDoricGutta', 'stone', uo + sgn * .82, sekosTop - .17, v + (g - 2.5) * .11, [.065, .08, .065], tint(color, .03)); }
   }
 
   // ——— Ceilings and roof frame ———
@@ -445,7 +448,7 @@ function doricTemple(k, e, P) {
       for (let i = 0; i < nu; i++) {
         const u = R.from + (i + .5) * (R.to - R.from) / nu;
         sloped('tile', [u, y, v], [1, 0, 0], nrm, [(R.to - R.from) / nu * .97, .05, tl * 1.05], tint(R.color ?? '#a8613f', .06));
-        lying('coverTile', 'tile', R.from + i * (R.to - R.from) / nu, y + .07, v, [0, -sl, side], [.13, tl * 1.05], tint(R.color ?? '#a8613f', .07));
+        lying('parthenonCoverTile', 'tile', R.from + i * (R.to - R.from) / nu, y + .07, v, [0, -sl, side], [.13, tl * 1.05], tint(R.color ?? '#a8613f', .07));
       }
     }
     for (let i = 0; i < nu; i++) box('tile', R.from + (i + .5) * (R.to - R.from) / nu, yr + .1, 0, [(R.to - R.from) / nu * .98, .16, .35], tint(R.color ?? '#a8613f', .06));
@@ -517,7 +520,7 @@ function doricTemple(k, e, P) {
       const ou2 = axes(O.flank, (ol - 2) / (O.flank - 1), (ol - 2) / (O.flank - 1), ol), ov2 = axes(O.front, (ob - 2) / (O.front - 1), (ob - 2) / (O.front - 1), ob);
       for (let i = 0; i < O.flank; i++) for (let j = 0; j < O.front; j++) {
         if (i > 0 && i < O.flank - 1 && j > 0 && j < O.front - 1) continue;
-        for (let d = 0; d < (O.drums ?? 2); d++) turned('doricDrum', 'stone', ou + ou2[i], 3 * r + d * (O.drum ?? 1.05) + (O.drum ?? 1.05) / 2, ov + ov2[j], [O.diameter, (O.drum ?? 1.05) * .99, O.diameter], tint('#e7dcc6', .04));
+        for (let d = 0; d < (O.drums ?? 2); d++) turned('parthenonDoricDrum', 'stone', ou + ou2[i], 3 * r + d * (O.drum ?? 1.05) + (O.drum ?? 1.05) / 2, ov + ov2[j], [O.diameter, (O.drum ?? 1.05) * .99, O.diameter], tint('#e7dcc6', .04));
       }
     }
   }
@@ -530,7 +533,7 @@ function doricTemple(k, e, P) {
       // `drums`: the share of fallen drums; `low`: the highest a block lies (under a metre, a ground course).
       if (rng() < (zone.drums ?? .4)) {
         const d = C.diameter * (.8 + rng() * .2), len = .7 + rng() * .4, a = rng() * Math.PI;
-        k.lying(rng() < .6 ? 'flutedDrum' : 'doricDrum', 'stone', new T.Vector3(p.x, (zone.y ?? 0) + d / 2, p.z), new T.Vector3(Math.cos(a), 0, Math.sin(a)), [d, len], tint(color, .07), ph, 0, extra);
+        k.lying(rng() < .6 ? 'parthenonFlutedDrum' : 'parthenonDoricDrum', 'stone', new T.Vector3(p.x, (zone.y ?? 0) + d / 2, p.z), new T.Vector3(Math.cos(a), 0, Math.sin(a)), [d, len], tint(color, .07), ph, 0, extra);
       } else {
         const l = .8 + rng() * 1.2, h = .35 + rng() * ((zone.low ?? 1) - .4), w = .5 + rng() * .7;
         k.box('stone', [p.x, (zone.y ?? 0) + h / 2, p.z], [l, h, w], rng() * Math.PI, tint(color, .08), ph, 0, extra);

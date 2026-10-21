@@ -1,4 +1,4 @@
-import {createStage, generators, PROVENANCE} from './builder.js';
+import {createStage, generators, PROVENANCE, SHAPES} from './builder.js';
 
 const $ = id => document.getElementById(id);
 // One page = one building (#<id>). Its file, monuments/<id>.json (dated, sourced phases and the
@@ -46,7 +46,12 @@ async function open(id) {
     // Only a plain file name, loaded from the same origin as the monument file: never a remote script.
     const bricksUrl = new URL(data.bricks, response.url);
     if (!/^[a-z0-9-]+\.bricks\.js$/.test(data.bricks) || bricksUrl.origin !== location.origin) { data = null; return empty(id); }
-    Object.assign(generators, (await import(bricksUrl)).default);
+    // Custom bricks are deployment-versioned just like the engine and JSON. Without this query a returning
+    // visitor can keep an old module in the HTTP/module cache while seeing the new monument description.
+    bricksUrl.search = version;
+    const custom = await import(bricksUrl.href);
+    Object.assign(SHAPES, custom.shapes ?? {});
+    Object.assign(generators, custom.default);
   }
   // The requested building is the default scene. Real map context is available explicitly with
   // `view.context: true` or the `?context` query parameter.

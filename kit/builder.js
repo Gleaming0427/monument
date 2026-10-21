@@ -2479,7 +2479,9 @@ export function createStage(host) {
     // One instanced mesh per material and shape.
     for (const piece of k.pieces) (groups[`${piece.kind}|${piece.shape ?? 'box'}`] ??= []).push(piece);
     for (const [key, list] of Object.entries(groups)) {
-      const [kind, shape] = key.split('|'), geometry = (SHAPES[shape] ?? SHAPES.box)(), life = new Float32Array(list.length * 2), seed = new Float32Array(list.length), lean = new Float32Array(list.length), proof = new Float32Array(list.length), shelter = new Float32Array(list.length);
+      const [kind, shape] = key.split('|'), shapeFactory = SHAPES[shape];
+      if (!shapeFactory) throw new Error(`Unknown geometry shape "${shape}"; refusing to replace it with a square box.`);
+      const geometry = shapeFactory(), life = new Float32Array(list.length * 2), seed = new Float32Array(list.length), lean = new Float32Array(list.length), proof = new Float32Array(list.length), shelter = new Float32Array(list.length);
       geometry.setAttribute('uv1', geometry.attributes.uv);
       const mesh = new T.InstancedMesh(geometry, material(kind), list.length);
       list.forEach((piece, i) => {
