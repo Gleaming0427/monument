@@ -18,7 +18,9 @@ export async function loadEngine(bricksFile) {
   if (bricksFile) {
     const bricks = (await readFile(bricksFile, 'utf8')).replaceAll("from 'three'", `from '${three}'`).replaceAll("from '../kit/builder.js'", `from '${pathToFileURL(builder).href}'`);
     await writeFile(join(temp, 'bricks.mjs'), bricks);
-    Object.assign(engine.generators, (await import(pathToFileURL(join(temp, 'bricks.mjs')).href)).default);
+    const custom = await import(pathToFileURL(join(temp, 'bricks.mjs')).href);
+    Object.assign(engine.SHAPES, custom.shapes ?? {});
+    Object.assign(engine.generators, custom.default);
   }
   return engine;
 }

@@ -1,0 +1,85 @@
+{
+  "schemaVersion": 1,
+  "models": {
+    "parthenon": {
+      "file": "community/parthenon/monument.json",
+      "snapshot": {
+        "id": "parthenon",
+        "phases": 15,
+        "elements": 72,
+        "pieces": 38504,
+        "reliefs": 31,
+        "bounds": {"min": [-39.038, 0, -27.729], "max": [39.038, 28.88, 24.604]},
+        "shapes": {
+          "ball": 3,
+          "bell": 1,
+          "box": 20233,
+          "cone": 1,
+          "drum": 59,
+          "flare": 5,
+          "octagon": 2,
+          "parthenonAnthemion": 186,
+          "parthenonCoverTile": 11616,
+          "parthenonDoricDrum": 141,
+          "parthenonDoricGutta": 4528,
+          "parthenonDoricRing": 504,
+          "parthenonEchinus": 168,
+          "parthenonFlutedDrum": 1036,
+          "parthenonLionSpout": 4,
+          "shaft": 3,
+          "spike": 2,
+          "torus": 12
+        },
+        "shapeGeometry": {
+          "ball": {"type": "SphereGeometry", "vertices": 77},
+          "bell": {"type": "LatheGeometry", "vertices": 168},
+          "cone": {"type": "CylinderGeometry", "vertices": 67},
+          "drum": {"type": "CylinderGeometry", "vertices": 100},
+          "flare": {"type": "CylinderGeometry", "vertices": 100},
+          "octagon": {"type": "BufferGeometry", "vertices": 96},
+          "parthenonAnthemion": {"type": "ExtrudeGeometry", "vertices": 384},
+          "parthenonCoverTile": {"type": "CylinderGeometry", "vertices": 66},
+          "parthenonDoricDrum": {"type": "CylinderGeometry", "vertices": 772},
+          "parthenonDoricGutta": {"type": "LatheGeometry", "vertices": 198},
+          "parthenonDoricRing": {"type": "CylinderGeometry", "vertices": 772},
+          "parthenonEchinus": {"type": "LatheGeometry", "vertices": 776},
+          "parthenonFlutedDrum": {"type": "CylinderGeometry", "vertices": 1924},
+          "parthenonLionSpout": {"type": "ExtrudeGeometry", "vertices": 612},
+          "shaft": {"type": "CylinderGeometry", "vertices": 100},
+          "spike": {"type": "BufferGeometry", "vertices": 48},
+          "torus": {"type": "TorusGeometry", "vertices": 133}
+        },
+        "columnElements": [],
+        "planFit": {"p90": 1, "max": 1.41, "coverage": 0.93, "overflow": 0},
+        "photoRms": [0.4, 0.7, 0.8, 1.2, 0.6],
+        "digest": "9e96e71c89eb9a4581ad",
+        "unknownShapes": []
+      }
+    },
+    "coutances": {
+      "file": "community/cathedrale-de-coutances/monument.json",
+      "snapshot": {
+        "id": "cathedrale-de-coutances",
+        "phases": 9,
+        "elements": 59,
+        "pieces": 46873,
+        "reliefs": 7,
+        "bounds": {"min": [-51.26, 0, -28.038], "max": [50.292, 77, 27.663]},
+        "shapes": {"ball": 1120, "box": 43809, "drum": 882, "flare": 114, "octagon": 596, "spike": 106, "torus": 246},
+        "shapeGeometry": {
+          "ball": {"type": "SphereGeometry", "vertices": 77},
+          "drum": {"type": "CylinderGeometry", "vertices": 100},
+          "flare": {"type": "CylinderGeometry", "vertices": 100},
+          "octagon": {"type": "BufferGeometry", "vertices": 96},
+          "spike": {"type": "BufferGeometry", "vertices": 48},
+          "torus": {"type": "TorusGeometry", "vertices": 133}
+        },
+        "columnElements": [{"index": 51, "name": "Colonnes de la tribune", "pieces": 116, "turned": 108, "turnedShare": 0.931}],
+        "planFit": {"p90": 1.5, "max": 2.5, "coverage": 0.98, "overflow": 0.05},
+        "photoRms": [0.7, 1.1, 1.6, 1.4],
+        "digest": "1ada1d5d564e80e4e90c",
+        "unknownShapes": []
+      }
+    }
+  }
+}

@@ -2557,16 +2557,21 @@ export function createStage(host) {
   }
 
   // Screen area left free by the panels: the monument is centred and framed in it.
-  let insets = {left: 0, top: 0, bottom: 0};
+  let insets = {left: 0, right: 0, top: 0, bottom: 0};
   const free = () => {
     const w = host.clientWidth, h = host.clientHeight;
-    return {w, h, fw: Math.max(1, w - insets.left), fh: Math.max(1, h - insets.top - insets.bottom)};
+    return {w, h, fw: Math.max(1, w - insets.left - insets.right), fh: Math.max(1, h - insets.top - insets.bottom)};
   };
   // Distance needed to see the monument's full width; fog follows the distance.
   const fit = () => {
     const {distance, width = distance} = monument.view, {w, h, fw, fh} = free();
     const half = Math.atan(Math.tan(T.MathUtils.degToRad(camera.fov / 2)) * fw / fh);
-    return Math.max(distance, width / 2 / Math.tan(half) * .85) * Math.max(1, h / fh * .9);
+    // Narrow viewports need extra breathing room: the declared width is measured on plan, while an oblique
+    // camera also projects part of the monument's depth onto the horizontal axis. Without this allowance a
+    // long building can be mathematically centred yet still lose its far end just outside a phone screen.
+    const constrained = insets.left + insets.right > w * .25 || insets.top + insets.bottom > h * .25;
+    const framing = fw < 700 ? 1.24 : constrained ? 1.12 : .9;
+    return Math.max(distance, width / 2 / Math.tan(half) * framing) * Math.max(1, h / fh * .9);
   };
   function home() {
     const dir = new T.Vector3(...(monument.view.direction ?? [.55, .32, .78])).normalize(), d = fit();
@@ -2584,7 +2589,7 @@ export function createStage(host) {
     renderer.setSize(w, h); composer.setSize(w, h);
     // Shift the image centre to the middle of the free area, and by the lens shift. setViewOffset also sets
     // the aspect, from its full width and height.
-    camera.setViewOffset(w, h, -insets.left / 2, (insets.bottom - insets.top) / 2 - lensShift * h, w, h);
+    camera.setViewOffset(w, h, (insets.right - insets.left) / 2, (insets.bottom - insets.top) / 2 - lensShift * h, w, h);
     camera.updateProjectionMatrix();
     if (monument && !moved) home();
   };
@@ -2597,8 +2602,9 @@ export function createStage(host) {
     load,
     home,
     setInsets(next) {
-      if (next.left === insets.left && next.top === insets.top && next.bottom === insets.bottom) return;
-      insets = next; resize();
+      const complete = {left: 0, right: 0, top: 0, bottom: 0, ...next};
+      if (complete.left === insets.left && complete.right === insets.right && complete.top === insets.top && complete.bottom === insets.bottom) return;
+      insets = complete; resize();
     },
     // Camera plan: close to the foundations at first, then pulling back to the overall view.
     // With an active moment, the camera eases towards the piece concerned; with `look` [azimuth, elevation]
@@ -2608,9 +2614,17 @@ export function createStage(host) {
       const f = Math.min(1, t / Math.max(1, total - 1)), s = f * f * (3 - 2 * f);
       const target = new T.Vector3(...start.target).lerp(end, s);
       let distance = start.distance + (fit() - start.distance) * s;
-      if (focus) { target.lerp(toWorld(focus), Number.isFinite(closeDistance) ? .82 : .45); distance = Number.isFinite(closeDistance) ? closeDistance : distance * .72; }
-      // On a narrow screen the whole monument stays in frame, except to look inside it.
-      if (host.clientWidth <= 1100 && !look) distance = Math.max(distance, fit());
+      const constrained = insets.left + insets.right > host.clientWidth * .25 || insets.top + insets.bottom > host.clientHeight * .25;
+      if (focus) {
+        // A phone or tablet cannot both crop tightly around a detail and keep a long monument readable. Keep
+        // the overall framing there; on a constrained desktop rail, only a subtle focus shift is retained.
+        const focusMix = host.clientWidth <= 1100 || constrained ? 0 : Number.isFinite(closeDistance) ? .82 : .45;
+        target.lerp(toWorld(focus), focusMix);
+        distance = Number.isFinite(closeDistance) ? closeDistance : distance * .72;
+      }
+      // When interface rails leave a narrow scene, the whole monument stays in that free area instead of a
+      // close-up spilling back underneath the cards. Explicit reference-photo viewpoints remain untouched.
+      if (!look && (host.clientWidth <= 1100 || constrained)) distance = Math.max(distance, fit());
       const dir = camera.position.clone().sub(controls.target).normalize(), now = camera.position.distanceTo(controls.target);
       if (look) {
         const az = look[0] * Math.PI / 180, el = (look[1] ?? 10) * Math.PI / 180;
@@ -2629,6 +2643,7 @@ export function createStage(host) {
       return {x: (v.x * .5 + .5) * host.clientWidth, y: (-v.y * .5 + .5) * host.clientHeight, visible: v.z < 1 && Math.abs(v.x) < 1.1 && Math.abs(v.y) < 1.1};
     },
     get duration() { return total; },
+    get insets() { return {...insets}; },
     // Where the camera stands and looks: [x, y, z, target x, y, z].
     get eye() { return [...camera.position.toArray(), ...controls.target.toArray()]; },
     // The section view on or off.

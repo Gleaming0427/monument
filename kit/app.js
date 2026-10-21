@@ -146,12 +146,14 @@ function update() {
   const pinned = moment ? `${data.id}:${index}:${moment.at}` : '';
   if (pinned !== momentKey) {
     momentKey = pinned; momentSince = performance.now(); reading = moment ? (words(moment.title) + words(moment.text)) / WORDS_PER_SECOND * 1000 + 1500 : 0;
+    document.body.classList.toggle('has-moment', Boolean(moment));
     $('moment').hidden = !moment;
     if (moment) {
       $('m-tag').textContent = moment.tag; $('m-title').textContent = moment.title; $('m-text').textContent = moment.text;
       $('m-source').href = moment.source; $('m-source').textContent = `Source: ${new URL(moment.source).hostname.replace(/^www\./, '')}`;
       $('moment').style.animation = 'none'; void $('moment').offsetWidth; $('moment').style.animation = '';
     }
+    requestAnimationFrame(layout);
   }
   for (const tick of $('phases').querySelectorAll('.tick')) tick.classList.toggle('seen', Number(tick.dataset.at) <= time);
   $('live').replaceChildren(...data.live.flatMap(stat => {
@@ -176,20 +178,23 @@ function placeLabels() {
   }
 }
 
-// The moment card sits near its pin, inside the screen and clear of the panels.
+// The moment card uses a reserved rail instead of covering the monument. On smaller screens it replaces
+// the story card in the same dock; the pin is deliberately omitted there to keep the scene legible.
 function pinMoment() {
   const card = $('moment'), pin = $('pin'), leader = $('leader');
   if (!moment) { pin.hidden = leader.hidden = true; return; }
+  if (innerWidth <= 1100 || proofOn) {
+    card.style.removeProperty('left'); card.style.removeProperty('right'); card.style.removeProperty('top');
+    pin.hidden = leader.hidden = true;
+    return;
+  }
   const p = stage.project(moment.anchor), w = card.offsetWidth, h = card.offsetHeight;
-  const minX = innerWidth > 1100 ? document.querySelector('.story').getBoundingClientRect().right + 16 : 12;
-  const maxY = document.querySelector(innerWidth > 1100 || embed ? '.timeline' : '.story').getBoundingClientRect().top - h - 12;
-  // Clear of the evidence panel when it is open.
-  const right = proofOn && innerWidth > 1100 ? $('proof').getBoundingClientRect().left - 12 : innerWidth - 12;
-  const x = Math.min(right - w, Math.max(minX, p.x + 40));
-  // Below the figures panel when it shares the same column.
-  const live = document.querySelector('.live').getBoundingClientRect(), top = x + w > live.left - 12 ? live.bottom + 12 : 72;
-  const y = Math.min(maxY, Math.max(top, p.y - h - 40));
-  card.style.left = `${x}px`; card.style.top = `${y}px`;
+  const x = innerWidth - w - 20;
+  const live = document.querySelector('.live').getBoundingClientRect();
+  const top = live.height ? live.bottom + 12 : document.querySelector('.top').getBoundingClientRect().bottom + 12;
+  const maxY = document.querySelector('.timeline').getBoundingClientRect().top - h - 12;
+  const y = Math.max(top, Math.min(maxY, p.y - h / 2));
+  card.style.left = 'auto'; card.style.right = '20px'; card.style.top = `${y}px`;
   pin.hidden = leader.hidden = !p.visible;
   if (!p.visible) return;
   pin.style.left = `${p.x}px`; pin.style.top = `${p.y}px`;
@@ -233,18 +238,35 @@ function fitTimeline() {
   phases.classList.remove('measure'); phases.classList.toggle('dates', over);
 }
 
-// The monument is framed in the space the panels leave (left on wide screens, above on phones).
+// The monument is framed in the space the panels leave: between two rails on desktop, beside one compact
+// rail on tablets, and above a short bottom dock on phones.
 // ?embed keeps only the scene and the timeline, for a live preview inside another page.
 function layout() {
   fitTimeline();
-  if (clean || photoRef || document.body.classList.contains('empty')) return stage.setInsets({left: 0, top: 0, bottom: 0});
-  if (embed) return stage.setInsets({left: 0, top: 0, bottom: Math.round(innerHeight - document.querySelector('.timeline').getBoundingClientRect().top)});
-  const story = document.querySelector('.story').getBoundingClientRect(), bar = document.querySelector('.timeline').getBoundingClientRect();
-  const wide = innerWidth > 1100;
+  if (clean || photoRef || document.body.classList.contains('empty')) return stage.setInsets({left: 0, right: 0, top: 0, bottom: 0});
+  const bar = document.querySelector('.timeline').getBoundingClientRect();
+  if (embed) return stage.setInsets({left: 0, right: 0, top: 0, bottom: Math.round(innerHeight - bar.top)});
+  const story = document.querySelector('.story').getBoundingClientRect();
+  const top = Math.ceil(document.querySelector('.top').getBoundingClientRect().bottom + 12);
+  if (proofOn && innerWidth <= 1100) {
+    const proof = $('proof').getBoundingClientRect();
+    return stage.setInsets({left: 0, right: 0, top, bottom: Math.round(innerHeight - proof.top + 8)});
+  }
+  const card = moment ? $('moment').getBoundingClientRect() : story;
+  if (innerWidth <= 720) {
+    return stage.setInsets({left: 0, right: 0, top, bottom: Math.round(innerHeight - card.top + 8)});
+  }
+  if (innerWidth <= 1100) {
+    return stage.setInsets({left: Math.round(card.right + 12), right: 0, top, bottom: Math.round(innerHeight - bar.top)});
+  }
+  const rightPanels = [document.querySelector('.live'), moment && $('moment'), proofOn && $('proof')].filter(Boolean)
+    .filter(node => !node.hidden && getComputedStyle(node).display !== 'none')
+    .map(node => innerWidth - node.getBoundingClientRect().left + 12);
   stage.setInsets({
-    left: wide ? Math.round(story.right) : 0,
-    top: Math.ceil(document.querySelector('.top').getBoundingClientRect().bottom + 14),
-    bottom: Math.round(innerHeight - (wide ? bar.top : story.top)),
+    left: Math.round(story.right + 12),
+    right: Math.round(Math.max(0, ...rightPanels)),
+    top,
+    bottom: Math.round(innerHeight - bar.top),
   });
 }
 
@@ -436,7 +458,8 @@ try {
   stage = createStage($('stage'));
   stage.onInteract(() => { touched = true; stage.autoRotate(false); });
   new ResizeObserver(layout).observe(document.querySelector('.story'));
-  addEventListener('resize', layout);
+  new ResizeObserver(layout).observe($('moment'));
+  addEventListener('resize', () => { pinMoment(); layout(); });
   await open(decodeURIComponent(location.hash.slice(1)));
   layout();
   // ?proof opens the evidence mode; ?photo=<n> lays reference photo n over the model.
@@ -455,6 +478,8 @@ window.monument = {
   get duration() { return stage?.duration ?? 0; },
   get ready() { return Boolean(data) && stage.ready; },
   get eye() { return stage?.eye ?? []; },
+  get insets() { return stage?.insets ?? {left: 0, right: 0, top: 0, bottom: 0}; },
+  project(point) { return stage?.project(point) ?? {x: 0, y: 0, visible: false}; },
 };
 
 // Direct links can change only the fragment without reloading the document.

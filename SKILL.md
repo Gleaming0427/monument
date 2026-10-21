@@ -17,6 +17,8 @@ Name a building in one line, and you get it rising piece by piece: on its real p
 
 The standard build needs web pages you can open and read, images you can inspect, and Node 20+. A local Chrome or Chromium makes the comparison sheet automatic; when it is unavailable, use the active browser to inspect and capture the same views. Never fall back to memory or search-result summaries.
 
+When changing the engine, its bricks or this skill, measure before claiming an improvement. Use the Parthenon and Coutances release references, run `node scripts/golden.test.mjs` and `node scripts/responsive.test.mjs`, and wrap comparable before/after commands with `node scripts/measure.mjs` as described in [references/measurement.md](references/measurement.md). Report token categories separately and leave them unknown when the host does not expose them; never estimate a saving.
+
 ## When someone asks for a building
 
 `/monument <building, city, country>` in Claude Code, OpenCode or Antigravity, `$monument …` in Codex, or any request to see how a building was built.
