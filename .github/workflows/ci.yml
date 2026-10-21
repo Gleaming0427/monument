@@ -12,8 +12,20 @@ jobs:
       - name: Check every monument
         run: node scripts/validate.mjs --strict
       - name: Check the scripts and the kit
-        run: for f in kit/*.js scripts/*.mjs; do node --check "$f"; done
+        run: find kit scripts -type f \( -name '*.js' -o -name '*.mjs' \) -print0 | xargs -0 -n1 node --check
       - name: Check the automatic scaffold generator
         run: node scripts/scaffold.test.mjs
       - name: Build the site
         run: node scripts/build-site.mjs
+      - name: Check golden monument geometry
+        run: node scripts/measure.mjs --label golden-geometry-ci --out .artifacts/metrics.jsonl -- node scripts/golden.test.mjs
+      - name: Check phone, tablet and desktop layouts
+        run: node scripts/measure.mjs --label responsive-ci --out .artifacts/metrics.jsonl -- node scripts/responsive.test.mjs
+      - name: Keep P0 measurements and responsive captures
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: monument-p0-${{ github.run_id }}
+          path: .artifacts/
+          if-no-files-found: warn
+          retention-days: 14

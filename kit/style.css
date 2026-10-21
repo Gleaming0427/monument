@@ -44,7 +44,7 @@ body.clean:not(.caption) .story{display:none!important}
 #facts{list-style:none;margin:12px 0 0;padding:10px 0 0;border-top:1px solid var(--line);display:grid;gap:4px;font-size:12px;color:var(--muted)}
 #facts b{color:var(--ink);font-weight:700}
 
-.story{position:fixed;left:20px;bottom:104px;width:min(420px,calc(100% - 40px));padding:18px 20px;border-radius:16px;background:var(--glass);border:1px solid var(--line);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+.story{position:fixed;left:20px;bottom:104px;width:min(360px,calc(100% - 40px));max-height:calc(100vh - 190px);overflow:auto;padding:18px 20px;border-radius:16px;background:var(--glass);border:1px solid var(--line);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
 #when{font:600 11px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--gold)}
 #title{font-size:28px;line-height:1.1;letter-spacing:-.03em;margin:6px 0 8px}
 #text{margin:0;color:#3d3a42;font-size:14px}
@@ -86,7 +86,7 @@ body.clean:not(.caption) .story{display:none!important}
 #pin{position:fixed;z-index:2;width:16px;height:16px;margin:-8px 0 0 -8px;border-radius:50%;border:2px solid var(--gold);background:rgba(176,124,44,.25);box-shadow:0 0 0 6px rgba(176,124,44,.12);pointer-events:none;animation:pulse 1.6s ease-in-out infinite}
 @keyframes pulse{50%{box-shadow:0 0 0 12px rgba(176,124,44,.05)}}
 #leader{position:fixed;z-index:2;height:1px;background:rgba(176,124,44,.7);transform-origin:0 50%;pointer-events:none}
-#moment{position:fixed;z-index:3;width:270px;padding:12px 14px;border-radius:12px;background:rgba(255,253,249,.92);border:1px solid rgba(176,124,44,.45);box-shadow:0 6px 18px rgba(40,30,20,.08);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);animation:appear .35s ease-out}
+#moment{position:fixed;z-index:3;top:150px;right:20px;width:300px;max-height:calc(100vh - 200px);overflow:auto;padding:12px 14px;border-radius:12px;background:rgba(255,253,249,.92);border:1px solid rgba(176,124,44,.45);box-shadow:0 6px 18px rgba(40,30,20,.08);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);animation:appear .35s ease-out}
 @keyframes appear{from{opacity:0;transform:translateY(6px)}}
 #m-tag{display:block;font:600 10px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--gold)}
 #m-title{display:block;font-size:16px;letter-spacing:-.02em;margin:4px 0 4px}
@@ -109,35 +109,56 @@ body.clean:not(.caption) .story{display:none!important}
 #phases.measure .seg-title{font-weight:700}
 #phases.dates .seg-title{display:none}
 #phases.dates .seg-date{white-space:normal}
-@media(max-width:720px){
- #moment{width:min(230px,calc(100% - 24px));padding:10px 12px}
- #m-title{font-size:14px}
- #m-text{font-size:12px}
- .top{top:12px;left:12px;right:12px;flex-wrap:wrap;gap:10px}
- .live{top:112px;right:12px;width:auto;padding:10px 12px}
- #live b{font-size:24px}
- #facts{display:none}
- .story{left:12px;bottom:88px;width:calc(100% - 24px);padding:14px 16px}
- #title{font-size:22px}
- #text{font-size:13px}
- .timeline{left:12px;right:12px;bottom:12px;padding:12px 14px;align-items:center}
- #play{margin-bottom:0}
- #speed{margin:0 -4px 0 -6px}
- .seg-label{display:none}
- #phases{gap:4px}
- .tick{width:6px;height:6px;margin:-3px 0 0 -3px}
-}
 @media(prefers-reduced-motion:reduce){.tick{transition:none}}
-@media(max-width:600px){.building{flex-direction:column;gap:0;padding:6px 12px}}
 
 #model-note{font-size:10px;line-height:1.4;color:#8a6a3a;border-top:1px solid var(--line);padding-top:8px;margin:8px 0 0}
 .live:has(#live:empty){display:none}
 /* Panels sit above the plan labels */
 .story,.timeline,.live,.top,#moment{z-index:4}
 
-/* Leave the measured scene room in medium-width preview panels. */
-@media(min-width:721px) and (max-width:1100px){.story{width:calc(100% - 40px);left:20px}.top{right:216px}.live{top:16px;width:180px;padding:10px 12px}.live #facts{display:none}}
+/* Tablet: one compact rail. A construction moment replaces the phase story in that rail, so neither
+   panel ever sits on top of the monument. */
+@media(min-width:721px) and (max-width:1100px){
+ .top{right:20px}
+ .live{display:none}
+ .story,#moment{left:16px;right:auto;top:78px;bottom:auto;width:min(310px,42vw);max-height:calc(100vh - 174px);overflow:auto;padding:14px 16px}
+ body.has-moment .story{display:none}
+ #title{font-size:22px;margin:5px 0 7px}
+ #text{font-size:13px}
+ #m-title{font-size:15px}
+ #m-text{font-size:12px}
+ #model-note{display:none}
+ .timeline{left:16px;right:16px;bottom:16px}
+}
 @media(min-width:1101px){.top{right:260px}}
+
+/* Phone: a shallow bottom dock above a compact timeline. Moments use the same dock instead of opening a
+   second card over the building. */
+@media(max-width:720px){
+ .top{top:8px;left:8px;right:8px;gap:6px;flex-wrap:nowrap}
+ .brand{display:none}
+ .building{flex:1;min-width:0;padding:6px 10px}
+ #name{overflow:hidden;text-overflow:ellipsis}
+ #place{display:none}
+ .chip{height:30px;padding:0 9px;font-size:11px}
+ .live{display:none}
+ .story,#moment{left:8px;right:8px;top:auto;bottom:calc(64px + env(safe-area-inset-bottom));width:auto;max-height:112px;overflow:hidden;padding:10px 12px;border-radius:12px}
+ body.has-moment .story{display:none}
+ #when,#m-tag{font-size:9px}
+ #title{font-size:18px;margin:2px 0 3px}
+ #text,#m-text{display:-webkit-box;-webkit-box-orient:vertical;overflow:hidden;font-size:12px;line-height:1.35}
+ #text{-webkit-line-clamp:2}
+ #m-text{-webkit-line-clamp:3}
+ #m-title{font-size:14px;margin:2px 0}
+ #source,#m-source,#model-note{display:none}
+ .timeline{left:8px;right:8px;bottom:max(8px,env(safe-area-inset-bottom));gap:10px;padding:8px 10px;align-items:center;border-radius:12px}
+ #play{width:34px;height:34px;margin-bottom:0}
+ #speed{height:24px;min-width:40px;margin:0 -2px 0 -4px;padding:0 7px}
+ .seg-label{display:none}
+ #phases{gap:4px}
+ .seg{gap:4px}
+ .tick{width:6px;height:6px;margin:-3px 0 0 -3px}
+}
 
 /* Evidence mode: the provenance of every piece, the measured plan, the pages read and the reference photos. */
 .chip{flex:none;height:32px;padding:0 13px;border-radius:16px;background:var(--glass);border:1px solid var(--line);color:var(--muted);font:600 12px 'Manrope',system-ui,sans-serif;cursor:pointer;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
@@ -145,6 +166,7 @@ body.clean:not(.caption) .story{display:none!important}
 .chip[aria-pressed="true"]{color:#fffdf8;background:var(--gold);border-color:var(--gold)}
 body.empty #proof-toggle{display:none}
 body.proof .live{display:none}
+body.proof :is(#moment,#pin,#leader){display:none!important}
 #proof{position:fixed;z-index:3;top:16px;right:20px;bottom:110px;width:340px;overflow:auto;padding:16px 18px;border-radius:16px;background:var(--glass);border:1px solid var(--line);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);font-size:13px}
 #proof h2{margin:0 0 4px;font-size:15px}
 #proof h3{margin:16px 0 6px;font:600 10px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--gold)}

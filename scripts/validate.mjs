@@ -48,6 +48,11 @@ const SURFACE_MATERIALS = new Set(['limestone-paris', 'limestone-weathered', 'ma
 // Commons and, when Commons records where it was taken, the declared viewpoint must match that place.
 const UA = {'User-Agent': 'monument-skill/1.0 (+https://github.com/Gleaming0427/monument)'};
 const opened = new Map();
+const archived = async (link, reason) => {
+  const copy = await fetch(`https://web.archive.org/web/2/${link}`, {method: 'HEAD', headers: UA, redirect: 'manual', signal: AbortSignal.timeout(20000)}).then(r => r.headers.get('location')).catch(() => null);
+  if (/\/web\/\d{14}\//.test(copy ?? '')) { console.warn(`! ${link} ${reason}; the Internet Archive's copy is used: ${copy}`); return 'ok'; }
+  return null;
+};
 const open = link => {
   if (!opened.has(link)) opened.set(link, (async () => {
     for (const method of ['HEAD', 'GET']) {
@@ -56,13 +61,16 @@ const open = link => {
         response.body?.cancel();
         if (response.status < 400) return 'ok';
         if ([404, 410].includes(response.status)) return `answers ${response.status}`;
-        if (method === 'GET') return [401, 403, 429, 503].includes(response.status) ? 'ok' : `answers ${response.status}`;
+        if (method === 'GET') {
+          if ([401, 403, 429].includes(response.status)) return 'ok';
+          if (response.status >= 500) return await archived(link, `answers ${response.status}`) ?? `answers ${response.status} and has no archived copy`;
+          return `answers ${response.status}`;
+        }
       } catch (error) {
         if (method !== 'GET') continue;
         // A site that does not answer at all (an outage, a block) is not a page that is gone: the page counts
         // if the Internet Archive holds a copy of it, which is said; otherwise it cannot be verified.
-        const copy = await fetch(`https://web.archive.org/web/2/${link}`, {method: 'HEAD', headers: UA, redirect: 'manual', signal: AbortSignal.timeout(20000)}).then(r => r.headers.get('location')).catch(() => null);
-        if (/\/web\/\d{14}\//.test(copy ?? '')) { console.warn(`! ${link} does not answer (${error.cause?.code ?? error.name}); the Internet Archive's copy is used: ${copy}`); return 'ok'; }
+        if (await archived(link, `does not answer (${error.cause?.code ?? error.name})`)) return 'ok';
         return `cannot be opened (${error.cause?.code ?? error.name}) and has no archived copy`;
       }
     }
