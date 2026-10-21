@@ -473,7 +473,8 @@
           "Ref 4 (south-east, 2015): the columns, the gap and the east front fit the telephoto; below them the model shows its krepis where the photo shows the Acropolis\u2019s south wall in front, and the modern crane stands elsewhere than the kit\u2019s crane model."
         ],
         "fixed": [
-          "Rebuilt and re-audited the architectural detail system after close inspection: twenty-flute shafts now use a smooth circular envelope; plain drums, capital annulets and echinoi use dedicated high-resolution round geometry; regulae and porch bands carry moulded guttae; every mutule carries three rows of six pendant guttae; marble and later terracotta roofs use curved cover tiles; every eave row terminates in a modelled anthemion antefix; and the sima ends carry dedicated mane-and-muzzle lion spouts. The Doric abacus remains intentionally square."
+          "Rebuilt and re-audited the architectural detail system after close inspection: twenty-flute shafts now use a smooth circular envelope; plain drums, capital annulets and echinoi use dedicated high-resolution round geometry; regulae and porch bands carry moulded guttae; every mutule carries three rows of six pendant guttae; marble and later terracotta roofs use curved cover tiles; every eave row terminates in a modelled anthemion antefix; and the sima ends carry dedicated mane-and-muzzle lion spouts. The Doric abacus remains intentionally square.",
+          "Corrected the community-gallery render path itself: all Parthenon-specific shapes now enter the active renderer through an explicit exported registry and a deployment-versioned module URL. Unknown shapes fail visibly instead of silently becoming square boxes; the full built gallery was reloaded and checked at column scale."
         ],
         "remaining": [
           "The rock of the Acropolis, its walls and its other monuments are not modelled (studio).",
