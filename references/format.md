@@ -21,6 +21,41 @@ One building = one JSON file, `monuments/<id>.json` in the user's project (`exam
 }
 ```
 
+## The catalogue: writing less without saying less
+
+A temple is thirty-six elements of the same brick, and they differ by a phase, a range of columns, a handful of replacement drums. Writing the shared 1.4 kB `spec` thirty-six times is how a monument file becomes unreadable and expensive. Hoist it into a `catalogue` and let each element name the prototype it reuses:
+
+```json
+{
+  "catalogue": {
+    "doricTemple": {"type": "doricTemple", "center": [0, 0], "spec": {"…": "…"}},
+    "doricTemple#phase+provenance": {"use": "doricTemple", "phase": "temple", "provenance": "measured"}
+  },
+  "elements": [
+    {"use": "doricTemple#phase+provenance", "parts": ["columns"], "columns": "n1-n3 s1-s5 e1-e8 w1-w8"},
+    "doricTemple"
+  ]
+}
+```
+
+- `"use": "name"` names a prototype; a bare string is the same thing. Any other key overrides it.
+- Plain objects merge key by key, **arrays and scalars replace wholesale**, and `null` removes an inherited key.
+- A prototype may itself start with `"use"`, so a family stays a readable chain instead of a pile of near-copies.
+- Everything else in the file — phases, evidence, `note` — is never touched. A prototype that only repeats a value nobody else repeats is not a prototype, and `validate.mjs` says so.
+
+Expansion is **exact**: the engine, the validator and the viewer only ever see the expanded monument, so the golden baselines of the Parthenon and Coutances stay byte-identical whatever the file says. That is the guarantee that makes the compact form safe to review like any other edit.
+
+To convert a file that grew verbose, and to see what it would cost:
+
+```
+node scripts/catalogue.mjs monuments/<id>.json --stats    # report the real saving
+node scripts/catalogue.mjs monuments/<id>.json --pack     # rewrite it, round-trip verified
+```
+
+`--pack` refuses to write anything that does not expand back to the exact monument it started from, and refuses a file that already uses a catalogue rather than renaming prototypes somebody chose. `node scripts/catalogue.test.mjs` checks the merge rules, the error messages, the exactness of all three reference monuments, and that the saving does not quietly regress.
+
+Measured on the three community monuments: 114 753 → 62 130 estimated tokens, −45.9 %. The gain is entirely in `elements`; the phases and the evidence are the modeller's own prose and no format removes them. The Parthenon gives up 57 % of its file; Coutances, whose fifty-nine elements are all different work, only 8 %. Quote the number a benchmark measured, not the one a plan hoped for.
+
 ## Provenance of the elements
 
 Every element says where it comes from, so the viewer's evidence mode can colour each piece and readers can tell a measurement from a guess:

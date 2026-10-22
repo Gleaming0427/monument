@@ -23,6 +23,7 @@ import {createServer} from 'node:http';
 import {dirname, join, resolve, basename} from 'node:path';
 import {tmpdir} from 'node:os';
 import {openBrowser} from './lib/browser.mjs';
+import {expand} from './lib/compact.mjs';
 
 const args = process.argv.slice(2), flag = name => { const i = args.indexOf(`--${name}`); return i >= 0 ? args[i + 1] : undefined; };
 const file = args.find(arg => arg.endsWith('.json'));
@@ -127,7 +128,7 @@ if (flag('file') || flag('image')) {
 }
 
 if (flag('check')) {
-  const d = JSON.parse(await readFile(path, 'utf8')), e = d.elements[Number(flag('check'))];
+  const d = expand(JSON.parse(await readFile(path, 'utf8')), file), e = d.elements[Number(flag('check'))];
   if (e?.type !== 'relief') { console.error(`elements[${flag('check')}] is not a relief.`); process.exit(1); }
   const slug = `${basename(e.image).replace(/\.[a-z]+$/, '')}-${flag('check')}`, [w, h] = e.size, W = 1200, H = Math.round(W * h / w);
   const outline = {kind: 'rect', ...e.shape, w, h}, recess = e.recess ? {kind: outline.kind, w: e.recess.width, h, spring: e.recess.spring ?? outline.spring, rise: e.recess.rise, cx: e.recess.offset ?? 0} : null;
