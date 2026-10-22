@@ -1,0 +1,190 @@
+{
+  "_read": "Translate every string into this language. Keep every number, date, measurement and name exactly as written. Dates in `when` and every `source` are not here: they never change.",
+  "modelNote": "Posée sur l'empreinte OpenStreetMap et sur les dimensions publiées (127 m de long, 48 m de large, voûtes à 33 m, toitures à 43 m, tours à 69 m, flèche à 96 m) ; les travées, les rosaces et les portails sont mesurés sur des photographies. Les portails, la galerie des rois, la rosace occidentale et les statues des niches sont des photographies libres de Wikimedia Commons posées sur le modèle avec leur profondeur ; le reste de la sculpture est simplifié, et la forme de la première flèche est interprétée. À l'intérieur, le grand orgue et les jubés sont eux aussi des photographies libres : ils traversent la vue en coupe.",
+  "live": [
+    {
+      "label": "Hauteur"
+    }
+  ],
+  "facts": [
+    {
+      "value": "127 m",
+      "label": "longueur"
+    },
+    {
+      "value": "69 m",
+      "label": "tours"
+    },
+    {
+      "value": "96 m",
+      "label": "flèche"
+    }
+  ],
+  "phases": {
+    "choeur": {
+      "title": "Le chœur",
+      "text": "L'évêque Maurice de Sully pose la première pierre en 1163. Le chœur et son double déambulatoire sont achevés, couverture comprise, en 1177, et le maître-autel est consacré le 19 mai 1182.",
+      "moments": [
+        {
+          "tag": "Début",
+          "title": "La première pierre",
+          "text": "Maurice de Sully pose la première pierre en 1163, en présence du pape Alexandre III."
+        },
+        {
+          "tag": "Métiers",
+          "title": "Tailleurs de pierre, maçons, faiseurs de mortier",
+          "text": "Tailleurs de pierre, maçons et faiseurs de mortier se partagent les murs ; le bois arme toute structure du chantier, et le plomb scelle les crampons de fer."
+        },
+        {
+          "tag": "Intérieur",
+          "title": "Le maître-autel consacré",
+          "text": "Le 19 mai 1182, le légat papal Henri de Château-Marçay et Maurice de Sully consacrent le maître-autel ; le chœur était achevé en 1177 et la messe y est dite dès 1180."
+        }
+      ]
+    },
+    "nef": {
+      "title": "La nef",
+      "text": "Les quatre travées orientales de la nef s'élèvent avec leurs bas-côtés et leurs galeries à partir de 1182, puis les travées occidentales. L'ancienne cathédrale est démolie à mesure que la nouvelle monte.",
+      "moments": [
+        {
+          "tag": "Site",
+          "title": "Une cathédrale remplace l'autre",
+          "text": "La première cathédrale, dédiée à saint Étienne, est démolie petit à petit à mesure que la nouvelle s'édifie."
+        },
+        {
+          "tag": "Dimensions",
+          "title": "Des voûtes à 33 m",
+          "text": "La nef mesure 60 m de long ; sa nef centrale fait 13 m de large sous des voûtes hautes de 33 m."
+        }
+      ]
+    },
+    "facade": {
+      "title": "La façade occidentale",
+      "text": "À partir de 1208, les trois portails s'élèvent, puis la galerie des rois et, vers 1220–1225, l'étage de la rosace, large de 9,70 m.",
+      "moments": [
+        {
+          "tag": "Sculpture",
+          "title": "Vingt-huit rois",
+          "text": "Une galerie de 28 statues de rois court sur toute la façade, au-dessus des portails."
+        },
+        {
+          "tag": "Vitrail",
+          "title": "La rosace occidentale",
+          "text": "La rosace de la façade occidentale mesure 9,70 m de diamètre."
+        }
+      ]
+    },
+    "tours": {
+      "title": "Tours et chapelles",
+      "text": "La galerie haute et les deux tours de 69 m sont achevées en 1250. Des chapelles remplissent les espaces entre les contreforts de la nef, de nouveaux arcs-boutants portent les voûtes et une première flèche s'élève au-dessus de la croisée du transept.",
+      "moments": [
+        {
+          "tag": "Tours",
+          "title": "Nord 1240, sud 1250",
+          "text": "La tour nord est achevée en 1240 et la tour sud en 1250."
+        },
+        {
+          "tag": "Flèche",
+          "title": "Une première flèche, 78 m",
+          "text": "Bâtie de 1220 à 1230, la première flèche culmine à 78 m au-dessus du sol et sert aussi de clocher."
+        }
+      ]
+    },
+    "transept": {
+      "title": "Rosaces et arcs-boutants",
+      "text": "Jehan de Chelles, puis Pierre de Montreuil, allongent le transept et lui donnent deux rosaces de 13,10 m de diamètre. Des chapelles entourent le chœur, et Jean Ravy construit les arcs-boutants du chevet ; les travaux s'achèvent en 1345.",
+      "moments": [
+        {
+          "tag": "Rosace",
+          "title": "La rosace nord",
+          "text": "Vers 1250, Jehan de Chelles allonge le transept et construit le front nord avec sa rosace."
+        },
+        {
+          "tag": "Structure",
+          "title": "Les arcs-boutants de Jean Ravy",
+          "text": "Au début du 14e siècle, Jean Ravy construit les arcs-boutants qui dessinent encore la silhouette de la cathédrale."
+        },
+        {
+          "tag": "Intérieur",
+          "title": "Le jubé du chœur",
+          "text": "Jean Ravy commence le jubé de pierre qui ceint le chœur des chanoines, sculpté et peint de la vie du Christ ; son neveu Jean le Bouteiller l'achève en 1351."
+        }
+      ]
+    },
+    "orgue": {
+      "title": "Le grand orgue",
+      "text": "François Thierry construit le grand orgue en 1733, dans le buffet qui se dresse encore sous la rosace occidentale, sur sa tribune au fond de la nef. François-Henri Clicquot le reconstruit en 1783 et Aristide Cavaillé-Coll en 1868 ; il compte aujourd'hui 7.952 tuyaux.",
+      "moments": [
+        {
+          "tag": "Intérieur",
+          "title": "Sous la rosace occidentale",
+          "text": "Vu depuis la nef, le buffet se dresse devant la rosace. L'incendie de 2019 l'a épargné : nettoyé tuyau par tuyau, l'orgue a de nouveau été joué à la réouverture, le 7 décembre 2024."
+        }
+      ]
+    },
+    "revolution": {
+      "title": "Flèche abattue, rois retirés",
+      "text": "La flèche du 13e siècle, délabrée, est abattue de 1786 à 1792. Sous la Révolution, les statues de la galerie des rois sont retirées et la cathédrale devient un Temple de la Raison en 1793.",
+      "moments": [
+        {
+          "tag": "Découverte",
+          "title": "Des têtes retrouvées en 1977",
+          "text": "Sur les 28 têtes d'origine des rois, 21 ont été retrouvées en 1977 ; elles sont conservées au musée de Cluny."
+        }
+      ]
+    },
+    "restauration": {
+      "title": "Lassus et Viollet-le-Duc",
+      "text": "La restauration est décidée en 1844 : les rois sont sculptés à nouveau, des chimères inventées et une nouvelle sacristie construite. La flèche de bois et de plomb de Viollet-le-Duc, haute de 96 m, est inaugurée le 15 août 1859 ; les travaux s'achèvent le 3 janvier 1865.",
+      "moments": [
+        {
+          "tag": "Sacristie",
+          "title": "Une sacristie dans le style de la cathédrale",
+          "text": "Viollet-le-Duc démolit la sacristie de Soufflot et en construit une nouvelle qui imite l'architecture de la cathédrale."
+        },
+        {
+          "tag": "Flèche",
+          "title": "18 m de plus",
+          "text": "La nouvelle flèche culmine à 96 m, soit 18 m de plus que la première ; son revêtement de plomb pèse environ 250 tonnes."
+        },
+        {
+          "tag": "Statues",
+          "title": "Seize statues de cuivre",
+          "text": "Les douze apôtres et les quatre symboles des évangélistes se dressent en quatre groupes sur les toitures, chacun tourné vers un point cardinal."
+        }
+      ]
+    },
+    "incendie": {
+      "title": "L'incendie",
+      "text": "Un incendie se déclare dans la toiture vers 6 h 18 de l'après-midi. La flèche s'effondre à 7 h 45 de l'après-midi, emportant une partie des voûtes ; la charpente de bois et les toitures de plomb sont perdues. Les seize statues avaient été déposées quatre jours plus tôt.",
+      "moments": [
+        {
+          "tag": "Incendie",
+          "title": "La flèche s'effondre",
+          "text": "La partie supérieure de la flèche s'effondre vers 7 h 45 de l'après-midi ; sa chute détruit une partie des voûtes de la nef et la croisée du transept."
+        }
+      ]
+    },
+    "renaissance": {
+      "title": "Reconstruite comme elle était",
+      "text": "Charpente et flèche sont reconstruites à l'identique avec mille chênes ; le coq doré couronne la flèche de 96 m le 16 décembre 2023. La cathédrale rouvre le 7 décembre 2024.",
+      "moments": [
+        {
+          "tag": "Flèche",
+          "title": "Le coq doré",
+          "text": "Le 16 décembre 2023, le coq doré est posé sur la flèche, à près de 96 m au-dessus du sol, ce qui achève le travail de structure."
+        },
+        {
+          "tag": "Réouverture",
+          "title": "7 décembre 2024",
+          "text": "La cathédrale rouvre avec une cérémonie officielle le 7 décembre 2024, et ouvre ses portes au public le lendemain."
+        },
+        {
+          "tag": "Statues",
+          "title": "Le retour des statues",
+          "text": "Lorsque l'échafaudage de la flèche est démonté en septembre 2025, les seize statues de cuivre restaurées sont revenues en place."
+        }
+      ]
+    }
+  }
+}

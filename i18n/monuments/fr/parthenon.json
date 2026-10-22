@@ -1,0 +1,225 @@
+{
+  "_read": "Translate every string into this language. Keep every number, date, measurement and name exactly as written. Dates in `when` and every `source` are not here: they never change.",
+  "modelNote": "Emprise ajustée sur OpenStreetMap ; stylobate, colonnes, entablement et frontons repris des dimensions publiées ; l’état de ruine après 1687 et les restaurations sont lus sur des photographies. L’intérieur, les toitures, la statue et les ajouts postérieurs sont interprétés d’après des descriptions.",
+  "live": [
+    {
+      "label": "Hauteur"
+    }
+  ],
+  "facts": [
+    {
+      "value": "69,5 × 30,9 m",
+      "label": "stylobate"
+    },
+    {
+      "value": "46 colonnes",
+      "label": "haut de 10,4 m, en 10 à 12 tambours"
+    },
+    {
+      "value": "160 m",
+      "label": "de frise ionique autour de la cella"
+    }
+  ],
+  "phases": {
+    "older": {
+      "title": "Le plus ancien Parthénon",
+      "text": "Après Marathon, une immense plateforme de calcaire nivelle le sud de l’Acropole, et un temple de marbre y est entrepris. Le chantier s’arrête alors que ses colonnes ne comptent que deux ou trois tambours de haut.",
+      "moments": [
+        {
+          "tag": "Technique",
+          "title": "Le premier temple tout en marbre",
+          "text": "Ce fut le premier temple dorique bâti entièrement en marbre : les carrières du mont Pentélique furent ouvertes pour lui."
+        }
+      ]
+    },
+    "persians": {
+      "title": "Incendié par les Perses",
+      "text": "Les Perses pillent Athènes et le temple inachevé brûle. Le lieu reste en ruine pendant 33 ans.",
+      "moments": [
+        {
+          "tag": "Anecdote",
+          "title": "Des tambours dans le mur d’enceinte",
+          "text": "Les tambours de colonnes brûlés furent maçonnés dans le mur d’enceinte au nord de l’Acropole, où on les voit encore."
+        }
+      ]
+    },
+    "temple": {
+      "title": "Le temple de Périclès",
+      "text": "Iktinos et Kallikratès édifient un temple dorique de 8 sur 17 colonnes en marbre du Pentélique, sous la direction de Phidias. En 438 av. J.-C., son Athéna d’or et d’ivoire est consacrée à l’intérieur.",
+      "moments": [
+        {
+          "tag": "Technique",
+          "title": "Du cèdre au cœur de chaque tambour",
+          "text": "Deux pièces de cèdre, ajustées l’une dans l’autre comme une clé dans une serrure, recentraient chaque tambour sur celui du dessous. Ouvertes 2 500 ans plus tard, elles sentaient encore le cèdre."
+        },
+        {
+          "tag": "Chiffre",
+          "title": "Pas une seule ligne droite",
+          "text": "Le stylobate monte de 11 cm vers le milieu des côtés longs et de 6 cm sur les côtés courts ; les colonnes s’inclinent de 7,4 cm vers l’intérieur."
+        },
+        {
+          "tag": "Technique",
+          "title": "Du fer dans le plomb",
+          "text": "Les blocs étaient liés par des agrafes de fer logées dans des rainures creusées, puis du plomb en fusion était coulé par-dessus pour résister à la corrosion et aux séismes."
+        },
+        {
+          "tag": "Chiffre",
+          "title": "Les cannelures creusées en dernier",
+          "text": "Les cannelures étaient taillées sur les colonnes déjà dressées, et leur gravure a probablement coûté autant que toute l’extraction, le transport et la pose réunis."
+        },
+        {
+          "tag": "Chiffre",
+          "title": "Une déesse d’or et d’ivoire",
+          "text": "Athéna Parthénos se dressait, socle compris, à environ 11,5 m de haut, vêtue de quelque 40 à 50 talents d’or posé sur une armature de cyprès, devant un bassin d’eau."
+        }
+      ]
+    },
+    "sculpture": {
+      "title": "Les frontons",
+      "text": "Des statues remplissent les frontons : la Naissance d’Athéna à l’est, son conflit avec Poséidon à l’ouest. Avec les 92 métopes et les 160 m de frise, aucun temple n’avait porté autant de sculpture.",
+      "moments": [
+        {
+          "tag": "Plan",
+          "title": "Deux récits sur deux façades",
+          "text": "Le fronton est montre la Naissance d’Athéna, celui de l’ouest son conflit avec Poséidon pour la possession d’Athènes ; les métopes, la Gigantomachie, Troie, les Amazones et les Centaures."
+        }
+      ]
+    },
+    "fire": {
+      "title": "L’incendie et une toiture plus raide",
+      "text": "Un incendie survenu après le milieu du 3e siècle détruit la toiture et une grande partie de l’intérieur. Les réparations dotent la seule cella d’une nouvelle toiture de bois couverte de tuiles de terre, plus raide que la première.",
+      "moments": [
+        {
+          "tag": "Restauration",
+          "title": "Des colonnes de l’agora",
+          "text": "Les colonnes doriques brûlées du naos furent remplacées par des colonnes prélevées dans les portiques hellénistiques de l’agora romaine."
+        }
+      ]
+    },
+    "church": {
+      "title": "L’église de la Vierge",
+      "text": "Le temple devient une église : une abside est construite à l’extrémité est pour le Saint Bême, et l’entrée est déplacée à l’ouest.",
+      "moments": [
+        {
+          "tag": "Anecdote",
+          "title": "Où est passée Athéna ?",
+          "text": "La statue n’est plus jamais mentionnée une fois le temple devenu église : on ignore si elle a été détruite ou emportée."
+        }
+      ]
+    },
+    "byzantine": {
+      "title": "Panaghia Atheniotissa",
+      "text": "L’église devient un lieu de pèlerinage. Elle est réparée au 12e siècle et un escalier est ajouté dans le porche arrière.",
+      "moments": [
+        {
+          "tag": "Controverse",
+          "title": "Un trou dans le fronton",
+          "text": "En 1180, le milieu de la partie supérieure du fronton est fut démonté pour agrandir l’abside, selon ancient-greece.org."
+        }
+      ]
+    },
+    "latin": {
+      "title": "Une cathédrale latine",
+      "text": "Sous les Franks, le Parthénon devient une église catholique romaine. Une tour est ajoutée à son angle sud-ouest.",
+      "moments": [
+        {
+          "tag": "Plan",
+          "title": "Une tour dans le porche",
+          "text": "La tour de l’angle sud-ouest a pu être un clocher ; sa base et son escalier en spirale montent encore jusqu’à l’architrave."
+        }
+      ]
+    },
+    "mosque": {
+      "title": "Une mosquée",
+      "text": "Après la conquête ottomane, l’église devient une mosquée, probablement vers 1466–70. La tour est élevée en minaret et l’abside sert de mihrab.",
+      "moments": [
+        {
+          "tag": "Chiffre",
+          "title": "Une mosquée dans un temple",
+          "text": "La tour franque fut élevée en minaret ; la mosaïque de la Vierge dans l’abside a évidemment survécu à la conversion."
+        }
+      ]
+    },
+    "explosion": {
+      "title": "L’explosion",
+      "text": "Pendant le siège vénitien, un obus de mortier atteint la poudre à canon que les Ottomans avaient stockée à l’intérieur. Le milieu du temple est soufflé et environ 300 personnes meurent.",
+      "moments": [
+        {
+          "tag": "Chiffre",
+          "title": "Quatorze colonnes abattues",
+          "text": "Six colonnes tombèrent du côté sud, huit du côté nord, et le portique de façade à l’exception d’une colonne ; les murs de la cella s’effondrèrent."
+        }
+      ]
+    },
+    "ruin-mosque": {
+      "title": "Une mosquée dans les ruines",
+      "text": "Une petite mosquée à un seul dôme est construite dans l’espace dégagé du naos. Entre 1801 et 1812, les agents d’Elgin emportent environ la moitié des sculptures survivantes en Grande-Bretagne.",
+      "moments": [
+        {
+          "tag": "Controverse",
+          "title": "Les marbres d’Elgin",
+          "text": "Les agents du comte d’Elgin emportèrent environ la moitié des sculptures survivantes entre 1801 et 1812 ; la légalité de l’autorisation qu’il invoquait est contestée."
+        },
+        {
+          "tag": "Anecdote",
+          "title": "Des balles dans les agrafes",
+          "text": "Assiégés en 1821–22, la garnison ottomane tenta de faire fondre le plomb autour des agrafes des colonnes pour en couler des balles."
+        }
+      ]
+    },
+    "clearing": {
+      "title": "Le site archéologique",
+      "text": "La Grèce libre dégage l’Acropole de ses constructions postérieures : le minaret est démoli jusqu’à sa base et la petite mosquée déplacée en 1843. K. Pittakis consolide le mur nord de la cella.",
+      "moments": [
+        {
+          "tag": "Chiffre",
+          "title": "La première photographie",
+          "text": "La vue de Joly de Lotbinière prise en 1839 et publiée en 1842 est la première photographie de l’Acropole, et la seule image de la mosquée dans la cella."
+        }
+      ]
+    },
+    "balanos": {
+      "title": "La restauration de Balanos",
+      "text": "Après le séisme de 1894, N. Balanos consolide et restaure le temple, et en 1923–33 repose la colonnade nord. Il emploie le fer et le ciment, et place des éléments aux mauvais endroits.",
+      "moments": [
+        {
+          "tag": "Controverse",
+          "title": "De la rouille dans le marbre",
+          "text": "Le fer antique était gainé de plomb ; les agrafes de Balanos ne l’étaient pas, et en rouillant elles gonflèrent et fissurèrent le marbre."
+        }
+      ]
+    },
+    "restoration": {
+      "title": "La grande restauration",
+      "text": "Le Comité pour la conservation des monuments de l’Acropole, fondé en 1975, ouvre son chantier en 1983. Des milliers d’éléments sont démontés, réparés avec du titane et du marbre du Pentélique neuf, puis remis en place.",
+      "moments": [
+        {
+          "tag": "Technique",
+          "title": "Une colonne de 55 tonnes soulevée",
+          "text": "En 1992–93, la 5e colonne en comptant à partir de l’est, du côté sud, qui penchait, fut soulevée d’un seul bloc à partir de son deuxième tambour, afin que son pied puisse être réparé."
+        },
+        {
+          "tag": "Chiffre",
+          "title": "900 tonnes du côté nord",
+          "text": "Dans la colonnade nord, 230 éléments pesant 900 tonnes furent démontés, débarrassés du fer rouillé et remis à leur vraie place ; les tambours de ciment de Balanos furent remplacés par du marbre neuf."
+        },
+        {
+          "tag": "Technique",
+          "title": "Le titane",
+          "text": "Les nouvelles agrafes et tiges sont en titane, un matériau qui ne peut ni rouiller ni faire éclater la pierre, et les reprises sont scellées au ciment blanc soluble pour pouvoir être défaites."
+        }
+      ]
+    },
+    "today": {
+      "title": "Sans échafaudage",
+      "text": "L’échafaudage qui avait enveloppé le temple pendant des décennies est démonté depuis la façade ouest en septembre 2025. Le fronton ouest restauré est inauguré en juin 2026.",
+      "moments": [
+        {
+          "tag": "Restauration",
+          "title": "Le fronton ouest",
+          "text": "Le fronton ouest restauré a été inauguré en juin 2026, après le démontage de l’échafaudage de la façade ouest en septembre 2025."
+        }
+      ]
+    }
+  }
+}

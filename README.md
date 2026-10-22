@@ -115,8 +115,23 @@ kit/                the viewer: engine (builder.js), interface, Three.js and fon
 scripts/            scaffold, serve, validate, capture, compare, calibrate, relief, record, publish, build-site
 examples/           the collection
 community/          the community gallery, one folder per monument
-site/               the website, deployed to GitHub Pages
+site/               the website, deployed to GitHub Pages, English
+i18n/               the words of the site and of each monument, by language
 ```
+
+The pages are written in English. Every other language is a dictionary rendered into its own folder at build
+time, so `/fr/` is a real French site for a crawler and for a link that can be shared. Mark the text on a page
+with `data-i18n="key"` (or `data-i18n-html` when the sentence carries markup, `data-i18n-title` and friends for
+an attribute), put the translation in `i18n/site/<language>.json`, and the build refuses to ship a page with a
+key left unanswered. The viewer reads its own language off its `<html lang>`.
+
+A monument's own words — phase titles and texts, the anecdotes beside the timeline, the labels by the height,
+the note on what is measured — live in `i18n/monuments/<language>/<id>.json`, and the build writes
+`<id>.<language>.json` beside the English monument. What a language does **not** change is the evidence: dates,
+measurements, sources and the order of the phases are the same file whichever language reads them.
+`node scripts/monument-i18n.mjs skeletons <language>` writes a file to fill in,
+`node scripts/monument-i18n.mjs check [<language>]` says what is missing and refuses a translation that drops or
+invents a figure. `node scripts/i18n.test.mjs` holds both to that.
 
 `node scripts/validate.mjs` checks every monument and that every brick is documented.
 

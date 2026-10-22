@@ -1,0 +1,113 @@
+{
+  "_read": "Translate every string into this language. Keep every number, date, measurement and name exactly as written. Dates in `when` and every `source` are not here: they never change.",
+  "modelNote": "Anneaux, hauteurs et arc encore debout du mur extérieur repris du contour 3D d’OpenStreetMap ; dimensions et dates issues des sources ; travées, ordres, corniches, attique et extrémités du mur dressé relevés sur quatre photographies de référence calées à moins de 0,6–0,7 % de leur hauteur. Gradins, galeries souterraines et usure sont schématiques.",
+  "live": [
+    {
+      "label": "Hauteur"
+    }
+  ],
+  "facts": [
+    {
+      "value": "189 × 156 m",
+      "label": "ellipse"
+    },
+    {
+      "value": "100 000 m³",
+      "label": "de travertine, posé sans mortier"
+    },
+    {
+      "value": "300 t",
+      "label": "de crampons de fer"
+    }
+  ],
+  "phases": {
+    "vespasian": {
+      "title": "L’amphithéâtre de Vespasien",
+      "text": "Vespasien entame l’amphithéâtre vers 70–72. À sa mort en 79, trois niveaux d’arcades ceignent l’arène et les gradins montent à l’intérieur.",
+      "moments": [
+        {
+          "tag": "Chiffre",
+          "title": "De la pierre sans mortier",
+          "text": "Plus de 100 000 m³ de travertine sont posés sans mortier, tenus ensemble par 300 tonnes de crampons de fer."
+        }
+      ]
+    },
+    "titus": {
+      "title": "Titus l’inaugure",
+      "text": "Son fils Titus achève le niveau supérieur en 80 et inaugure l’amphithéâtre par des jeux où, selon Dion Cassius, plus de 9 000 animaux sauvages sont mis à mort.",
+      "moments": [
+        {
+          "tag": "Technique",
+          "title": "Une voile pour 50 000",
+          "text": "240 consoles de mâts réparties autour du sommet de l’attique portent le velarium, une toile rétractable manœuvrée par des marins de Misène qui couvre d’ombre les deux tiers de l’arène."
+        }
+      ]
+    },
+    "domitian": {
+      "title": "Sous l’arène",
+      "text": "Domitien ajoute l’hypogée, un réseau de galeries sous le sol de l’arène pour les animaux et les esclaves, ainsi qu’une galerie en hauteur pour ajouter des places.",
+      "moments": [
+        {
+          "tag": "Technique",
+          "title": "Une machine sous le sable",
+          "text": "Depuis l’hypogée, animaux et décors pouvaient être hissés dans l’arène sans être vus."
+        }
+      ]
+    },
+    "fire": {
+      "title": "Frappé par la foudre",
+      "text": "Un incendie déclenché par la foudre, dit Dion Cassius, détruit les niveaux supérieurs en bois. Les réparations ne s’achèvent que vers 240.",
+      "moments": [
+        {
+          "tag": "Anecdote",
+          "title": "Vingt ans de réparations",
+          "text": "L’incendie de 217 ferme les niveaux supérieurs pendant deux décennies : les réparations ne sont achevées que vers 240."
+        }
+      ]
+    },
+    "earthquake": {
+      "title": "Le côté sud s’effondre",
+      "text": "Un séisme renverse le mur extérieur du côté sud, bâti sur un sol alluvial moins stable. L’anneau intérieur reste à nu.",
+      "moments": [
+        {
+          "tag": "Plan",
+          "title": "Bâti sur deux sols",
+          "text": "Le côté sud reposait sur un sol alluvial moins stable que le nord : c’est celui-là qui s’est effondré en 1349."
+        }
+      ]
+    },
+    "quarry": {
+      "title": "Une carrière pour Rome",
+      "text": "La pierre tombée est emportée en charrette pour des palais, des églises et des hôpitaux, et le marbre est calciné pour en tirer de la chaux. Les gradins disparaissent ; les voûtes qui les portaient restent.",
+      "moments": [
+        {
+          "tag": "Anecdote",
+          "title": "Les creux dans les murs",
+          "text": "Les crampons de fer qui retenaient les pierres ont été arrachés au levier et dégrossis à la pioche, laissant les trous qui marquent encore le monument."
+        }
+      ]
+    },
+    "buttresses": {
+      "title": "Cales de brique",
+      "text": "En 1807 et en 1827, les extrémités coupées du mur extérieur dressé sont étayées : d’un côté un contrefort de brique en pente, de l’autre des arcs de brique reconstruits en escalier, sur la forme des arcs d’origine.",
+      "moments": [
+        {
+          "tag": "Restauration",
+          "title": "Tenir les extrémités brisées",
+          "text": "Là où s’arrête l’anneau extérieur, une extrémité s’appuie sur une cale de brique ; à l’autre, de nouveaux arcs de brique descendent par gradins, comme un escalier bâti sur les anciens."
+        }
+      ]
+    },
+    "today": {
+      "title": "Nettoyé",
+      "text": "Une restauration financée par Diego Della Valle nettoie la façade à partir de 2013 ; le chantier s’achève le 1er juillet 2016.",
+      "moments": [
+        {
+          "tag": "Chiffre",
+          "title": "25 millions d’euros",
+          "text": "Diego Della Valle accepte de financer une restauration de 25 millions d’euros ; le nettoyage de la façade s’achève le 1er juillet 2016."
+        }
+      ]
+    }
+  }
+}

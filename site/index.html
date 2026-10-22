@@ -3,10 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Monument · A skill for Claude Code</title>
-<meta name="description" content="Name a building in one line, and Claude builds it stone by stone, on its real plan, with every phase dated and sourced.">
-<meta property="og:title" content="Monument · A skill for Claude Code">
-<meta property="og:description" content="Name a building in one line, and Claude builds it stone by stone, on its real plan.">
+<title data-i18n="meta.title">Monument · A skill for Claude Code</title>
+<meta name="description" content="Name a building in one line, and Claude builds it stone by stone, on its real plan, with every phase dated and sourced." data-i18n-content="meta.description">
+<meta property="og:title" content="Monument · A skill for Claude Code" data-i18n-content="meta.ogTitle">
+<meta property="og:description" content="Name a building in one line, and Claude builds it stone by stone, on its real plan." data-i18n-content="meta.ogDescription">
 <meta property="og:image" content="thumbs/leaning-tower-of-pisa.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@1&display=swap">
@@ -14,128 +14,129 @@
 </head>
 <body>
 <main class="page">
-<nav class="site" aria-label="Site">
+<nav class="site" aria-label="Site" data-i18n-aria-label="nav.site">
  <a class="brand" href="./" aria-current="page">Monument</a>
- <a href="collection/">Collection</a>
- <a href="community/">Community</a>
- <a class="x" href="https://x.com/Gleaming0427" aria-label="@Gleaming0427 on X"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
- <a class="gh" href="https://github.com/Gleaming0427/monument" aria-label="Source on GitHub"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg></a>
+ <a href="collection/" data-i18n="nav.collection">Collection</a>
+ <a href="community/" data-i18n="nav.community">Community</a>
+ <!--LANGS-->
+ <a class="x" href="https://x.com/Gleaming0427" aria-label="@Gleaming0427 on X" data-i18n-aria-label="nav.x"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+ <a class="gh" href="https://github.com/Gleaming0427/monument" aria-label="Source on GitHub" data-i18n-aria-label="nav.github"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg></a>
 </nav>
 
 <header class="intro">
- <div class="kicker"><b>Monument</b> · a skill for Claude Code</div>
- <h1 class="tagline">Name a building in one line, and Claude builds it <em>stone by stone</em>, on its real plan.</h1>
+ <div class="kicker"><b>Monument</b> · <span data-i18n="kicker.skill">a skill for Claude Code</span></div>
+ <h1 class="tagline" data-i18n-html="h1">Name a building in one line, and Claude builds it <em>stone by stone</em>, on its real plan.</h1>
  <div class="strip"><!--STRIP--></div>
- <div class="meta"><code>/monument</code><span>·</span><a href="collection/"><!--COUNT--> monuments, all live</a><span>·</span><span>Claude Code, Codex, OpenCode</span><span>·</span><a href="#install">Install ↓</a></div>
+ <div class="meta"><code>/monument</code><span>·</span><a href="collection/"><!--COUNT--> <span data-i18n="meta.monuments">monuments, all live</span></a><span>·</span><span data-i18n="meta.agents">Claude Code, Codex, OpenCode</span><span>·</span><a href="#install" data-i18n="meta.install">Install ↓</a></div>
 </header>
 
-<p class="lead">Most pages about a building show it finished. The interesting part is how it got there: what went up first, what was pulled down, what was added a century later, and why.</p>
-<p>Monument is a skill for Claude Code that shows it. You name a building; Claude researches its history, places it on its real plan, and builds it as a live 3D scene you can turn and move through time, one dated, sourced phase after another. Thousands of small solid pieces drop into place in the order the evidence gives.</p>
+<p class="lead" data-i18n="p.lead">Most pages about a building show it finished. The interesting part is how it got there: what went up first, what was pulled down, what was added a century later, and why.</p>
+<p data-i18n="p.what">Monument is a skill for Claude Code that shows it. You name a building; Claude researches its history, places it on its real plan, and builds it as a live 3D scene you can turn and move through time, one dated, sourced phase after another. Thousands of small solid pieces drop into place in the order the evidence gives.</p>
 
 <figure class="live">
- <iframe src="view/?embed#leaning-tower-of-pisa" title="The Leaning Tower of Pisa, built phase by phase" loading="lazy" allow="fullscreen"></iframe>
- <div class="hint"><span>Drag to turn</span><span><kbd>Space</kbd> pause</span><span>Diamonds open a construction moment</span><span>Drag the timeline to move through time</span><a href="view/#leaning-tower-of-pisa">Open full screen ↗</a></div>
- <figcaption>The Leaning Tower of Pisa: three building campaigns over two centuries, six galleries of thirty columns, and the lean that grows to 5.5° before engineers pull it back to 3.97°.</figcaption>
+ <iframe src="view/?embed#leaning-tower-of-pisa" title="The Leaning Tower of Pisa, built phase by phase" loading="lazy" allow="fullscreen" data-i18n-title="figure.title"></iframe>
+ <div class="hint"><span data-i18n="hint.drag">Drag to turn</span><span><kbd>Space</kbd> <span data-i18n="hint.pause">pause</span></span><span data-i18n="hint.diamonds">Diamonds open a construction moment</span><span data-i18n="hint.timeline">Drag the timeline to move through time</span><a href="view/#leaning-tower-of-pisa" data-i18n="hint.full">Open full screen ↗</a></div>
+ <figcaption data-i18n="figure.caption">The Leaning Tower of Pisa: three building campaigns over two centuries, six galleries of thirty columns, and the lean that grows to 5.5° before engineers pull it back to 3.97°.</figcaption>
 </figure>
 
 <section id="evidence">
- <h2>The building is the evidence <small>01</small></h2>
- <p>The skill rests on one rule, written at the top of its instructions:</p>
- <blockquote><p>The building is the evidence.</p><cite>SKILL.md, “The one idea that matters”</cite></blockquote>
- <p>Every phase is dated and cites a page Claude actually read. Every shape is measured, from the land registry, OpenStreetMap or official heights, or read from photos. Anything interpreted says so, in the page itself.</p>
- <p>A model fails in two ways. Too generic: a box with a roof and the building’s name on it. Too invented: a timeline padded with dates nobody can source. The cure for both is the same: research before geometry, and photos after it.</p>
+ <h2><span data-i18n="h2.evidence">The building is the evidence</span> <small>01</small></h2>
+ <p data-i18n="p.rule">The skill rests on one rule, written at the top of its instructions:</p>
+ <blockquote><p data-i18n="quote.rule">The building is the evidence.</p><cite data-i18n="cite.rule">SKILL.md, “The one idea that matters”</cite></blockquote>
+ <p data-i18n="p.every">Every phase is dated and cites a page Claude actually read. Every shape is measured, from the land registry, OpenStreetMap or official heights, or read from photos. Anything interpreted says so, in the page itself.</p>
+ <p data-i18n="p.fails">A model fails in two ways. Too generic: a box with a roof and the building’s name on it. Too invented: a timeline padded with dates nobody can source. The cure for both is the same: research before geometry, and photos after it.</p>
  <div class="rules">
-  <div><b>Real plan</b><span>Footprints from the land registry or OpenStreetMap, fitted to within a metre or two.</span></div>
-  <div><b>Sourced phases</b><span>Every date, figure and anecdote links to where it comes from.</span></div>
-  <div><b>Nothing invented</b><span>No filler dates, architects, earlier states or unsourced night scenes. A thin record gives a short, honest timeline.</span></div>
-  <div><b>Photos are the judge</b><span>Each photo’s viewpoint is fitted on points recognised in it, the model is laid over it, and corrected until only named simplifications remain.</span></div>
-  <div><b>Carving photographed</b><span>Columns are turned in their order; tympana, statues and roses too fine to build are free photos, straightened onto the model with their depth and credited.</span></div>
-  <div><b>Closed, and open inside</b><span>No wall or roof left open. Vaults, the roof frame of its country and century, and the works that marked the inside are built in their phase; the section view cuts the building open.</span></div>
-  <div><b>An honest note</b><span>Each page says what is measured and what is interpreted.</span></div>
+  <div><b data-i18n="rule.plan">Real plan</b><span data-i18n="rule.planText">Footprints from the land registry or OpenStreetMap, fitted to within a metre or two.</span></div>
+  <div><b data-i18n="rule.phases">Sourced phases</b><span data-i18n="rule.phasesText">Every date, figure and anecdote links to where it comes from.</span></div>
+  <div><b data-i18n="rule.nothing">Nothing invented</b><span data-i18n="rule.nothingText">No filler dates, architects, earlier states or unsourced night scenes. A thin record gives a short, honest timeline.</span></div>
+  <div><b data-i18n="rule.photos">Photos are the judge</b><span data-i18n="rule.photosText">Each photo’s viewpoint is fitted on points recognised in it, the model is laid over it, and corrected until only named simplifications remain.</span></div>
+  <div><b data-i18n="rule.carving">Carving photographed</b><span data-i18n="rule.carvingText">Columns are turned in their order; tympana, statues and roses too fine to build are free photos, straightened onto the model with their depth and credited.</span></div>
+  <div><b data-i18n="rule.closed">Closed, and open inside</b><span data-i18n="rule.closedText">No wall or roof left open. Vaults, the roof frame of its country and century, and the works that marked the inside are built in their phase; the section view cuts the building open.</span></div>
+  <div><b data-i18n="rule.note">An honest note</b><span data-i18n="rule.noteText">Each page says what is measured and what is interpreted.</span></div>
  </div>
- <p>Every monument carries its proof. Press <b>Evidence</b> in the viewer: each piece takes the colour of its source (measured, documented or interpreted), the measured outline appears on the ground with the model’s distance to it, a click on a piece names its phase and the page that dates it, and each reference photo opens over the model from the photographer’s own viewpoint, with a divider to slide. <a href="view/?proof#notre-dame-de-paris">Notre-Dame in evidence mode</a> · <a href="view/?photo=1#notre-dame-de-paris">a photo laid over the model</a> · <a href="view/?photo=0#colosseum">the Colosseum on its north photo</a> · <a href="view/?section&t=5.95#notre-dame-de-paris">Notre-Dame cut open: its vaults, frames and great organ</a>.</p>
+ <p data-i18n-html="p.proof">Every monument carries its proof. Press <b>Evidence</b> in the viewer: each piece takes the colour of its source (measured, documented or interpreted), the measured outline appears on the ground with the model’s distance to it, a click on a piece names its phase and the page that dates it, and each reference photo opens over the model from the photographer’s own viewpoint, with a divider to slide. <a href="view/?proof#notre-dame-de-paris">Notre-Dame in evidence mode</a> · <a href="view/?photo=1#notre-dame-de-paris">a photo laid over the model</a> · <a href="view/?photo=0#colosseum">the Colosseum on its north photo</a> · <a href="view/?section&t=5.95#notre-dame-de-paris">Notre-Dame cut open: its vaults, frames and great organ</a>.</p>
 </section>
 
 <section id="prompt">
- <h2>Writing a prompt <small>02</small></h2>
- <p>Name the building, its city and its country. That is enough: deciding how to build it is Claude’s job.</p>
+ <h2><span data-i18n="h2.prompt">Writing a prompt</span> <small>02</small></h2>
+ <p data-i18n="p.prompt">Name the building, its city and its country. That is enough: deciding how to build it is Claude’s job.</p>
  <div class="prompts">
-  <div><span>Name the building</span><code>/monument Himeji Castle, Himeji, Japan</code></div>
-  <div><span>Anywhere in the world</span><code>/monument Taj Mahal, Agra, India</code></div>
-  <div><span>Ask for a period</span><code>/monument Notre-Dame de Paris, from 1163 to the 2024 reopening</code></div>
-  <div><span>A whole site</span><code>/monument Mont-Saint-Michel, the abbey and the village</code></div>
-  <div><span>In Codex</span><code>$monument Sagrada Família, Barcelona</code></div>
+  <div><span data-i18n="prompt.building">Name the building</span><code>/monument Himeji Castle, Himeji, Japan</code></div>
+  <div><span data-i18n="prompt.anywhere">Anywhere in the world</span><code>/monument Taj Mahal, Agra, India</code></div>
+  <div><span data-i18n="prompt.period">Ask for a period</span><code>/monument Notre-Dame de Paris, from 1163 to the 2024 reopening</code></div>
+  <div><span data-i18n="prompt.site">A whole site</span><code>/monument Mont-Saint-Michel, the abbey and the village</code></div>
+  <div><span data-i18n="prompt.codex">In Codex</span><code>$monument Sagrada Família, Barcelona</code></div>
  </div>
- <p>You don’t always need the command: any request to see how a building was built reaches for the skill. A whole site is never started without you; Claude proposes its main building first.</p>
+ <p data-i18n="p.always">You don’t always need the command: any request to see how a building was built reaches for the skill. A whole site is never started without you; Claude proposes its main building first.</p>
 </section>
 
 <section id="steps">
- <h2>What Claude does <small>03</small></h2>
+ <h2><span data-i18n="h2.steps">What Claude does</span> <small>03</small></h2>
  <ol class="steps">
-  <li><span><b>Size it.</b> A building, an ensemble or a whole site, with a time estimate.</span></li>
-  <li><span><b>Identify it.</b> Name, address, historic names, sources in the local language.</span></li>
-  <li><span><b>Place it on the real plan.</b> Footprints, heights and neighbours, checked on a plan drawing.</span></li>
-  <li><span><b>Read the architecture.</b> Four photos or more, and the list of features that make it recognisable.</span></li>
-  <li><span><b>Write the timeline.</b> Dated phases with their sources, and moments: one true detail pinned on the piece it concerns.</span></li>
-  <li><span><b>Build it from bricks.</b> Small solid pieces, laid phase by phase. A new kind of architecture gets a new brick.</span></li>
-  <li><span><b>Open it.</b> A local viewer, nothing to install.</span></li>
-  <li><span><b>Compare with the photos.</b> Same viewpoint, one after the other, at least two rounds of fixes.</span></li>
-  <li><span><b>Report honestly.</b> What is measured, documented and interpreted, and what still differs.</span></li>
+  <li><span data-i18n-html="step.1"><b>Size it.</b> A building, an ensemble or a whole site, with a time estimate.</span></li>
+  <li><span data-i18n-html="step.2"><b>Identify it.</b> Name, address, historic names, sources in the local language.</span></li>
+  <li><span data-i18n-html="step.3"><b>Place it on the real plan.</b> Footprints, heights and neighbours, checked on a plan drawing.</span></li>
+  <li><span data-i18n-html="step.4"><b>Read the architecture.</b> Four photos or more, and the list of features that make it recognisable.</span></li>
+  <li><span data-i18n-html="step.5"><b>Write the timeline.</b> Dated phases with their sources, and moments: one true detail pinned on the piece it concerns.</span></li>
+  <li><span data-i18n-html="step.6"><b>Build it from bricks.</b> Small solid pieces, laid phase by phase. A new kind of architecture gets a new brick.</span></li>
+  <li><span data-i18n-html="step.7"><b>Open it.</b> A local viewer, nothing to install.</span></li>
+  <li><span data-i18n-html="step.8"><b>Compare with the photos.</b> Same viewpoint, one after the other, at least two rounds of fixes.</span></li>
+  <li><span data-i18n-html="step.9"><b>Report honestly.</b> What is measured, documented and interpreted, and what still differs.</span></li>
  </ol>
 </section>
 
 <section id="collection">
- <h2>The collection <small>04</small></h2>
- <p>The world’s most recognised monuments, built one by one, all of them live. Open one to play it, scrub through its phases and read its sources.</p>
+ <h2><span data-i18n="h2.collection">The collection</span> <small>04</small></h2>
+ <p data-i18n="p.collection">The world’s most recognised monuments, built one by one, all of them live. Open one to play it, scrub through its phases and read its sources.</p>
  <div class="cards"><!--COLLECTION--></div>
- <p><a href="collection/">The whole collection →</a></p>
+ <p><a href="collection/" data-i18n="p.allCollection">The whole collection →</a></p>
 </section>
 
 <section id="community">
- <h2>Community <small>05</small></h2>
- <p>Monuments other people built with the skill, each with the prompt that made it. To add yours, ask your agent in the same session:</p>
+ <h2><span data-i18n="h2.community">Community</span> <small>05</small></h2>
+ <p data-i18n="p.community">Monuments other people built with the skill, each with the prompt that made it. To add yours, ask your agent in the same session:</p>
  <code class="block">publish this monument to the community gallery</code>
- <p>It asks for a title, an id and your GitHub name, shows what it will send, and opens the pull request for you. Without a terminal, put the file in a Gist and fill in the <a href="https://github.com/Gleaming0427/monument/issues/new?template=submit-monument.yml">Submit a monument</a> form.</p>
- <p><a href="community/">See the community gallery →</a></p>
+ <p data-i18n-html="p.communityTwo">It asks for a title, an id and your GitHub name, shows what it will send, and opens the pull request for you. Without a terminal, put the file in a Gist and fill in the <a href="https://github.com/Gleaming0427/monument/issues/new?template=submit-monument.yml">Submit a monument</a> form.</p>
+ <p><a href="community/" data-i18n="p.seeCommunity">See the community gallery →</a></p>
 </section>
 
 <section id="install">
- <h2>Install <small>06</small></h2>
- <p>Add the skill with one command:</p>
+ <h2><span data-i18n="h2.install">Install</span> <small>06</small></h2>
+ <p data-i18n="p.install">Add the skill with one command:</p>
  <code class="block">npx skills add Gleaming0427/monument</code>
- <p>The CLI asks which agents to set it up for: Claude Code, Codex, OpenCode or Antigravity. Then open your agent in any folder and name a building:</p>
+ <p data-i18n="p.cli">The CLI asks which agents to set it up for: Claude Code, Codex, OpenCode or Antigravity. Then open your agent in any folder and name a building:</p>
  <code class="block">/monument Himeji Castle, Japan</code>
- <p>In Codex, type <code>$monument</code>. No API keys and nothing to <code>npm install</code>: the viewer, Three.js and the fonts ship with the skill. It needs Node 20 or later.</p>
+ <p data-i18n-html="p.codexNote">In Codex, type <code>$monument</code>. No API keys and nothing to <code>npm install</code>: the viewer, Three.js and the fonts ship with the skill. It needs Node 20 or later.</p>
  <table>
-  <tr><th>Other ways</th><th>Command</th></tr>
-  <tr><td>git, Claude Code</td><td><code>git clone https://github.com/Gleaming0427/monument.git ~/.claude/skills/monument</code></td></tr>
-  <tr><td>git, Codex</td><td><code>git clone https://github.com/Gleaming0427/monument.git ~/.agents/skills/monument</code></td></tr>
-  <tr><td>No git</td><td><a href="https://github.com/Gleaming0427/monument/archive/refs/heads/main.zip">Download the ZIP</a> and unzip it into your skills folder as <code>monument</code>.</td></tr>
+  <tr><th data-i18n="table.other">Other ways</th><th data-i18n="table.command">Command</th></tr>
+  <tr><td data-i18n="table.gitClaude">git, Claude Code</td><td><code>git clone https://github.com/Gleaming0427/monument.git ~/.claude/skills/monument</code></td></tr>
+  <tr><td data-i18n="table.gitCodex">git, Codex</td><td><code>git clone https://github.com/Gleaming0427/monument.git ~/.agents/skills/monument</code></td></tr>
+  <tr><td data-i18n="table.noGit">No git</td><td data-i18n-html="table.zip"><a href="https://github.com/Gleaming0427/monument/archive/refs/heads/main.zip">Download the ZIP</a> and unzip it into your skills folder as <code>monument</code>.</td></tr>
  </table>
 </section>
 
 <section id="limits">
- <h2>Limits <small>07</small></h2>
- <p><b>It is only as good as the record.</b> A building with a documented history and good photos comes out well. A thin record gives a short timeline, labelled as such.</p>
- <p><b>It is slow when it is good.</b> Research, placement and two rounds of photo comparison take time: count 30 to 90 minutes for one building, hours for an ensemble.</p>
- <p><b>Shapes come from bricks.</b> A new kind of architecture needs a new brick, written during the request. The first version is a draft.</p>
- <p><b>It is a model, not a survey.</b> Footprints and heights are measured; facades, roofs and the split between periods are read from sources and photos.</p>
- <p>So treat the first result as a draft. Look at it next to the photos, say what is off, and ask again.</p>
+ <h2><span data-i18n="h2.limits">Limits</span> <small>07</small></h2>
+ <p data-i18n-html="limit.record"><b>It is only as good as the record.</b> A building with a documented history and good photos comes out well. A thin record gives a short timeline, labelled as such.</p>
+ <p data-i18n-html="limit.slow"><b>It is slow when it is good.</b> Research, placement and two rounds of photo comparison take time: count 30 to 90 minutes for one building, hours for an ensemble.</p>
+ <p data-i18n-html="limit.bricks"><b>Shapes come from bricks.</b> A new kind of architecture needs a new brick, written during the request. The first version is a draft.</p>
+ <p data-i18n-html="limit.model"><b>It is a model, not a survey.</b> Footprints and heights are measured; facades, roofs and the split between periods are read from sources and photos.</p>
+ <p data-i18n="limit.draft">So treat the first result as a draft. Look at it next to the photos, say what is off, and ask again.</p>
 </section>
 
 <section id="questions">
- <h2>Questions <small>08</small></h2>
- <details><summary>Which agents does it run in?</summary><p>Claude Code (terminal, desktop app, IDE extensions), Codex, OpenCode and Antigravity, through the skills CLI. Any agent that reads Agent Skills and can run Node can use it.</p></details>
- <details><summary>Where do my monuments go?</summary><p>Into a <code>monuments/</code> folder of the project you run it in, one JSON file per building. They are yours; publishing to the gallery is opt-in.</p></details>
- <details><summary>Can I change a monument after it is made?</summary><p>Yes. Ask in the same session, or edit <code>monuments/&lt;id&gt;.json</code>: the whole building, its phases and its sources are in that file.</p></details>
- <details><summary>Does it work for buildings that no longer exist?</summary><p>Yes, from published plans and remains. The model says it is an estimate.</p></details>
- <details><summary>What does the gallery do with my submission?</summary><p>It checks the file, rebuilds the monument from it and photographs it for the gallery. Monuments that bring their own bricks (code) are reviewed by a maintainer before they go live.</p></details>
- <details><summary>What is the licence?</summary><p>MIT for the skill and its kit. Three.js is MIT; Manrope is under the SIL Open Font License. Each monument links to its sources, which keep their own terms.</p></details>
+ <h2><span data-i18n="h2.questions">Questions</span> <small>08</small></h2>
+ <details><summary data-i18n="q.agents">Which agents does it run in?</summary><p data-i18n="q.agentsText">Claude Code (terminal, desktop app, IDE extensions), Codex, OpenCode and Antigravity, through the skills CLI. Any agent that reads Agent Skills and can run Node can use it.</p></details>
+ <details><summary data-i18n="q.where">Where do my monuments go?</summary><p data-i18n-html="q.whereText">Into a <code>monuments/</code> folder of the project you run it in, one JSON file per building. They are yours; publishing to the gallery is opt-in.</p></details>
+ <details><summary data-i18n="q.change">Can I change a monument after it is made?</summary><p data-i18n-html="q.changeText">Yes. Ask in the same session, or edit <code>monuments/&lt;id&gt;.json</code>: the whole building, its phases and its sources are in that file.</p></details>
+ <details><summary data-i18n="q.gone">Does it work for buildings that no longer exist?</summary><p data-i18n="q.goneText">Yes, from published plans and remains. The model says it is an estimate.</p></details>
+ <details><summary data-i18n="q.gallery">What does the gallery do with my submission?</summary><p data-i18n="q.galleryText">It checks the file, rebuilds the monument from it and photographs it for the gallery. Monuments that bring their own bricks (code) are reviewed by a maintainer before they go live.</p></details>
+ <details><summary data-i18n="q.licence">What is the licence?</summary><p data-i18n="q.licenceText">MIT for the skill and its kit. Three.js is MIT; Manrope is under the SIL Open Font License. Each monument links to its sources, which keep their own terms.</p></details>
 </section>
 
 <footer class="site">
- <p>Made by <a href="https://x.com/Gleaming0427">@Gleaming0427</a> with Claude Code. The format of this skill and of this page follows <a href="https://skills.wheresryan.sh/anatomy">Anatomy</a> by Ryan.</p>
- <p><a href="https://github.com/Gleaming0427/monument">Source on GitHub</a> · <a href="https://x.com/Gleaming0427">@Gleaming0427 on X</a> · MIT · Footprints © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a> and IGN BD TOPO</p>
+ <p data-i18n-html="footer.made">Made by <a href="https://x.com/Gleaming0427">@Gleaming0427</a> with Claude Code. The format of this skill and of this page follows <a href="https://skills.wheresryan.sh/anatomy">Anatomy</a> by Ryan.</p>
+ <p data-i18n-html="footer.legal"><a href="https://github.com/Gleaming0427/monument">Source on GitHub</a> · <a href="https://x.com/Gleaming0427">@Gleaming0427 on X</a> · MIT · Footprints © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a> and IGN BD TOPO</p>
 </footer>
 </main>
 </body>

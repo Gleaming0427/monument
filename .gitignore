@@ -1,5 +1,6 @@
 _site/
 .artifacts/
+.tmp-monuments/
 node_modules/
 .DS_Store
 *.png

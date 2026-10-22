@@ -1,0 +1,189 @@
+{
+  "_read": "Translate every string into this language. Keep every number, date, measurement and name exactly as written. Dates in `when` and every `source` are not here: they never change.",
+  "modelNote": "Mesuré : l'empreinte (OpenStreetMap), les hauteurs documentées (flèches 77 et 75 m, lanterne 57,45 m, voûte de la nef 21,90 m) et les hauteurs relevées sur quatre photographies de Commons ajustées au modèle. Documenté mais simplifié : les tours, la lanterne, le double déambulatoire, les porches. Interprété : la cathédrale romane, les charpentes, les annexes et la tribune.",
+  "live": [
+    {
+      "label": "Hauteur"
+    }
+  ],
+  "facts": [
+    {
+      "value": "95,17 m",
+      "label": "de longueur à l'extérieur"
+    },
+    {
+      "value": "77 m",
+      "label": "de flèche nord-ouest"
+    },
+    {
+      "value": "57,45 m",
+      "label": "de tour-lanterne"
+    }
+  ],
+  "phases": {
+    "romane": {
+      "title": "La cathédrale romane",
+      "text": "L'évêque Robert reconstruit la cathédrale et Geoffroy de Montbray l'achève ; elle est consacrée à Notre-Dame en 1056, en présence du duc Guillaume. Sa masse, ici, est une reconstruction raisonnée.",
+      "moments": [
+        {
+          "tag": "Plan",
+          "title": "Le plan de Bernay",
+          "text": "L'église suit le plan bénédictin de Bernay : une nef à arcades, tribunes et hautes fenêtres, une lanterne au-dessus de la croisée du transept, des bras de transept s'ouvrant sur des absidioles, et un chœur à deux bas-côtés mais sans déambulatoire."
+        },
+        {
+          "tag": "Commanditaire",
+          "title": "Des dons venus d'Angleterre",
+          "text": "Geoffroy de Montbray, évêque depuis 1049, envoya à son chapitre des dons de toute sorte « pour l'édification de l'église » dès qu'il eut débarqué en Angleterre avec Guillaume."
+        }
+      ]
+    },
+    "nef": {
+      "title": "Une peau gothique sur des murs romans",
+      "text": "La cathédrale est reconstruite d'ouest en est, Hugues de Morville étant évêque depuis 1208 : la nef et la façade ouest gardent leurs murs et leurs tours romans à l'intérieur d'un parement de calcaire fin. Les tours deviennent octogonales et portent des flèches de pierre.",
+      "moments": [
+        {
+          "tag": "Technique",
+          "title": "Les vieux murs dans les nouveaux",
+          "text": "Les murs de la nef et des bas-côtés romans, ainsi que la façade ouest et ses deux tours, sont conservés et dissimulés sous le parement gothique ; seule la nef garde les dimensions et les fondations romanes."
+        },
+        {
+          "tag": "Site",
+          "title": "Des bois dans le mur",
+          "text": "Les échafaudages médiévaux étaient accrochés aux murs : des pièces de bois horizontales, les goujons, logées dans des trous laissés dans la maçonnerie, portaient les planches, et les trous restaient souvent béants quand l'échafaudage était démonté."
+        },
+        {
+          "tag": "Forme",
+          "title": "Quinze points autour d'une flèche",
+          "text": "Chaque tour devient octogonale, avec une ouverture jumelée sur chacune de ses faces ; des tourelles ajourées aux trois angles, une tourelle d'escalier avec trois plus petites au quatrième, et quatre niches à gables font de chaque flèche une couronne de quinze points."
+        }
+      ]
+    },
+    "transept": {
+      "title": "Transept et tour-lanterne",
+      "text": "Le transept et la lanterne romans sont démolis, puis son chœur ; le nouveau transept, commencé vers 1208, approche de son achèvement vers 1225. Au-dessus de la croisée s'élève la lanterne dite « le Plomb », haute de 40,85 m à l'intérieur et de 57,45 m à l'extérieur.",
+      "moments": [
+        {
+          "tag": "Structure",
+          "title": "Un carré qui devient octogonal",
+          "text": "Quatre piles d'environ quinze mètres de côté portent la croisée ; des pendentifs triangulaires tournent le carré en un octogone de deux étages, éclairé par des baies jumelées et seize lancettes sous une voûte à seize nervures."
+        },
+        {
+          "tag": "Technique",
+          "title": "Une grue sur les poutres de la toiture",
+          "text": "Les grues à roue à marche, attestées en France pour la première fois vers 1225, se dressaient au sol puis étaient remontées jusqu'aux poutres de la toiture une fois les murs reliés, se déplaçant au rythme du chantier."
+        },
+        {
+          "tag": "Lumière",
+          "title": "La lumière au milieu de l'église",
+          "text": "La lanterne octogonale devait projeter une lumière intense au cœur de la cathédrale ; elle est en partie en encorbellement sur les pendentifs."
+        }
+      ]
+    },
+    "choeur": {
+      "title": "Chœur et double déambulatoire",
+      "text": "Le chœur s'élève par gradins comme à Bourges : un bas-côté extérieur bas, formé de chapelles, un bas-côté intérieur plus haut avec ses propres fenêtres, et une haute claire-voie étayée par des arcs-boutants sur une seule travée. Il semble achevé vers 1235, avant qu'Hugues de Morville n'y soit enterré.",
+      "moments": [
+        {
+          "tag": "Plan",
+          "title": "Deux déambulatories venus d'un seul",
+          "text": "Le double déambulatoire est né de la suppression des cloisons entre les chapelles rayonnantes : le bas-côté extérieur forme un anneau de chapelles ouvertes les unes sur les autres."
+        },
+        {
+          "tag": "Forme",
+          "title": "Colonnes jumelles autour de l'hémicycle",
+          "text": "Douze colonnes par paires, l'une derrière l'autre, forment un double anneau autour de l'hémicycle : l'architecte a doublé les hautes colonnes de l'église abbatiale de Hambye."
+        },
+        {
+          "tag": "Personnage",
+          "title": "Un évêque enterré dans son chœur",
+          "text": "Hugues de Morville, évêque de 1208 à 1238, fonda les chapelles de saint Georges et de saint Thomas Becket en 1223 et fut enterré dans le chœur."
+        }
+      ]
+    },
+    "porches": {
+      "title": "Les porches latéraux",
+      "text": "Des porches s'ouvrent au nord et au sud au pied des tours, construits après 1228 par des maçons qui avaient travaillé au cloître du Mont-Saint-Michel. Le porche sud, profond de deux travées, montre la Vierge parmi les symboles des évangélistes.",
+      "moments": [
+        {
+          "tag": "Artisanat",
+          "title": "Des maçons venus du Mont",
+          "text": "Les porches sont datés d'après 1228 parce que des maçons du cloître du Mont-Saint-Michel, achevé cette année-là, y travaillèrent."
+        },
+        {
+          "tag": "Sculpture",
+          "title": "Une Vierge sans tête",
+          "text": "Dans le porche nord, plus petit que son jumeau, Marie est assise dans le tympan entre deux anges ; sa tête et la leur ont disparu."
+        }
+      ]
+    },
+    "chapelles": {
+      "title": "Des chapelles entre les contreforts",
+      "text": "À partir de 1270 environ, on bâtit des chapelles en saillie entre les contreforts de la nef, d'abord du côté nord, puis du côté sud sous Robert d'Harcourt (1291–1315). Leurs grandes fenêtres occupent chaque travée.",
+      "moments": [
+        {
+          "tag": "Commanditaires",
+          "title": "Les Hauteville en pierre",
+          "text": "Des statues de la famille Tancrède de Hauteville, qui aida à financer la construction, se dressent sous des dais sur les piles des chapelles nord."
+        },
+        {
+          "tag": "Forme",
+          "title": "Deux pinacles pour un contrefort",
+          "text": "Chaque contrefort de la nef porte deux pinacles : l'un à l'extérieur, au niveau des murs des chapelles, l'autre à mi-hauteur, avant que le contrefort ne rejoigne la haute galerie du triforium."
+        }
+      ]
+    },
+    "cervelle": {
+      "title": "Sylvestre de La Cervelle",
+      "text": "Après le siège de 1356, l'évêque Sylvestre de La Cervelle, cousin de Du Guesclin, reconstruit murs et colonnes, coiffe la façade ouest d'une galerie de roses et agrandit la chapelle axiale, la Circata.",
+      "moments": [
+        {
+          "tag": "Financement",
+          "title": "1 600 francs d'or",
+          "text": "Le roi Charles V accorde à l'évêque 1 600 francs d'or pour les réparations."
+        },
+        {
+          "tag": "Tombeau",
+          "title": "Enterré dans sa chapelle",
+          "text": "Sylvestre de La Cervelle, mort en 1386, repose dans la Circata qu'il agrandit, avec les évêques du 19e siècle."
+        }
+      ]
+    },
+    "empire": {
+      "title": "Orgue et maître-autel",
+      "text": "L'orgue construit en 1720 pour l'abbaye de Savigny est installé en 1812 sur le buffet de chêne sculpté par Louis Le Guillard et Jacques Picard au-dessus du portail central. Le maître-autel de marbre rose de 1755–1757 aurait été apporté d'Espagne sous le Premier Empire.",
+      "moments": [
+        {
+          "tag": "Effondrement",
+          "title": "Deux travées s'effondrent",
+          "text": "En 1800, les deux travées occidentales de la nef s'effondrent ; elles sont reconstruites par Doublet."
+        },
+        {
+          "tag": "Intérieur",
+          "title": "Un orgue venu de Savigny",
+          "text": "Quatre claviers, cinquante et un registres et environ 3 500 tuyaux occupent le buffet qui surplombe le portail central ; un orgue joue dans la cathédrale depuis 1468."
+        },
+        {
+          "tag": "Intérieur",
+          "title": "L'un des plus grands autels de France",
+          "text": "L'autel Louis XV en marbre rose des sculpteurs marseillais Antoine Duparc et son fils Raphaël, guirandes dorées portées par des chérubins, se dresse devant six paires de colonnes."
+        }
+      ]
+    },
+    "guerre": {
+      "title": "Le toit de la lanterne en feu",
+      "text": "Lors du bombardement de juin 1944, le toit de la lanterne prend feu et l'incendie s'arrête à peine dans la chambre des cloches ; le tympan du porche sud est la partie la plus endommagée. La toiture est refaite ensuite (sa date ne figure pas dans les sources lues).",
+      "moments": [
+        {
+          "tag": "Guerre",
+          "title": "L'incendie s'arrête dans la chambre des cloches",
+          "text": "Le toit de la lanterne brûle en juin 1944 ; l'incendie ne va pas plus loin que la chambre des cloches qui le surmonte."
+        },
+        {
+          "tag": "Sauvetage",
+          "title": "Un vitrail déposé à temps",
+          "text": "Le vitrail du Jugement dernier, au transept sud, déposé en 1942, échappe aux bombes."
+        }
+      ]
+    }
+  }
+}
