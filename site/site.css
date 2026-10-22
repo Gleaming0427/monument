@@ -6,8 +6,7 @@ body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.65 'Manrope',ui-
 a{color:inherit;text-decoration-color:rgba(236,231,222,.35);text-underline-offset:3px}
 a:hover{text-decoration-color:var(--gold)}
 :focus-visible{outline:2px solid var(--gold);outline-offset:3px;border-radius:6px}
-.page{max-width:1180px;margin:0 auto;padding:28px 32px 80px}
-.wide{max-width:1280px}
+.page{max-width:1280px;margin:0 auto;padding:28px 32px 80px}
 nav.site{display:flex;align-items:center;gap:22px;font-size:13px;color:var(--muted);padding-bottom:22px;border-bottom:1px solid var(--line)}
 nav.site a{text-decoration:none}
 nav.site a:hover,nav.site a[aria-current=page]{color:var(--ink)}

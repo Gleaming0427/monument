@@ -19,6 +19,8 @@ jobs:
         run: node scripts/geometry.test.mjs
       - name: Check the compact catalogue
         run: node scripts/catalogue.test.mjs
+      - name: Check the site tabs share one column
+        run: node scripts/site.test.mjs
       - name: Check the buildings against their sources
         run: node scripts/check.mjs
       - name: Build the site

@@ -66,6 +66,19 @@ export function profiledGeometry({profile = [[0, 1], [1, 1]], flutes = 0, fluteD
     positions.setX(i, x * modulation); positions.setZ(i, z * modulation);
   }
   geometry.computeVertexNormals();
+  // The rim of a lathed piece is shared by the side and, on a closed piece, by the cap. Averaging the two
+  // shades it like a chamfer, and a column built drum by drum then shows a dark ring at every joint — the
+  // drums look stacked rather than carved. A rim takes the normal of the surface beside it: the cap is
+  // never visible once the piece is bedded on its neighbour.
+  const stride = radialSegments + 1, rings = outline.length, rims = openEnded ? [0, rings - 1] : [1, rings - 2];
+  const normals = geometry.attributes.normal;
+  for (const rim of rims) {
+    const from = rim === 0 ? 1 : rim - 1;
+    if (from < 0 || from >= rings) continue;
+    for (let i = 0; i < stride; i++) normals.setXYZ(rim * stride + i,
+      normals.getX(from * stride + i), normals.getY(from * stride + i), normals.getZ(from * stride + i));
+  }
+  normals.needsUpdate = true;
   geometry.userData.architecture = {profile: sampled, flutes, maxChordErrorMm, radialSegments, diameter, height};
   return geometry;
 }
