@@ -1,5 +1,6 @@
 import * as T from 'three';
 import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
+import {RoundedBoxGeometry} from 'three/addons/geometries/RoundedBoxGeometry.js';
 import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
 import {RenderPass} from 'three/addons/postprocessing/RenderPass.js';
 import {UnrealBloomPass} from 'three/addons/postprocessing/UnrealBloomPass.js';
@@ -159,7 +160,11 @@ function kit(rand) {
 // Turned pieces: one geometry per shape, in the box's unit cube (diameter 1, height 1, centred).
 const flat = geometry => { const g = geometry.toNonIndexed(); g.computeVertexNormals(); return g; };
 export const SHAPES = {
-  box: () => new T.BoxGeometry(1, 1, 1),
+  // A block with its arrises taken off. On a plain cube an arris is a jump of normals and it dies as a hard
+  // black line: the stone reads as untextured plastic, and a monument of such blocks reads as unbuilt. The
+  // chamfer gives that line something to catch the light on, and every piece of every monument gets it,
+  // because they all share this one geometry — still one draw call, 30 triangles more per block.
+  box: () => new RoundedBoxGeometry(1, 1, 1, 1, .018),
   drum: adaptive(context => new T.CylinderGeometry(.5, .5, 1, context.radialSegments), {multiple: 2}),
   shaft: adaptive(context => profiledGeometry({...context, profile: [[0, 1], [.25, 1], [.55, .97], [1, .88]]}), {multiple: 2}),
   profiledShaft: adaptive(context => profiledGeometry(context), {multiple: 2}),
