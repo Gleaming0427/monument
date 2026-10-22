@@ -2581,6 +2581,12 @@ export function createStage(host) {
     rim.position.set(radius, radius * .4, -radius);
     if (visual.quality.shadows) {
       const shadow = sun.shadow.camera; shadow.left = shadow.bottom = -radius * 1.45; shadow.right = shadow.top = radius * 1.45; shadow.near = 1; shadow.far = radius * 5; shadow.updateProjectionMatrix(); sun.shadow.bias = -.00015;
+      // One shadow texel over the ground the sun must cover. A fluted shaft is a curved surface lit from the
+      // side, and a depth bias alone leaves dark teeth along every arris where the column shadows itself, so
+      // the lookup is pushed along each normal by about one texel instead.
+      const texel = radius * 2.9 / sun.shadow.mapSize.x;
+      sun.shadow.normalBias = texel * 1.6;
+      sun.shadow.radius = 2;
     }
     // Gold leaf mirrors the studio.
     for (const mesh of meshes) if (mesh.material?.userData?.gilt) { mesh.material.envMap = studioEnvironment(); mesh.material.needsUpdate = true; }
