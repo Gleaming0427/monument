@@ -21,8 +21,10 @@ jobs:
           node-version: 22
       - name: Check every monument
         run: node scripts/validate.mjs --strict
-      - name: Build the site (community monuments are photographed with Chrome)
-        run: CAPTURE=1 CHROME="$(command -v google-chrome || command -v chromium)" node scripts/build-site.mjs
+      # No CAPTURE here on purpose: a thumbnail is an asset committed under site/thumbs/. Photographing the
+      # community monuments again on every deploy took 34 minutes to produce the same three pictures.
+      - name: Build the site
+        run: node scripts/build-site.mjs
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
