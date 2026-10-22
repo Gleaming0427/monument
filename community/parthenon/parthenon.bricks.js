@@ -107,17 +107,18 @@ function doricTemple(k, e, P) {
   const D = (du, dy, dv) => new T.Vector3(du * co + dv * si, dy, -du * si + dv * co);
   const extra = e.extra ?? {};
   // A box at (u, y, v) (its centre), [length along u, height, width along v], turned by yaw in the frame.
-  const box = (kind, u, y, v, size, c = tint(), yaw = 0, order) => {
+  const box = (kind, u, y, v, size, c = tint(), yaw = 0, order, tag) => {
     const p = W(u, y + lift(u, v), v);
-    k.box(kind, [p.x, p.y, p.z], size, rot + yaw, c, ph, order ?? p.y, extra);
+    k.box(kind, [p.x, p.y, p.z], size, rot + yaw, c, ph, order ?? p.y, {...extra, ...tag});
   };
-  const turned = (shape, kind, u, y, v, size, c = tint(), order, geometry) => {
+  // `tag` names the architectural member a piece belongs to; scripts/check.mjs measures the temple from it.
+  const turned = (shape, kind, u, y, v, size, c = tint(), order, geometry, tag) => {
     const p = W(u, y + lift(u, v), v);
-    k.turned(shape, kind, [p.x, p.y, p.z], size, rot, c, ph, order ?? p.y - size[1] / 2, geometry ? {...extra, geometry} : extra);
+    k.turned(shape, kind, [p.x, p.y, p.z], size, rot, c, ph, order ?? p.y - size[1] / 2, {...extra, ...tag, ...(geometry ? {geometry} : {})});
   };
-  const lying = (shape, kind, u, y, v, axis, size, c = tint(), order, geometry) => {
+  const lying = (shape, kind, u, y, v, axis, size, c = tint(), order, geometry, tag) => {
     const p = W(u, y + lift(u, v), v), a = D(...axis).normalize();
-    k.lying(shape, kind, p, a, size, c, ph, order ?? p.y - size[0] / 2, geometry ? {...extra, geometry} : extra);
+    k.lying(shape, kind, p, a, size, c, ph, order ?? p.y - size[0] / 2, {...extra, ...tag, ...(geometry ? {geometry} : {})});
   };
   const beam = (kind, a, b, t, c = tint()) => k.beam(kind, W(a[0], a[1] + lift(a[0], a[2]), a[2]), W(b[0], b[1] + lift(b[0], b[2]), b[2]), t, c, ph, extra);
   // A box laid along a slope: x along `dir` [du, dy, dv], y its normal pointing up, z across.
@@ -137,7 +138,7 @@ function doricTemple(k, e, P) {
   // ——— Columns ———
   // Peristyle: id → {u, v, D, lean [du, dv]}. Corners carry two names and one column.
   const peristyle = new Map(), alias = {};
-  const add = (id, u, v, corner, lean) => { const key = `${u.toFixed(3)},${v.toFixed(3)}`; alias[id] = key; if (!peristyle.has(key)) peristyle.set(key, {u, v, D: corner ? C.corner : C.diameter, lean}); };
+  const add = (id, u, v, corner, lean) => { const key = `${u.toFixed(3)},${v.toFixed(3)}`; alias[id] = key; if (!peristyle.has(key)) peristyle.set(key, {u, v, D: corner ? C.corner : C.diameter, lean, corner, faces: new Set()}); peristyle.get(key).faces.add(id[0]); };
   for (let i = 1; i <= C.flank; i++) {
     const u = us[C.flank - i], corner = i === 1 || i === C.flank, du = i === 1 ? 1 : i === C.flank ? -1 : 0;
     add(`n${i}`, u, vs[0], corner, [du, -1]); add(`s${i}`, u, vs.at(-1), corner, [du, 1]);
@@ -148,8 +149,13 @@ function doricTemple(k, e, P) {
   }
   const rng = () => k.rand();
   // One Doric column standing at (u, v) on y0: drums with entasis and lean, then the capital.
-  function doricColumn(u, v, y0, {D: Dm, height, drums: n, capital = .86, abacus, taper = .78, lean = [0, 0], leanBy = 0, range, fresh, flutes = true, c0 = color}) {
+  function doricColumn(u, v, y0, {D: Dm, height, drums: n, capital = .86, abacus, taper = .78, lean = [0, 0], leanBy = 0, range, fresh, flutes = true, c0 = color, member, part, faces}) {
     const cap = capital, shaft = height - cap, hd = shaft / n, dt = Dm * taper;
+    // A tagged column carries its own identity into the pieces. scripts/check.mjs then measures the temple that
+    // was actually built — its axes, its diameters, its drums — instead of re-reading the spec that asked for it.
+    const mine = member ? {...extra, part, member, faces} : extra;
+    // Shaft and capital are tagged apart: a checker that can see both can measure the column's whole height.
+    const shaftTag = mine && {...mine, role: 'shaft'}, capTag = mine && {...mine, role: 'capital'};
     const diameterAt = t => Dm * (1 - (1 - taper) * Math.max(0, (t - .08) / .92) ** 1.18);
     const [from, to] = [range?.[0] ?? 0, range?.[1] ?? n + 1];
     // The lean: the top of the column stands `leanBy` metres in from its foot, along each way it faces out.
@@ -163,7 +169,7 @@ function doricTemple(k, e, P) {
       const profile = [[0, 1], [.08, 1], [.22, diameterAt(.22) / Dm], [.45, diameterAt(.45) / Dm], [.7, diameterAt(.7) / Dm], [1, diameterAt(1) / Dm]];
       const shape = flutes ? 'parthenonFlutedDrum' : 'parthenonDoricDrum';
       lying(shape, 'stone', u + su, y0 + shaft / 2, v + sv, axis, [Dm, len], tint(c0, .045), y0,
-        {profile, flutes: flutes ? 20 : 0, maxChordErrorMm: 2});
+        {profile, flutes: flutes ? 20 : 0, maxChordErrorMm: 2}, shaftTag);
     } else for (let i = from; i < Math.min(n, to); i++) {
       const y = y0 + hd * (i + .5), [su, sv] = shift(y), isNew = fresh && rng() < (fresh.share ?? .3);
       const shape = flutes && (!isNew || fresh.flutes !== false) ? 'parthenonFlutedDrum' : 'parthenonDoricDrum';
@@ -171,14 +177,14 @@ function doricTemple(k, e, P) {
       // The real drums meet on dressed beds: keep the authored pieces for the construction sequence, but
       // overlap them by one millimetre per metre so raster precision cannot turn the joints into black bands.
       turned(shape, 'stone', u + su, y, v + sv, [d0, hd * 1.002, d0], tint(isNew ? fresh.color : c0, isNew ? .025 : .055), undefined,
-        {profile: [[0, 1], [.5, dm / d0], [1, d1 / d0]], flutes: shape === 'parthenonFlutedDrum' ? 20 : 0, maxChordErrorMm: 2});
+        {profile: [[0, 1], [.5, dm / d0], [1, d1 / d0]], flutes: shape === 'parthenonFlutedDrum' ? 20 : 0, maxChordErrorMm: 2}, shaftTag);
     }
     if (to <= n) return;
     const yc = y0 + shaft, [su, sv] = shift(yc + cap / 2), ab = abacus ?? Dm * 1.08;
     // Annulets, echinus and abacus.
-    for (let a = 0; a < 3; a++) turned('parthenonDoricRing', 'stone', u + su, yc + .02 + a * .035, v + sv, [dt * 1.035, .028, dt * 1.035], tint(c0, .03));
-    turned('parthenonEchinus', 'stone', u + su, yc + .11 + cap * .21, v + sv, [ab * .985, cap * .42, ab * .985], tint(c0, .04));
-    box('stone', u + su, yc + .11 + cap * .42 + (cap - .11 - cap * .42) / 2, v + sv, [ab, cap - .11 - cap * .42, ab], tint(c0, .04));
+    for (let a = 0; a < 3; a++) turned('parthenonDoricRing', 'stone', u + su, yc + .02 + a * .035, v + sv, [dt * 1.035, .028, dt * 1.035], tint(c0, .03), undefined, undefined, capTag);
+    turned('parthenonEchinus', 'stone', u + su, yc + .11 + cap * .21, v + sv, [ab * .985, cap * .42, ab * .985], tint(c0, .04), undefined, undefined, capTag);
+    box('stone', u + su, yc + .11 + cap * .42 + (cap - .11 - cap * .42) / 2, v + sv, [ab, cap - .11 - cap * .42, ab], tint(c0, .04), 0, undefined, capTag);
   }
   const freshFor = id => e.fresh && (!e.fresh.only || pick(e.fresh.only, [id]).has(id)) ? e.fresh : null;
   if (parts.has('columns')) {
@@ -186,7 +192,7 @@ function doricTemple(k, e, P) {
     for (const [key, col] of peristyle) {
       if (!chosen.has(key)) continue;
       const id = Object.keys(alias).find(n => alias[n] === key && e.drums?.[n]) ?? Object.keys(alias).find(n => alias[n] === key);
-      doricColumn(col.u, col.v, base, {D: col.D, height: C.height, drums: C.drums, capital: C.capital, abacus: C.abacus, taper: C.taper, lean: col.lean, leanBy: C.lean ?? 0, range: e.drums?.[id], fresh: freshFor(id), c0: e.columnColor ?? color});
+      doricColumn(col.u, col.v, base, {D: col.D, height: C.height, drums: C.drums, capital: C.capital, abacus: C.abacus, taper: C.taper, lean: col.lean, leanBy: C.lean ?? 0, range: e.drums?.[id], fresh: freshFor(id), c0: e.columnColor ?? color, part: 'peristyle', member: id, faces: [...col.faces].sort()});
     }
   }
 

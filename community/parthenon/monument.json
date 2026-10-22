@@ -270,7 +270,12 @@
           "method": "geometry",
           "model": "The measured peristyle contains 46 individually built Doric columns on an 8-by-17 grid; separate six-column pronaos and opisthodomos rows stand inside the two fronts.",
           "checked": true,
-          "result": "matched"
+          "result": "matched",
+          "measurement": [
+            "columnCount.total",
+            "columnCount.face.n",
+            "columnCount.face.e"
+          ]
         },
         {
           "feature": "Stylobate 69.51 × 30.86 m on three steps.",
@@ -290,7 +295,16 @@
           "method": "geometry",
           "model": "Every shaft is assembled drum by drum to 10.43 metres, with a smooth circular envelope, twenty concave flutes and entasis; the corner diameter and contracted terminal intercolumniation use their documented offsets.",
           "checked": true,
-          "result": "matched"
+          "result": "matched",
+          "measurement": [
+            "column.height",
+            "column.diameter.flank",
+            "column.diameter.corner",
+            "column.cornerRefinement",
+            "column.flutes",
+            "column.drumCount",
+            "spacing.flankCornerBay"
+          ]
         },
         {
           "feature": "An entablature 3.29 m high with 92 metopes between triglyphs: 14 on each front, 32 on each flank.",
@@ -320,7 +334,12 @@
           "method": "geometry",
           "model": "A continuous two-axis lift carries the stylobate and all superstructure through the documented 60 and 110 millimetre curvature, while each column axis converges inward by 7.4 centimetres from base to capital.",
           "checked": true,
-          "result": "matched"
+          "result": "matched",
+          "measurement": [
+            "column.lean",
+            "column.bedRise.flank",
+            "column.bedRise.front"
+          ]
         },
         {
           "feature": "A roof of marble tiles with antefixes (anthemia) and lion-head spouts.",
@@ -500,6 +519,132 @@
       "The rock of the Acropolis and its walls are not modelled: seen from below the south wall (ref 4) or from the Propylaea they hide the krepis in the photos.",
       "The north flank keeps a few cornice blocks between the corners; the model keeps the cornice only within 3 m of them.",
       "The marble is shown in one honey colour; the photos show new white marble patched into ancient blocks, which the model renders drum by drum only."
+    ],
+    "measurements": [
+      {
+        "probe": "doric-peristyle",
+        "quantity": "columnCount.total",
+        "expect": 46,
+        "source": "https://acropolisrestoration.ysma.gr/wp-content/uploads/2025/05/06_PARTHENWN_EN.pdf",
+        "note": "8 × 17 columns, 46 in all"
+      },
+      {
+        "probe": "doric-peristyle",
+        "quantity": "columnCount.face.n",
+        "expect": 17,
+        "source": "https://acropolisrestoration.ysma.gr/wp-content/uploads/2025/05/06_PARTHENWN_EN.pdf",
+        "note": "the seventeen columns of the north flank"
+      },
+      {
+        "probe": "doric-peristyle",
+        "quantity": "columnCount.face.s",
+        "expect": 17,
+        "source": "https://acropolisrestoration.ysma.gr/wp-content/uploads/2025/05/06_PARTHENWN_EN.pdf",
+        "note": "the seventeen columns of the south flank"
+      },
+      {
+        "probe": "doric-peristyle",
+        "quantity": "columnCount.face.e",
+        "expect": 8,
+        "source": "https://acropolisrestoration.ysma.gr/wp-content/uploads/2025/05/06_PARTHENWN_EN.pdf",
+        "note": "the eight columns of the east front"
+      },
+      {
+        "probe": "doric-peristyle",
+        "quantity": "columnCount.face.w",
+        "expect": 8,
+        "source": "https://acropolisrestoration.ysma.gr/wp-content/uploads/2025/05/06_PARTHENWN_EN.pdf",
+        "note": "the eight columns of the west front"
+      },
+      {
+        "probe": "doric-peristyle",
+        "quantity": "column.height",
+        "expect": 10.43,
+        "tolerance": 0.005,
+        "source": "https://de.wikipedia.org/wiki/Parthenon",
+        "note": "10.43 m high, measured from the bed to the top of the abacus"
+      },
+      {
+        "probe": "doric-peristyle",
+        "quantity": "column.diameter.flank",
+        "expect": 1.9,
+        "tolerance": 0.005,
+        "source": "https://de.wikipedia.org/wiki/Parthenon",
+        "note": "1.90 m across at the foot of the shaft"
+      },
+      {
+        "probe": "doric-peristyle",
+        "quantity": "column.diameter.corner",
+        "expect": 1.943,
+        "tolerance": 0.005,
+        "source": "https://de.wikipedia.org/wiki/Parthenon",
+        "note": "the corner columns are 4.3 cm thicker"
+      },
+      {
+        "probe": "doric-peristyle",
+        "quantity": "column.cornerRefinement",
+        "expect": 0.043,
+        "tolerance": 0.02,
+        "source": "https://de.wikipedia.org/wiki/Parthenon",
+        "note": "corner columns 4.3 cm thicker than the flank columns"
+      },
+      {
+        "probe": "doric-peristyle",
+        "quantity": "column.flutes",
+        "expect": 20,
+        "source": "https://de.wikipedia.org/wiki/Parthenon",
+        "note": "twenty flutes"
+      },
+      {
+        "probe": "doric-peristyle",
+        "quantity": "column.drumCount",
+        "expect": [
+          10,
+          12
+        ],
+        "source": "https://de.wikipedia.org/wiki/Parthenon",
+        "note": "the shaft is laid in 10 to 12 drums"
+      },
+      {
+        "probe": "doric-peristyle",
+        "quantity": "spacing.flank",
+        "expect": 4.296,
+        "tolerance": 0.01,
+        "source": "https://de.wikipedia.org/wiki/Parthenon",
+        "note": "derived: the 69.51 m stylobate, seventeen columns and the closed corner bays"
+      },
+      {
+        "probe": "doric-peristyle",
+        "quantity": "spacing.flankCornerBay",
+        "expect": 3.681,
+        "tolerance": 0.01,
+        "source": "https://de.wikipedia.org/wiki/Parthenon",
+        "note": "the corner bays are closed up by 61.5 cm, one spacing less"
+      },
+      {
+        "probe": "doric-peristyle",
+        "quantity": "column.lean",
+        "expect": 0.074,
+        "tolerance": 0.05,
+        "source": "https://de.wikipedia.org/wiki/Parthenon",
+        "note": "the columns lean 7.4 cm inwards"
+      },
+      {
+        "probe": "doric-peristyle",
+        "quantity": "column.bedRise.flank",
+        "expect": 0.11,
+        "tolerance": 0.08,
+        "source": "https://de.wikipedia.org/wiki/Parthenon",
+        "note": "the stylobate rises 110 mm on the long sides; measured between the column axes, which stand inside the full rise of the platform"
+      },
+      {
+        "probe": "doric-peristyle",
+        "quantity": "column.bedRise.front",
+        "expect": 0.06,
+        "tolerance": 0.2,
+        "source": "https://de.wikipedia.org/wiki/Parthenon",
+        "note": "the stylobate rises 60 mm on the short sides, measured between the column axes"
+      }
     ]
   },
   "phases": [

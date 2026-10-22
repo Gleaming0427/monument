@@ -86,3 +86,48 @@ Never improve a poor photo match with invented micro-detail. Find a better detai
 ## Report honestly
 
 Say what is measured, documented and interpreted, and the gaps that remain with the photos. Never call a model "exact" or "perfect".
+
+## Measuring the building against its sources
+
+A golden snapshot proves a monument did not change. It cannot tell you the monument is right: if the model has
+always been four columns short, the baseline has always been wrong and keeps it wrong.
+
+`evidence.measurements` closes that gap. Each entry names a quantity, the figure a source gives for it, the
+tolerance that figure deserves and the page it was read from:
+
+```json
+{"probe": "doric-peristyle", "quantity": "columnCount.total", "expect": 46,
+ "source": "https://acropolisrestoration.ysma.gr/…", "note": "8 × 17 columns, 46 in all"}
+```
+
+`node scripts/check.mjs` builds the monument, runs the named probe and compares. A probe reads the pieces the
+brick actually placed — never the spec that asked for them — so a model that quietly stops matching its evidence
+is caught:
+
+```
+✗ spacing.flank            4.42       source says 4.296
+    → parthenon: spacing.flank is 4.42 m centre to centre, the source says 4.296 (https://de.wikipedia.org/wiki/Parthenon)
+```
+
+Rules worth keeping:
+
+- **Measure in the building's own frame.** A monument sits on its real plan, rotated; reading a bay off a world
+  axis shortens it by the cosine of that rotation. The Parthenon is turned 12.9°, which is 2.5 % of every bay.
+- **Read the bed, not the centre.** A leaning shaft's centre is not its axis; the foot is half the piece's own
+  up-vector away.
+- **A source that gives a range is written as one:** `"expect": [10, 12]` for drums laid in ten to twelve.
+- **Give a tolerance the figure deserves.** Counts are exact; a stylobate rise measured between column axes
+  stands inside the platform's full rise and cannot equal it.
+
+A brick opts in by tagging what it builds — `part`, `member`, `faces`, `role` on its pieces. `kit/builder.js`
+spreads them onto every piece, so a checker can find the members by name without guessing at geometry.
+
+A `detailReview` row may then name the measurements behind it:
+
+```json
+{"feature": "A Doric peripteral temple of 8 by 17 columns, 46 in all…", "result": "matched",
+ "measurement": ["columnCount.total", "columnCount.face.n", "columnCount.face.e"]}
+```
+
+Rows that name measurements stop being promises: `check.mjs` fails them if a measurement drifts. Rows that name
+none are still assertions, and the report says how many of each there are.
