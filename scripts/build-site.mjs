@@ -65,7 +65,14 @@ for (const id of (await readdir(join(root, 'community')).catch(() => [])).sort()
   await writeFile(join(monuments, `${id}.json`), `${JSON.stringify(d, null, 2)}\n`);
   await copyEvidence(dir, d, id);
   if (d.bricks) await copyFile(join(dir, d.bricks), join(monuments, d.bricks));
-  let thumb = await exists(join(root, 'site', 'thumbs', `${id}.jpg`)) ? `${id}.jpg` : null;
+  // A thumbnail is an asset, not something to re-photograph on every deploy: a photograph committed under
+  // site/thumbs/ is reused as it stands. Only a monument with neither a committed .jpg nor a committed .png
+  // needs Chrome, and that is a deliberate `CAPTURE=1` run, not a default.
+  let thumb = null;
+  for (const extension of ['jpg', 'png']) {
+    if (await exists(join(root, 'site', 'thumbs', `${id}.${extension}`))) { thumb = `${id}.${extension}`; break; }
+  }
+  if (thumb) await copyFile(join(root, 'site', 'thumbs', thumb), join(out, 'thumbs', thumb));
   if (!thumb && process.env.CAPTURE) {
     const temp = await mkdtemp(join(tmpdir(), 'monument-'));
     await writeFile(join(temp, `${id}.json`), `${JSON.stringify(d, null, 2)}\n`);
