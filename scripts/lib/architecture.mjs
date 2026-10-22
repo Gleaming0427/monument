@@ -127,7 +127,107 @@ const PROBES = {
     }
     return measured;
   },
+
+  // The entablature: the three courses that carry the roof, and the frieze's rhythm of triglyph and metope.
+  // Measured on the pieces, so the heights the sources give are checked against the stone that was laid.
+  'doric-entablature'({pieces}) {
+    const group = completed(pieces.filter(piece => piece.part === 'entablature')).map(piece => ({...frame(piece), ...piece}));
+    if (!group.length) throw new Error('no entablature piece is tagged: the brick must tag them with `part`');
+    const measured = {}, put = (quantity, value, unit) => { measured[quantity] = {value: round(value), unit: unit ?? null}; };
+    const of = member => group.filter(piece => piece.member === member);
+    // A block on a long side runs its length in x, the same block on a short side in z: the face the piece
+    // was tagged with says which of the two is its width.
+    const along = piece => (piece.face === 'n' || piece.face === 's' ? piece.sx : piece.sz);
+    const architrave = of('architrave'), frieze = of('frieze'), cornice = of('cornice');
+    const triglyph = of('triglyph'), metope = of('metope');
+    if (!architrave.length) throw new Error('the entablature carries no architrave: nothing to measure');
+    const bottom = list => Math.min(...list.map(piece => piece.y - piece.sy / 2));
+    const top = list => Math.max(...list.map(piece => piece.y + piece.sy / 2));
+    const tall = list => median(list.map(piece => piece.sy));
+    put('entablature.architraveHeight', tall(architrave), 'm');
+    put('entablature.friezeHeight', tall(frieze), 'm');
+    put('entablature.corniceHeight', tall(cornice), 'm');
+    put('entablature.totalHeight', top(cornice) - bottom(architrave), 'm');
+    // The depth is measured across the face the course runs along: a block on a long side is deep in z,
+    // one on a short side deep in x.
+    const depth = list => median(list.map(piece => piece.sz));
+    put('entablature.depth', depth([...architrave, ...frieze]), 'm');
+    const flank = groundFrame(architrave.filter(piece => piece.face === 'n')), front = groundFrame(architrave.filter(piece => piece.face === 'e'));
+    put('entablature.span.flank', flank.long, 'm');
+    put('entablature.span.front', front.long, 'm');
+    // The frieze's rhythm: one triglyph over every column axis and every middle of a bay, a metope between.
+    // A flank is laid in segments where an element names its bays, so the count is the fullest face, not a
+    // mean over two faces that may never both be whole.
+    const fullest = (list, faces) => Math.max(0, ...faces.map(face => list.filter(piece => piece.face === face).length));
+    for (const [label, faces] of [['front', ['e', 'w']], ['flank', ['n', 's']]]) {
+      const t = triglyph.filter(piece => faces.includes(piece.face)), m = metope.filter(piece => faces.includes(piece.face));
+      if (!t.length) continue;
+      const whole = faces.reduce((a, b) => (metope.filter(piece => piece.face === b).length > metope.filter(piece => piece.face === a).length ? b : a), faces[0]);
+      const widths = m.filter(piece => piece.face === whole).map(along);
+      put(`entablature.triglyphs.${label}`, fullest(t, faces), 'on a full face');
+      put(`entablature.metopes.${label}`, m.length ? Math.max(...faces.map(face => m.filter(piece => piece.face === face).length)) : 0, 'on a full face');
+      put(`entablature.triglyphWidth.${label}`, median(t.filter(piece => piece.face === whole).map(along)), 'm');
+      if (widths.length) {
+        put(`entablature.metopeWidth.${label}`, median(widths), 'm');
+        put(`entablature.metopeWidth.${label}.max`, Math.max(...widths), 'm, at the centre');
+        // The Doric refinement the sources name: the metopes narrow from the middle towards the corners.
+        put(`entablature.metopeWidth.${label}.min`, Math.min(...widths), 'm, at the corner');
+      }
+    }
+    return measured;
+  },
+
+  // The stylobate: the steps the temple stands on, and the platform they make. Every figure here moves
+  // everything above it, so a source that gives a rise is checked against the rise actually laid.
+  'doric-stylobate'({pieces}) {
+    const steps = members(pieces, 'stylobate').filter(member => member.name.startsWith('step-'));
+    if (!steps.length) throw new Error('no stylobate step is tagged: the brick must tag them with `part`');
+    const group = completed(steps.flatMap(member => member.pieces)), measured = {}, put = (quantity, value, unit) => { measured[quantity] = {value: round(value), unit: unit ?? null}; };
+    const byName = new Map();
+    for (const piece of group) byName.set(piece.member, [...(byName.get(piece.member) ?? []), piece]);
+    const tops = [...byName.entries()].map(([name, list]) => ({name, y: Math.max(...list.map(piece => piece.y + piece.sy / 2))})).sort((a, b) => a.y - b.y);
+    const [first, last] = [tops[0], tops.at(-1)];
+    const span = list => groundFrame(list);
+    put('stylobate.steps', tops.length);
+    put('stylobate.stepHeight', median([...byName.values()].flat().map(piece => piece.sy)), 'm');
+    put('stylobate.length', span(byName.get(last.name)).long, 'm');
+    put('stylobate.width', span(byName.get(last.name)).short, 'm');
+    if (tops.length > 1) put('stylobate.stepTread', (span(byName.get(first.name)).long - span(byName.get(last.name)).long) / (2 * (tops.length - 1)), 'm');
+    put('stylobate.totalRise', last.y - first.y + median([...byName.get(first.name)].map(piece => piece.sy)), 'm');
+    return measured;
+  },
 };
+
+// A member is laid again by a later phase, and a course can be rebuilt member by member. The set that stands
+// as one building is the one phase that laid it whole: the group carrying the most of the member in question,
+// which is how the peristyle probe already reads a column that several campaigns touched.
+function completed(pieces) {
+  const phases = new Map();
+  for (const piece of pieces) {
+    if (!phases.has(piece.phase)) phases.set(piece.phase, []);
+    phases.get(piece.phase).push(piece);
+  }
+  const groups = [...phases.values()];
+  if (groups.length < 2) return pieces;
+  return groups.reduce((a, b) => (b.length > a.length ? b : a));
+}
+
+// The ground frame of a set of pieces. A monument sits on its real plan, rotated — the Parthenon is turned
+// 12.9°, which is 2.5 % of every bay — so a length read off the world axis is a length read in the wrong
+// frame. The pieces' own spread gives the two axes back, whichever way the building faces.
+function groundFrame(pieces) {
+  const points = pieces.flatMap(({x, z, sx, sz}) => [
+    [x - sx / 2, z - sz / 2], [x + sx / 2, z + sz / 2], [x - sx / 2, z + sz / 2], [x + sx / 2, z - sz / 2],
+  ]);
+  if (points.length < 2) return {long: 0, short: 0, axis: [1, 0]};
+  const mean = points.reduce((a, p) => [a[0] + p[0] / points.length, a[1] + p[1] / points.length], [0, 0]);
+  let xx = 0, zz = 0, xz = 0;
+  for (const [x, z] of points) { const dx = x - mean[0], dz = z - mean[1]; xx += dx * dx; zz += dz * dz; xz += dx * dz; }
+  const angle = .5 * Math.atan2(2 * xz, xx - zz), ux = Math.cos(angle), uz = Math.sin(angle);
+  const along = points.map(([x, z]) => (x - mean[0]) * ux + (z - mean[1]) * uz);
+  const across = points.map(([x, z]) => -(x - mean[0]) * uz + (z - mean[1]) * ux);
+  return {long: Math.max(...along) - Math.min(...along), short: Math.max(...across) - Math.min(...across), axis: [ux, uz]};
+}
 
 export const probeNames = () => Object.keys(PROBES);
 
