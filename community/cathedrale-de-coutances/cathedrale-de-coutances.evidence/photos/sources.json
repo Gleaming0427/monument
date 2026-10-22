@@ -1,0 +1,53 @@
+{
+  "_read": "Candidate reference photographs, found and credited on 2026-10-22 to pin the placement of the windows and the architectural members. NONE is calibrated yet, so NONE is listed in the monument's evidence.references: a reference without a fitted viewpoint is worse than none, because compare.mjs would measure against a camera that was never checked. Each needs six points, at least one off the plane of the others, or the fit degenerates into a 110° lens and a camera two metres from the wall.",
+  "photos": [
+    {
+      "file": "north-pinnacles.jpg",
+      "shows": "la façade nord et ses pinacles",
+      "title": "Pinacles de la façade nord.jpg",
+      "author": "Tmouchentois",
+      "licence": "CC BY-SA 3.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Pinacles_de_la_fa%C3%A7ade_nord.jpg"
+    },
+    {
+      "file": "south-elevation.jpg",
+      "shows": "l'élévation du flanc sud",
+      "title": "Coutances Cathédrale Notre-Dame Südseite 1.jpg",
+      "author": "Zairon",
+      "licence": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Coutances_Cath%C3%A9drale_Notre-Dame_S%C3%BCdseite_1.jpg"
+    },
+    {
+      "file": "crossing-lantern.jpg",
+      "shows": "la lanterne de la croisée sur le pignon du transept sud",
+      "title": "Coutances Cathédrale Notre-Dame Vierungsturm 1.jpg",
+      "author": "Zairon",
+      "licence": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Coutances_Cath%C3%A9drale_Notre-Dame_Vierungsturm_1.jpg"
+    },
+    {
+      "file": "south-transept.jpg",
+      "shows": "le transept sud et ses grandes baies",
+      "title": "Coutances (50) Cathédrale Notre-Dame - Extérieur - Transept sud.jpg",
+      "author": "GO69",
+      "licence": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Coutances_%2850%29_Cath%C3%A9drale_Notre-Dame_-_Ext%C3%A9rieur_-_Transept_sud.jpg"
+    },
+    {
+      "file": "south-porch.jpg",
+      "shows": "le porche sud",
+      "title": "Porche sud cathédrale Coutances.JPG",
+      "author": "Giogo",
+      "licence": "CC BY-SA 3.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Porche_sud_cath%C3%A9drale_Coutances.JPG"
+    },
+    {
+      "file": "chevet.jpg",
+      "shows": "le chevet rapproché",
+      "title": "Chevet cathédrale Coutances.JPG",
+      "author": "Giogo",
+      "licence": "CC BY-SA 3.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Chevet_cath%C3%A9drale_Coutances.JPG"
+    }
+  ]
+}
