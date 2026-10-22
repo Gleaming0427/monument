@@ -8,6 +8,7 @@ import {execFileSync} from 'node:child_process';
 import {join, dirname, basename, resolve} from 'node:path';
 import {tmpdir} from 'node:os';
 import {fileURLToPath} from 'node:url';
+import {expand} from './lib/compact.mjs';
 
 const REPO = 'Gleaming0427/monument';
 const skill = fileURLToPath(new URL('..', import.meta.url));
@@ -15,7 +16,7 @@ const args = process.argv.slice(2), flag = name => { const i = args.indexOf(`--$
 const file = args.find(arg => arg.endsWith('.json'));
 if (!file) { console.error('Usage: node scripts/publish.mjs monuments/<id>.json --author <github name> --model "<model>" --prompt "<request>" [--title "<title>"] [--yes]'); process.exit(1); }
 
-const monument = JSON.parse(await readFile(file, 'utf8')), id = basename(file, '.json');
+const monument = expand(JSON.parse(await readFile(file, 'utf8')), file), id = basename(file, '.json');
 const author = flag('author'), model = flag('model') ?? 'Model not given', prompt = flag('prompt');
 if (!author || !prompt) { console.error('--author (GitHub name) and --prompt (the request that made it) are required.'); process.exit(1); }
 const run = (cmd, list, options = {}) => execFileSync(cmd, list, {encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'], ...options}).trim();

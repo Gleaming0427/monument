@@ -9,13 +9,14 @@
 import {readFile, writeFile, mkdir, access} from 'node:fs/promises';
 import {dirname, join, basename, resolve, relative} from 'node:path';
 import {startViewer, openBrowser} from './lib/browser.mjs';
+import {expand} from './lib/compact.mjs';
 
 const args = process.argv.slice(2), flag = name => { const i = args.indexOf(`--${name}`); return i >= 0 ? args[i + 1] : undefined; };
 const file = args.find(arg => arg.endsWith('.json')), pass = Number(flag('pass'));
 if (!file || !(pass >= 1)) { console.error('Usage: node scripts/compare.mjs monuments/<id>.json --pass <n> [--quick] [--resume]'); process.exit(1); }
 const quick = args.includes('--quick');
 const resume = args.includes('--resume');
-const path = resolve(file), dir = dirname(path), id = basename(path, '.json'), text = await readFile(path, 'utf8'), d = JSON.parse(text);
+const path = resolve(file), dir = dirname(path), id = basename(path, '.json'), text = await readFile(path, 'utf8'), d = expand(JSON.parse(text), file);
 const refs = d.evidence?.references ?? [];
 if (refs.length < 1) { console.error('evidence.references is empty: find the reference photos first (see references/fidelity.md).'); process.exit(1); }
 for (const [i, r] of refs.entries()) if (![r.azimuth, r.elevation, r.distance].every(Number.isFinite)) { console.error(`Reference ${i} needs a numeric azimuth, elevation and distance (and optionally a target [x, y, z]).`); process.exit(1); }

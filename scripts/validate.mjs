@@ -10,6 +10,7 @@ import {readFile, readdir, stat} from 'node:fs/promises';
 import {join, resolve, dirname, basename} from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {measurePlan} from './lib/plan.mjs';
+import {expand} from './lib/compact.mjs';
 
 const skill = fileURLToPath(new URL('..', import.meta.url));
 const bricksOf = source => new Set([...source.matchAll(/^\s{2}(\w+)\(k,\s*e,\s*P\)/gm)].map(m => m[1]));
@@ -137,9 +138,24 @@ async function reliefCredits(d, at) {
 }
 const seen = new Map();
 for (const file of (await Promise.all(targets.map(files))).flat()) {
-  let d, text;
-  try { text = await readFile(file, 'utf8'); d = JSON.parse(text); } catch (error) { check(false, `${file}: not valid JSON (${error.message})`); continue; }
+  let d, text, raw;
   const id = basename(file) === 'monument.json' ? basename(dirname(file)) : basename(file, '.json'), at = `${id}:`;
+  try { text = await readFile(file, 'utf8'); raw = JSON.parse(text); d = expand(raw, at); } catch (error) {
+    check(false, `${file}: not a valid monument (${error.message})`); continue;
+  }
+  // The catalogue is authored by hand, so it gets its own readable checks on top of the expansion above.
+  const book = raw.catalogue ?? {};
+  for (const [name, prototype] of Object.entries(book)) {
+    check(prototype && typeof prototype === 'object' && !Array.isArray(prototype), `${at} catalogue "${name}" must be a JSON object`);
+    if (!prototype || typeof prototype !== 'object') continue;
+    check(prototype.use !== undefined || prototype.type, `${at} catalogue "${name}" needs a "type", or a "use" to inherit one from`);
+    check(Object.keys(prototype).length > 1, `${at} catalogue "${name}" repeats nothing: write the values inline instead`);
+  }
+  const used = new Set();
+  const walk = value => { if (typeof value?.use === 'string') used.add(value.use); };
+  for (const prototype of Object.values(book)) walk(prototype);
+  for (const element of raw.elements ?? []) walk(element);
+  for (const name of Object.keys(book)) check(used.has(name), `${at} catalogue "${name}" is never used`);
   check(/^[a-z0-9-]+$/.test(id), `${at} id must be lowercase letters, digits and dashes`);
   check(d.id === id, `${at} "id" must be "${id}" (the file or folder name)`);
   check(!seen.has(id), `${at} same id as ${seen.get(id)}`); seen.set(id, file);

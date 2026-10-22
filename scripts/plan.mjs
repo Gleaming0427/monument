@@ -15,6 +15,7 @@ const {result, svg} = await measurePlan(resolve(file));
 await mkdir(dirname(out), {recursive: true});
 await writeFile(out, svg);
 // The fit is recorded in evidence.plan.fit, shown by the viewer's evidence mode and checked by validate.mjs.
+// The fit is written back into the file as it stands: a compact descriptor keeps its catalogue.
 const text = await readFile(resolve(file), 'utf8'), d = JSON.parse(text), indent = /^\{\n( +)/.exec(text)?.[1].length ?? 1;
 if (d.evidence?.plan) {
   d.evidence.plan.fit = {p90: result.p90, max: result.max, coverage: result.coverage, overflow: result.overflow};

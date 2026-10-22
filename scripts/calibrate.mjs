@@ -15,6 +15,7 @@
 // the photo's height, is how far the model's silhouette sits from the photo once the viewpoint is right.
 import {readFile, writeFile} from 'node:fs/promises';
 import {resolve} from 'node:path';
+import {expand} from './lib/compact.mjs';
 
 const args = process.argv.slice(2), flag = name => { const i = args.indexOf(`--${name}`); return i >= 0 ? args[i + 1] : undefined; };
 const file = args.find(arg => arg.endsWith('.json')), n = Number(flag('ref'));
@@ -23,7 +24,7 @@ if (!file || !(n >= 0) || !(W > 0 && H > 0) || points.length < 3) {
   console.error("Usage: node scripts/calibrate.mjs monuments/<id>.json --ref <n> --photo <width>,<height> --points '[[x, y, z, px, py], …]' (3 points or more) [--frame] [--write]");
   process.exit(1);
 }
-const path = resolve(file), text = await readFile(path, 'utf8'), d = JSON.parse(text), ref = d.evidence?.references?.[n];
+const path = resolve(file), text = await readFile(path, 'utf8'), d = expand(JSON.parse(text), file), ref = d.evidence?.references?.[n];
 if (!ref) { console.error(`No evidence.references[${n}].`); process.exit(1); }
 const rad = Math.PI / 180, turn = (d.rotate ?? 0) * rad;
 // The monument's frame to the scene, as the viewer turns it.

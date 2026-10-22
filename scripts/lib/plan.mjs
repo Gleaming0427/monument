@@ -12,12 +12,13 @@
 import {readFile} from 'node:fs/promises';
 import {dirname, join} from 'node:path';
 import {loadEngine} from './engine.mjs';
+import {expand} from './compact.mjs';
 
 const RES = .5, CLOSE = 1.5, CORNERS = [];
 for (const x of [-.5, .5]) for (const y of [-.5, .5]) for (const z of [-.5, .5]) CORNERS.push([x, y, z]);
 
 export async function measurePlan(file) {
-  const d = JSON.parse(await readFile(file, 'utf8')), dir = dirname(file);
+  const d = expand(JSON.parse(await readFile(file, 'utf8')), file), dir = dirname(file);
   const plan = d.evidence?.plan;
   if (!plan?.outline) throw new Error('evidence.plan.outline is missing');
   const outline = JSON.parse(await readFile(join(dir, plan.outline), 'utf8'));

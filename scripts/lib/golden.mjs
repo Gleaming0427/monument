@@ -5,6 +5,7 @@ import {createHash} from 'node:crypto';
 import {readFile} from 'node:fs/promises';
 import {dirname, resolve} from 'node:path';
 import {loadEngine} from './engine.mjs';
+import {expand} from './compact.mjs';
 
 const round = (value, digits = 3) => +value.toFixed(digits);
 const sorted = object => Object.fromEntries(Object.entries(object).sort(([a], [b]) => a.localeCompare(b)));
@@ -33,7 +34,7 @@ function digest(pieces) {
 }
 
 export async function geometrySnapshot(file) {
-  const path = resolve(file), folder = dirname(path), data = JSON.parse(await readFile(path, 'utf8'));
+  const path = resolve(file), folder = dirname(path), data = expand(JSON.parse(await readFile(path, 'utf8')), file);
   const engine = await loadEngine(data.bricks ? resolve(folder, data.bricks) : undefined);
   const started = performance.now(), {pieces, reliefs} = engine.buildPieces(data), buildMs = performance.now() - started;
   const shapes = countBy(pieces, piece => piece.shape ?? 'box');

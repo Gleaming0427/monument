@@ -7,6 +7,7 @@ import {execFileSync} from 'node:child_process';
 import {join} from 'node:path';
 import {tmpdir} from 'node:os';
 import {fileURLToPath} from 'node:url';
+import {expand} from './lib/compact.mjs';
 
 const root = fileURLToPath(new URL('..', import.meta.url)), out = join(root, '_site');
 const json = async path => JSON.parse(await readFile(path, 'utf8'));
@@ -48,8 +49,8 @@ async function copyEvidence(dir, d, id) {
 const curated = await json(join(root, 'site', 'collection.json'));
 const collection = [];
 for (const {id, blurb} of curated) {
-  const d = await json(join(root, 'examples', `${id}.json`));
-  await copyFile(join(root, 'examples', `${id}.json`), join(monuments, `${id}.json`));
+  const d = expand(await json(join(root, 'examples', `${id}.json`)), id);
+  await writeFile(join(monuments, `${id}.json`), `${JSON.stringify(d, null, 2)}\n`);
   await copyEvidence(join(root, 'examples'), d, id);
   collection.push({id, name: d.name, place: d.place, blurb, video: await exists(join(root, 'site', 'media', `${id}.mp4`))});
 }
@@ -59,15 +60,15 @@ const community = [];
 for (const id of (await readdir(join(root, 'community')).catch(() => [])).sort()) {
   const dir = join(root, 'community', id);
   if (!(await exists(join(dir, 'monument.json')))) continue;
-  const d = await json(join(dir, 'monument.json')), meta = await json(join(dir, 'meta.json')).catch(() => ({}));
+  const d = expand(await json(join(dir, 'monument.json')), id), meta = await json(join(dir, 'meta.json')).catch(() => ({}));
   if (d.bricks && !/^[a-z0-9-]+\.bricks\.js$/.test(d.bricks)) throw new Error(`${id}: "bricks" must be a plain file name`);
-  await copyFile(join(dir, 'monument.json'), join(monuments, `${id}.json`));
+  await writeFile(join(monuments, `${id}.json`), `${JSON.stringify(d, null, 2)}\n`);
   await copyEvidence(dir, d, id);
   if (d.bricks) await copyFile(join(dir, d.bricks), join(monuments, d.bricks));
   let thumb = await exists(join(root, 'site', 'thumbs', `${id}.jpg`)) ? `${id}.jpg` : null;
   if (!thumb && process.env.CAPTURE) {
     const temp = await mkdtemp(join(tmpdir(), 'monument-'));
-    await copyFile(join(dir, 'monument.json'), join(temp, `${id}.json`));
+    await writeFile(join(temp, `${id}.json`), `${JSON.stringify(d, null, 2)}\n`);
     if (d.bricks) await copyFile(join(dir, d.bricks), join(temp, d.bricks));
     try {
       execFileSync('node', [join(root, 'scripts', 'capture.mjs'), id, '--dir', temp, '--size', '960,640', '--out', join(out, 'thumbs', `${id}.png`)], {stdio: 'inherit'});
