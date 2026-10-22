@@ -65,20 +65,21 @@ export function profiledGeometry({profile = [[0, 1], [1, 1]], flutes = 0, fluteD
     const modulation = 1 - fluteDepth * Math.sin(Math.PI * phase) ** flutePower;
     positions.setX(i, x * modulation); positions.setZ(i, z * modulation);
   }
-  geometry.computeVertexNormals();
-  // The rim of a lathed piece is shared by the side and, on a closed piece, by the cap. Averaging the two
-  // shades it like a chamfer, and a column built drum by drum then shows a dark ring at every joint — the
-  // drums look stacked rather than carved. A rim takes the normal of the surface beside it: the cap is
-  // never visible once the piece is bedded on its neighbour.
-  const stride = radialSegments + 1, rings = outline.length, rims = openEnded ? [0, rings - 1] : [1, rings - 2];
-  const normals = geometry.attributes.normal;
-  for (const rim of rims) {
-    const from = rim === 0 ? 1 : rim - 1;
-    if (from < 0 || from >= rings) continue;
-    for (let i = 0; i < stride; i++) normals.setXYZ(rim * stride + i,
-      normals.getX(from * stride + i), normals.getY(from * stride + i), normals.getZ(from * stride + i));
+  // Normals come from the profile, not from the triangles. computeVertexNormals can only see the piece it
+  // is given, so every drum of a column derived its own field and the change showed at every joint: rays
+  // inside each drum and a shadow line where one drum met the next. The profile is a known curve, so its
+  // normal is known too — and two drums cut from one curve agree at the place they meet.
+  const stride = radialSegments + 1, rings = outline.length, normals = geometry.attributes.normal;
+  for (let j = 0; j < rings; j++) {
+    const radius = outline[j].x, before = outline[Math.max(0, j - 1)], after = outline[Math.min(rings - 1, j + 1)];
+    const dr = after.x - before.x, dy = after.y - before.y, length = Math.hypot(dr, dy);
+    // With a flat end (radius 0) the surface is the cap; elsewhere the normal is perpendicular to the profile.
+    const nr = radius < 1e-7 ? 0 : dy / (length || 1), ny = radius < 1e-7 ? (j === 0 ? -1 : 1) : -dr / (length || 1);
+    for (let i = 0; i < stride; i++) {
+      const x = positions.getX(j * stride + i), z = positions.getZ(j * stride + i), angle = Math.atan2(z, x) || 0;
+      normals.setXYZ(j * stride + i, Math.cos(angle) * nr, ny, Math.sin(angle) * nr);
+    }
   }
-  normals.needsUpdate = true;
   geometry.userData.architecture = {profile: sampled, flutes, maxChordErrorMm, radialSegments, diameter, height};
   return geometry;
 }
