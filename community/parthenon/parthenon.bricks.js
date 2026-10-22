@@ -203,8 +203,8 @@ function doricTemple(k, e, P) {
       // The step's blocks round the edge (a band one tread and a half deep), joints staggered course by course.
       const band = s === st.count - 1 ? 2.2 : st.tread * 1.6;
       for (const side of [-1, 1]) {
-        for (let u = -l / 2 + (s % 2) * .6; u < l / 2 - .05;) { const len = 1.2 + rng() * .5, a = Math.max(-l / 2, u), z = Math.min(l / 2, u + len); if (z - a > .1) box('stone', (a + z) / 2, y, side * (b / 2 - band / 2), [z - a - .02, h, band], tint()); u += len; }
-        for (let v = -b / 2 + band + (s % 2) * .5; v < b / 2 - band - .05;) { const len = 1.1 + rng() * .5, a = Math.max(-b / 2 + band, v), z = Math.min(b / 2 - band, v + len); if (z - a > .1) box('stone', side * (l / 2 - band / 2), y, (a + z) / 2, [band, h, z - a - .02], tint()); v += len; }
+        for (let u = -l / 2 + (s % 2) * .6; u < l / 2 - .05;) { const len = 1.2 + rng() * .5, a = Math.max(-l / 2, u), z = Math.min(l / 2, u + len); if (z - a > .1) box('stone', (a + z) / 2, y, side * (b / 2 - band / 2), [z - a - .02, h, band], tint(), 0, undefined, {part: 'stylobate', member: `step-${s}`}); u += len; }
+        for (let v = -b / 2 + band + (s % 2) * .5; v < b / 2 - band - .05;) { const len = 1.1 + rng() * .5, a = Math.max(-b / 2 + band, v), z = Math.min(b / 2 - band, v + len); if (z - a > .1) box('stone', side * (l / 2 - band / 2), y, (a + z) / 2, [band, h, z - a - .02], tint(), 0, undefined, {part: 'stylobate', member: `step-${s}`}); v += len; }
       }
       // The core under the stylobate: big slabs.
       const inner = [l - 2 * band, b - 2 * band];
@@ -223,7 +223,9 @@ function doricTemple(k, e, P) {
   };
   // A point at `t` along a side (u or v) and `d` metres in from its face, at height y.
   const at = (sd, t, d) => sd.dir[0] ? [t, sd.face - sd.out[1] * d] : [sd.face - sd.out[0] * d, t];
-  const sideBox = (sd, t, len, y, h, d, depth, c = tint(), kind = 'stone') => { const [u, v] = at(sd, t, d + depth / 2); box(kind, u, y + h / 2, v, sd.dir[0] ? [len, h, depth] : [depth, h, len], c); };
+  // `tag` names what the piece is: a checker reads these tags to measure the entablature the way a source
+  // describes it — architrave, frieze, triglyph, metope, cornice — without guessing at geometry.
+  const sideBox = (sd, t, len, y, h, d, depth, c = tint(), kind = 'stone', tag) => { const [u, v] = at(sd, t, d + depth / 2); box(kind, u, y + h / 2, v, sd.dir[0] ? [len, h, depth] : [depth, h, len], c, 0, undefined, tag); };
   // The extent along a side of a segment between column numbers a and b (to the corner when it starts there).
   const extent = (sd, [a, b]) => {
     const p = [sd.along(a), sd.along(b)], lo = Math.min(...p), hi = Math.max(...p), cornerLo = Math.min(sd.along(1), sd.along(sd.n)), cornerHi = Math.max(sd.along(1), sd.along(sd.n));
@@ -244,9 +246,9 @@ function doricTemple(k, e, P) {
         if (layers.has('architrave')) {
           for (let j = 0; j < joints.length - 1; j++) {
             const len = joints[j + 1] - joints[j], mid = (joints[j] + joints[j + 1]) / 2;
-            for (const [d, depth] of [[0, .62], [.64, .66], [1.32, depthA - 1.32]]) sideBox(sd, mid, len - .02, yArch, E.architrave - .1, d, depth);
+            for (const [d, depth] of [[0, .62], [.64, .66], [1.32, depthA - 1.32]]) sideBox(sd, mid, len - .02, yArch, E.architrave - .1, d, depth, tint(), 'stone', {part: 'entablature', member: 'architrave', face: name});
           }
-          sideBox(sd, (t0 + t1) / 2, t1 - t0, yFrieze - .1, .1, -.06, .5);
+          sideBox(sd, (t0 + t1) / 2, t1 - t0, yFrieze - .1, .1, -.06, .5, tint(), 'stone', {part: 'entablature', member: 'architrave', face: name});
         }
         // Triglyphs over every axis and every middle of a bay, the corner ones at the corner; metopes between.
         const cols = Array.from({length: sd.n}, (_, i) => sd.along(i + 1)).sort((a, b) => a - b), centres = [];
@@ -262,9 +264,9 @@ function doricTemple(k, e, P) {
           if (inSeg(t) && layers.has('frieze')) {
             // The triglyph: its block, three upright bars with two grooves between (and half grooves at the
             // edges), its capital band; under it on the architrave, the regula and its six guttae.
-            sideBox(sd, t, tw, yFrieze, E.frieze - .12, .02, .5);
-            for (const o of [-.28, 0, .28]) sideBox(sd, t + o * tw, tw * .19, yFrieze, E.frieze - .14, -.03, .06, tint(color, .04));
-            sideBox(sd, t, tw + .02, yGeison - .12, .12, -.04, .5);
+            sideBox(sd, t, tw, yFrieze, E.frieze - .12, .02, .5, tint(), 'stone', {part: 'entablature', member: 'triglyph', face: name});
+            for (const o of [-.28, 0, .28]) sideBox(sd, t + o * tw, tw * .19, yFrieze, E.frieze - .14, -.03, .06, tint(color, .04), 'stone', {part: 'entablature', member: 'triglyphBar', face: name});
+            sideBox(sd, t, tw + .02, yGeison - .12, .12, -.04, .5, tint(), 'stone', {part: 'entablature', member: 'triglyphCap', face: name});
           }
           if (inSeg(t) && layers.has('architrave')) {
             sideBox(sd, t, tw, yFrieze - .17, .06, -.05, .06);
@@ -272,14 +274,14 @@ function doricTemple(k, e, P) {
           }
           if (i < centres.length - 1 && layers.has('frieze')) {
             const a = Math.max(t0, t + tw / 2), b = Math.min(t1, centres[i + 1] - tw / 2);
-            if (b - a > .1) { sideBox(sd, (a + b) / 2, b - a, yFrieze, E.frieze - .12, .07, .26, tint(e.metopeColor ?? color)); sideBox(sd, (a + b) / 2, b - a, yGeison - .12, .12, .02, .3); }
+            if (b - a > .1) { sideBox(sd, (a + b) / 2, b - a, yFrieze, E.frieze - .12, .07, .26, tint(e.metopeColor ?? color), 'stone', {part: 'entablature', member: 'metope', face: name}); sideBox(sd, (a + b) / 2, b - a, yGeison - .12, .12, .02, .3, tint(), 'stone', {part: 'entablature', member: 'metopeCap', face: name}); }
           }
         }
         // Backing of the frieze, then the geison: its soffit with a mutule over every triglyph and metope.
-        if (layers.has('frieze')) sideBox(sd, (t0 + t1) / 2, t1 - t0, yFrieze, E.frieze, .33, depthA - .33, tint(color, .03));
+        if (layers.has('frieze')) sideBox(sd, (t0 + t1) / 2, t1 - t0, yFrieze, E.frieze, .33, depthA - .33, tint(color, .03), 'stone', {part: 'entablature', member: 'frieze', face: name});
         if (layers.has('cornice')) {
           const pr = E.projection ?? .65, reach = sd.dir[0] ? faceU : faceV;
-          for (let t = t0; t < t1 - .05;) { const len = Math.min(1.25 + rng() * .3, t1 - t); if (keepCornice(t + len / 2, reach)) sideBox(sd, t + len / 2, len - .015, yGeison, E.geison, -pr, pr + 1.4); t += len; }
+          for (let t = t0; t < t1 - .05;) { const len = Math.min(1.25 + rng() * .3, t1 - t); if (keepCornice(t + len / 2, reach)) sideBox(sd, t + len / 2, len - .015, yGeison, E.geison, -pr, pr + 1.4, tint(), 'stone', {part: 'entablature', member: 'cornice', face: name}); t += len; }
           const mutules = centres.flatMap((t, i) => i < centres.length - 1 ? [t, (t + centres[i + 1]) / 2] : [t]);
           for (const t of mutules) if (inSeg(t) && keepCornice(t, reach)) {
             sideBox(sd, t, tw * .96, yGeison - .055, .055, -pr + .08, pr - .1, tint(color, .04));
