@@ -6,6 +6,7 @@ Units are metres. `x` points east, `z` points south, `y` up; the ground (the stu
 
 | Type | What it builds | Main parameters |
 | --- | --- | --- |
+| `profiledColumn` | One or several columns from a continuous measured shaft profile, with adaptive tessellation and optional true fluting | `center` or `positions`, `y0`, `height`, `diameter`, `order`, `drums` or `drumHeight`, `shaft.profile` (`[height fraction, diameter ratio]` stations), `shaft.flutes`, `rendering.maxChordErrorMm`, `rendering.lod` (`adaptive`), `out`, `color`, `phase` |
 | `facade` | A wall with openings, stone surrounds and balconies | `center`, `length`, `floors`, `floorHeight`, `bays`, `windowWidth`, `rot`, `y0`, `door`, `balconies`, `color`, `trim` |
 | `wing` | A building block with four facades and a roof | `center`, `size` (width, length; length along local z), `floors`, `floorHeight`, `rot`, `y0`, `roof` (optional `until`), `sideBays` (bays on the long facades), facade parameters |
 | `lawn` | A garden cut to a real outline, with a gravel border | `points`, `step`, `grass`, `gravel`, `border` |

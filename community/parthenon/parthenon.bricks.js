@@ -1,5 +1,6 @@
 import * as T from 'three';
 import {SHAPES} from '../kit/builder.js';
+import {adaptive, profiledGeometry} from '../kit/geometry.js';
 
 // ——— Doric temple (peripteral, Classical Greek) ———
 // A temple of the Doric order on its stepped base (krepis): a peristyle of fluted columns laid drum by drum,
@@ -41,29 +42,17 @@ const GUTTA = [[0, -.5], [.31, -.5], [.46, -.3], [.5, .24], [.4, .5], [0, .5]];
 // drum of a tapering shaft does. These monument-specific names are exported explicitly: the gallery copies
 // them into the active renderer's shape registry, so an unknown shape can never silently fall back to a box.
 export const shapes = {
-  parthenonFlutedDrum: () => {
-    const flutes = 20, g = new T.CylinderGeometry(.5 * .988, .5, 1, flutes * 16, 1), p = g.attributes.position;
-    for (let i = 0; i < p.count; i++) {
-      const x = p.getX(i), z = p.getZ(i), r = Math.hypot(x, z);
-      if (r < 1e-4) continue;
-      const f = ((Math.atan2(z, x) / (2 * Math.PI) * flutes) % 1 + 1) % 1;
-      // Twenty broad concave channels return to the true circular envelope at each sharp arris.
-      const m = 1 - .07 * Math.sin(Math.PI * f) ** .82;
-      p.setX(i, x * m); p.setZ(i, z * m);
-    }
-    g.computeVertexNormals();
-    return g;
-  },
-  parthenonDoricDrum: () => new T.CylinderGeometry(.5 * .988, .5, 1, 128, 1),
-  parthenonDoricRing: () => new T.CylinderGeometry(.5, .5, 1, 128, 1),
-  parthenonEchinus: () => new T.LatheGeometry(ECHINUS.map(([x, y]) => new T.Vector2(x, y)), 96),
-  parthenonDoricGutta: () => new T.LatheGeometry(GUTTA.map(([x, y]) => new T.Vector2(x, y)), 32),
-  parthenonCoverTile: () => {
+  parthenonFlutedDrum: adaptive(context => profiledGeometry({...context, profile: context.profile ?? [[0, 1], [1, .988]], flutes: context.flutes ?? 20, fluteDepth: .07, flutePower: .82}), {flutes: 20, maxChordErrorMm: 2, maxSegments: 160}),
+  parthenonDoricDrum: adaptive(context => profiledGeometry({...context, profile: context.profile ?? [[0, 1], [1, .988]]}), {maxChordErrorMm: 2, maxSegments: 128}),
+  parthenonDoricRing: adaptive(context => profiledGeometry({...context, profile: [[0, 1], [1, 1]]}), {maxChordErrorMm: 2, maxSegments: 128}),
+  parthenonEchinus: adaptive(context => profiledGeometry({...context, profile: ECHINUS.filter(([r]) => r > 0).map(([r, y]) => [y + .5, r * 2])}), {maxChordErrorMm: 2, maxSegments: 96}),
+  parthenonDoricGutta: adaptive(context => profiledGeometry({...context, profile: GUTTA.filter(([r]) => r > 0).map(([r, y]) => [y + .5, r * 2])}), {maxChordErrorMm: 2, maxSegments: 48}),
+  parthenonCoverTile: adaptive(context => {
     // Convex half-cylinder used for the marble or terracotta cover tiles. Rotate the open cylinder so its
     // crown follows the roof normal when `lying` aligns its long axis with the fall of the roof.
-    const g = new T.CylinderGeometry(.5, .5, 1, 32, 1, true, 0, Math.PI);
+    const g = new T.CylinderGeometry(.5, .5, 1, Math.max(8, Math.round(context.radialSegments / 2)), 1, true, 0, Math.PI);
     g.rotateY(Math.PI / 2); g.computeVertexNormals(); return g;
-  },
+  }, {maxChordErrorMm: 2, maxSegments: 64}),
   parthenonAnthemion: () => {
     const s = new T.Shape();
     s.moveTo(-.5, -.5); s.lineTo(-.46, -.08); s.lineTo(-.3, .18); s.lineTo(-.42, .42);
@@ -122,13 +111,13 @@ function doricTemple(k, e, P) {
     const p = W(u, y + lift(u, v), v);
     k.box(kind, [p.x, p.y, p.z], size, rot + yaw, c, ph, order ?? p.y, extra);
   };
-  const turned = (shape, kind, u, y, v, size, c = tint(), order) => {
+  const turned = (shape, kind, u, y, v, size, c = tint(), order, geometry) => {
     const p = W(u, y + lift(u, v), v);
-    k.turned(shape, kind, [p.x, p.y, p.z], size, rot, c, ph, order ?? p.y - size[1] / 2, extra);
+    k.turned(shape, kind, [p.x, p.y, p.z], size, rot, c, ph, order ?? p.y - size[1] / 2, geometry ? {...extra, geometry} : extra);
   };
-  const lying = (shape, kind, u, y, v, axis, size, c = tint(), order) => {
+  const lying = (shape, kind, u, y, v, axis, size, c = tint(), order, geometry) => {
     const p = W(u, y + lift(u, v), v), a = D(...axis).normalize();
-    k.lying(shape, kind, p, a, size, c, ph, order ?? p.y - size[0] / 2, extra);
+    k.lying(shape, kind, p, a, size, c, ph, order ?? p.y - size[0] / 2, geometry ? {...extra, geometry} : extra);
   };
   const beam = (kind, a, b, t, c = tint()) => k.beam(kind, W(a[0], a[1] + lift(a[0], a[2]), a[2]), W(b[0], b[1] + lift(b[0], b[2]), b[2]), t, c, ph, extra);
   // A box laid along a slope: x along `dir` [du, dy, dv], y its normal pointing up, z across.
@@ -165,10 +154,24 @@ function doricTemple(k, e, P) {
     const [from, to] = [range?.[0] ?? 0, range?.[1] ?? n + 1];
     // The lean: the top of the column stands `leanBy` metres in from its foot, along each way it faces out.
     const shift = y => { const f = leanBy * (y - y0) / height; return [-lean[0] * f, -lean[1] * f]; };
-    for (let i = from; i < Math.min(n, to); i++) {
+    if (!range && !fresh) {
+      // At rest, a complete colonnade is one smooth optical surface. The construction chronology still uses
+      // individual drums below, but the finished state shares one sampled entasis and one normal field, so the
+      // joints cannot read as eleven swollen cylinders. The slight inward lean is carried by the shaft axis.
+      const [su, sv] = shift(y0 + shaft / 2), [tu, tv] = shift(y0 + shaft);
+      const axis = [tu, shaft, tv], len = Math.hypot(...axis);
+      const profile = [[0, 1], [.08, 1], [.22, diameterAt(.22) / Dm], [.45, diameterAt(.45) / Dm], [.7, diameterAt(.7) / Dm], [1, diameterAt(1) / Dm]];
+      const shape = flutes ? 'parthenonFlutedDrum' : 'parthenonDoricDrum';
+      lying(shape, 'stone', u + su, y0 + shaft / 2, v + sv, axis, [Dm, len], tint(c0, .045), y0,
+        {profile, flutes: flutes ? 20 : 0, maxChordErrorMm: 2});
+    } else for (let i = from; i < Math.min(n, to); i++) {
       const y = y0 + hd * (i + .5), [su, sv] = shift(y), isNew = fresh && rng() < (fresh.share ?? .3);
       const shape = flutes && (!isNew || fresh.flutes !== false) ? 'parthenonFlutedDrum' : 'parthenonDoricDrum';
-      turned(shape, 'stone', u + su, y, v + sv, [diameterAt(i / n), hd * .996, diameterAt(i / n)], tint(isNew ? fresh.color : c0, isNew ? .025 : .055));
+      const d0 = diameterAt(i / n), dm = diameterAt((i + .5) / n), d1 = diameterAt((i + 1) / n);
+      // The real drums meet on dressed beds: keep the authored pieces for the construction sequence, but
+      // overlap them by one millimetre per metre so raster precision cannot turn the joints into black bands.
+      turned(shape, 'stone', u + su, y, v + sv, [d0, hd * 1.002, d0], tint(isNew ? fresh.color : c0, isNew ? .025 : .055), undefined,
+        {profile: [[0, 1], [.5, dm / d0], [1, d1 / d0]], flutes: shape === 'parthenonFlutedDrum' ? 20 : 0, maxChordErrorMm: 2});
     }
     if (to <= n) return;
     const yc = y0 + shaft, [su, sv] = shift(yc + cap / 2), ab = abacus ?? Dm * 1.08;

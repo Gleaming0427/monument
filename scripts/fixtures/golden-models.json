@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "models": {
     "parthenon": {
       "file": "community/parthenon/monument.json",
@@ -7,52 +7,214 @@
         "id": "parthenon",
         "phases": 15,
         "elements": 72,
-        "pieces": 38504,
+        "pieces": 37837,
         "reliefs": 31,
-        "bounds": {"min": [-39.038, 0, -27.729], "max": [39.038, 28.88, 24.604]},
+        "bounds": {
+          "min": [
+            -39.038,
+            0,
+            -27.097
+          ],
+          "max": [
+            39.038,
+            28.88,
+            24.523
+          ]
+        },
         "shapes": {
           "ball": 3,
           "bell": 1,
-          "box": 20233,
+          "box": 20248,
           "cone": 1,
-          "drum": 59,
+          "drum": 35,
           "flare": 5,
           "octagon": 2,
           "parthenonAnthemion": 186,
           "parthenonCoverTile": 11616,
-          "parthenonDoricDrum": 141,
+          "parthenonDoricDrum": 148,
           "parthenonDoricGutta": 4528,
           "parthenonDoricRing": 504,
           "parthenonEchinus": 168,
-          "parthenonFlutedDrum": 1036,
+          "parthenonFlutedDrum": 347,
           "parthenonLionSpout": 4,
+          "profiledShaft": 24,
           "shaft": 3,
           "spike": 2,
           "torus": 12
         },
         "shapeGeometry": {
-          "ball": {"type": "SphereGeometry", "vertices": 77},
-          "bell": {"type": "LatheGeometry", "vertices": 168},
-          "cone": {"type": "CylinderGeometry", "vertices": 67},
-          "drum": {"type": "CylinderGeometry", "vertices": 100},
-          "flare": {"type": "CylinderGeometry", "vertices": 100},
-          "octagon": {"type": "BufferGeometry", "vertices": 96},
-          "parthenonAnthemion": {"type": "ExtrudeGeometry", "vertices": 384},
-          "parthenonCoverTile": {"type": "CylinderGeometry", "vertices": 66},
-          "parthenonDoricDrum": {"type": "CylinderGeometry", "vertices": 772},
-          "parthenonDoricGutta": {"type": "LatheGeometry", "vertices": 198},
-          "parthenonDoricRing": {"type": "CylinderGeometry", "vertices": 772},
-          "parthenonEchinus": {"type": "LatheGeometry", "vertices": 776},
-          "parthenonFlutedDrum": {"type": "CylinderGeometry", "vertices": 1924},
-          "parthenonLionSpout": {"type": "ExtrudeGeometry", "vertices": 612},
-          "shaft": {"type": "CylinderGeometry", "vertices": 100},
-          "spike": {"type": "BufferGeometry", "vertices": 48},
-          "torus": {"type": "TorusGeometry", "vertices": 133}
+          "ball": {
+            "type": "SphereGeometry",
+            "vertices": 496,
+            "curve": {
+              "radialSegments": 30,
+              "maxChordErrorMm": 3,
+              "flutes": 0,
+              "chordErrorMm": 2.7391
+            }
+          },
+          "bell": {
+            "type": "LatheGeometry",
+            "vertices": 806,
+            "curve": {
+              "radialSegments": 30,
+              "maxChordErrorMm": 3,
+              "flutes": 0,
+              "chordErrorMm": 2.7391
+            }
+          },
+          "cone": {
+            "type": "CylinderGeometry",
+            "vertices": 123,
+            "curve": {
+              "radialSegments": 30,
+              "maxChordErrorMm": 3,
+              "flutes": 0,
+              "chordErrorMm": 2.7391
+            }
+          },
+          "drum": {
+            "type": "CylinderGeometry",
+            "vertices": 184,
+            "curve": {
+              "radialSegments": 30,
+              "maxChordErrorMm": 3,
+              "flutes": 0,
+              "chordErrorMm": 2.7391
+            }
+          },
+          "flare": {
+            "type": "LatheGeometry",
+            "vertices": 403,
+            "curve": {
+              "radialSegments": 30,
+              "maxChordErrorMm": 3,
+              "flutes": 0,
+              "chordErrorMm": 2.7391
+            }
+          },
+          "octagon": {
+            "type": "BufferGeometry",
+            "vertices": 96
+          },
+          "parthenonAnthemion": {
+            "type": "ExtrudeGeometry",
+            "vertices": 384
+          },
+          "parthenonCoverTile": {
+            "type": "CylinderGeometry",
+            "vertices": 38,
+            "curve": {
+              "radialSegments": 36,
+              "maxChordErrorMm": 2,
+              "flutes": 0,
+              "chordErrorMm": 1.9027
+            }
+          },
+          "parthenonDoricDrum": {
+            "type": "LatheGeometry",
+            "vertices": 148,
+            "curve": {
+              "radialSegments": 36,
+              "maxChordErrorMm": 2,
+              "flutes": 0,
+              "chordErrorMm": 1.9027
+            }
+          },
+          "parthenonDoricGutta": {
+            "type": "LatheGeometry",
+            "vertices": 740,
+            "curve": {
+              "radialSegments": 36,
+              "maxChordErrorMm": 2,
+              "flutes": 0,
+              "chordErrorMm": 1.9027
+            }
+          },
+          "parthenonDoricRing": {
+            "type": "LatheGeometry",
+            "vertices": 148,
+            "curve": {
+              "radialSegments": 36,
+              "maxChordErrorMm": 2,
+              "flutes": 0,
+              "chordErrorMm": 1.9027
+            }
+          },
+          "parthenonEchinus": {
+            "type": "LatheGeometry",
+            "vertices": 481,
+            "curve": {
+              "radialSegments": 36,
+              "maxChordErrorMm": 2,
+              "flutes": 0,
+              "chordErrorMm": 1.9027
+            }
+          },
+          "parthenonFlutedDrum": {
+            "type": "LatheGeometry",
+            "vertices": 484,
+            "curve": {
+              "radialSegments": 120,
+              "maxChordErrorMm": 2,
+              "flutes": 20,
+              "chordErrorMm": 0.1713
+            }
+          },
+          "parthenonLionSpout": {
+            "type": "ExtrudeGeometry",
+            "vertices": 612
+          },
+          "profiledShaft": {
+            "type": "LatheGeometry",
+            "vertices": 124,
+            "curve": {
+              "radialSegments": 30,
+              "maxChordErrorMm": 3,
+              "flutes": 0,
+              "chordErrorMm": 2.7391
+            }
+          },
+          "shaft": {
+            "type": "LatheGeometry",
+            "vertices": 217,
+            "curve": {
+              "radialSegments": 30,
+              "maxChordErrorMm": 3,
+              "flutes": 0,
+              "chordErrorMm": 2.7391
+            }
+          },
+          "spike": {
+            "type": "BufferGeometry",
+            "vertices": 48
+          },
+          "torus": {
+            "type": "TorusGeometry",
+            "vertices": 403,
+            "curve": {
+              "radialSegments": 30,
+              "maxChordErrorMm": 3,
+              "flutes": 0,
+              "chordErrorMm": 2.7391
+            }
+          }
         },
         "columnElements": [],
-        "planFit": {"p90": 1, "max": 1.41, "coverage": 0.93, "overflow": 0},
-        "photoRms": [0.4, 0.7, 0.8, 1.2, 0.6],
-        "digest": "9e96e71c89eb9a4581ad",
+        "planFit": {
+          "p90": 1,
+          "max": 1.41,
+          "coverage": 0.93,
+          "overflow": 0
+        },
+        "photoRms": [
+          0.4,
+          0.7,
+          0.8,
+          1.2,
+          0.6
+        ],
+        "digest": "0c32404f8928913350b0",
         "unknownShapes": []
       }
     },
@@ -64,20 +226,110 @@
         "elements": 59,
         "pieces": 46873,
         "reliefs": 7,
-        "bounds": {"min": [-51.26, 0, -28.038], "max": [50.292, 77, 27.663]},
-        "shapes": {"ball": 1120, "box": 43809, "drum": 882, "flare": 114, "octagon": 596, "spike": 106, "torus": 246},
-        "shapeGeometry": {
-          "ball": {"type": "SphereGeometry", "vertices": 77},
-          "drum": {"type": "CylinderGeometry", "vertices": 100},
-          "flare": {"type": "CylinderGeometry", "vertices": 100},
-          "octagon": {"type": "BufferGeometry", "vertices": 96},
-          "spike": {"type": "BufferGeometry", "vertices": 48},
-          "torus": {"type": "TorusGeometry", "vertices": 133}
+        "bounds": {
+          "min": [
+            -51.26,
+            0,
+            -28.038
+          ],
+          "max": [
+            50.292,
+            77,
+            27.663
+          ]
         },
-        "columnElements": [{"index": 51, "name": "Colonnes de la tribune", "pieces": 116, "turned": 108, "turnedShare": 0.931}],
-        "planFit": {"p90": 1.5, "max": 2.5, "coverage": 0.98, "overflow": 0.05},
-        "photoRms": [0.7, 1.1, 1.6, 1.4],
-        "digest": "1ada1d5d564e80e4e90c",
+        "shapes": {
+          "ball": 1120,
+          "box": 43809,
+          "drum": 270,
+          "flare": 114,
+          "octagon": 596,
+          "profiledShaft": 612,
+          "spike": 106,
+          "torus": 246
+        },
+        "shapeGeometry": {
+          "ball": {
+            "type": "SphereGeometry",
+            "vertices": 496,
+            "curve": {
+              "radialSegments": 30,
+              "maxChordErrorMm": 3,
+              "flutes": 0,
+              "chordErrorMm": 2.7391
+            }
+          },
+          "drum": {
+            "type": "CylinderGeometry",
+            "vertices": 184,
+            "curve": {
+              "radialSegments": 30,
+              "maxChordErrorMm": 3,
+              "flutes": 0,
+              "chordErrorMm": 2.7391
+            }
+          },
+          "flare": {
+            "type": "LatheGeometry",
+            "vertices": 403,
+            "curve": {
+              "radialSegments": 30,
+              "maxChordErrorMm": 3,
+              "flutes": 0,
+              "chordErrorMm": 2.7391
+            }
+          },
+          "octagon": {
+            "type": "BufferGeometry",
+            "vertices": 96
+          },
+          "profiledShaft": {
+            "type": "LatheGeometry",
+            "vertices": 124,
+            "curve": {
+              "radialSegments": 30,
+              "maxChordErrorMm": 3,
+              "flutes": 0,
+              "chordErrorMm": 2.7391
+            }
+          },
+          "spike": {
+            "type": "BufferGeometry",
+            "vertices": 48
+          },
+          "torus": {
+            "type": "TorusGeometry",
+            "vertices": 403,
+            "curve": {
+              "radialSegments": 30,
+              "maxChordErrorMm": 3,
+              "flutes": 0,
+              "chordErrorMm": 2.7391
+            }
+          }
+        },
+        "columnElements": [
+          {
+            "index": 51,
+            "name": "Colonnes de la tribune",
+            "pieces": 116,
+            "turned": 108,
+            "turnedShare": 0.931
+          }
+        ],
+        "planFit": {
+          "p90": 1.5,
+          "max": 2.5,
+          "coverage": 0.98,
+          "overflow": 0.05
+        },
+        "photoRms": [
+          0.7,
+          1.1,
+          1.6,
+          1.4
+        ],
+        "digest": "84eeeea2dc29ba2e4d2b",
         "unknownShapes": []
       }
     }

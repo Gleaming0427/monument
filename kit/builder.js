@@ -8,6 +8,8 @@ import {GTAOPass} from 'three/addons/postprocessing/GTAOPass.js';
 import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
 import {clone as cloneSkinned} from 'three/addons/utils/SkeletonUtils.js';
 import {resolveVisualStyle, pbrOptions} from './visuals.js';
+import {adaptive, adaptiveContext, profiledGeometry, segmentsForChordError} from './geometry.js';
+export {CURVE_QUALITY, chordError, segmentsForChordError, profileAt, sampleProfile, profiledGeometry, adaptiveContext} from './geometry.js';
 
 // Construction engine: a monument file (phases + elements) becomes thousands of instanced pieces.
 // Each piece is born (and sometimes removed) on the timeline; the shader drops it into place and
@@ -90,11 +92,11 @@ function kit(rand) {
     //   gothic      octagonal plinth and moulded base; a crocket capital under an octagonal abacus
     // The shaft is laid drum by drum (`drum` metres; 0 for a monolith) and tapers by `taper` (a sixth) above
     // its lower third. `out` [x, z] is the way the column faces: its volutes and leaves are set square to it.
-    column(kind, [x, y, z], {height, diameter: D, order = 'tuscan', drum = 1.2, taper = 1 / 6, out = [0, 1]}, color, phase, extra = {}) {
+    column(kind, [x, y, z], {height, diameter: D, order = 'tuscan', drum = 1.2, drums, taper = 1 / 6, out = [0, 1], profile, flutes = 0, rendering = {}}, color, phase, extra = {}) {
       const self = this, yaw = Math.atan2(out[0], out[1]), f = new T.Vector3(out[0], 0, out[1]).normalize(), r = new T.Vector3().crossVectors(UP, f);
       const at = (dy, side = 0, front = 0) => [x + r.x * side + f.x * front, y + dy, z + r.z * side + f.z * front];
       const c = () => tint(color, .04);
-      const piece = (shape, dy, size) => self.turned(shape, kind, at(dy + size[1] / 2), size, yaw, c(), phase, y + dy, extra);
+      const piece = (shape, dy, size, geometry) => self.turned(shape, kind, at(dy + size[1] / 2), size, yaw, c(), phase, y + dy, geometry ? {...extra, geometry} : extra);
       const block = (dy, w, h) => self.box(kind, at(dy + h / 2), [w, h, w], yaw, c(), phase, y + dy, extra);
       const small = (shape, dy, side, front, size, turn = 0) => self.turned(shape, kind, at(dy, side, front), size, yaw + turn, c(), phase, y + dy, extra);
       const attic = ['ionic', 'corinthian', 'romanesque', 'composite'].includes(order);
@@ -105,11 +107,21 @@ function kit(rand) {
       else if (order === 'tuscan') { block(0, D * 1.36, D * .25); piece('torus', D * .25, [D * 1.28, D * .22]); b = D * .47; }
       // Shaft, drum by drum, with its entasis.
       const cap = {tuscan: .47, doric: .45, ionic: .62, corinthian: 1.17, composite: 1.17, romanesque: .8, gothic: .87}[order] ?? .5;
-      const shaft = Math.max(D, height - b - D * cap), Dt = D * (1 - taper), diameterAt = t => D * (1 - taper * Math.max(0, (t - 1 / 3) / (2 / 3)) ** 1.2);
-      if (drum > 0 && shaft > drum * 1.4) {
-        const n = Math.max(1, Math.round(shaft / drum));
-        for (let i = 0; i < n; i++) piece('drum', b + shaft * i / n, [diameterAt((i + .5) / n), shaft / n * .995]);
-      } else piece(taper > .1 ? 'shaft' : 'drum', b, [D, shaft]);
+      const shaft = Math.max(D, height - b - D * cap);
+      const shaftProfile = profile ?? [[0, 1], [.18, 1], [1 / 3, 1], [.7, 1 - taper * .42], [1, 1 - taper]];
+      const ratioAt = t => {
+        if (t <= shaftProfile[0][0]) return shaftProfile[0][1];
+        for (let i = 1; i < shaftProfile.length; i++) if (t <= shaftProfile[i][0]) {
+          const [a, ra] = shaftProfile[i - 1], [b2, rb] = shaftProfile[i], u = (t - a) / (b2 - a), smooth = u * u * (3 - 2 * u);
+          return ra + (rb - ra) * smooth;
+        }
+        return shaftProfile.at(-1)[1];
+      };
+      const Dt = D * ratioAt(1), geometry = (from, to) => ({profile: [[0, ratioAt(from)], [.5, ratioAt((from + to) / 2)], [1, ratioAt(to)]], flutes, ...rendering});
+      if ((drums > 0 || drum > 0) && (drums > 1 || shaft > drum * 1.4)) {
+        const n = Math.max(1, drums > 0 ? Math.round(drums) : Math.round(shaft / drum));
+        for (let i = 0; i < n; i++) piece('profiledShaft', b + shaft * i / n, [D, shaft / n * 1.001], geometry(i / n, (i + 1) / n));
+      } else piece('profiledShaft', b, [D, shaft], {profile: shaftProfile, flutes, ...rendering});
       const y0 = b + shaft;
       // Capital: the astragal ringing the top of the shaft, then the order's own.
       if (order !== 'doric') piece('torus', y0 - D * .045, [Dt * 1.14, D * .09]);
@@ -148,13 +160,14 @@ function kit(rand) {
 const flat = geometry => { const g = geometry.toNonIndexed(); g.computeVertexNormals(); return g; };
 export const SHAPES = {
   box: () => new T.BoxGeometry(1, 1, 1),
-  drum: () => new T.CylinderGeometry(.5, .5, 1, 16),
-  shaft: () => new T.CylinderGeometry(.44, .5, 1, 16),
-  flare: () => new T.CylinderGeometry(.5, .34, 1, 16),
-  cone: () => new T.CylinderGeometry(0, .5, 1, 16),
-  torus: () => { const g = new T.TorusGeometry(.375, .125, 6, 18); g.rotateX(Math.PI / 2); g.scale(1, 4, 1); return g; },
-  ball: () => new T.SphereGeometry(.5, 10, 6),
-  bell: () => { const g = new T.LatheGeometry([[0, .5], [.17, .49], [.26, .4], [.3, .1], [.36, -.25], [.5, -.46], [.49, -.5], [0, -.5]].map(([x, y]) => new T.Vector2(x, y)), 20); return g; },
+  drum: adaptive(context => new T.CylinderGeometry(.5, .5, 1, context.radialSegments), {multiple: 2}),
+  shaft: adaptive(context => profiledGeometry({...context, profile: [[0, 1], [.25, 1], [.55, .97], [1, .88]]}), {multiple: 2}),
+  profiledShaft: adaptive(context => profiledGeometry(context), {multiple: 2}),
+  flare: adaptive(context => profiledGeometry({...context, profile: [[0, .68], [.3, .73], [.7, .9], [1, 1]]}), {multiple: 2}),
+  cone: adaptive(context => new T.CylinderGeometry(0, .5, 1, context.radialSegments), {multiple: 2}),
+  torus: adaptive(context => { const tube = segmentsForChordError(context.diameter * .125, context.maxChordErrorMm, {min: 6, max: Math.max(12, Math.round(context.radialSegments / 3)), multiple: 2}); const g = new T.TorusGeometry(.375, .125, tube, context.radialSegments); g.rotateX(Math.PI / 2); g.scale(1, 4, 1); return g; }, {multiple: 2}),
+  ball: adaptive(context => new T.SphereGeometry(.5, context.radialSegments, Math.max(6, Math.round(context.radialSegments / 2))), {multiple: 2}),
+  bell: adaptive(context => profiledGeometry({...context, profile: [[0, 0], [.01, .98], [.04, 1], [.25, .72], [.6, .52], [.9, .34], [.99, 0]]}), {multiple: 2}),
   octagon: () => flat(new T.CylinderGeometry(.5, .5, 1, 8).rotateY(Math.PI / 8)),
   spike: () => flat(new T.CylinderGeometry(0, .5, 1, 8).rotateY(Math.PI / 8)),
 };
@@ -369,6 +382,25 @@ function gothic(k, e, P) {
 
 // ——— Generators (bricks) ———
 export const generators = {
+  // Declarative architectural column: one measured profile drives every LOD. `profile` stations are
+  // [height fraction, diameter ratio]; flute count and rendering tolerance do not alter its dimensions.
+  profiledColumn(k, e, P) {
+    const positions = e.positions ?? [e.center ?? [0, 0]], shaft = e.shaft ?? {}, rot = e.rot ?? 0;
+    const out = e.out ?? [Math.sin(rot), Math.cos(rot)], drum = e.drumHeight ?? 0;
+    for (const [x, z] of positions) k.column(e.kind ?? 'stone', [x, e.y0 ?? 0, z], {
+      height: e.height,
+      diameter: e.diameter,
+      order: e.order ?? 'doric',
+      drum,
+      drums: e.drums,
+      taper: e.taper ?? .12,
+      out,
+      profile: shaft.profile ?? e.profile,
+      flutes: shaft.flutes ?? e.flutes ?? 0,
+      rendering: e.rendering ?? {},
+    }, e.color ?? '#d6c8a8', P(e.phase), e.extra ?? {});
+  },
+
   // Inclined masonry retaining base; dimensions refer to bottom and top footprints. curve > 1 gives the
   // fan-shaped profile of Japanese castle walls: flared at the foot, nearly vertical at the top.
   batteredBase(k, e, P) {
@@ -2475,13 +2507,19 @@ export function createStage(host) {
       list.forEach((piece, rank) => { piece.birth = phase + .03 + .86 * rank / Math.max(1, list.length); });
     });
     const death = phase => phase + .1 + .5 * k.rand();
-    const groups = {};
-    // One instanced mesh per material and shape.
-    for (const piece of k.pieces) (groups[`${piece.kind}|${piece.shape ?? 'box'}`] ??= []).push(piece);
-    for (const [key, list] of Object.entries(groups)) {
-      const [kind, shape] = key.split('|'), shapeFactory = SHAPES[shape];
+    const groups = new Map();
+    // One instanced mesh per material, architectural shape and adaptive LOD. Pieces with the same profile
+    // still share one geometry; only the tessellation required by their real diameter separates them.
+    for (const piece of k.pieces) {
+      const shape = piece.shape ?? 'box', shapeFactory = SHAPES[shape];
       if (!shapeFactory) throw new Error(`Unknown geometry shape "${shape}"; refusing to replace it with a square box.`);
-      const geometry = shapeFactory(), life = new Float32Array(list.length * 2), seed = new Float32Array(list.length), lean = new Float32Array(list.length), proof = new Float32Array(list.length), shelter = new Float32Array(list.length);
+      const variant = shapeFactory.adaptive ? adaptiveContext(piece, shapeFactory, visual.qualityName) : {context: {}, key: 'fixed'};
+      const key = `${piece.kind}|${shape}|${variant.key}`;
+      if (!groups.has(key)) groups.set(key, {kind: piece.kind, shape, shapeFactory, context: variant.context, list: []});
+      groups.get(key).list.push(piece);
+    }
+    for (const {kind, shapeFactory, context, list} of groups.values()) {
+      const geometry = shapeFactory(context), life = new Float32Array(list.length * 2), seed = new Float32Array(list.length), lean = new Float32Array(list.length), proof = new Float32Array(list.length), shelter = new Float32Array(list.length);
       geometry.setAttribute('uv1', geometry.attributes.uv);
       const mesh = new T.InstancedMesh(geometry, material(kind), list.length);
       list.forEach((piece, i) => {

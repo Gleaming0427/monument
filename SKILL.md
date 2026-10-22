@@ -19,6 +19,8 @@ The standard build needs web pages you can open and read, images you can inspect
 
 When changing the engine, its bricks or this skill, measure before claiming an improvement. Use the Parthenon and Coutances release references, run `node scripts/golden.test.mjs` and `node scripts/responsive.test.mjs`, and wrap comparable before/after commands with `node scripts/measure.mjs` as described in [references/measurement.md](references/measurement.md). Report token categories separately and leave them unknown when the host does not expose them; never estimate a saving.
 
+For a measured round architectural member, prefer the declarative `profiledColumn` brick over writing a monument-specific mesh. Give it sourced diameter/height stations, the observed flute count and a chord-error tolerance; the engine keeps that architectural definition constant while producing adaptive LODs. Run `node scripts/geometry.test.mjs` whenever a curve or profile changes. See [references/geometry.md](references/geometry.md).
+
 ## When someone asks for a building
 
 `/monument <building, city, country>` in Claude Code, OpenCode or Antigravity, `$monument …` in Codex, or any request to see how a building was built.
