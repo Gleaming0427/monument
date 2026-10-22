@@ -1,6 +1,16 @@
 import {createStage, generators, PROVENANCE, SHAPES} from './builder.js';
 
 const $ = id => document.getElementById(id);
+// The interface speaks the language of the page it is on: the shell is written in that language by the site
+// build, and the strings this file writes at runtime come from the dictionary that sits beside it, one file
+// per language. English is the source, so English asks for nothing and a missing file changes nothing.
+const LANGUAGE = new URLSearchParams(location.search).get('lang') ?? document.documentElement.lang ?? 'en';
+const DICTIONARY = await (async () => {
+  if (LANGUAGE === 'en') return {};
+  try { return await (await fetch(new URL(`i18n/${LANGUAGE}.json`, import.meta.url))).json(); } catch { return {}; }
+})();
+const t = (key, fallback) => typeof DICTIONARY[key] === 'string' ? DICTIONARY[key] : fallback;
+const say = (key, fallback, args = {}) => Object.entries(args).reduce((text, [name, value]) => text.replaceAll(`{${name}}`, value), t(key, fallback));
 // One page = one building (#<id>). Its file, monuments/<id>.json (dated, sourced phases and the
 // elements to build), is written by the /monument skill when someone asks for the building.
 // Pacing follows reading: a phase lasts as long as its text takes to read (about 3 words a second),
@@ -33,12 +43,16 @@ const short = phase => phase.when ? phase.when.replace(/–/g, '–\u2060') : ne
 // With no request, or for a building not built yet, the page says how to ask for it.
 function empty(id) {
   document.body.classList.add('empty');
-  $('empty-title').textContent = id ? `“${id}” hasn't been built yet` : 'Which building do you want to see built?';
-  document.title = 'Monument';
+  $('empty-title').textContent = id ? say('viewer.missing', '“{id}” hasn\'t been built yet', {id}) : t('viewer.which', 'Which building do you want to see built?');
+  document.title = t('viewer.title', 'Monument');
 }
 
 async function open(id) {
-  const response = id ? await fetch(`monuments/${id}.json${version}`) : null;
+  // The monument carries its own words. In another language the site builds publishes `<id>.<lang>.json` with
+  // the dates, measurements and sources untouched and the sentences around them translated; without one — an
+  // untranslated monument — the English file answers and the timeline reads in the language it was written in.
+  const translated = LANGUAGE === 'en' || !id ? null : await fetch(`monuments/${id}.${LANGUAGE}.json${version}`);
+  const response = id ? (translated?.ok ? translated : await fetch(`monuments/${id}.json${version}`)) : null;
   if (!response?.ok) return empty(id);
   data = await response.json();
   // A monument may bring its own bricks: a module next to its file whose default export holds generators.
@@ -62,7 +76,7 @@ async function open(id) {
   if (params.has('section')) { sectionChosen = true; stage.section(true); $('section-toggle').setAttribute('aria-pressed', 'true'); }
   $('name').textContent = data.name; $('place').textContent = data.place ?? '';
   document.title = `${data.name} — Monument`;
-  $('model-note').textContent = data.modelNote ?? 'Simplified 3D model · sourced dates and figures.';
+  $('model-note').textContent = data.modelNote ?? t('viewer.modelNote', 'Simplified 3D model · sourced dates and figures.');
   $('model-note').hidden = false;
   document.querySelector('.live').hidden=!data.live.length&&!data.facts.length;
   $('facts').innerHTML = '';
@@ -84,7 +98,7 @@ async function open(id) {
     for (const m of phase.moments ?? []) {
       const tick = document.createElement('button');
       tick.className = 'tick'; tick.style.left = `${m.at * 100}%`;
-      tick.title = m.title; tick.setAttribute('aria-label', `Moment: ${m.title}`); tick.dataset.at = i + m.at;
+      tick.title = m.title; tick.setAttribute('aria-label', say('viewer.moment', 'Moment: {title}', {title: m.title})); tick.dataset.at = i + m.at;
       tick.onclick = () => { time = i + m.at + .001; play(true); };
       bar.append(tick);
     }
@@ -121,7 +135,7 @@ function play(on) {
   playing = on; last = performance.now();
   $('play').innerHTML = on ? '<svg viewBox="0 0 14 14"><rect x="2.5" y="1.5" width="3" height="11" rx="1"/><rect x="8.5" y="1.5" width="3" height="11" rx="1"/></svg>'
     : '<svg viewBox="0 0 14 14"><path d="M3.5 1.8v10.4a.8.8 0 0 0 1.2.7l8.3-5.2a.8.8 0 0 0 0-1.4L4.7 1.1a.8.8 0 0 0-1.2.7z"/></svg>';
-  $('play').setAttribute('aria-label', on ? 'Pause' : 'Play');
+  $('play').setAttribute('aria-label', on ? t('viewer.pause', 'Pause') : t('viewer.play', 'Play'));
   stage.autoRotate(on && !touched);
 }
 
@@ -134,7 +148,7 @@ function update() {
     $('title').textContent = phase.title;
     $('text').textContent = phase.text;
     $('source').href = phase.source;
-    $('source').textContent = `Source: ${new URL(phase.source).hostname.replace(/^www\./, '')}`;
+    $('source').textContent = say('viewer.source', 'Source: {host}', {host: new URL(phase.source).hostname.replace(/^www\./, '')});
     [...$('phases').children].forEach((seg, i) => {
       seg.classList.toggle('on', i === index); seg.classList.toggle('done', i < index);
       seg.querySelector('.seg-fill').style.width = i < index ? '100%' : '0%';
@@ -150,7 +164,7 @@ function update() {
     $('moment').hidden = !moment;
     if (moment) {
       $('m-tag').textContent = moment.tag; $('m-title').textContent = moment.title; $('m-text').textContent = moment.text;
-      $('m-source').href = moment.source; $('m-source').textContent = `Source: ${new URL(moment.source).hostname.replace(/^www\./, '')}`;
+      $('m-source').href = moment.source; $('m-source').textContent = say('viewer.source', 'Source: {host}', {host: new URL(moment.source).hostname.replace(/^www\./, '')});
       $('moment').style.animation = 'none'; void $('moment').offsetWidth; $('moment').style.animation = '';
     }
     requestAnimationFrame(layout);
@@ -275,7 +289,7 @@ $('play').onclick = () => play(!playing);
 function setSpeed(next) {
   speed = next;
   $('speed').textContent = `${String(speed).replace(/^0/, '')}×`;
-  $('speed').setAttribute('aria-label', `Playback speed ${speed}×`);
+  $('speed').setAttribute('aria-label', say('viewer.speedValue', 'Playback speed {speed}×', {speed}));
   try { localStorage.setItem('monument-speed', String(speed)); } catch {}
 }
 $('speed').onclick = () => setSpeed(SPEEDS[(SPEEDS.indexOf(speed) + 1) % SPEEDS.length]);
@@ -437,7 +451,7 @@ function fallback(error) {
   let webgl2 = false;
   try { webgl2 = Boolean(document.createElement('canvas').getContext('webgl2')); } catch {}
   const box = $('fallback'), title = document.createElement('b'), help = document.createElement('span');
-  title.textContent = webgl2 ? 'The 3D scene could not start.' : 'This browser has WebGL 2 turned off, and the 3D scene needs it.';
+  title.textContent = webgl2 ? t('viewer.failed', 'The 3D scene could not start.') : t('viewer.noWebgl', 'This browser has WebGL 2 turned off, and the 3D scene needs it.');
   help.textContent = webgl2 ? String(error?.message ?? error)
     : 'In Chrome or Edge, turn on Settings › System › Use graphics acceleration, then restart the browser. In Firefox, webgl.disabled must be false in about:config. Privacy extensions that block WebGL do this too. Safari 15 and later support it.';
   box.replaceChildren(title, help);

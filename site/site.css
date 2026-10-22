@@ -15,6 +15,11 @@ nav.site .x{margin-left:auto;display:flex}
 nav.site .x svg{width:15px;height:15px;fill:currentColor}
 nav.site .gh{display:flex}
 nav.site .gh svg{width:17px;height:17px;fill:currentColor}
+/* The two languages sit together, the one being read marked, so the eye finds them as one control. */
+nav.site .langs{display:flex;gap:10px;margin-left:auto;padding-right:16px}
+nav.site .lang{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+nav.site .lang[aria-current=true]{color:var(--ink);font-weight:700}
+nav.site .x{margin-left:0}
 header.intro{padding:34px 0 8px}
 .kicker{font-size:14px;color:var(--muted)}
 .kicker b{color:var(--ink)}

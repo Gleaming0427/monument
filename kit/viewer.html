@@ -1,23 +1,23 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Monument</title><link rel="stylesheet" href="kit/style.css"><script type="importmap">{"imports":{"three":"./kit/vendor/three/three.module.js","three/addons/":"./kit/vendor/three/addons/"}}</script></head><body>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title data-i18n="viewer.title">Monument</title><link rel="stylesheet" href="kit/style.css"><script type="importmap">{"imports":{"three":"./kit/vendor/three/three.module.js","three/addons/":"./kit/vendor/three/addons/"}}</script></head><body>
 <script>// ?embed, ?clean and ?caption hide parts of the interface before the first paint.
 for(const key of ["embed","clean","caption"])if(new URLSearchParams(location.search).has(key))document.body.classList.add(key);</script>
-<div id="stage"><div id="fallback" hidden>3D rendering needs WebGL 2.</div></div>
+<div id="stage"><div id="fallback" hidden data-i18n="viewer.webgl">3D rendering needs WebGL 2.</div></div>
 <header class="top">
  <a href="../" class="brand">Monument</a>
  <div class="building"><b id="name"></b><span id="place"></span></div>
- <button id="section-toggle" class="chip" aria-pressed="false" title="Cut the monument open on the side facing you, to see inside">Section</button>
- <button id="proof-toggle" class="chip" aria-pressed="false" title="Where every piece comes from">Evidence</button>
+ <button id="section-toggle" class="chip" aria-pressed="false" title="Cut the monument open on the side facing you, to see inside" data-i18n-title="viewer.sectionTitle" data-i18n="viewer.section">Section</button>
+ <button id="proof-toggle" class="chip" aria-pressed="false" title="Where every piece comes from" data-i18n-title="viewer.evidenceTitle" data-i18n="viewer.evidence">Evidence</button>
 </header>
-<aside id="proof" hidden aria-label="Evidence"></aside>
+<aside id="proof" hidden aria-label="Evidence" data-i18n-aria-label="viewer.evidence"></aside>
 <div id="pick" hidden role="status"></div>
 <div id="photo" hidden>
  <div class="photo-clip"><img alt=""></div>
  <i class="photo-split" aria-hidden="true"></i>
- <div class="photo-bar"><span class="photo-caption"></span><button class="chip photo-fade" aria-pressed="false">Fade</button><button class="chip photo-close">Back to the model</button></div>
+ <div class="photo-bar"><span class="photo-caption"></span><button class="chip photo-fade" aria-pressed="false" data-i18n="viewer.fade">Fade</button><button class="chip photo-close" data-i18n="viewer.back">Back to the model</button></div>
 </div>
 <section id="empty">
  <h1 id="empty-title"></h1>
- <p>Ask your agent for it. It researches the building, places it on the real plan, models it and opens it here:</p>
+ <p data-i18n="viewer.empty">Ask your agent for it. It researches the building, places it on the real plan, models it and opens it here:</p>
  <code>/monument &lt;building, city, country&gt;</code>
 </section>
 <div id="labels" aria-hidden="true"></div><div id="pin" hidden></div><i id="leader" hidden></i>
@@ -31,12 +31,12 @@ for(const key of ["embed","clean","caption"])if(new URLSearchParams(location.sea
  <p id="model-note" hidden></p>
 </section>
 <footer class="timeline">
- <button id="play" aria-label="Pause"></button>
- <button id="speed" aria-label="Playback speed">1×</button>
+ <button id="play" aria-label="Pause" data-i18n-aria-label="viewer.pause"></button>
+ <button id="speed" aria-label="Playback speed" data-i18n-aria-label="viewer.speed">1×</button>
  <div class="track">
   <ol id="phases"></ol>
   <i id="head" aria-hidden="true"></i>
-  <input id="scrub" type="range" min="0" max="1000" step="5" value="0" aria-label="Move through the construction">
+  <input id="scrub" type="range" min="0" max="1000" step="5" value="0" aria-label="Move through the construction" data-i18n-aria-label="viewer.scrub">
  </div>
 </footer>
 <script>// Opened as a file, the page cannot load its modules: say what to do instead.

@@ -1,0 +1,114 @@
+{
+  "_read": "Translate every string into this language. Keep every number, date, measurement and name exactly as written. Dates in `when` and every `source` are not here: they never change.",
+  "modelNote": "Mesures reprises des dimensions officielles et des empreintes OpenStreetMap et IGN (écart de bord de 2,5 m au 90e centile) ; la treillis est simplifié à ses quatre piliers, ses arcs et ses trois étages, les pavillons et l'éclairage sont schématiques.",
+  "live": [
+    {
+      "label": "Hauteur"
+    }
+  ],
+  "facts": [
+    {
+      "value": "18.038",
+      "label": "pièces de fer"
+    },
+    {
+      "value": "2,5 millions",
+      "label": "rivets"
+    },
+    {
+      "value": "2 ans, 2 mois et 5 jours",
+      "label": "sur le chantier"
+    }
+  ],
+  "phases": {
+    "fondations": {
+      "title": "Les fondations",
+      "text": "Des blocs de maçonnerie reçoivent chacun des quatre pieds. Près de la Seine, les fouilles se poursuivent dans des caissons à air comprimé, sous le niveau de l'eau.",
+      "moments": [
+        {
+          "tag": "Chiffre",
+          "title": "Seize blocs de pierre",
+          "text": "Chaque pilier repose sur quatre blocs, un par arête : seize blocs posés en cinq mois."
+        },
+        {
+          "tag": "Technique",
+          "title": "Fouiller sous la Seine",
+          "text": "Du côté du fleuve, les ouvriers creusent sous le niveau de l'eau, à l'abri de caissons de fer étanches."
+        }
+      ]
+    },
+    "piliers": {
+      "title": "Les quatre piliers s'élèvent",
+      "text": "Les pièces arrivent de l'usine déjà percées. Au-delà de 30 m, douze échafaudages de bois soutiennent les piliers inclinés, puis quatre échafaudages de 45 m portent les poutres du premier étage, situé à 57 m.",
+      "moments": [
+        {
+          "tag": "Technique",
+          "title": "Tout est fabriqué à l'usine",
+          "text": "Chaque pièce est calculée, dessinée, découpée, percée et préassemblée à Levallois-Perret. Une pièce défectueuse retourne à l'atelier."
+        },
+        {
+          "tag": "Chiffre",
+          "title": "Un rivet, quatre hommes",
+          "text": "Le premier chauffe le rivet, le deuxième le tient, le troisième façonne la tête, le quatrième le frappe au marteau. Les deux tiers des rivets sont posés à l'usine."
+        },
+        {
+          "tag": "Technique",
+          "title": "Des grues qui grimpent",
+          "text": "Sur chaque pilier, une petite grue à vapeur de 3 tonnes monte avec la tour, sur les rails des futurs ascenseurs."
+        },
+        {
+          "tag": "Technique",
+          "title": "Une jonction au millimètre",
+          "text": "Les poutres du premier étage reposent sur des caissons à sable vidés lentement. Au pied de deux piliers, des vérins hydrauliques corrigent quelques centimètres."
+        }
+      ]
+    },
+    "deuxieme": {
+      "title": "Le deuxième étage",
+      "text": "Les piliers se rapprochent et se rejoignent. Le deuxième étage est atteint à 115 m le 14 août 1888.",
+      "moments": [
+        {
+          "tag": "Chiffre",
+          "title": "150 à 300 ouvriers",
+          "text": "Grâce à la préfabrication, 150 à 300 ouvriers suffisent à monter chaque pièce sur le chantier."
+        }
+      ]
+    },
+    "sommet": {
+      "title": "Le sommet",
+      "text": "Au-dessus du deuxième étage, un fût unique s'élève à 300 m.",
+      "moments": [
+        {
+          "tag": "Chiffre",
+          "title": "Des milliers de dessins",
+          "text": "Le bureau d'études produit 700 dessins d'exécution et 3.600 plans d'atelier pour les 18.038 pièces."
+        },
+        {
+          "tag": "Anecdote",
+          "title": "1.665 marches",
+          "text": "Le 31 mars 1889, Gustave Eiffel gravit les 1.665 marches qui mènent de l'esplanade au sommet, le jour de l'inauguration de la tour."
+        },
+        {
+          "tag": "Technique",
+          "title": "Des ascenseurs qui suivent une courbe",
+          "text": "Aucune gaine n'était autorisée sous le premier étage : les ascenseurs montent donc le long des piliers inclinés, les cabines Otis en deux tractions droites jusqu'au deuxième étage, puis l'ascenseur vertical d'Edoux jusqu'au sommet, ses deux cabines se croisant à mi-hauteur."
+        }
+      ]
+    },
+    "lumiere": {
+      "title": "La tour s'illumine",
+      "text": "Depuis le 31 décembre 1985, 336 lampes installées dans la structure l'illuminent en doré. Depuis 2000, 20.000 ampoules la font scintiller."
+    },
+    "premier-2015": {
+      "title": "Le premier étage de verre",
+      "text": "Rouvert le 4 septembre 2015 après la rénovation la plus ambitieuse depuis près de 30 ans : pavillons reconstruits aux vitrages plus larges, sol transparent et garde-corps en verre autour du vide central.",
+      "moments": [
+        {
+          "tag": "Travaux",
+          "title": "Deux pavillons reconstruits",
+          "text": "Plutôt que de les rénover, les pavillons Eiffel et Ferrié ont été reconstruits ; le pavillon Ferrié a reçu 10 m² de panneaux solaires sur son toit."
+        }
+      ]
+    }
+  }
+}

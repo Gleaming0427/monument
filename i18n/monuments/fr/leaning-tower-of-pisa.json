@@ -1,0 +1,102 @@
+{
+  "_read": "Translate every string into this language. Keep every number, date, measurement and name exactly as written. Dates in `when` and every `source` are not here: they never change.",
+  "modelNote": "Dimensions, étages, colonnes et dates d'après les sources. L'inclinaison avant 1990 est schématique : seuls 5,5° (1990) et 3,97° (2001) sont documentés. La légère courbure des étages supérieurs n'est pas modélisée.",
+  "live": [
+    {
+      "label": "Hauteur"
+    }
+  ],
+  "facts": [
+    {
+      "value": "55,86 m",
+      "label": "de hauteur du côté le plus bas"
+    },
+    {
+      "value": "3,97°",
+      "label": "d'inclinaison depuis 2001 (5,5° en 1990)"
+    },
+    {
+      "value": "199 ans",
+      "label": "de la première pierre aux cloches"
+    }
+  ],
+  "phases": {
+    "first": {
+      "title": "Les trois premiers niveaux",
+      "text": "Les fondations sont posées le 9 août 1173. Lorsque les maçons atteignent le deuxième étage en 1178, le sol meuble cède et la tour commence à s'affaisser. Le chantier s'arrête.",
+      "moments": [
+        {
+          "tag": "Chiffre",
+          "title": "Un cylindre creux",
+          "text": "15,48 m de diamètre à la base, avec des murs de 2,44 m d'épaisseur : un anneau de marbre blanc autour d'un fût de 7,37 m de diamètre."
+        }
+      ]
+    },
+    "pause": {
+      "title": "Un siècle d'attente",
+      "text": "Pise est en guerre, et le chantier s'arrête pendant près d'un siècle. Cette pause laisse au sol le temps de se tasser sous le poids des premiers étages.",
+      "moments": [
+        {
+          "tag": "Anecdote",
+          "title": "La pause qui l'a sauvée",
+          "text": "Sans ces cent années laissées au sol pour se tasser, la tour serait presque certainement tombée."
+        }
+      ]
+    },
+    "resumed": {
+      "title": "Des étages plus hauts d'un côté",
+      "text": "Le chantier reprend en 1272 sous la direction de Giovanni di Simone. Pour compenser le déséquilibre, les étages supérieurs sont construits avec un côté plus haut que l'autre.",
+      "moments": [
+        {
+          "tag": "Technique",
+          "title": "Corriger une inclinaison dans la pierre",
+          "text": "Chaque étage est plus haut du côté où la tour penche, si bien qu'elle s'élève selon une légère courbe plutôt que selon une ligne droite."
+        }
+      ]
+    },
+    "seventh": {
+      "title": "Le septième étage",
+      "text": "Après une nouvelle interruption en 1278, le septième étage est achevé en 1319 : six galeries de trente colonnes se dressent désormais sur le rez-de-chaussée.",
+      "moments": [
+        {
+          "tag": "Chiffre",
+          "title": "180 colonnes",
+          "text": "Six anneaux de galeries de trente colonnes chacun reposent sur les arcades aveugles du rez-de-chaussée."
+        }
+      ]
+    },
+    "belfry": {
+      "title": "Le beffroi",
+      "text": "Tommaso di Andrea Pisano ajoute le beffroi, un anneau plus petit au sommet. La tour est achevée 199 ans après sa première pierre.",
+      "moments": [
+        {
+          "tag": "Chiffre",
+          "title": "Sept cloches",
+          "text": "Le beffroi abrite sept cloches, une pour chaque note de la gamme majeure."
+        }
+      ]
+    },
+    "closed": {
+      "title": "Fermée à 5,5°",
+      "text": "Le 7 janvier 1990, la tour est fermée au public : son inclinaison atteint 5,5 degrés. Les cloches sont descendues et des câbles sont tendus autour du troisième niveau.",
+      "moments": [
+        {
+          "tag": "Technique",
+          "title": "870 tonnes de plomb",
+          "text": "À partir de 1993, 870 tonnes de contrepoids de plomb, placés du côté relevé, redressent légèrement la tour."
+        }
+      ]
+    },
+    "saved": {
+      "title": "Redressée de 45 cm",
+      "text": "38 m³ de terre sont extraits sous le côté relevé. L'inclinaison retombe à 3,97°, au niveau où elle était en 1838, et la tour rouvre le 15 décembre 2001.",
+      "moments": [
+        {
+          "tag": "Anecdote",
+          "title": "Immobile pour la première fois",
+          "text": "En mai 2008, des ingénieurs annoncent que la tour s'est immobilisée pour la première fois de son histoire."
+        }
+      ]
+    }
+  }
+}
