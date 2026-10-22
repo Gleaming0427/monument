@@ -18,6 +18,6 @@ The rules:
 ## Improve the skill or the kit
 
 - New bricks go in `kit/builder.js`, named after the architecture, with a row in `references/bricks.md`. `node scripts/validate.mjs` fails if one is missing.
-- Run `node scripts/validate.mjs --strict`, `node scripts/build-site.mjs`, `node scripts/golden.test.mjs` and `node scripts/responsive.test.mjs` before opening a pull request. The golden test freezes every generated piece of the Parthenon and Coutances Cathedral; review the models visually before intentionally updating that baseline.
+- Run `node scripts/validate.mjs --strict`, `node scripts/build-site.mjs`, `node scripts/geometry.test.mjs`, `node scripts/golden.test.mjs` and `node scripts/responsive.test.mjs` before opening a pull request. The geometry test proves curve tolerances and LOD behaviour; the golden test freezes every generated piece of the Parthenon and Coutances Cathedral. Review the models visually before intentionally updating that baseline.
 - Measure speed or token claims with `scripts/measure.mjs` and the protocol in `references/measurement.md`. Unknown token counts stay unknown rather than being estimated.
 - Keep the viewer dependency-free: everything it loads ships in `kit/`.

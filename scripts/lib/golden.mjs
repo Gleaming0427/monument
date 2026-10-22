@@ -41,7 +41,8 @@ export async function geometrySnapshot(file) {
   const shapeGeometry = {};
   for (const shape of Object.keys(shapes).filter(shape => shape !== 'box')) {
     const geometry = engine.SHAPES[shape]();
-    shapeGeometry[shape] = {type: geometry.type, vertices: geometry.attributes.position.count};
+    const curve = geometry.userData.adaptive;
+    shapeGeometry[shape] = {type: geometry.type, vertices: geometry.attributes.position.count, ...(curve ? {curve: {...curve, chordErrorMm: round(engine.chordError(.5, curve.radialSegments) * 1000, 4)}} : {})};
     geometry.dispose();
   }
   const columnElements = data.elements.flatMap((element, index) => {

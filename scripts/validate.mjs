@@ -211,7 +211,21 @@ for (const file of (await Promise.all(targets.map(files))).flat()) {
     if (key === 'phases' && value && typeof value === 'object') for (const phase of Object.values(value)) check(phases.has(phase), `${at} unknown phase "${phase}"`);
     if (value && typeof value === 'object') refs(value);
   } };
-  for (const e of d.elements) { check(bricks.has(e.type), `${at} unknown brick "${e.type}"`); refs(e); }
+  for (const [elementIndex, e] of d.elements.entries()) {
+    check(bricks.has(e.type), `${at} unknown brick "${e.type}"`); refs(e);
+    if (e.type === 'profiledColumn') {
+      const label = `${at} element ${elementIndex} profiledColumn`, profile = e.shaft?.profile ?? e.profile, flutes = e.shaft?.flutes ?? e.flutes ?? 0, tolerance = e.rendering?.maxChordErrorMm;
+      check(Number.isFinite(e.height) && e.height > 0 && Number.isFinite(e.diameter) && e.diameter > 0, `${label} needs positive height and diameter`);
+      check(Array.isArray(profile) && profile.length >= 2 && profile.every(point => Array.isArray(point) && point.length === 2 && point.every(Number.isFinite)), `${label} needs at least two finite [height fraction, diameter ratio] stations`);
+      if (Array.isArray(profile) && profile.length >= 2) {
+        check(profile[0][0] === 0 && profile.at(-1)[0] === 1, `${label} profile must start at 0 and end at 1`);
+        check(profile.every((point, i) => point[1] > 0 && (!i || point[0] > profile[i - 1][0])), `${label} profile heights must increase and diameter ratios must be positive`);
+      }
+      check(Number.isInteger(flutes) && flutes >= 0 && flutes <= 64, `${label} flutes must be an integer from 0 to 64`);
+      check(tolerance === undefined || Number.isFinite(tolerance) && tolerance >= .25 && tolerance <= 20, `${label} maxChordErrorMm must be between 0.25 and 20`);
+      check(e.rendering?.lod === undefined || e.rendering.lod === 'adaptive', `${label} rendering.lod must be "adaptive"`);
+    }
+  }
   for (const [i, e] of d.elements.entries()) if (e.type === 'relief') await relief(e, i, file, id, at, strict);
   if (standard) await evidence(d, text, file, id, at, strict);
   console.log(`${id}: ${d.phases.length} phases, ${d.elements.length} elements${standard ? `, ${strict ? 'publication' : 'standard'} evidence checked` : ''}`);
