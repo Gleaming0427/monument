@@ -1075,6 +1075,13 @@
         "width": 2.6,
         "top": 29.5,
         "tip": 37.5
+      },
+      "windows": {
+        "count": 3,
+        "width": 2.7,
+        "sill": 13.5,
+        "spring": 19.4,
+        "middle": 0.5
       }
     },
     "flyingButtresses": {
@@ -2065,7 +2072,7 @@
         "width": 2.7,
         "sill": 13.5,
         "spring": 19.4,
-        "middle": 0
+        "middle": 0.5
       }
     },
     {
@@ -2121,7 +2128,7 @@
         "width": 2.7,
         "sill": 8.5,
         "spring": 19.4,
-        "middle": 0
+        "middle": 0.5
       }
     },
     {
