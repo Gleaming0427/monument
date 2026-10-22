@@ -117,7 +117,7 @@ function kit(rand) {
         }
         return shaftProfile.at(-1)[1];
       };
-      const Dt = D * ratioAt(1), geometry = (from, to) => ({profile: [[0, ratioAt(from)], [.5, ratioAt((from + to) / 2)], [1, ratioAt(to)]], flutes, ...rendering});
+      const Dt = D * ratioAt(1), geometry = (from, to) => ({profile: [[0, ratioAt(from)], [.5, ratioAt((from + to) / 2)], [1, ratioAt(to)]], master: shaftProfile, span: [from, to], flutes, ...rendering});
       if ((drums > 0 || drum > 0) && (drums > 1 || shaft > drum * 1.4)) {
         const n = Math.max(1, drums > 0 ? Math.round(drums) : Math.round(shaft / drum));
         for (let i = 0; i < n; i++) piece('profiledShaft', b + shaft * i / n, [D, shaft / n * 1.001], geometry(i / n, (i + 1) / n));

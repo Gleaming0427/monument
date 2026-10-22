@@ -52,32 +52,70 @@ export function sampleProfile(profile, {diameter = 1, maxChordErrorMm = 3, maxRo
   return out;
 }
 
-export function profiledGeometry({profile = [[0, 1], [1, 1]], flutes = 0, fluteDepth = .07, flutePower = .82, radialSegments = 32, diameter = 1, height = 1, maxChordErrorMm = 3, maxProfileRows = 28, openEnded = false} = {}) {
+export function profiledGeometry({profile = [[0, 1], [1, 1]], master, span, flutes = 0, fluteDepth = .07, flutePower = .82, radialSegments = 32, diameter = 1, height = 1, maxChordErrorMm = 3, maxProfileRows = 28, openEnded = false} = {}) {
   const sampled = sampleProfile(profile, {diameter, maxChordErrorMm, maxRows: maxProfileRows});
   const outline = sampled.map(([t, d]) => new T.Vector2(d * .5, t - .5));
   if (!openEnded) outline.unshift(new T.Vector2(0, -.5));
   if (!openEnded) outline.push(new T.Vector2(0, .5));
   const geometry = new T.LatheGeometry(outline, radialSegments), positions = geometry.attributes.position;
+  // The flute is a channel cut around the shaft, so it deepens and shallows with the angle: one modulation,
+  // read once, drives both the vertices and their normal.
+  const groove = angle => {
+    const phase = ((angle / (2 * Math.PI) * flutes) % 1 + 1) % 1;
+    return 1 - fluteDepth * Math.sin(Math.PI * phase) ** flutePower;
+  };
   if (flutes > 0) for (let i = 0; i < positions.count; i++) {
     const x = positions.getX(i), z = positions.getZ(i), radius = Math.hypot(x, z);
     if (radius < 1e-7) continue;
-    const phase = ((Math.atan2(z, x) / (2 * Math.PI) * flutes) % 1 + 1) % 1;
-    const modulation = 1 - fluteDepth * Math.sin(Math.PI * phase) ** flutePower;
+    const modulation = groove(Math.atan2(z, x));
     positions.setX(i, x * modulation); positions.setZ(i, z * modulation);
   }
-  // Normals come from the profile, not from the triangles. computeVertexNormals can only see the piece it
-  // is given, so every drum of a column derived its own field and the change showed at every joint: rays
-  // inside each drum and a shadow line where one drum met the next. The profile is a known curve, so its
-  // normal is known too — and two drums cut from one curve agree at the place they meet.
-  const stride = radialSegments + 1, rings = outline.length, normals = geometry.attributes.normal;
-  for (let j = 0; j < rings; j++) {
-    const radius = outline[j].x, before = outline[Math.max(0, j - 1)], after = outline[Math.min(rings - 1, j + 1)];
-    const dr = after.x - before.x, dy = after.y - before.y, length = Math.hypot(dr, dy);
-    // With a flat end (radius 0) the surface is the cap; elsewhere the normal is perpendicular to the profile.
-    const nr = radius < 1e-7 ? 0 : dy / (length || 1), ny = radius < 1e-7 ? (j === 0 ? -1 : 1) : -dr / (length || 1);
-    for (let i = 0; i < stride; i++) {
-      const x = positions.getX(j * stride + i), z = positions.getZ(j * stride + i), angle = Math.atan2(z, x) || 0;
-      normals.setXYZ(j * stride + i, Math.cos(angle) * nr, ny, Math.sin(angle) * nr);
+  // The normal belongs to the surface, not to the mesh that happens to draw it, so it is read from the curve
+  // every piece of a member is cut from rather than from this piece's own triangles — computeVertexNormals only
+  // ever sees the piece it is handed, which is why a column laid drum by drum showed rays inside each drum and
+  // a dark ring where one drum met the next. `master`/`span` name the curve and the stretch of it this piece
+  // covers: two drums cut from one curve then answer identically at the station they share.
+  //
+  // Three lays a lathe's vertices out around the axis first and along the profile second, so the vertex at
+  // segment i and ring j is i * rings + j. Reading it as j * (radialSegments + 1) + i addresses a different
+  // vertex for every (i, j) pair and writes the whole field across the mesh at random.
+  const rings = outline.length, curve = master ?? profile, from = span?.[0] ?? 0, to = span?.[1] ?? 1;
+  const station = openEnded ? sampled.map(([t]) => t) : [0, ...sampled.map(([t]) => t), 1];
+  const normals = geometry.attributes.normal;
+  // The surface is P(θ, t) = radius(t) · groove(θ) · (sin θ, ·, cos θ), lifted by t in y, so its normal is the
+  // cross product of the two partial derivatives. Being a function of (angle, station) alone, it follows the
+  // taper of the profile and the cut of a flute at once, and it cannot change with the tessellation.
+  const step = 1 / 2048;
+  // Two numbers per ring — the radius there, and how fast it grows — read once and then reused for every
+  // vertex around the axis, so the profile is sampled once per ring rather than once per vertex.
+  const section = [], radiusAt = t => profileAt(curve, from + t * (to - from)) * .5;
+  for (let j = 0; j < rings; j++) section.push([radiusAt(station[j]), (radiusAt(station[j] + step) - radiusAt(station[j] - step)) / (2 * step)]);
+  const cut = flutes > 0 ? groove : () => 1;
+  // A ring that closes on the axis is a cap: there is no radial direction left, and the cap faces away from
+  // whichever way the body lies.
+  const capSign = j => {
+    for (let k = 1; k < rings; k++) {
+      const other = j >= k ? j - k : j + k;
+      if (other < 0 || other >= rings || outline[other].x < 1e-7) continue;
+      return other < j ? 1 : -1;
+    }
+    return j === 0 ? -1 : 1;
+  };
+  for (let i = 0; i <= radialSegments; i++) {
+    const angle = i / radialSegments * Math.PI * 2, sin = Math.sin(angle), cos = Math.cos(angle);
+    for (let j = 0; j < rings; j++) {
+      const vertex = i * rings + j;
+      if (outline[j].x < 1e-7) { normals.setXYZ(vertex, 0, capSign(j), 0); continue; }
+      const [radius, rise] = section[j], near = cut(angle + step) * radius, far = cut(angle - step) * radius;
+      const ahead = Math.sin(angle + step), back = Math.sin(angle - step);
+      const aheadCos = Math.cos(angle + step), backCos = Math.cos(angle - step);
+      // ∂θ across the revolution, ∂t up the profile, and their cross product: radial for a cylinder, lifted by
+      // the taper of the profile, turned by the flute.
+      const across = [(near * ahead - far * back) / (2 * step), 0, (near * aheadCos - far * backCos) / (2 * step)];
+      const along = [rise * cut(angle) * sin, 1, rise * cut(angle) * cos];
+      const n = [across[1] * along[2] - across[2] * along[1], across[2] * along[0] - across[0] * along[2], across[0] * along[1] - across[1] * along[0]];
+      const length = Math.hypot(...n) || 1;
+      normals.setXYZ(vertex, n[0] / length, n[1] / length, n[2] / length);
     }
   }
   geometry.userData.architecture = {profile: sampled, flutes, maxChordErrorMm, radialSegments, diameter, height};
@@ -104,6 +142,9 @@ export function adaptiveContext(piece, factory, qualityName = 'standard') {
   const min = Math.max(defaults.minSegments ?? quality.minSegments, flutes ? flutes * quality.fluteSamples : 0), max = Math.max(min, defaults.maxSegments ?? quality.maxSegments);
   const radialSegments = segmentsForChordError(dimensions.diameter / 2, maxChordErrorMm, {min, max, multiple});
   const context = {...defaults, ...spec, ...dimensions, maxChordErrorMm, radialSegments, maxProfileRows: spec.maxProfileRows ?? quality.maxProfileRows, qualityName};
-  return {context, key: `${radialSegments}:${context.maxProfileRows}:${JSON.stringify(spec)}`};
+  // `master` and `span` say which curve a piece was cut from and how much of it it covers: they move the normal
+  // field, not the mesh. Two drums with the same vertices stay one instanced mesh.
+  const {master, span, ...shape} = spec;
+  return {context, key: `${radialSegments}:${context.maxProfileRows}:${JSON.stringify(shape)}`};
 }
 
