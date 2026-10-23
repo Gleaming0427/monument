@@ -177,45 +177,6 @@
         }
       },
       {
-        "view": "north, the north front and its pinnacles (Tmouchentois, CC BY-SA 3.0)",
-        "url": "https://commons.wikimedia.org/wiki/File:Pinacles_de_la_fa%C3%A7ade_nord.jpg",
-        "azimuth": 0,
-        "elevation": -6,
-        "distance": 62,
-        "target": [
-          -0.5,
-          27,
-          1.9
-        ],
-        "fov": 50
-      },
-      {
-        "view": "south, the nave elevation in sequence (Zairon, CC BY-SA 4.0)",
-        "url": "https://commons.wikimedia.org/wiki/File:Coutances_Cath%C3%A9drale_Notre-Dame_S%C3%BCdseite_1.jpg",
-        "azimuth": 170,
-        "elevation": -6,
-        "distance": 78,
-        "target": [
-          -0.5,
-          27,
-          1.9
-        ],
-        "fov": 50
-      },
-      {
-        "view": "south-east, the crossing lantern over the south transept (Zairon, CC BY-SA 4.0)",
-        "url": "https://commons.wikimedia.org/wiki/File:Coutances_Cath%C3%A9drale_Notre-Dame_Vierungsturm_1.jpg",
-        "azimuth": 130,
-        "elevation": -22,
-        "distance": 55,
-        "target": [
-          -0.5,
-          27,
-          1.9
-        ],
-        "fov": 50
-      },
-      {
         "view": "south, the south transept and its great windows (GO69, CC BY-SA 4.0)",
         "url": "https://commons.wikimedia.org/wiki/File:Coutances_%2850%29_Cath%C3%A9drale_Notre-Dame_-_Ext%C3%A9rieur_-_Transept_sud.jpg",
         "azimuth": 192.7,
@@ -231,32 +192,6 @@
           "points": 7,
           "rms": 1.1
         }
-      },
-      {
-        "view": "south-west, the south porch (Giogo, CC BY-SA 3.0)",
-        "url": "https://commons.wikimedia.org/wiki/File:Porche_sud_cath%C3%A9drale_Coutances.JPG",
-        "azimuth": 175,
-        "elevation": -10,
-        "distance": 42,
-        "target": [
-          -0.5,
-          27,
-          1.9
-        ],
-        "fov": 50
-      },
-      {
-        "view": "east, the chevet close (Giogo, CC BY-SA 3.0)",
-        "url": "https://commons.wikimedia.org/wiki/File:Chevet_cath%C3%A9drale_Coutances.JPG",
-        "azimuth": 100,
-        "elevation": -10,
-        "distance": 55,
-        "target": [
-          -0.5,
-          27,
-          1.9
-        ],
-        "fov": 50
       }
     ],
     "features": [
@@ -442,13 +377,15 @@
           "cathedrale-de-coutances.evidence/compare/pass-1/ref-0.jpg",
           "cathedrale-de-coutances.evidence/compare/pass-1/ref-1.jpg",
           "cathedrale-de-coutances.evidence/compare/pass-1/ref-2.jpg",
-          "cathedrale-de-coutances.evidence/compare/pass-1/ref-3.jpg"
+          "cathedrale-de-coutances.evidence/compare/pass-1/ref-3.jpg",
+          "cathedrale-de-coutances.evidence/compare/pass-1/ref-4.jpg"
         ],
         "overlays": [
           "cathedrale-de-coutances.evidence/compare/pass-1/overlay-0.jpg",
           "cathedrale-de-coutances.evidence/compare/pass-1/overlay-1.jpg",
           "cathedrale-de-coutances.evidence/compare/pass-1/overlay-2.jpg",
-          "cathedrale-de-coutances.evidence/compare/pass-1/overlay-3.jpg"
+          "cathedrale-de-coutances.evidence/compare/pass-1/overlay-3.jpg",
+          "cathedrale-de-coutances.evidence/compare/pass-1/overlay-4.jpg"
         ],
         "phases": [
           "cathedrale-de-coutances.evidence/compare/pass-1/phase-0.jpg",
@@ -476,13 +413,15 @@
           "cathedrale-de-coutances.evidence/compare/pass-2/ref-0.jpg",
           "cathedrale-de-coutances.evidence/compare/pass-2/ref-1.jpg",
           "cathedrale-de-coutances.evidence/compare/pass-2/ref-2.jpg",
-          "cathedrale-de-coutances.evidence/compare/pass-2/ref-3.jpg"
+          "cathedrale-de-coutances.evidence/compare/pass-2/ref-3.jpg",
+          "cathedrale-de-coutances.evidence/compare/pass-2/ref-4.jpg"
         ],
         "overlays": [
           "cathedrale-de-coutances.evidence/compare/pass-2/overlay-0.jpg",
           "cathedrale-de-coutances.evidence/compare/pass-2/overlay-1.jpg",
           "cathedrale-de-coutances.evidence/compare/pass-2/overlay-2.jpg",
-          "cathedrale-de-coutances.evidence/compare/pass-2/overlay-3.jpg"
+          "cathedrale-de-coutances.evidence/compare/pass-2/overlay-3.jpg",
+          "cathedrale-de-coutances.evidence/compare/pass-2/overlay-4.jpg"
         ],
         "phases": [
           "cathedrale-de-coutances.evidence/compare/pass-2/phase-0.jpg",
