@@ -9,32 +9,44 @@
 <meta property="og:description" content="Name a building in one line, and Claude builds it stone by stone, on its real plan." data-i18n-content="meta.ogDescription">
 <meta property="og:image" content="thumbs/leaning-tower-of-pisa.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@1&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@500;700&family=Instrument+Serif:ital@1&display=swap">
 <link rel="stylesheet" href="site.css">
+<script>document.documentElement.classList.add('js')</script>
+<script src="site.js" defer></script>
 </head>
 <body>
-<main class="page">
-<nav class="site" aria-label="Site" data-i18n-aria-label="nav.site">
+<a class="skip" href="#main" data-i18n="nav.skip">Skip to the content</a>
+<main class="page" id="main">
+<nav class="site" data-sticky aria-label="Site" data-i18n-aria-label="nav.site">
  <a class="brand" href="./" aria-current="page">Monument</a>
  <a href="collection/" data-i18n="nav.collection">Collection</a>
  <a href="community/" data-i18n="nav.community">Community</a>
  <!--LANGS-->
- <a class="x" href="https://x.com/Gleaming0427" aria-label="@Gleaming0427 on X" data-i18n-aria-label="nav.x"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
  <a class="gh" href="https://github.com/Gleaming0427/monument" aria-label="Source on GitHub" data-i18n-aria-label="nav.github"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg></a>
 </nav>
 
-<header class="intro">
- <div class="kicker"><b>Monument</b> · <span data-i18n="kicker.skill">a skill for Claude Code</span></div>
- <h1 class="tagline" data-i18n-html="h1">Name a building in one line, and Claude builds it <em>stone by stone</em>, on its real plan.</h1>
- <div class="strip"><!--STRIP--></div>
- <div class="meta"><code>/monument</code><span>·</span><a href="collection/"><!--COUNT--> <span data-i18n="meta.monuments">monuments, all live</span></a><span>·</span><span data-i18n="meta.agents">Claude Code, Codex, OpenCode</span><span>·</span><a href="#install" data-i18n="meta.install">Install ↓</a></div>
+<header class="intro" id="intro">
+ <div class="hero">
+  <div class="hero__panel">
+   <p class="kicker"><b>Monument</b> · <span data-i18n="kicker.skill">a skill for Claude Code</span></p>
+   <div class="strip"><!--STRIP--></div>
+   <div class="meta"><code>/monument</code><span>·</span><a href="collection/"><!--COUNT--> <span data-i18n="meta.monuments">monuments, all live</span></a><span>·</span><span data-i18n="meta.agents">Claude Code, Codex, OpenCode</span><span>·</span><a href="#install" data-i18n="meta.install">Install ↓</a></div>
+  </div>
+  <div class="hero__stage">
+   <p class="wordmark" aria-hidden="true"><i>monu</i>ment</p>
+   <h1 class="tagline" data-i18n-html="h1">Name a building in one line, and Claude builds it <em>stone by stone</em>, on its real plan.</h1>
+  </div>
+ </div>
 </header>
 
 <p class="lead" data-i18n="p.lead">Most pages about a building show it finished. The interesting part is how it got there: what went up first, what was pulled down, what was added a century later, and why.</p>
 <p data-i18n="p.what">Monument is a skill for Claude Code that shows it. You name a building; Claude researches its history, places it on its real plan, and builds it as a live 3D scene you can turn and move through time, one dated, sourced phase after another. Thousands of small solid pieces drop into place in the order the evidence gives.</p>
 
 <figure class="live">
- <iframe src="view/?embed#leaning-tower-of-pisa" title="The Leaning Tower of Pisa, built phase by phase" loading="lazy" allow="fullscreen" data-i18n-title="figure.title"></iframe>
+ <div class="live__frame" data-frame>
+  <div class="live__loading" role="status"><b data-i18n="viewer.loading">Opening the viewer</b><span data-i18n="viewer.loadingNote">Three.js · the scene takes a moment</span><span class="live__bar" aria-hidden="true"></span></div>
+  <iframe src="view/?embed#leaning-tower-of-pisa" title="The Leaning Tower of Pisa, built phase by phase" loading="lazy" allow="fullscreen" data-i18n-title="figure.title"></iframe>
+ </div>
  <div class="hint"><span data-i18n="hint.drag">Drag to turn</span><span><kbd>Space</kbd> <span data-i18n="hint.pause">pause</span></span><span data-i18n="hint.diamonds">Diamonds open a construction moment</span><span data-i18n="hint.timeline">Drag the timeline to move through time</span><a href="view/#leaning-tower-of-pisa" data-i18n="hint.full">Open full screen ↗</a></div>
  <figcaption data-i18n="figure.caption">The Leaning Tower of Pisa: three building campaigns over two centuries, six galleries of thirty columns, and the lean that grows to 5.5° before engineers pull it back to 3.97°.</figcaption>
 </figure>
@@ -108,10 +120,13 @@
  <code class="block">/monument Himeji Castle, Japan</code>
  <p data-i18n-html="p.codexNote">In Codex, type <code>$monument</code>. No API keys and nothing to <code>npm install</code>: the viewer, Three.js and the fonts ship with the skill. It needs Node 20 or later.</p>
  <table>
-  <tr><th data-i18n="table.other">Other ways</th><th data-i18n="table.command">Command</th></tr>
+  <caption class="sr-only" data-i18n="table.caption">Other ways to install the skill</caption>
+  <thead><tr><th data-i18n="table.other">Other ways</th><th data-i18n="table.command">Command</th></tr></thead>
+  <tbody>
   <tr><td data-i18n="table.gitClaude">git, Claude Code</td><td><code>git clone https://github.com/Gleaming0427/monument.git ~/.claude/skills/monument</code></td></tr>
   <tr><td data-i18n="table.gitCodex">git, Codex</td><td><code>git clone https://github.com/Gleaming0427/monument.git ~/.agents/skills/monument</code></td></tr>
   <tr><td data-i18n="table.noGit">No git</td><td data-i18n-html="table.zip"><a href="https://github.com/Gleaming0427/monument/archive/refs/heads/main.zip">Download the ZIP</a> and unzip it into your skills folder as <code>monument</code>.</td></tr>
+  </tbody>
  </table>
 </section>
 
@@ -135,9 +150,10 @@
 </section>
 
 <footer class="site">
- <p data-i18n-html="footer.made">Made by <a href="https://x.com/Gleaming0427">@Gleaming0427</a> with Claude Code. The format of this skill and of this page follows <a href="https://skills.wheresryan.sh/anatomy">Anatomy</a> by Ryan.</p>
- <p data-i18n-html="footer.legal"><a href="https://github.com/Gleaming0427/monument">Source on GitHub</a> · <a href="https://x.com/Gleaming0427">@Gleaming0427 on X</a> · MIT · Footprints © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a> and IGN BD TOPO</p>
+ <p data-i18n-html="footer.made">Made with Claude Code. The format of this skill and of this page follows <a href="https://skills.wheresryan.sh/anatomy">Anatomy</a> by Ryan.</p>
+ <p data-i18n-html="footer.legal"><a href="https://github.com/Gleaming0427/monument">Source on GitHub</a> · MIT · Footprints © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a> and IGN BD TOPO</p>
 </footer>
 </main>
+<div class="rail" aria-hidden="true"><span data-i18n="rail.left">Monument · MIT</span><span><span data-i18n="rail.right">Reading</span> <span class="pct" data-progress>0%</span></span></div>
 </body>
 </html>

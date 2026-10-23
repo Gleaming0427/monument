@@ -4,7 +4,7 @@
 // (community/<id>/). With CAPTURE=1, community monuments without a thumbnail are photographed with Chrome.
 // Every language in i18n/ gets the same site, in its own folder: English as the pages are written, the others
 // rendered from their dictionary. One shared viewer serves them all, told which language by its own <html lang>.
-import {readFile, writeFile, readdir, mkdir, cp, rm, mkdtemp, copyFile, access} from 'node:fs/promises';
+import {readFile, writeFile, readdir, mkdir, cp, rm, mkdtemp, copyFile, access, rename} from 'node:fs/promises';
 import {execFileSync} from 'node:child_process';
 import {join, resolve} from 'node:path';
 import {tmpdir} from 'node:os';
@@ -17,6 +17,10 @@ const root = fileURLToPath(new URL('..', import.meta.url));
 // is looking at.
 const outIndex = process.argv.indexOf('--out');
 const out = outIndex >= 0 ? resolve(process.argv[outIndex + 1]) : join(root, '_site');
+// The build writes beside the site and moves it into place at the end. A build that is interrupted — by a
+// Ctrl-C, by a deploy that times out, by a capture that fails halfway — then leaves the last good site
+// standing rather than half a site whose markers were never filled and whose cards were never written.
+const staging = `${out}.building`;
 const json = async path => JSON.parse(await readFile(path, 'utf8'));
 const exists = path => access(path).then(() => true, () => false);
 const esc = text => String(text ?? '').replace(/[&<>"']/g, c => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'})[c]);
@@ -37,23 +41,23 @@ const tree = code => code === SOURCE ? '' : `${code}/`;
 const at = (code, folder, language) => code === language ? './' : `${siteRoot(folder, language)}${tree(code)}${folder}`;
 const viewerAt = (code, folder, language) => code === language ? `${up(folder)}view/` : `${siteRoot(folder, language)}${tree(code)}view/`;
 const nest = (html, levels) => levels
-  ? html.replace(/(\s(?:href|src|content)=")((?:\.\.\/)*)(site\.css|thumbs\/|media\/)/gi, (whole, prefix, up_, first) => `${prefix}${'../'.repeat(levels)}${up_}${first}`)
+  ? html.replace(/(\s(?:href|src|content)=")((?:\.\.\/)*)(site\.css|site\.js|thumbs\/|media\/)/gi, (whole, prefix, up_, first) => `${prefix}${'../'.repeat(levels)}${up_}${first}`)
   : html;
 
-await rm(out, {recursive: true, force: true});
-await cp(join(root, 'site'), out, {recursive: true});
-await cp(join(root, 'kit'), join(out, 'view', 'kit'), {recursive: true});
-await copyFile(join(root, 'kit', 'viewer.html'), join(out, 'view', 'index.html'));
-await rm(join(out, 'view', 'kit', 'viewer.html'));
+await rm(staging, {recursive: true, force: true});
+await cp(join(root, 'site'), staging, {recursive: true});
+await cp(join(root, 'kit'), join(staging, 'view', 'kit'), {recursive: true});
+await copyFile(join(root, 'kit', 'viewer.html'), join(staging, 'view', 'index.html'));
+await rm(join(staging, 'view', 'kit', 'viewer.html'));
 // GitHub Pages lets browsers keep files for ten minutes: versioned URLs keep the viewer, its engine and
 // the monument files from two different deploys apart.
 const version = (process.env.GITHUB_SHA ?? (() => { try { return execFileSync('git', ['rev-parse', 'HEAD'], {cwd: root, encoding: 'utf8'}).trim(); } catch { return String(Date.now()); } })()).slice(0, 8);
 const stamp = async (file, pairs) => { let text = await readFile(file, 'utf8'); for (const [from, to] of pairs) { if (!text.includes(from)) throw new Error(`${from} not found in ${file}`); text = text.replaceAll(from, to); } await writeFile(file, text); };
-await stamp(join(out, 'view', 'index.html'), [['href="kit/style.css"', `href="kit/style.css?v=${version}"`], ['src="kit/app.js"', `src="kit/app.js?v=${version}"`]]);
-await stamp(join(out, 'view', 'kit', 'app.js'), [["from './builder.js'", `from './builder.js?v=${version}'`]]);
-await stamp(join(out, 'view', 'kit', 'builder.js'), [["from './visuals.js'", `from './visuals.js?v=${version}'`]]);
-await rm(join(out, 'collection.json'));
-const monuments = join(out, 'view', 'monuments');
+await stamp(join(staging, 'view', 'index.html'), [['href="kit/style.css"', `href="kit/style.css?v=${version}"`], ['src="kit/app.js"', `src="kit/app.js?v=${version}"`]]);
+await stamp(join(staging, 'view', 'kit', 'app.js'), [["from './builder.js'", `from './builder.js?v=${version}'`]]);
+await stamp(join(staging, 'view', 'kit', 'builder.js'), [["from './visuals.js'", `from './visuals.js?v=${version}'`]]);
+await rm(join(staging, 'collection.json'));
+const monuments = join(staging, 'view', 'monuments');
 await mkdir(monuments, {recursive: true});
 
 // The viewer's evidence mode draws the measured outline, and photo reliefs lay their images on the model:
@@ -105,13 +109,13 @@ for (const id of (await readdir(join(root, 'community')).catch(() => [])).sort()
   for (const extension of ['jpg', 'png']) {
     if (await exists(join(root, 'site', 'thumbs', `${id}.${extension}`))) { thumb = `${id}.${extension}`; break; }
   }
-  if (thumb) await copyFile(join(root, 'site', 'thumbs', thumb), join(out, 'thumbs', thumb));
+  if (thumb) await copyFile(join(root, 'site', 'thumbs', thumb), join(staging, 'thumbs', thumb));
   if (!thumb && process.env.CAPTURE) {
     const temp = await mkdtemp(join(tmpdir(), 'monument-'));
     await writeFile(join(temp, `${id}.json`), `${JSON.stringify(d, null, 2)}\n`);
     if (d.bricks) await copyFile(join(dir, d.bricks), join(temp, d.bricks));
     try {
-      execFileSync('node', [join(root, 'scripts', 'capture.mjs'), id, '--dir', temp, '--size', '960,640', '--out', join(out, 'thumbs', `${id}.png`)], {stdio: 'inherit'});
+      execFileSync('node', [join(root, 'scripts', 'capture.mjs'), id, '--dir', temp, '--size', '960,640', '--out', join(staging, 'thumbs', `${id}.png`)], {stdio: 'inherit'});
       thumb = `${id}.png`;
     } catch { console.warn(`No thumbnail for ${id}.`); }
   }
@@ -128,17 +132,38 @@ const say = (dictionary, key, fallback, args = {}) => {
   if ('n' in args$ && typeof args$.n === 'number') args$.s = args$.n > 1 ? 's' : '';
   return Object.entries(args$).reduce((text, [name, value]) => text.replaceAll(`{${name}}`, value), t(dictionary, key, fallback));
 };
+// Every picture sits in a frame that reserves its place before the file lands and reports how it ended, so a
+// slow connection shows a shape rather than a hole and a missing file says it is missing instead of sitting
+// blank. The frame is a data-frame so site.js can settle it; without the script it is simply the picture.
+// The shimmer belongs to a file that is still on its way, so only a frame holding one carries it.
+const loading = '<span class="media__load" aria-hidden="true"></span>';
+const frame = (inner, modifier = '') => `<span class="media${modifier}" data-frame>${inner}</span>`;
+// A monument with no thumbnail is not an error — it is one that has not been photographed yet, and the card
+// says which one it is rather than showing an empty rectangle that reads as a broken image.
+const absent = (id, dictionary) => frame(`<span class="media__none" role="img" aria-label="${esc(say(dictionary, 'card.pending', `${id}: no photograph yet`, {id}))}">`
+  + `<b>${esc(t(dictionary, 'card.pendingLabel', 'No photograph yet'))}</b><span>${esc(id)}</span></span>`, ' media--none');
 const visual = (m, assets, dictionary) => m.video
-  ? `<video src="${assets}media/${esc(m.id)}.mp4" poster="${assets}thumbs/${esc(m.id)}.jpg" autoplay muted loop playsinline preload="metadata" aria-label="${esc(say(dictionary, 'card.building', `${m.name} being built`, {name: m.name}))}"></video>`
-  : m.thumb === null ? `<span class="ph">${esc(m.id)}</span>` : `<img src="${assets}thumbs/${esc(m.thumb ?? `${m.id}.jpg`)}" alt="${esc(say(dictionary, 'card.finished', `${m.name}, the finished model`, {name: m.name}))}" loading="lazy">`;
-const card = (m, i, assets, viewer, dictionary) => `<a class="card" href="${viewer}#${esc(m.id)}">` + visual(m, assets, dictionary)
-  + `<div><span class="n">${String(i + 1).padStart(2, '0')}</span><h3>${esc(m.title ?? m.name)}</h3><span class="place">${esc(m.place)}</span>`
+  // A recorded construction sits over its own photograph. The poster is not a fallback bolted on after a
+  // failure: it is the layer underneath, so a video that is slow, blocked or refused always shows the
+  // finished model instead of an empty grey rectangle. The video fades in over it when it can play.
+  ? frame(loading + `<img class="media__poster" src="${assets}thumbs/${esc(m.id)}.jpg" alt="" aria-hidden="true" loading="lazy" decoding="async">`
+    + `<video src="${assets}media/${esc(m.id)}.mp4" autoplay muted loop playsinline preload="metadata" aria-label="${esc(say(dictionary, 'card.building', `${m.name} being built`, {name: m.name}))}"></video>`, ' media--video')
+  : m.thumb === null ? absent(m.id, dictionary)
+  : frame(loading + `<img src="${assets}thumbs/${esc(m.thumb ?? `${m.id}.jpg`)}" alt="${esc(say(dictionary, 'card.finished', `${m.name}, the finished model`, {name: m.name}))}" loading="lazy" decoding="async">`);
+// A card is a link, so its parts each say one thing: the picture names the model, the heading names the
+// building, the credit names who made it. The index is a plate reference, not information, so it is hidden.
+const card = (m, i, assets, viewer, dictionary) => `<a class="card" href="${viewer}#${esc(m.id)}" data-reveal>`
+  + visual(m, assets, dictionary)
+  + `<span class="card__body"><span class="card__n" aria-hidden="true">${String(i + 1).padStart(2, '0')}</span><h3>${esc(m.title ?? m.name)}</h3><span class="place">${esc(m.place)}</span>`
   + (m.blurb ? `<p>${esc(m.blurb)}</p>` : '')
-  + (m.prompt ? `<div class="prompt">${esc(m.prompt.length > 160 ? m.prompt.slice(0, 157) + '…' : m.prompt)}</div>` : '')
-  + (m.author ? `<div class="by">@${esc(m.author)} · ${esc(m.model ?? say(dictionary, 'card.model', 'Model not given'))} · ${esc(m.date ?? '')}</div>` : '')
-  + `</div></a>`;
+  + (m.prompt ? `<span class="prompt">${esc(m.prompt.length > 160 ? m.prompt.slice(0, 157) + '…' : m.prompt)}</span>` : '')
+  // A submission with no credit still says so: an empty line reads as an omission, a named gap reads as a fact.
+  + (m.author
+    ? `<span class="by">@${esc(m.author)} · ${esc(m.model ?? say(dictionary, 'card.model', 'Model not given'))}${m.date ? ` · ${esc(m.date)}` : ''}</span>`
+    : `<span class="by na">${esc(t(dictionary, 'card.uncredited', 'Author not given'))}${m.date ? ` · ${esc(m.date)}` : ''}</span>`)
+  + `</span></a>`;
 const fill = async (page, values, language) => {
-  const target = join(out, language === SOURCE ? '' : language, page);
+  const target = join(staging, language === SOURCE ? '' : language, page);
   let html = await readFile(target, 'utf8');
   for (const [marker, value] of Object.entries(values)) html = html.replaceAll(`<!--${marker}-->`, value);
   await writeFile(target, html);
@@ -162,33 +187,35 @@ const emptyGallery = dictionary => `<div class="empty">${t(dictionary, 'gallery.
 for (const {code: language} of LANGUAGES) {
   const dictionary = dictionaries[language] ?? {}, deeper = language === SOURCE ? 0 : 1, tree = language === SOURCE ? '' : language;
   for (const page of PAGES) {
-    const source = await readFile(join(root, 'site', page), 'utf8'), target = join(out, tree, page);
+    const source = await readFile(join(root, 'site', page), 'utf8'), target = join(staging, tree, page);
     await mkdir(join(target, '..'), {recursive: true});
     await writeFile(target, chrome(page, language)(nest(deeper ? render(source, dictionary, language) : source, deeper)));
   }
   // The English shell is already version-stamped above, and the other shells are made from it, so every
   // language ships the same cache-busting stamp rather than each inventing one. The dictionary travels beside
   // the shared kit, one file per language, and the application reads its own <html lang> to pick one.
-  await mkdir(join(out, 'view', 'kit', 'i18n'), {recursive: true});
-  await writeFile(join(out, 'view', 'kit', 'i18n', `${language}.json`), `${JSON.stringify(dictionary, null, 2)}\n`);
+  await mkdir(join(staging, 'view', 'kit', 'i18n'), {recursive: true});
+  await writeFile(join(staging, 'view', 'kit', 'i18n', `${language}.json`), `${JSON.stringify(dictionary, null, 2)}\n`);
   if (deeper) for (const [id, monument] of published) {
     const translation = await json(join(root, 'i18n', 'monuments', language, `${id}.json`)).catch(() => null);
     if (!translation) continue;                       // a monument with no translation stays in its own language
-    await writeFile(join(out, 'view', 'monuments', `${id}.${language}.json`), `${JSON.stringify(mergeMonument(monument, translation, language, id), null, 2)}\n`);
+    await writeFile(join(staging, 'view', 'monuments', `${id}.${language}.json`), `${JSON.stringify(mergeMonument(monument, translation, language, id), null, 2)}\n`);
   }
   if (deeper) {
-    const target = join(out, language, 'view', 'index.html');
+    const target = join(staging, language, 'view', 'index.html');
     await mkdir(join(target, '..'), {recursive: true});
     // The shell is the English one, in French. A <base> pointing at the shared viewer folder makes every
     // relative reference — the kit, the monuments, the fonts — resolve exactly as it does in English, so the
     // application needs no second copy and no second set of paths. Only the way home is one level further out.
-    await writeFile(target, render(await readFile(join(out, 'view', 'index.html'), 'utf8'), dictionary, language)
+    await writeFile(target, render(await readFile(join(staging, 'view', 'index.html'), 'utf8'), dictionary, language)
       .replace('<head>', '<head><base href="../../view/">').replace('href="../"', 'href="../../"'));
   }
   const home = '', assets = siteRoot(home, language), viewer = viewerAt(language, home, language);
   await fill('index.html', {
     COUNT: collection.length,
-    STRIP: collection.map(m => `<a href="${viewer}#${esc(m.id)}" aria-label="${esc(m.name)}">${visual(m, assets, dictionary)}</a>`).join(''),
+    // Three monuments across the opening panel: a collage, not a grid. A fourth would leave an orphan cell,
+    // and the rest of the collection is one click away.
+    STRIP: collection.slice(0, 3).map(m => `<a href="${viewer}#${esc(m.id)}" aria-label="${esc(m.name)}">${visual(m, assets, dictionary)}</a>`).join(''),
     COLLECTION: collection.slice(0, 4).map((m, i) => card(m, i, assets, viewer, dictionary)).join(''),
   }, language);
   await fill('collection/index.html', {COUNT: collection.length, COLLECTION: collection.map((m, i) => card(m, i, siteRoot('collection/', language), viewerAt(language, 'collection/', language), dictionary)).join('')}, language);
@@ -198,5 +225,9 @@ for (const {code: language} of LANGUAGES) {
     COMMUNITY: community.length ? community.map((m, i) => card(m, i, siteRoot('community/', language), viewerAt(language, 'community/', language), dictionary)).join('') : emptyGallery(dictionary),
   }, language);
 }
-await writeFile(join(out, '.nojekyll'), '');
-console.log(`_site: ${collection.length} in the collection, ${community.length} in the community gallery, ${LANGUAGES.map(l => l.code).join(' + ')}.`);
+await writeFile(join(staging, '.nojekyll'), '');
+// Everything above wrote to the staging folder. The old site is only now taken away, so the swap itself is the
+// first moment the published folder can be wrong — and it cannot be left half-built by an earlier failure.
+await rm(out, {recursive: true, force: true});
+await rename(staging, out);
+console.log(`${out === join(root, '_site') ? '_site' : out}: ${collection.length} in the collection, ${community.length} in the community gallery, ${LANGUAGES.map(l => l.code).join(' + ')}.`);
