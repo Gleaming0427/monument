@@ -68,9 +68,30 @@ Every element says where it comes from, so the viewer's evidence mode can colour
 
 A `relief` element lays a photograph of carving on the model (see [bricks.md](bricks.md)). Its `image` lives in `<id>.evidence/reliefs/` next to the file and travels with it; its `credit` names the photo's page, author and licence, which validation checks against Wikimedia Commons, and the viewer's evidence mode lists. Its `provenance` is `documented` (the carving is photographed), and its `note` says what it shows. A relief has a phase like any element, `until` to take it down and `rebuild` to set it back.
 
+## The scan
+
+A monument may carry a capture of the building, shown by the viewer's **Captured** button (or `?scan`) in place of the model:
+
+```json
+"scan": {"file": "<id>.evidence/scan/capture.spz", "matrix": [16 numbers],
+         "credit": {"author": "…", "license": "CC BY 4.0", "source": "https://…"},
+         "fit": {"scale": 1, "points": 2000000, "median": 0.013, "p90": 0.04, "covered": 0.93, "rigid": true, "elements": [], "date": "2026-10-25"}}
+```
+
+- `file`: a `.splat`, `.ply`, `.spz`, `.ksplat` or `.sog` under `<id>.evidence/scan/`, 50 MB at most. Drawn by [Spark](https://sparkjs.dev), vendored in `kit/vendor/spark` and loaded only for a monument that has a scan.
+- `matrix`: the 4 × 4 (column-major) that places the scan in the monument's own frame, `rotate` then turning it with everything else. `scripts/align-scan.mjs --write` computes it from three or more pairs of points and refines it.
+- `fit`: how far the model stands from the scan, in metres: the median and 90th percentile of the distance of the scan's points to the model's surface, the share of the scan within 2 m of the model, and the same for each element with 200 points or more. It is the model's error where the scan is good; see [capture.md](capture.md).
+- `credit`: needed for the gallery (`validate.mjs --strict`): who captured it, under a free licence, with a public page.
+
 ## Orientation
 
 Model a building in the frame that suits it (its axis along x, say), then set `"rotate"` (degrees, counter-clockwise seen from above) to turn it onto its real orientation. `rotate` turns the elements, the moment `anchor`s and the worksite scenes; `view` and the reference viewpoints stay geographic (x east, z south), like the measured outline.
+
+## Masonry
+
+`"masonry": "mesh"` (default `"blocks"`) tells the Gothic bricks to build walls, gables, arches, roofs, balustrades, pinnacles, buttresses and the tracery of their windows as real surfaces instead of heaps of boxes. A wall is one continuous skin, cut by the true outline of its openings (sampled to a chord error that follows `visualStyle.quality`: 10 mm basic, 5 mm standard, 2.5 mm cinematic, so a pointed arch is a curve, not a staircase), with its reveals, sills and soffits; the joints are drawn by the material at the size of the courses in the photographs (about 0.32 m), staggered and fading out where a pixel is wider than a joint; each block has its own tone. Mouldings are sections swept along the outline (archivolts of rolls and hollows, string courses, copings); a window of three lights or more gets a plate of tracery with foiled lights (a lattice of quatrefoils in its head), a pane of leaded glass behind it, and a rose a plate of petals between spokes. Each piece is still laid in its phase from the bottom up, and a piece is a patch of that surface (a cell about 2.6 m × 0.9 m of wall, a 1.2 m run of moulding), so the chronology, the scaffolds and the evidence colours work as they do for blocks. See [geometry.md](geometry.md#continuous-masonry).
+
+A window takes `lights` (2, 3 or 4; by default two up to 3.3 m wide, then three, then four from 5 m), `foils` (lobes of its foiled lights, 4 by default), `orders` (mouldings round it), `panes` (the height of a pane of leaded glass, in metres), `shafts: false` (no colonnettes up its jambs), `oculus: false`, and `twin: true` asks for the mullions and the tracery at all; an element takes `jointCourse` (the height of its courses, 0.32 m by default); a run of chevet level, `vault.end: false` and `vault.trim: [first, last]` draw its vault back from the end that another wall closes.
 
 ## Phases
 
@@ -95,7 +116,7 @@ At least two construction phases in a standard build carry `scene`, unless the w
 
 ## Moments
 
-- `at`: position in the phase, 0 to 1. Playback slows down on each moment and the camera eases towards it.
+- `at`: position in the phase, 0 to 1. Playback slows down on each moment and the camera eases towards it. List a phase's moments in increasing `at`: the viewer shows the last listed moment whose time has passed. Pieces are laid from the bottom up between 0.03 and 0.89 of a phase, so a moment about the top of a tower or a spire belongs late; `node scripts/chronology.mjs` tells you when the pin has nothing standing at it.
 - `tag`: one short word for the kind of moment (Technique, Figure, Anecdote, Controversy, Plan, Restoration…). Vary them within a file.
 - `anchor`: the point, in metres, where the pin goes. `distance` optionally moves the camera much closer for a tool, joint or ornament; keep enough context to understand what is being built.
 - `title` and `text`: one true, surprising detail, with its `source`.

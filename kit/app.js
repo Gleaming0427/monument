@@ -74,6 +74,9 @@ async function open(id) {
   stage.load(showContext ? data : {...data, context: undefined}, {base: response.url});
   // ?section opens the monument on the side facing the camera.
   if (params.has('section')) { sectionChosen = true; stage.section(true); $('section-toggle').setAttribute('aria-pressed', 'true'); }
+  // A monument with a scan can be shown as it was captured: ?scan opens on it, the button switches.
+  $('capture-toggle').hidden = !stage.hasCapture; $('capture-toggle').setAttribute('aria-pressed', 'false');
+  if (params.has('scan') && stage.hasCapture) capture(true);
   $('name').textContent = data.name; $('place').textContent = data.place ?? '';
   document.title = `${data.name} — Monument`;
   $('model-note').textContent = data.modelNote ?? t('viewer.modelNote', 'Simplified 3D model · sourced dates and figures.');
@@ -390,6 +393,14 @@ async function setProof(on) {
   } else stage.showOutline(false);
 }
 $('proof-toggle').onclick = () => setProof(!proofOn);
+async function capture(on) {
+  const button = $('capture-toggle');
+  button.disabled = true;
+  try { button.setAttribute('aria-pressed', String(await stage.capture(on))); }
+  catch (error) { console.warn('The scan could not be shown.', error); button.title = String(error?.message ?? error); stage.capture(false).catch(() => {}); }
+  button.disabled = false;
+}
+$('capture-toggle').onclick = () => capture(!stage.capturing);
 $('section-toggle').onclick = () => { sectionChosen = true; const on = stage.section(!stage.sectioning); $('section-toggle').setAttribute('aria-pressed', String(on)); };
 
 // A click (not a drag) on the scene, in evidence mode, names the piece under it.
@@ -488,6 +499,7 @@ try {
 
 // Recording tools (scripts/record.mjs) drive the timeline frame by frame through this hook.
 window.monument = {
+  capture(on) { return capture(on); },
   seek(t) { time = Math.max(0, Math.min(stage.duration, t)); play(false); },
   get duration() { return stage?.duration ?? 0; },
   get ready() { return Boolean(data) && stage.ready; },

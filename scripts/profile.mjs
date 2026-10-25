@@ -24,6 +24,7 @@ const MONUMENTS = ['community/parthenon', 'community/kinkaku-ji', 'community/cat
 const groupsOf = (pieces, engine, qualityName) => {
   const groups = new Map();
   for (const piece of pieces) {
+    if (piece.mesh) { const key = `${piece.kind}|patch`; if (!groups.has(key)) groups.set(key, {patch: true, count: 0, vertices: 0}); const g = groups.get(key); g.count++; g.vertices += piece.mesh.position.length / 3; continue; }
     const shape = piece.shape ?? 'box', factory = engine.SHAPES[shape];
     if (!factory) continue;
     const variant = factory.adaptive ? engine.adaptiveContext(piece, factory, qualityName) : {context: {}, key: 'fixed'};
@@ -50,6 +51,7 @@ for (const dir of MONUMENTS) {
   const meshStarted = performance.now();
   let count = 0;
   for (const group of groups.values()) {
+    if (group.patch) { count += group.vertices; continue; }
     const geometry = group.factory(group.context);
     count += geometry.attributes.position.count;
     geometry.dispose();

@@ -33,6 +33,10 @@ solids.
 `buildPieces` places matrices and no geometry at all — the meshes are built in the browser, in `createStage`,
 which is exactly where a Rust port would have to cross the WASM boundary and copy buffers back.
 
+## Continuous masonry
+
+A monument with `"masonry": "mesh"` (Coutances, Notre-Dame) is no longer instanced: its walls, mouldings, tracery and roofs are real surfaces, about 25 000 patches baked into one mesh per material. At standard quality Coutances is 31 600 pieces, about 1.5 million vertices and 1.17 million triangles (it was 46 700 boxes before), built by `buildPieces` in about 2 s (Node 22, the development container); the viewer holds a vertex in 60 bytes (positions and joint coordinates in 32-bit floats, normals in 16 bits, colours and flags in 8), about 90 MB of vertex data. It is the work of `buildPieces` (JavaScript, one pass, once), not of mesh generation, which the gate above measures; the same gate still holds. `visualStyle.quality: "basic"` doubles the chord error of the curves (10 mm) and so cuts the vertices of the arches and mouldings, and a monument that needs less asks for no mesh masonry at all.
+
 ## The gate
 
 A second implementation of the geometry code costs a toolchain, a build step, a WASM boundary, the memory

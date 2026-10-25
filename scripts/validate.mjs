@@ -120,6 +120,30 @@ async function relief(e, i, file, id, at, strict) {
   check(typeof credit.file === 'string' && credit.file && typeof credit.author === 'string' && credit.author.length > 1 && typeof credit.license === 'string' && credit.license, `${where}: "credit" needs the photo's "file" (its page, or its file name), its "author" and its "license"`);
   if (strict) check(url(credit.file) && FREE.test(credit.license ?? ''), `${where}: a published model needs a photo with a public page and a free licence (CC0, public domain, CC BY, CC BY-SA, Licence Ouverte); "${credit.license}" is not one`);
 }
+// A scan (the captured layer of the viewer, see references/capture.md): a file in the evidence folder of a size the web
+// can carry, the 4 × 4 matrix that places it in the monument's frame, and, for the gallery, a credit and the fit that
+// says how far the model stands from it.
+const SCAN_FILE_LIMIT = 50e6;
+async function scanLayer(d, file, id, at, strict) {
+  const scan = d.scan, where = `${at} scan`;
+  if (scan === undefined) return;
+  const path = typeof scan.file === 'string' ? scan.file : '';
+  check(new RegExp(`^${id}\\.evidence/scan/[A-Za-z0-9._-]+\\.(splat|ply|spz|ksplat|sog)$`).test(path), `${where}: "file" must be a .splat, .ply, .spz, .ksplat or .sog in ${id}.evidence/scan/`);
+  const size = path ? await stat(join(dirname(file), path)).then(info => info.size, () => null) : null;
+  check(size !== null, `${where}: ${path || 'file'} not found`);
+  if (size !== null) check(size <= SCAN_FILE_LIMIT, `${where}: ${path} is ${(size / 1e6).toFixed(0)} MB; a monument's scan stays under ${SCAN_FILE_LIMIT / 1e6} MB (decimate it, or convert it to .spz)`);
+  check(Array.isArray(scan.matrix) && scan.matrix.length === 16 && scan.matrix.every(Number.isFinite), `${where}: "matrix" needs 16 numbers (column-major 4 × 4: scripts/align-scan.mjs --write records it)`);
+  if (Array.isArray(scan.matrix) && scan.matrix.length === 16) {
+    const m = scan.matrix, det = m[0] * (m[5] * m[10] - m[6] * m[9]) - m[4] * (m[1] * m[10] - m[2] * m[9]) + m[8] * (m[1] * m[6] - m[2] * m[5]);
+    check(Math.abs(det) > 1e-12, `${where}: "matrix" is singular`);
+  }
+  if (strict) {
+    const credit = scan.credit ?? {};
+    check(typeof credit.author === 'string' && credit.author.length > 1 && typeof credit.license === 'string' && FREE.test(credit.license) && url(credit.source ?? ''), `${where}: a published scan needs "credit" {author, license, source}: who captured it, under a free licence, with a public page`);
+    check(Number.isFinite(scan.fit?.median) && Number.isFinite(scan.fit?.p90) && scan.fit?.covered > 0, `${where}: a published scan needs the "fit" scripts/align-scan.mjs records (median, p90 and covered): it is how far the model stands from the scan`);
+  }
+}
+
 // The credit of every relief matches what Wikimedia Commons records for its file.
 async function reliefCredits(d, at) {
   const list = d.elements.filter(e => e.type === 'relief' && /commons\.wikimedia\.org\/wiki\/File:/.test(e.credit?.file ?? ''));
@@ -243,6 +267,7 @@ for (const file of (await Promise.all(targets.map(files))).flat()) {
     }
   }
   for (const [i, e] of d.elements.entries()) if (e.type === 'relief') await relief(e, i, file, id, at, strict);
+  await scanLayer(d, file, id, at, strict);
   if (standard) await evidence(d, text, file, id, at, strict);
   console.log(`${id}: ${d.phases.length} phases, ${d.elements.length} elements${standard ? `, ${strict ? 'publication' : 'standard'} evidence checked` : ''}`);
 }
@@ -366,6 +391,16 @@ async function evidence(d, text, file, id, at, strict) {
   for (const c of passes) {
     check(Array.isArray(c.captures) && c.captures.length >= photos.length, `${at} pass ${c.pass}: one capture per reference photo (run compare.mjs again)`);
     for (const capture of [...c.captures ?? [], ...c.overlays ?? []]) check(await exists(join(dir, capture)), `${at} pass ${c.pass}: capture ${capture} not found`);
+    // An overlay is the capture with the photograph laid over it at half strength, so it carries the photograph's
+    // detail: a real one is at least a tenth heavier than the bare capture (the lightest in the collection, 1.10).
+    // One within 2 % of it is the capture alone, with the browser's broken-image icon where the photo was meant
+    // to be: the photograph never loaded, and the file claims a check nobody made.
+    for (const overlay of c.overlays ?? []) {
+      const capture = (c.captures ?? []).find(name => basename(name).replace(/^ref-/, '') === basename(overlay).replace(/^overlay-/, ''));
+      if (!capture || !(await exists(join(dir, overlay))) || !(await exists(join(dir, capture)))) continue;
+      const [laid, bare] = [(await stat(join(dir, overlay))).size, (await stat(join(dir, capture))).size];
+      check(laid > bare * 1.02, `${at} pass ${c.pass}: ${overlay} is the capture without a photograph (${laid} bytes against ${bare}): load the photo and run compare.mjs again, or take the overlay out of the pass`);
+    }
     check(Array.isArray(c.gaps) && c.gaps.length > 0 && c.gaps.every(g => typeof g === 'string' && g.length > 10), `${at} pass ${c.pass}: write in "gaps" what differs between each photo and its capture`);
     // The last pass shows the current timeline: one capture per phase. Earlier passes keep the phases of their day.
     if (strict) check(Array.isArray(c.phases) && c.phases.length >= (c === passes.at(-1) ? d.phases.length : 1), `${at} pass ${c.pass}: publication needs one capture per phase (run compare.mjs without --quick)`);

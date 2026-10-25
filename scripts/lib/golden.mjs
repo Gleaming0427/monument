@@ -23,11 +23,15 @@ function transformedBounds(pieces) {
   return {min: min.map(value => round(value)), max: max.map(value => round(value))};
 }
 
+// What a piece is, for counting: a patch of real surface (kit/masonry.js), a turned shape, or a plain block.
+const shapeOf = piece => piece.mesh ? 'patch' : piece.shape ?? 'box';
+
 function digest(pieces) {
   const hash = createHash('sha256');
   for (const piece of pieces) {
-    hash.update(`${piece.kind}|${piece.shape ?? 'box'}|${piece.phase}|${piece.until ?? ''}|${piece.element}|`);
+    hash.update(`${piece.kind}|${shapeOf(piece)}|${piece.phase}|${piece.until ?? ''}|${piece.element}|`);
     hash.update(piece.matrix.elements.map(value => round(value, 6)).join(','));
+    if (piece.mesh) for (const array of [piece.mesh.position, piece.mesh.index]) hash.update(new Uint8Array(array.buffer, array.byteOffset, array.byteLength));
     hash.update('\n');
   }
   return hash.digest('hex').slice(0, 20);
@@ -37,10 +41,10 @@ export async function geometrySnapshot(file) {
   const path = resolve(file), folder = dirname(path), data = expand(JSON.parse(await readFile(path, 'utf8')), file);
   const engine = await loadEngine(data.bricks ? resolve(folder, data.bricks) : undefined);
   const started = performance.now(), {pieces, reliefs} = engine.buildPieces(data), buildMs = performance.now() - started;
-  const shapes = countBy(pieces, piece => piece.shape ?? 'box');
-  const unknownShapes = Object.keys(shapes).filter(shape => shape !== 'box' && !engine.SHAPES[shape]);
+  const shapes = countBy(pieces, shapeOf);
+  const unknownShapes = Object.keys(shapes).filter(shape => shape !== 'box' && shape !== 'patch' && !engine.SHAPES[shape]);
   const shapeGeometry = {};
-  for (const shape of Object.keys(shapes).filter(shape => shape !== 'box')) {
+  for (const shape of Object.keys(shapes).filter(shape => shape !== 'box' && shape !== 'patch')) {
     const geometry = engine.SHAPES[shape]();
     const curve = geometry.userData.adaptive;
     shapeGeometry[shape] = {type: geometry.type, vertices: geometry.attributes.position.count, ...(curve ? {curve: {...curve, chordErrorMm: round(engine.chordError(.5, curve.radialSegments) * 1000, 4)}} : {})};

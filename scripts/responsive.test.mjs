@@ -76,4 +76,16 @@ try {
     }
     console.log(`${test.name}: ${test.width}×${test.height}, camera ${JSON.stringify(state.insets)}`);
   }
+  // ?clean&caption is what comparisons and recordings are shot in, at 960×600: inside the tablet range, where the
+  // story card is pinned to the top of the screen. It must stay a title at the foot of the scene, not stretch from
+  // the top to the bottom edge as an empty panel in front of the monument.
+  if (selected.length === cases.length) {
+    await browser.send('Emulation.setDeviceMetricsOverride', {width: 960, height: 600, deviceScaleFactor: 1, mobile: false});
+    await browser.open(`${base}?t=14.97&clean&caption#parthenon`);
+    await browser.settle();
+    const card = await browser.run(`(() => { const r = document.querySelector('.story').getBoundingClientRect(); return {top: r.top, bottom: r.bottom, height: r.height, width: r.width}; })()`);
+    assert.ok(card.height <= 120, `caption: the phase title is ${Math.round(card.height)} px tall, a stretched panel and not a caption`);
+    assert.ok(card.bottom <= 600 - 8 && card.top >= 600 / 2, `caption: the title sits at the foot of the scene (${Math.round(card.top)}–${Math.round(card.bottom)} px of 600)`);
+    console.log(`caption: 960×600, title ${Math.round(card.width)}×${Math.round(card.height)} at ${Math.round(card.top)} px`);
+  }
 } finally { await browser.close(); await new Promise(done => server.close(done)); }

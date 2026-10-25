@@ -1,5 +1,5 @@
 import * as T from 'three';
-import {generators} from '../kit/builder.js';
+import {generators, gothic} from '../kit/builder.js';
 
 // ——— Norman Gothic (Normandy, 11th–14th centuries) ———
 // Bricks for the Norman Gothic cathedral and abbey church: a harmonic west front whose square towers turn
@@ -11,210 +11,10 @@ import {generators} from '../kit/builder.js';
 // Every brick uses the frame of the kit's Gothic bricks: u along the element's axis, v across it, y up, placed
 // by `center` [x, z] and `rot`; nothing in them is specific to one building, the numbers say which.
 
-// The kit's Gothic toolkit (kit/builder.js), which the kit does not export: walls in coursed ashlar with their
-// openings, arches, roses, gables, pinnacles, roofs laid in strips, balustrades, statues and columns.
-function gothicKit(k, e, P) {
-  const [cx, cz] = e.center ?? [0, 0], rot = e.rot ?? 0, co = Math.cos(rot), si = Math.sin(rot);
-  const stone = e.color ?? '#d6c8a8', lead = e.lead ?? '#8e979f', glass = e.glass ?? '#34404f', phase = P(e.phase);
-  const V = (u, y, v) => new T.Vector3(cx + u * co + v * si, y, cz - u * si + v * co);
-  const tint = (hex, j = .06) => k.tint(hex, j);
-  // A box at [u, v] and height y (its centre), its length along the frame direction [du, dv].
-  const box = (kind, [u, v], y, [l, h, t], [du, dv], color, ph = phase, extra = {}) => {
-    const p = V(u, y, v);
-    k.box(kind, [p.x, p.y, p.z], [l, h, t], rot + Math.atan2(-dv, du), color, ph, p.y, extra);
-  };
-  const beam = (kind, a, b, thick, color, ph = phase, extra = {}) => k.beam(kind, V(...a), V(...b), thick, color, ph, extra);
-  // Lifecycle of a part: built in its phase, gone at `until`, laid again at `rebuild`.
-  const life = (spec, fn) => {
-    fn(spec?.phase ? P(spec.phase) : phase, spec?.until ? {until: P(spec.until)} : {});
-    if (spec?.rebuild) fn(P(spec.rebuild), {});
-  };
-  // Half-width of an opening at height y, or -1 outside it.
-  // Pointed arches are equilateral unless `rise` (the apex's height above the springing) says otherwise.
-  const radiusOf = (w, rise) => rise ? (w * w / 4 + rise * rise) / w : w;
-  const span = (o, y) => {
-    if (o.kind === 'circle') { const q = o.r * o.r - (y - o.y) ** 2; return q > 0 ? Math.sqrt(q) : -1; }
-    if (y < o.sill) return -1;
-    if (y <= o.spring) return o.w / 2;
-    if (o.kind === 'rect') return -1;
-    if (o.kind === 'round') { const q = (o.w / 2) ** 2 - (y - o.spring) ** 2; return q > 0 ? Math.sqrt(q) : -1; }
-    const r = radiusOf(o.w, o.rise), q = r * r - (y - o.spring) ** 2; return q > 0 ? Math.sqrt(q) - (r - o.w / 2) : -1;
-  };
-  const top = o => o.kind === 'circle' ? o.y + o.r : o.kind === 'rect' ? o.spring : o.spring + (o.kind === 'round' ? o.w / 2 : o.rise ?? o.w * .866);
-
-  // An arch outline (pointed, round or flat) as a chain of stones, centred at s on a wall seen through F.
-  function arch(F, s, w, spring, off, thick, ph, extra, kind = 'pointed', segs = 4, rise) {
-    const pts = [];
-    if (kind === 'round') for (let i = 0; i <= 2 * segs; i++) { const a = Math.PI * (1 - i / (2 * segs)); pts.push([s + Math.cos(a) * w / 2, spring + Math.sin(a) * w / 2]); }
-    else if (kind === 'rect') pts.push([s - w / 2, spring], [s + w / 2, spring]);
-    else {
-      // Two arcs of radius r, each centred on the springing line on the far side, meeting at the apex.
-      const r = radiusOf(w, rise), end = Math.acos((w / 2 - r) / r);
-      for (let i = 0; i <= segs; i++) { const a = Math.PI - (Math.PI - end) * i / segs; pts.push([s - w / 2 + r + r * Math.cos(a), spring + r * Math.sin(a)]); }
-      for (let i = 1; i <= segs; i++) { const a = (Math.PI - end) * (1 - i / segs); pts.push([s + w / 2 - r + r * Math.cos(a), spring + r * Math.sin(a)]); }
-    }
-    for (let i = 0; i < pts.length - 1; i++) beam('stone', F(pts[i][0], pts[i][1], off), F(pts[i + 1][0], pts[i + 1][1], off), thick, tint(stone), ph, extra);
-  }
-  function ring(F, s, y, r, off, thick, n, ph, extra) {
-    for (let i = 0; i < n; i++) {
-      const a0 = i / n * Math.PI * 2, a1 = (i + 1) / n * Math.PI * 2;
-      beam('stone', F(s + Math.cos(a0) * r, y + Math.sin(a0) * r, off), F(s + Math.cos(a1) * r, y + Math.sin(a1) * r, off), thick, tint(stone), ph, extra);
-    }
-  }
-  // Glass and tracery of one opening. F(s, y, off) is a point on the wall, `off` towards the outside.
-  function opening(F, o, t, ph, extra) {
-    const W = o.kind === 'circle' ? 2 * o.r : o.w, y0 = o.kind === 'circle' ? o.y - o.r : o.sill, y1 = top(o), face = t / 2 + .08;
-    const [a, b] = [F(o.s - 1, 0, 0), F(o.s + 1, 0, 0)], dir = [(b[0] - a[0]) / 2, (b[2] - a[2]) / 2];
-    // An opening whose tracery is a photo relief (`photo`) keeps only its glass, set back in the wall: the
-    // photo covers it outside, and from inside the window is glazed, not open to the sky.
-    if (o.photo) {
-      const cols = Math.max(1, Math.round(W / 1.4)), rows = Math.max(1, Math.round((y1 - y0) / 1.4)), pw = W / cols, ph2 = (y1 - y0) / rows;
-      for (let i = 0; i < cols; i++) for (let j = 0; j < rows; j++) {
-        const p = F(o.s - W / 2 + (i + .5) * pw, 0, -t * .2);
-        box('glass', [p[0], p[2]], y0 + (j + .5) * ph2, [pw, ph2, .1], dir, tint(o.colors ? o.colors[Math.floor(k.rand() * o.colors.length)] : glass, .2), ph, extra);
-      }
-      return;
-    }
-    if (o.door) {
-      const p = F(o.s, 0, t / 2 - .4);
-      box('wood', [p[0], p[2]], (o.spring ?? 4) / 2, [W, o.spring ?? 4, .25], dir, tint(o.door, .05), ph, extra);
-    } else if (o.louvres) {
-      for (let y = y0 + .4; y < y1 - .3; y += .75) {
-        const hw = Math.max(.2, span(o, y + .1)), p = F(o.s, 0, 0);
-        box('wood', [p[0], p[2]], y, [2 * hw, .12, t * .5], dir, tint(o.louvres, .06), ph, extra);
-      }
-    } else if (o.glass !== false) {
-      const cols = Math.max(1, Math.round(W / 1.4)), rows = Math.max(1, Math.round((y1 - y0) / 1.9)), pw = W / cols, ph2 = (y1 - y0) / rows;
-      for (let i = 0; i < cols; i++) for (let j = 0; j < rows; j++) {
-        const p = F(o.s - W / 2 + (i + .5) * pw, 0, 0);
-        box('glass', [p[0], p[2]], y0 + (j + .5) * ph2, [pw, ph2, .1], dir, tint(o.colors ? o.colors[Math.floor(k.rand() * o.colors.length)] : glass, .2), ph, extra);
-      }
-    }
-    if (o.kind === 'circle') {
-      // A rose: frame on the face, two inner rings, spokes.
-      ring(F, o.s, o.y, o.r + .25, face, .7, 32, ph, extra);
-      ring(F, o.s, o.y, o.r * .66, 0, .32, 24, ph, extra);
-      ring(F, o.s, o.y, o.r * .3, 0, .3, 14, ph, extra);
-      const n = o.spokes ?? 16;
-      for (let i = 0; i < n; i++) {
-        const a = i / n * Math.PI * 2, c = Math.cos(a), s = Math.sin(a);
-        beam('stone', F(o.s + c * o.r * .3, o.y + s * o.r * .3, 0), F(o.s + c * o.r, o.y + s * o.r, 0), .26, tint(stone), ph, extra);
-        if (i % 2 === 0) beam('stone', F(o.s + c * o.r * .08, o.y + s * o.r * .08, 0), F(o.s + c * o.r * .3, o.y + s * o.r * .3, 0), .22, tint(stone), ph, extra);
-      }
-      return;
-    }
-    // The arch frame on the face, its jambs, and the tracery: a mullion, two lancets and an oculus.
-    arch(F, o.s, W + .35, o.spring, face, .45, ph, extra, o.kind);
-    if (o.spring - y0 > .1) for (const side of [-1, 1]) beam('stone', F(o.s + side * (W / 2 + .1), y0, face), F(o.s + side * (W / 2 + .1), o.spring, face), .4, tint(stone), ph, extra);
-    if (o.twin && W > 1.6) {
-      beam('stone', F(o.s, y0, 0), F(o.s, o.spring + W * .18, 0), .3, tint(stone), ph, extra);
-      for (const side of [-1, 1]) arch(F, o.s + side * W / 4, W / 2 - .12, o.spring, 0, .24, ph, extra, 'pointed', 3);
-      if (o.oculus !== false && o.kind !== 'rect') ring(F, o.s, o.spring + W * .5, W * .19, 0, .22, 10, ph, extra);
-    }
-  }
-  // Coursed ashlar from a to b ([u, v]) between y0 and y1, thickness t, `out` its outward normal ([u, v]),
-  // with its openings cut out. An opening without `s` is centred and narrowed to fit the wall.
-  function wall(a, b, y0, y1, t, out, openings = [], ph = phase, extra = {}, course = .8) {
-    const du = b[0] - a[0], dv = b[1] - a[1], len = Math.hypot(du, dv);
-    if (len < .3 || y1 - y0 < .2) return;
-    const dir = [du / len, dv / len], at = s => [a[0] + dir[0] * s, a[1] + dir[1] * s];
-    const F = (s, y, off) => [a[0] + dir[0] * s + out[0] * off, y, a[1] + dir[1] * s + out[1] * off];
-    const holes = openings.filter(Boolean).map(o => {
-      if (o.kind === 'circle') return {...o, s: o.s ?? len / 2};
-      const w = Math.min(o.width ?? o.w ?? 2, len - (o.margin ?? 1.4));
-      return w > .7 ? {...o, w, s: o.s ?? len / 2} : null;
-    }).filter(Boolean);
-    for (let y = y0, row = 0; y < y1 - .05; row++) {
-      const h = Math.min(course * (.85 + .3 * k.rand()), y1 - y), ym = y + h / 2;
-      let spans = [[0, len]];
-      for (const o of holes) {
-        const hw = span(o, ym);
-        if (hw > 0) spans = spans.flatMap(([p, q]) => [[p, Math.min(q, o.s - hw)], [Math.max(p, o.s + hw), q]]).filter(([p, q]) => q - p > .06);
-      }
-      for (const [p, q] of spans) for (let s = p - (row % 2) * .6; s < q - .05;) {
-        const l = 1.1 + .7 * k.rand(), from = Math.max(p, s), to = Math.min(q, s + l);
-        if (to - from > .06) box('stone', at((from + to) / 2), ym, [to - from - .03, h * .95, t], dir, tint(stone), ph, extra);
-        s += l;
-      }
-      y += h;
-    }
-    for (const o of holes) opening(F, o, t, ph, extra);
-  }
-  // A triangular gable on a wall line from a to b, base at y0, apex at y1, with an optional oculus.
-  function gable(a, b, y0, y1, t, out, ph = phase, extra = {}, oculus) {
-    const du = b[0] - a[0], dv = b[1] - a[1], len = Math.hypot(du, dv), dir = [du / len, dv / len];
-    const F = (s, y, off) => [a[0] + dir[0] * s + out[0] * off, y, a[1] + dir[1] * s + out[1] * off], H = y1 - y0;
-    for (let y = y0, row = 0; y < y1 - .3; row++) {
-      const h = Math.min(.8, y1 - y), hw = len / 2 * (1 - (y + h / 2 - y0) / H), c = len / 2;
-      let spans = [[c - hw, c + hw]];
-      if (oculus) { const q = oculus.r ** 2 - (y + h / 2 - oculus.y) ** 2; if (q > 0) { const w = Math.sqrt(q); spans = [[c - hw, c - w], [c + w, c + hw]].filter(([p, q2]) => q2 - p > .06); } }
-      for (const [p, q] of spans) for (let s = p - (row % 2) * .5; s < q - .05;) {
-        const l = 1.2 + .6 * k.rand(), from = Math.max(p, s), to = Math.min(q, s + l), m = F((from + to) / 2, 0, 0);
-        if (to - from > .06) box('stone', [m[0], m[2]], y + h / 2, [to - from - .03, h * .95, t], dir, tint(stone), ph, extra);
-        s += l;
-      }
-      y += h;
-    }
-    if (oculus) opening(F, {kind: 'circle', s: len / 2, y: oculus.y, r: oculus.r, spokes: 8}, t, ph, extra);
-    // Coping along the rakes, crockets, and a finial.
-    for (const side of [0, len]) {
-      beam('stone', F(side, y0, t / 2), F(len / 2, y1 + .3, t / 2), .55, tint(stone), ph, extra);
-      for (let f = .12; f < .95; f += .14) { const p = F(side + (len / 2 - side) * f, 0, t / 2 + .25); box('stone', [p[0], p[2]], y0 + H * f + .45, [.35, .45, .35], dir, tint(stone), ph, extra); }
-    }
-    const p = F(len / 2, 0, t / 2);
-    box('stone', [p[0], p[2]], y1 + 1, [.5, 1.6, .5], dir, tint(stone), ph, extra);
-    box('stone', [p[0], p[2]], y1 + 1.6, [1.2, .3, .3], dir, tint(stone), ph, extra);
-  }
-  // A pinnacle: a square shaft with a gablet on each face, an octagonal spire with crockets up its arrises and
-  // a finial, centred on [u, v].
-  function pinnacle(c, y0, h, w, ph = phase, extra = {}) {
-    const [x, , z] = V(c[0], 0, c[1]).toArray(), at = y => [x, y, z];
-    box('stone', c, y0 + h * .17, [w, h * .34, w], [1, 0], tint(stone), ph, extra);
-    k.turned('octagon', 'stone', at(y0 + h * .36), [w * 1.08, h * .04], rot, tint(stone), ph, y0, extra);
-    k.turned('spike', 'stone', at(y0 + h * .38 + h * .28), [w * .92, h * .56], rot, tint(stone), ph, y0 + h * .4, extra);
-    for (let i = 1; i < 4; i++) for (let j = 0; j < 4; j++) {
-      const f = i / 4, a = rot + (j + .5) * Math.PI / 2, r = w * .46 * (1 - f) + .06, y = y0 + h * (.38 + f * .56);
-      k.turned('ball', 'stone', [x + Math.cos(a) * r, y, z - Math.sin(a) * r], [Math.max(.14, w * .16), Math.max(.16, w * .2)], a, tint(stone), ph, y, extra);
-    }
-    k.turned('ball', 'stone', at(y0 + h * .97), [Math.max(.22, w * .28), Math.max(.3, h * .07)], rot, tint(stone), ph, y0 + h, extra);
-  }
-  // A strip roof over the quad: eave edge e0–e1 at ye up to the ridge edge r0–r1 at yr (r0 = r1 for a cone).
-  function panel(A, B, C, D, color, ph, extra, kind = 'lead', strip = 1.25, lift = .12) {
-    const ea = A.clone().lerp(B, .5), ra = C.clone().lerp(D, .5), slope = ea.distanceTo(ra), n = Math.max(1, Math.round(slope / strip));
-    for (let j = 0; j < n; j++) {
-      const t = (j + .5) / n, L = A.clone().lerp(C, t), R = B.clone().lerp(D, t), len = L.distanceTo(R);
-      if (len < .12) continue;
-      const tg = R.clone().sub(L).normalize(), sd = ra.clone().sub(ea).normalize(), nrm = new T.Vector3().crossVectors(sd, tg);
-      if (nrm.y < 0) { tg.negate(); nrm.crossVectors(sd, tg); }
-      nrm.normalize();
-      const z = new T.Vector3().crossVectors(tg, nrm).normalize();
-      k.oriented(kind, L.clone().lerp(R, .5).addScaledVector(nrm, lift), tg, nrm, z, [len * 1.02 + .1, .24, slope / n * 1.12], tint(color, .05), ph, L.y, extra);
-    }
-  }
-  const quad = (e0, e1, ye, r0, r1, yr, color, ph, extra, kind) => panel(V(e0[0], ye, e0[1]), V(e1[0], ye, e1[1]), V(r0[0], yr, r0[1]), V(r1[0], yr, r1[1]), color, ph, extra, kind);
-  // A stone balustrade along a line.
-  function rail(a, b, y, ph = phase, extra = {}) {
-    beam('stone', [a[0], y + 1, a[1]], [b[0], y + 1, b[1]], .26, tint(stone), ph, extra);
-    beam('stone', [a[0], y + .15, a[1]], [b[0], y + .15, b[1]], .3, tint(stone), ph, extra);
-    const len = Math.hypot(b[0] - a[0], b[1] - a[1]), n = Math.max(1, Math.round(len / 1.4));
-    for (let i = 0; i <= n; i++) { const f = i / n, u = a[0] + (b[0] - a[0]) * f, v = a[1] + (b[1] - a[1]) * f; box('stone', [u, v], y + .55, [.2, .8, .2], [b[0] - a[0], b[1] - a[1]], tint(stone), ph, extra); }
-  }
-  // A carved figure on a console, facing `out`: a robe falling in folds to the feet, shoulders and a head.
-  function statue([u, v], y, h, out, color, ph = phase, extra = {}) {
-    const dir = [-out[1], out[0]], yaw = rot + Math.atan2(-dir[1], dir[0]), c = () => tint(color, .08);
-    const at = (yy, f = 0) => V(u + out[0] * f, yy, v + out[1] * f).toArray();
-    k.turned('octagon', 'stone', at(y + .15), [h * .34, .3, h * .3], yaw, tint(stone), ph, y, extra);
-    k.turned('shaft', 'stone', at(y + .3 + h * .37), [h * .27, h * .74, h * .2], yaw, c(), ph, y + .3, extra);
-    k.turned('ball', 'stone', at(y + .3 + h * .72), [h * .3, h * .12, h * .2], yaw, c(), ph, y + .3, extra);
-    k.turned('ball', 'stone', at(y + .3 + h * .86, h * .02), [h * .12, h * .17, h * .13], yaw, c(), ph, y + .3, extra);
-  }
-  // A round column (or a colonnette) at [u, v] standing at y, `h` to the top of its capital (k.column).
-  function column([u, v], y, h, d, ph = phase, extra = {}, order = 'gothic', drum = 0, out = [-1, 0]) {
-    const p = V(u, y, v), o = V(out[0], 0, out[1]).sub(V(0, 0, 0));
-    k.column('stone', [p.x, y, p.z], {height: h, diameter: d, order, drum, taper: drum ? 0 : .04, out: [o.x, o.z]}, stone, ph, extra);
-  }
-  return {V, P, phase, stone, lead, glass, tint, box, beam, life, span, radiusOf, arch, ring, opening, wall, gable, pinnacle, panel, quad, rail, statue, column};
-}
+// The kit's Gothic toolkit (kit/builder.js): walls and gables (continuous surfaces cut by the true outline of
+// their openings, with `masonry: "mesh"`), arches, roses, pinnacles, roofs laid in strips, balustrades, statues and
+// columns.
+const gothicKit = gothic;
 
 // Rib vaults, as the kit's basilica lays them: webs ruled between their boundary arches and the diagonal ribs.
 function vaultKit(G) {
@@ -241,7 +41,7 @@ function vaultKit(G) {
       return pts[i - 1].map((v, c) => v + (pts[i][c] - v) * f);
     });
   };
-  const chain = (pts, thick, ph, extra) => { for (let i = 0; i < pts.length - 1; i++) G.beam('stone', pts[i], pts[i + 1], thick, G.tint(G.stone), ph, {...extra, order: 2e4 + pts[i][1]}); };
+  const chain = (pts, thick, ph, extra) => { if (G.mesh) return G.mesh.tube(pts, thick, ph, {...extra, orderBase: 2e4}); for (let i = 0; i < pts.length - 1; i++) G.beam('stone', pts[i], pts[i + 1], thick, G.tint(G.stone), ph, {...extra, order: 2e4 + pts[i][1]}); };
   const web = (A, B, C, ys, yc, yw, color, ph, extra = {}, archThick = .3) => {
     const len = Math.hypot(B[0] - A[0], B[1] - A[1]), arc = archPoints(A, B, ys, yw, Math.min(yc - .15, yw + len * .866));
     const F = resample(arc, 9), Gd = resample([...diagonal(A, C, ys, yc), ...diagonal(B, C, ys, yc).reverse().slice(1)], 9);
@@ -274,12 +74,15 @@ const polygon = (n, r, [u, v] = [0, 0], turn = 0) => Array.from({length: n}, (_,
 
 // A turned shaft laid course by course: an octagonal (or round) solid drum from y0 to y1 at [u, v].
 function shaft(G, k, [u, v], y0, y1, d, ph, extra = {}, shape = 'octagon', course = 1.1) {
+  if (G.mesh) return G.mesh.shaft([u, v], y0, y1, d, ph, extra, shape, course);
   const p = G.V(u, 0, v);
   for (let y = y0; y < y1 - .05;) { const h = Math.min(course, y1 - y); k.turned(shape, 'stone', [p.x, y + h / 2, p.z], [d, h * .97], 0, G.tint(G.stone), ph, y, extra); y += h; }
 }
 // A stone spirelet (an octagonal cone laid in courses) with a finial, from y0 to y1 at [u, v], `d` across.
 function spirelet(G, k, [u, v], y0, y1, d, ph, extra = {}) {
+  if (G.mesh) G.mesh.spirelet([u, v], y0, y1, d * .96, ph, extra);
   const p = G.V(u, 0, v), h = y1 - y0, n = Math.max(2, Math.round(h / 1.6));
+  if (G.mesh) { k.turned('ball', 'stone', [p.x, y1 + .15, p.z], [Math.max(.25, d * .22), Math.max(.3, d * .25)], 0, G.tint(G.stone), ph, y1, extra); return; }
   for (let i = 0; i < n; i++) {
     const f0 = i / n, f1 = (i + 1) / n, w0 = d * (1 - f0 * .92), w1 = d * (1 - f1 * .92), hh = h * (f1 - f0);
     k.turned(i === n - 1 ? 'spike' : 'octagon', 'stone', [p.x, y0 + h * f0 + hh / 2, p.z], [i === n - 1 ? w0 : (w0 + w1) / 2, hh * .98], 0, G.tint(G.stone), ph, y0 + h * f0, extra);
@@ -303,6 +106,42 @@ function fillette(G, k, c, y0, top, tip, r, ph, extra = {}) {
   }
   spirelet(G, k, c, top + .4, tip, 2 * r * .95, ph, extra);
 }
+// A turret of the Norman transept fronts, as the photograph of the south front shows it: a square pier that
+// batters up to a ledge, an octagonal drum ringed by slender colonnettes under a frieze of small round blind
+// arches, and an octagonal cone laid in scales, with a carved beast at four corners of the cornice. `c` [u, v] is its axis;
+// tw {width (the drum), ledge (the top of the pier), top (the drum's cornice), tip, pier (its width at the
+// ledge, default 1.1 times the drum)}.
+function normanTurret(G, k, c, tw, ph) {
+  const w = tw.width, ledge = tw.ledge ?? tw.top - 3, top = tw.top, pier = tw.pier ?? w, foot = pier + .5, tint = () => G.tint(G.stone);
+  const wide = y => foot - (foot - pier) * Math.min(1, y / ledge);
+  if (G.mesh) {
+    const ys = []; for (let y = 0; y < ledge - .05; y += 1.2) ys.push(y); ys.push(ledge);
+    G.mesh.loft(c, ys, y => wide(y) / 2 * Math.SQRT2, ph, {}, {sides: 4, turn: 0, course: .35, step: 1.2});
+    G.mesh.loft(c, [ledge, ledge + .3], y => (pier + .4 - (y - ledge) / .3 * .25) / 2 * Math.SQRT2, ph, {}, {sides: 4, turn: 0, course: .35, step: .3});
+  } else for (let y = 0; y < ledge - .05;) { const h = Math.min(1, ledge - y); G.box('stone', c, y + h / 2, [wide(y + h / 2), h * .96, wide(y + h / 2)], [1, 0], tint(), ph); y += h; }
+  const y0 = ledge + .3, y1 = top - .5, apothem = w / 2 * Math.cos(Math.PI / 8), face = Math.PI / 4;
+  shaft(G, k, c, y0, y1, w, ph);
+  shaft(G, k, c, y1 - .05, top, w * 1.08, ph);
+  // Colonnettes on every face and on every arris, the frieze of blind arches between them.
+  for (let i = 0; i < 16; i++) {
+    const a = i * face / 2, r = i % 2 ? w / 2 : apothem + .05, q = G.V(c[0] + Math.cos(a) * r, 0, c[1] + Math.sin(a) * r);
+    k.turned('drum', 'stone', [q.x, (y0 + y1 - .5) / 2, q.z], [.18, y1 - .5 - y0], 0, tint(), ph, y0);
+    k.turned('drum', 'stone', [q.x, y0 + .12, q.z], [.27, .24], 0, tint(), ph, y0);
+    k.turned('drum', 'stone', [q.x, y1 - .56, q.z], [.27, .2], 0, tint(), ph, y1 - .66);
+  }
+  if (G.mesh) for (let j = 0; j < 8; j++) {
+    const phi = j * face, n = [Math.cos(phi), Math.sin(phi)], tg = [-n[1], n[0]], F = (ss, y, off) => [c[0] + n[0] * (apothem + off) + tg[0] * ss, y, c[1] + n[1] * (apothem + off) + tg[1] * ss];
+    for (const ss of [-.24, .24]) G.arch(F, ss, .38, y1 - .78, .03, .1, ph, {}, 'round', 3);
+  }
+  k.turned('octagon', 'stone', G.V(c[0], top + .2, c[1]).toArray(), [w * 1.2, .4], 0, tint(), ph, top);
+  spirelet(G, k, c, top + .4, tw.tip, w * 1.15, ph);
+  // A beast at every other corner of the cornice, head up, as on the photograph.
+  for (let j = 0; j < 4; j++) {
+    const a = (j * 2 + .5) * face;
+    if (G.mesh) G.mesh.gargoyle([c[0] + Math.cos(a) * w * .5, c[1] + Math.sin(a) * w * .5], top + .62, a, ph, {}, {kind: 'beast', size: .6});
+    else G.beam('stone', [c[0] + Math.cos(a) * w * .5, top + .6, c[1] + Math.sin(a) * w * .5], [c[0] + Math.cos(a) * (w * .5 + .6), top + .5, c[1] + Math.sin(a) * (w * .5 + .6)], .2, tint(), ph);
+  }
+}
 
 export default {
   // A Gothic church body (the kit's `basilica`) under slate roofs, as in Normandy and Brittany: the same
@@ -325,7 +164,9 @@ export default {
   //   arch      'pointed' (default) or 'round' (Romanesque): the shape of the arcade and of the windows
   //   roof      {inner, top} for a lean-to rising to the line `inner` at height `top`; {ridge} for a gable or a
   //             half cone; color, phase, until, rebuild, overhang
-  //   vault     {spring, crown, inner}: rib vaults from the line `inner` (default: the axis) to the wall
+  //   vault     {spring, crown, inner, end, trim}: rib vaults from the line `inner` (default: the axis) to the wall; `end:
+  //             false` leaves out the arches at the two ends of a run that another wall closes, and `trim` [first, last]
+  //             draws the vault back from those ends by that many metres (the thickness of the wall that closes them)
   //   skip      bays (indices) with no wall (where a chapel or a crossing opens); `rail: false` drops the balustrade
   //   keepBelow, upper {until}, lower {until}: the wall above that height is taken down at `upper.until` (a
   //             Romanesque clerestory replaced when the building is recast), the rest at `lower.until`
@@ -342,6 +183,7 @@ export default {
           if (base) openings.push({kind, w: len - (base.columns ?? 1) * (base.twin ? .6 : .8), sill: 0, spring: base.spring, rise: base.rise, glass: false, margin: 0});
           if (upper && keep < e.wall) { G.wall(a, b, 0, keep, t, out, openings, G.phase, lower, e.course ?? .8); G.wall(a, b, keep, e.wall, t, out, openings, G.phase, upper, e.course ?? .8); }
           else G.wall(a, b, 0, e.wall, t, out, openings, G.phase, lower, e.course ?? .8);
+          if (G.mesh) G.mesh.string(a, b, e.wall - .55, t, out, G.phase, upper ?? lower);
           if (e.rail !== false) G.rail(at(s0, e.half + t / 2 - .2), at(s1, e.half + t / 2 - .2), e.wall, G.phase, upper ?? lower);
         }
         G.life(roof, (ph, extra) => {
@@ -355,7 +197,7 @@ export default {
           const v = e.vault, d1 = e.half - t / 2 - .05, sill = windows.find(w => w.sill > v.spring), yw = sill ? Math.max(v.spring, Math.min(sill.spring, v.crown - 1)) : v.spring, vc = v.color ?? G.stone;
           if (v.inner === undefined) {
             if (e.apse) { X.web(at(s0, d1), at(s1, d1), s0.A, v.spring, v.crown, yw, vc, G.phase, lower); X.chain(X.diagonal(at(s0, d1), s0.A, v.spring, v.crown), .42, G.phase, lower); }
-            else if (line === all[0]) { const u0 = s0.A[0], u1 = s1.A[0]; X.ribBay([[u0, -d1], [u1, -d1], [u1, d1], [u0, d1]], v.spring, v.crown, [yw, v.spring, yw, v.spring], vc, G.phase, lower, [.3, .5, .3, i === 0 ? .5 : 0]); }
+            else if (line === all[0]) { const dir = Math.sign(e.to - e.from) || 1, last = i === line.length - 2, u0 = s0.A[0] + (i === 0 ? (v.trim?.[0] ?? 0) * dir : 0), u1 = s1.A[0] - (last ? (v.trim?.[1] ?? 0) * dir : 0); X.ribBay([[u0, -d1], [u1, -d1], [u1, d1], [u0, d1]], v.spring, v.crown, [yw, v.spring, yw, v.spring], vc, G.phase, lower, [.3, i === line.length - 2 && v.end === false ? 0 : .5, .3, i === 0 && v.end !== false ? .5 : 0]); }
           } else X.ribBay([at(s0, v.inner), at(s1, v.inner), at(s1, d1), at(s0, d1)], v.spring, v.crown, [v.spring, v.spring, yw, v.spring], vc, G.phase, lower, [.3, .4, .3, i === 0 ? .4 : 0]);
         }
       }
@@ -382,23 +224,30 @@ export default {
   // (straight bays or an apse, as `chevetLevel`).
   //   pier     {from (its inner face, in the wall), to (its outer face), width, top, steps: [[height, set back], …]}
   //   pinnacle the pinnacle's height on the pier; `flyer` {to (the vessel's wall line), foot (its upper edge on
-  //            the pier), head (its upper edge on the wall), drop, thick, phase}; `skip` stations left out
+  //            the pier), head (its upper edge on the wall), drop, thick, phase}; `skip` stations left out;
+  //   `spouts` {drop, length}: a stone gutter out of each pier's outer face, `drop` under its top
   flyingButtresses(k, e, P) {
     const G = gothicKit(k, e, P), {pier, flyer} = e, w = pier.width ?? 1.6;
     for (const line of runLines(e)) for (const [i, s] of line.entries()) {
       if ((e.skip ?? []).includes(i) || (e.ends === false && (i === 0 || i === line.length - 1))) continue;
       const setAt = y => (pier.steps ?? []).filter(([yy]) => y > yy).reduce((m, [, d]) => Math.max(m, d), 0);
-      for (let y = 0; y < pier.top - .05;) {
+      if (G.mesh) {
+        // Each setback is one run of ashlar from the wall out to its face.
+        const marks = [0, ...(pier.steps ?? []).map(([yy]) => yy).filter(yy => yy > 0 && yy < pier.top), pier.top];
+        for (let q = 0; q < marks.length - 1; q++) G.mesh.pier(at, s, pier.from, pier.to - setAt((marks[q] + marks[q + 1]) / 2), w, marks[q], marks[q + 1], G.phase);
+      } else for (let y = 0; y < pier.top - .05;) {
         const h = Math.min(1.1, pier.top - y), d1 = pier.to - setAt(y + h / 2);
         G.box('stone', at(s, (pier.from + d1) / 2), y + h / 2, [d1 - pier.from, h * .96, w], s.n, G.tint(G.stone), G.phase);
         y += h;
       }
       const outer = pier.to - setAt(pier.top - .1);
       if (e.pinnacle) G.pinnacle(at(s, outer - w / 2), pier.top, e.pinnacle, w * .9, G.phase);
+      if (e.spouts && G.mesh) G.mesh.gargoyle(at(s, outer - .3), pier.top - (e.spouts.drop ?? 1), Math.atan2(s.n[1], s.n[0]), G.phase, {}, {kind: 'spout', length: e.spouts.length ?? 1.6});
       if (flyer) {
         const ph = flyer.phase ? P(flyer.phase) : G.phase, dA = Math.min(outer - w / 2, pier.from + 1), dB = flyer.to, m = 10, drop = flyer.drop ?? 3;
         const top = f => flyer.foot + (flyer.head - flyer.foot) * f + .3, low = f => flyer.foot - drop + (flyer.head - 1.6 - flyer.foot + drop) * Math.sin(f * Math.PI / 2);
-        for (let j = 0; j < m; j++) {
+        if (G.mesh) G.mesh.flyer(at, s, dA, dB, top, f => Math.min(low(f), top(f) - .6), flyer.thick ?? .8, ph);
+        else for (let j = 0; j < m; j++) {
           const f = (j + .5) / m, yt = top(f), yb = low(f);
           G.box('stone', at(s, dA + (dB - dA) * f), (yt + yb) / 2, [Math.abs(dB - dA) / m * 1.04, Math.max(.6, yt - yb), flyer.thick ?? .8], s.n, G.tint(G.stone), ph);
         }
@@ -458,7 +307,8 @@ export default {
         const y0 = regs[r] + (r === 0 && portal.length ? P0.spring + (P0.rise ?? 2) + 1.5 : .4), y1 = regs[r + 1], aw = inner / n, spring = y1 - aw * .9 - .4;
         if (spring - y0 < 1.5) continue;
         for (let j = 0; j <= n; j++) { const s = bw + aw * j, p0 = F(s, y0, t / 2 + .1), p1 = F(s, spring, t / 2 + .1); G.beam('stone', p0, p1, .22, G.tint(G.stone), ph(y0)); }
-        G.beam('stone', F(0, y1 + .1, t / 2 + .2), F(len, y1 + .1, t / 2 + .2), .35, G.tint(G.stone), ph(y1));
+        if (G.mesh) G.mesh.string(a, b, y1 - .1, t, o, ph(y1));
+        else G.beam('stone', F(0, y1 + .1, t / 2 + .2), F(len, y1 + .1, t / 2 + .2), .35, G.tint(G.stone), ph(y1));
       }
     }
     // Clasping buttresses at the corners, setting back as they rise, up to the foot of the belfry.
@@ -503,9 +353,17 @@ export default {
     for (let i = 0; i < 8; i++) { const a = ring8[(i + 7) % 8], b = ring8[i]; G.beam('stone', [a[0], B.top + .2, a[1]], [b[0], B.top + .2, b[1]], .5, G.tint(G.stone), ph(B.top)); }
     const sp = e.spire, y0 = B.top + .4, H = sp.top - y0, r0 = B.r - .25, rows = Math.max(8, Math.round(H / .85));
     const corner = (i, rr, y) => { const c = polygon(8, rr, ax)[i]; return G.V(c[0], y, c[1]); };
+    // A continuous spire, its faces covered in rows of scales; the phase follows the height (`bands`).
+    if (G.mesh) {
+      const edges = [y0, ...(e.bands ?? []).map(b => b.to).filter(y => y > y0 && y < sp.top), sp.top];
+      for (let b = 0; b < edges.length - 1; b++) {
+        const n = Math.max(1, Math.round((edges[b + 1] - edges[b]) / 2.4)), ys = Array.from({length: n + 1}, (_, q) => edges[b] + (edges[b + 1] - edges[b]) * q / n);
+        G.mesh.loft(ax, ys, y => (r0 * (1 - (y - y0) / H) + .12) / Math.cos(Math.PI / 8), ph(edges[b]), {}, {sides: 8, turn: 0, course: -.85, step: 2.4});
+      }
+    }
     for (let j = 0; j < rows; j++) {
       const ya = y0 + H * j / rows, yb = y0 + H * (j + 1) / rows, ra = r0 * (1 - j / rows) + .12, rb = r0 * (1 - (j + 1) / rows) + .12;
-      for (let i = 0; i < 8; i++) {
+      if (!G.mesh) for (let i = 0; i < 8; i++) {
         const A = corner((i + 7) % 8, ra, ya), Bq = corner(i, ra, ya), C = corner((i + 7) % 8, rb, yb), D = corner(i, rb, yb);
         // A course of scales: the face's strip split into tiles, every other course shifted by half a tile.
         const len = A.distanceTo(Bq), n = Math.max(1, Math.round(len / .9)), shift = j % 2 ? .5 : 0;
@@ -660,6 +518,14 @@ export default {
       const a = oct[(i + 7) % 8], b = oct[i], m = [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2], l = Math.hypot(...m), o = [m[0] / l, m[1] / l];
       const holes = [{kind: 'pointed', twin: true, oculus: false, w: lo.width, sill: lo.sill, spring: lo.spring, margin: .5}, {kind: 'pointed', twin: true, w: up.width, sill: up.sill, spring: up.spring, louvres: up.louvres ?? '#5a5650', margin: .5}];
       G.wall(a, b, e.square, O.top, 1.4, o, holes, ph(e.square));
+      // Engaged colonnettes either side of the openings, up the whole storey, as the photographs show.
+      if (G.mesh) {
+        const L = Math.hypot(b[0] - a[0], b[1] - a[1]), tan = [(b[0] - a[0]) / L, (b[1] - a[1]) / L], ys = []; for (let y = e.square; y < O.top - .1; y += 2.9) ys.push(y); ys.push(O.top);
+        for (const side of [-1, 1]) for (let q = 0; q < 3; q++) {
+          const off = side * (up.width / 2 + .32 + q * .3), c = [m[0] + o[0] * .75 + tan[0] * off, m[1] + o[1] * .75 + tan[1] * off];
+          G.mesh.loft(c, ys, () => .09, ph(e.square), {}, {sides: 8, smooth: true, step: 2.9});
+        }
+      }
       // Colonnettes running up the angles, and bands at the storeys.
       G.beam('stone', [b[0] * 1.03, e.square, b[1] * 1.03], [b[0] * 1.03, O.top, b[1] * 1.03], .45, G.tint(G.stone), ph(e.square));
       for (const y of [lo.sill - .3, up.sill - .5]) G.beam('stone', [a[0] * 1.04, y, a[1] * 1.04], [b[0] * 1.04, y, b[1] * 1.04], .35, G.tint(G.stone), ph(y));
@@ -703,11 +569,13 @@ export default {
 
   // The end of a Norman transept arm, facing -u from the front line (u = 0): tall lancets side by side (their
   // sill raised where an annex stands before them), a gable with blind lancets rising to its apex, and two
-  // turrets clad with shafts, crowned by stone cones.
-  //   width, thick, eave, apex, windows {count, width, sill, spring}, gable {count}, turrets {width, top, tip}
+  // turrets (a pier, a drum of colonnettes and blind arches, a scaled cone).
+  //   width, thick, eave, apex, windows {count, width, sill, spring}, gable {count},
+  //   turrets {width (the drum), ledge (the top of the pier), top (the drum's cornice), tip, pier, offset (of the axis beyond the front's end, in drum widths), depth (of the axis behind the front face)}
   transeptFront(k, e, P) {
     const G = gothicKit(k, e, P), hw = e.width / 2, t = e.thick ?? 1.8, out = [-1, 0], W = e.windows, n = W.count ?? 3, step = (2 * hw - 2) / n;
     G.wall([t / 2, -hw], [t / 2, hw], 0, e.eave, t, out, Array.from({length: n}, (_, i) => ({kind: 'pointed', s: 1 + step * (i + .5), w: W.width ?? step - 1, sill: W.sill, spring: W.spring + (i === (n - 1) / 2 ? W.middle ?? 0 : 0), twin: W.twin ?? false, margin: 0})), G.phase);
+    if (G.mesh) G.mesh.string([t / 2, -hw], [t / 2, hw], e.eave - .55, t, out, G.phase);
     G.rail([-.3, -hw], [-.3, hw], e.eave, G.phase);
     G.gable([t / 2, -hw], [t / 2, hw], e.eave, e.apex, t * .8, out, G.phase);
     // Blind lancets in the gable, stepping up towards the apex.
@@ -715,19 +583,13 @@ export default {
     for (let i = 0; i < g; i++) {
       const s = -hw + 1.5 + gw * (i + .5), top = e.apex - (e.apex - e.eave) * Math.abs(s) / hw - 1.6, spring = top - gw * .87;
       if (spring - e.eave < .8) continue;
-      const F = (ss, y, off) => [-.15, y, ss];
+      const F = (ss, y, off) => [-.15 - off, y, ss];
       G.beam('stone', F(s - gw / 2 + .1, e.eave + .6, 0), F(s - gw / 2 + .1, spring, 0), .24, G.tint(G.stone), G.phase);
       G.beam('stone', F(s + gw / 2 - .1, e.eave + .6, 0), F(s + gw / 2 - .1, spring, 0), .24, G.tint(G.stone), G.phase);
       G.arch(F, s, gw - .2, spring, 0, .24, G.phase, {}, 'pointed', 3);
     }
     const tw = e.turrets;
-    if (tw) for (const side of [-1, 1]) {
-      const c = [t / 2 - .2, side * (hw + tw.width * .3)];
-      shaft(G, k, c, 0, tw.top, tw.width, G.phase);
-      for (let i = 0; i < 8; i++) { const a = (i + .5) / 8 * Math.PI * 2, q = G.V(c[0] + Math.cos(a) * tw.width * .52, 0, c[1] + Math.sin(a) * tw.width * .52); k.turned('drum', 'stone', [q.x, tw.top * .6, q.z], [.22, tw.top * .78], 0, G.tint(G.stone), G.phase, tw.top * .2); }
-      k.turned('octagon', 'stone', G.V(c[0], tw.top + .2, c[1]).toArray(), [tw.width * 1.2, .4], 0, G.tint(G.stone), G.phase, tw.top);
-      spirelet(G, k, c, tw.top + .4, tw.tip, tw.width * .95, G.phase);
-    }
+    if (tw) for (const side of [-1, 1]) normanTurret(G, k, [tw.depth ?? 1.1, side * (hw + tw.width * (tw.offset ?? .3))], tw, G.phase);
   },
 
   // A square Norman turret with a stone cone: a shaft laid course by course with a blind arcade on each face and
@@ -752,10 +614,10 @@ export default {
   porch(k, e, P) {
     const G = gothicKit(k, e, P), hw = e.width / 2, d = e.depth, o = e.opening, t = e.thick ?? 1, out = [-1, 0];
     G.wall([t / 2, -hw], [t / 2, hw], 0, e.eave, t, out, [{kind: 'pointed', w: o.w, sill: 0, spring: o.spring, rise: o.rise, glass: false, margin: 0}], G.phase);
-    for (let i = 1; i < 4; i++) G.arch((s, y, off) => [i * .18 - .25, y, s], 0, o.w + i * .5, o.spring, 0, .36, G.phase, {}, 'pointed', 5, o.rise ? o.rise + i * .25 : undefined);
+    for (let i = 1; i < 4; i++) G.arch((s, y, off) => [i * .18 - .25 - off, y, s], 0, o.w + i * .5, o.spring, 0, .36, G.phase, {}, 'pointed', 5, o.rise ? o.rise + i * .25 : undefined);
     for (const side of [-1, 1]) {
       G.wall([0, side * hw], [d, side * hw], 0, e.eave, t, [0, side], Array.from({length: e.bays ?? 1}, (_, i) => ({kind: 'pointed', s: d / (e.bays ?? 1) * (i + .5), w: d / (e.bays ?? 1) - 1.4, sill: 1, spring: o.spring * .75, glass: false, margin: 0})), G.phase);
-      if (e.niches) { const v = side * (o.w / 2 + (hw - o.w / 2) / 2); G.arch((s, y, off) => [-.1, y, s], v, Math.min(1.2, hw - o.w / 2 - .4), o.spring * .8, 0, .2, G.phase, {}, 'pointed', 3); }
+      if (e.niches) { const v = side * (o.w / 2 + (hw - o.w / 2) / 2); G.arch((s, y, off) => [-.1 - off, y, s], v, Math.min(1.2, hw - o.w / 2 - .4), o.spring * .8, 0, .2, G.phase, {}, 'pointed', 3); }
     }
     if (e.gallery !== false) G.rail([-.4, -hw], [-.4, hw], o.spring + (o.rise ?? o.w * .87) + .4, G.phase);
     if (e.roof !== false) {
@@ -772,9 +634,17 @@ export default {
   },
 
   // Free-standing pinnacles on buttresses or parapets: `at` [[u, v, foot, height, width], …].
+  //   spouts {out, length, drop, size}: a gutter-gargoyle under each pinnacle, `drop` below its foot, rooted `out` from its axis
+  //   and running `length` outwards (a stone gutter hollowed on top, as photographed under the parapets of the chapels)
   pinnacles(k, e, P) {
-    const G = gothicKit(k, e, P);
-    for (const [u, v, y0, h, w] of e.at ?? []) G.pinnacle([u, v], y0, h, w, G.phase);
+    const G = gothicKit(k, e, P), sp = e.spouts;
+    for (const [u, v, y0, h, w] of e.at ?? []) {
+      G.pinnacle([u, v], y0, h, w, G.phase);
+      if (sp && G.mesh) {
+        const side = v >= 0 ? 1 : -1;
+        G.mesh.gargoyle([u, v + side * (sp.out ?? .75)], y0 - (sp.drop ?? .6), side * Math.PI / 2, G.phase, {}, {kind: 'spout', length: sp.length ?? 1.4, size: sp.size ?? 1});
+      }
+    }
   },
 
   // A Romanesque tower in stages, square then octagonal, each stage lit by round-headed openings, under a low

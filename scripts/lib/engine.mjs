@@ -9,7 +9,7 @@ const kit = fileURLToPath(new URL('../../kit/', import.meta.url));
 
 export async function loadEngine(bricksFile) {
   const temp = await mkdtemp(join(tmpdir(), 'monument-engine-'));
-  const three = pathToFileURL(join(kit, 'vendor', 'three', 'three.module.js')).href, builder = join(temp, 'builder.mjs'), visuals = join(temp, 'visuals.mjs'), geometry = join(temp, 'geometry.mjs');
+  const three = pathToFileURL(join(kit, 'vendor', 'three', 'three.module.js')).href, builder = join(temp, 'builder.mjs'), visuals = join(temp, 'visuals.mjs'), geometry = join(temp, 'geometry.mjs'), masonry = join(temp, 'masonry.mjs');
   // 'three' and 'three/addons/…' both have to point at the vendored files: the browser resolves them through
   // an import map, Node does not, and an import quietly dropped here leaves the shape it serves undefined —
   // which is how a chamfered box could pass every test while throwing the moment anything built it.
@@ -28,7 +28,8 @@ export async function loadEngine(bricksFile) {
   const visualSource = resolveImports(await readFile(join(kit, 'visuals.js'), 'utf8')).replaceAll("from 'three'", `from '${three}'`);
   await writeFile(visuals, visualSource);
   await writeFile(geometry, resolveImports(await readFile(join(kit, 'geometry.js'), 'utf8')).replaceAll("from 'three'", `from '${three}'`));
-  const source = resolveImports(await readFile(join(kit, 'builder.js'), 'utf8')).replaceAll("from 'three'", `from '${three}'`).replace("from './visuals.js'", `from '${pathToFileURL(visuals).href}'`).replaceAll("from './geometry.js'", `from '${pathToFileURL(geometry).href}'`);
+  await writeFile(masonry, (await readFile(join(kit, 'masonry.js'), 'utf8')).replaceAll("from 'three'", `from '${three}'`));
+  const source = resolveImports(await readFile(join(kit, 'builder.js'), 'utf8')).replaceAll("from 'three'", `from '${three}'`).replace("from './visuals.js'", `from '${pathToFileURL(visuals).href}'`).replaceAll("from './geometry.js'", `from '${pathToFileURL(geometry).href}'`).replaceAll("from './masonry.js'", `from '${pathToFileURL(masonry).href}'`);
   await writeFile(builder, source);
   const engine = await import(pathToFileURL(builder).href);
   if (bricksFile) {

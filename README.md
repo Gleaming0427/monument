@@ -133,7 +133,7 @@ measurements, sources and the order of the phases are the same file whichever la
 `node scripts/monument-i18n.mjs check [<language>]` says what is missing and refuses a translation that drops or
 invents a figure. `node scripts/i18n.test.mjs` holds both to that.
 
-`node scripts/validate.mjs` checks every monument and that every brick is documented.
+`node scripts/validate.mjs` checks every monument and that every brick is documented. `node scripts/align-scan.mjs` aligns a captured scan (photogrammetry, laser, gaussian splats) to a monument and reports, element by element, how far the model stands from it; the viewer's **Captured** button then shows the building as it was captured ([references/capture.md](references/capture.md)). Gothic monuments can ask for `"masonry": "mesh"`: walls, arches, mouldings, tracery, roofs, balustrades and spires are then real continuous surfaces cut by the true outline of their openings, with joints drawn at the size of the photographed courses, not heaps of blocks ([references/geometry.md](references/geometry.md#continuous-masonry)). `node scripts/chronology.mjs` holds each film to its own story: phases in date order, moments in the order the film reaches them, every card pinned on masonry that stands when it shows.
 
 ## Limits
 

@@ -23,10 +23,18 @@ jobs:
         run: node scripts/site.test.mjs
       - name: Check the buildings against their sources
         run: node scripts/check.mjs
+      - name: Check the order of the works against the story
+        run: node scripts/chronology.mjs && node scripts/chronology.test.mjs
       - name: Build the site
         run: node scripts/build-site.mjs
       - name: Check golden monument geometry
         run: node scripts/measure.mjs --label golden-geometry-ci --out .artifacts/metrics.jsonl -- node scripts/golden.test.mjs
+      - name: Check scan alignment and the scan field
+        run: node scripts/scan.test.mjs
+      - name: Check the captured layer in a browser
+        run: node scripts/capture-layer.test.mjs
+      - name: Check continuous masonry, in geometry and in a browser
+        run: node scripts/masonry.test.mjs
       - name: Check phone, tablet and desktop layouts
         run: node scripts/measure.mjs --label responsive-ci --out .artifacts/metrics.jsonl -- node scripts/responsive.test.mjs
       - name: Keep P0 measurements and responsive captures

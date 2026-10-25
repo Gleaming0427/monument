@@ -6,6 +6,7 @@ for(const key of ["embed","clean","caption"])if(new URLSearchParams(location.sea
  <a href="../" class="brand">Monument</a>
  <div class="building"><b id="name"></b><span id="place"></span></div>
  <button id="section-toggle" class="chip" aria-pressed="false" title="Cut the monument open on the side facing you, to see inside" data-i18n-title="viewer.sectionTitle" data-i18n="viewer.section">Section</button>
+ <button id="capture-toggle" class="chip" aria-pressed="false" hidden title="Show the building as it was captured, instead of the model" data-i18n-title="viewer.capturedTitle" data-i18n="viewer.captured">Captured</button>
  <button id="proof-toggle" class="chip" aria-pressed="false" title="Where every piece comes from" data-i18n-title="viewer.evidenceTitle" data-i18n="viewer.evidence">Evidence</button>
 </header>
 <aside id="proof" hidden aria-label="Evidence" data-i18n-aria-label="viewer.evidence"></aside>

@@ -10,7 +10,9 @@ import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
 import {clone as cloneSkinned} from 'three/addons/utils/SkeletonUtils.js';
 import {resolveVisualStyle, pbrOptions} from './visuals.js';
 import {adaptive, adaptiveContext, profiledGeometry, segmentsForChordError} from './geometry.js';
+import {masonry} from './masonry.js';
 export {CURVE_QUALITY, chordError, segmentsForChordError, profileAt, sampleProfile, profiledGeometry, adaptiveContext} from './geometry.js';
+export {Soup, Layers, moulding, stack, outline, sweep, plate, foil, frameOf, radiusOf as archRadius} from './masonry.js';
 
 // Construction engine: a monument file (phases + elements) becomes thousands of instanced pieces.
 // Each piece is born (and sometimes removed) on the timeline; the shader drops it into place and
@@ -36,6 +38,82 @@ const KINDS = {
   gilt: {roughness: .44, metalness: .5},
   bark: {roughness: .95, metalness: 0},
 };
+
+// The joints of a wall of patches, drawn by its material. `vMason` is [s along the wall, height, course height]: the
+// coursing is a grid of beds every `course` metres and heads staggered from course to course, blocks 0.5–1.2 m long
+// whose joints wander by a few centimetres; each block takes its own tone, as the stone of a real wall does. A joint
+// is 1.4 cm wide and its contrast fades out where a pixel covers more than that, so that it never aliases.
+const MASON_PARS = `
+  varying vec3 vMason;
+  float mh11(float p){p=fract(p*.1031);p*=p+33.33;p*=p+p;return fract(p);}
+  float mh21(vec2 p){vec3 q=fract(vec3(p.xyx)*.1031);q+=dot(q,q.yzx+33.33);return fract((q.x+q.y)*q.z);}
+  // Weathering: value noise at three sizes, from a stone to a stretch of wall, so that a face is never one flat colour.
+  float mnoise(vec2 p){vec2 i=floor(p),f=fract(p);f=f*f*(3.-2.*f);return mix(mix(mh21(i),mh21(i+vec2(1.,0.)),f.x),mix(mh21(i+vec2(0.,1.)),mh21(i+vec2(1.,1.)),f.x),f.y);}
+  float weathering(vec2 p){return .5*mnoise(p/.8)+.3*mnoise(p/2.7+7.3)+.2*mnoise(p/10.+3.1);}
+  // Rows of slates or scales: x the shade across a course (dark under the overlap, lighter up it), y 1 on a joint, z a tone.
+  vec3 slates(vec3 m){
+    float c=abs(m.z),v=m.y/c,row=floor(v),fy=v-row,w=c*1.1;
+    float x=m.x/w+.5*mod(row,2.)+mh11(row*3.1)*5.,k=floor(x),fx=x-k;
+    float fp=max(max(fwidth(m.x),fwidth(m.y)),1e-4);
+    return vec3(.55+.45*smoothstep(0.,.3,fy),(1.-smoothstep(.004,.004+fp,min(fx,1.-fx)*w))*clamp(.008/fp,0.,1.),mh21(vec2(k,row)));
+  }
+  vec3 masonBump(vec3 pos,vec3 n,vec2 dH){
+    vec3 sx=dFdx(pos),sy=dFdy(pos),R1=cross(sy,n),R2=cross(n,sx);
+    float det=dot(sx,R1);
+    return normalize(abs(det)*n-sign(det)*(dH.x*R1+dH.y*R2));
+  }`;
+const SLATE_BODY = `
+    vec3 sl=slates(vMason);
+    float sq=clamp(.1/max(max(fwidth(vMason.x),fwidth(vMason.y)),1e-4),0.,1.);
+    diffuseColor.rgb*=mix(.78,sl.x,sq)*(1.-.4*sl.y*sq)*(.86+.28*sl.z)*(.9+.2*weathering(vMason.xy*.6));`;
+const SLATE_COLOR = `
+  float mH=0.;
+  if(vMason.z>0.){${SLATE_BODY}
+  }`;
+const MASON_COLOR = `
+  float mH=0.;
+  if(vMason.z<0.){${SLATE_BODY}
+  }
+  else if(vMason.z>0.){
+    float c=vMason.z,by=vMason.y/c,ky=floor(by);
+    // Beds: the joints between courses wander a few centimetres, so courses are not all one height.
+    float b0=ky-1.+.5*(mh21(vec2(ky-1.,3.7))-.5),b1=ky+.5*(mh21(vec2(ky,3.7))-.5),b2=ky+1.+.5*(mh21(vec2(ky+1.,3.7))-.5),b3=ky+2.+.5*(mh21(vec2(ky+2.,3.7))-.5);
+    bool uy=by>=b2,my=by>=b1;
+    float row=uy?ky+1.:(my?ky:ky-1.),bl=uy?b2:(my?b1:b0),bu=uy?b3:(my?b2:b1);
+    float L=c*(1.9+2.4*mh11(row*1.37));
+    float x=vMason.x/L+mh11(row*5.17)*7.,k=floor(x);
+    float e0=k-1.+.62*(mh21(vec2(k-1.,row))-.5),e1=k+.62*(mh21(vec2(k,row))-.5),e2=k+1.+.62*(mh21(vec2(k+1.,row))-.5),e3=k+2.+.62*(mh21(vec2(k+2.,row))-.5);
+    bool hi=x>=e2,mi=x>=e1;
+    float id=hi?k+1.:(mi?k:k-1.),lft=hi?e2:(mi?e1:e0),rgt=hi?e3:(mi?e2:e1);
+    float d=min(min(x-lft,rgt-x)*L,min(by-bl,bu-by)*c);
+    float fp=max(max(fwidth(vMason.x),fwidth(vMason.y)),1e-4);
+    float j=(1.-smoothstep(.008,.008+fp,d))*clamp(.016/fp,0.,1.);
+    float t1=mh21(vec2(id,row+17.)),t2=mh21(vec2(id+3.1,row+41.)),t3=mh21(vec2(floor(vMason.x*.9),floor(vMason.y*.9))),spot=mh21(vec2(id*1.7,row+91.));
+    // A wall is never one tone: a few blocks darker (a harder bed, a stain), a few paler, a tone each, a slow weathering.
+    float wx=weathering(vMason.xy),dirt=smoothstep(.55,.9,weathering(vMason.xy*vec2(.5,.18)+11.)),odd=spot<.09?-.26:spot>.93?.16:0.;
+    float luma=dot(diffuseColor.rgb,vec3(.299,.587,.114));
+    diffuseColor.rgb=mix(vec3(luma),diffuseColor.rgb,.8)*.9;
+    diffuseColor.rgb*=(1.+.28*(t1-.5)+.05*(t3-.5)+odd)*vec3(1.+.07*(t2-.5),1.,1.-.09*(t2-.5))*(.88+.24*wx)*(1.-.24*dirt);
+    // The mortar: paler than the stone, and in the shade of the bed above it.
+    diffuseColor.rgb=mix(diffuseColor.rgb*(1.-.18*j),vec3(luma*.92,luma*.9,luma*.84),j*.4);
+    mH=-j*.005;
+  }`;
+// Leaded glass: panes between lead cames 1.2 cm wide, an iron bar every third row, each pane a little lighter or
+// darker, bluer or greyer than the next: `vMason.z` is the pane's height in metres (its width is 0.72 of it).
+const GLASS_COLOR = `
+  if(vMason.z>0.){
+    float ph=vMason.z,pw=ph*.72;
+    vec2 cell=vec2(vMason.x/pw,vMason.y/ph),id=floor(cell),f=fract(cell);
+    float fp=max(max(fwidth(vMason.x),fwidth(vMason.y)),1e-4);
+    float edge=min(min(f.x*pw,(1.-f.x)*pw),min(f.y*ph,(1.-f.y)*ph));
+    float lead=(1.-smoothstep(.008,.008+fp,edge))*clamp(.016/fp,0.,1.);
+    float bar=mod(id.y,4.)<.5?(1.-smoothstep(.012,.012+fp,abs(f.y*ph-.02)))*clamp(.024/fp,0.,1.):0.;
+    float tone=mh21(id);
+    diffuseColor.rgb*=(.93+.14*tone)*vec3(.97+.06*mh21(id+1.7),.98+.04*mh21(id+3.3),1.);
+    diffuseColor.rgb=mix(diffuseColor.rgb,vec3(.2,.21,.23),max(lead,bar)*.92);
+  }`;
+const MASON_NORMAL = `
+  if(vMason.z>0.)normal=masonBump(-vViewPosition,normal,vec2(dFdx(mH),dFdy(mH)));`;
 
 function random(seed) {
   return () => { seed |= 0; seed = seed + 0x6D2B79F5 | 0; let t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; };
@@ -68,6 +146,11 @@ function kit(rand) {
     oriented(kind, pos, x, y, z, size, color, phase, order = pos.y, extra = {}) {
       m.makeBasis(x, y, z).scale(s.set(...size)).setPosition(pos);
       add(kind, color, phase, order, pos.y, extra);
+    },
+    // A patch of real surface (kit/masonry.js): a bounding box for a matrix, its triangles in that box.
+    patch(kind, soup, color, phase, extra = {}) {
+      const made = soup.toPiece();
+      if (made) pieces.push({kind, matrix: made.matrix, color, phase, order: (extra.orderBase ?? 0) + made.centerY, top: made.top, mesh: made.mesh, ...extra});
     },
     // A turned piece in the box's unit: `size` is [diameter, height, diameter] (an oval when the two differ).
     // Shapes (SHAPES below): drum, shaft (a monolith tapering by an eighth), flare (wider at the top: an
@@ -382,8 +465,17 @@ function gothic(k, e, P) {
     const p = V(u, y, v), o = V(out[0], 0, out[1]).sub(V(0, 0, 0));
     k.column('stone', [p.x, y, p.z], {height: h, diameter: d, order, drum, taper: drum ? 0 : .04, out: [o.x, o.z]}, stone, ph, extra);
   }
-  return {V, P, phase, stone, lead, glass, tint, box, beam, life, span, radiusOf, arch, ring, opening, wall, gable, pinnacle, panel, quad, rail, statue, column};
+  const toolkit = {V, P, phase, stone, lead, glass, tint, box, beam, life, span, top, radiusOf, arch, ring, opening, wall, gable, pinnacle, panel, quad, rail, statue, column};
+  // A monument that asks for `masonry: "mesh"` gets its walls and gables as continuous surfaces cut by the true
+  // outline of their openings (kit/masonry.js), not as courses of boxes. The toolkit is the same either way.
+  if (k.masonry === 'mesh') {
+    const frame = {point: ([u, y, v]) => V(u, y, v).toArray(), vector: ([a, y, b]) => [a * co + b * si, y, -a * si + b * co]};
+    const M = masonry({k, frame, rand: k.rand, tol: k.tolerance, tint, stone, glass, phase, V, rot, span, top, box, opening: (...args) => toolkit.opening(...args), jointCourse: e.jointCourse});
+    Object.assign(toolkit, {wall: M.wall, gable: M.gable, arch: M.arch, ring: M.ring, opening: M.opening, panel: M.panel, quad: M.quad, rail: M.rail, pinnacle: M.pinnacle, mesh: M});
+  }
+  return toolkit;
 }
+export {gothic};
 
 // ——— Generators (bricks) ———
 export const generators = {
@@ -1400,7 +1492,7 @@ export const generators = {
         return pts[i - 1].map((v, c) => v + (pts[i][c] - v) * f);
       });
     };
-    const chain = (pts, thick, ph, extra) => { for (let i = 0; i < pts.length - 1; i++) G.beam('stone', pts[i], pts[i + 1], thick, G.tint(G.stone), ph, {...extra, order: 2e4 + pts[i][1]}); };
+    const chain = (pts, thick, ph, extra) => { if (G.mesh) return G.mesh.tube(pts, thick, ph, {...extra, orderBase: 2e4}); for (let i = 0; i < pts.length - 1; i++) G.beam('stone', pts[i], pts[i + 1], thick, G.tint(G.stone), ph, {...extra, order: 2e4 + pts[i][1]}); };
     // One web: the arch from corner A to corner B and the diagonals from both to the keystone C ([u, v]).
     const web = (A, B, C, ys, yc, yw, color, ph, extra = {}, archThick = .3) => {
       const len = Math.hypot(B[0] - A[0], B[1] - A[1]), arc = archPoints(A, B, ys, yw, Math.min(yc - .15, yw + len * .866));
@@ -1439,6 +1531,7 @@ export const generators = {
           if (arcade) windows.push({kind: 'pointed', w: len - (e.piers ?? 1.3) * .7, sill: from, spring: from, glass: false, margin: 0});
           if (arcade && vessel.tribune && len > (vessel.tribune.width ?? 3) + 1) windows.push({kind: 'pointed', twin: true, oculus: false, glass: false, ...vessel.tribune});
           G.wall(at(a0, vessel.half), at(a1, vessel.half), from, vessel.eave, vessel.thick ?? 1.2, out, windows, G.phase);
+          if (G.mesh) G.mesh.string(at(a0, vessel.half), at(a1, vessel.half), vessel.eave - .55, vessel.thick ?? 1.2, out, G.phase);
           G.rail(at(a0, eaveOut - .2), at(a1, eaveOut - .2), vessel.eave, G.phase);
         }
         if (vault && !ribbed) {
@@ -1468,9 +1561,11 @@ export const generators = {
           // The aisle wall and its roof, replaced when chapels are built out between the buttresses.
           const gone = chapels?.phase ? {until: chapelPhase} : {};
           G.wall(at(s0, aisles.half), at(s1, aisles.half), 0, aisles.wall, 1.1, out, aisles.windows ? [{kind: 'pointed', ...aisles.windows}] : [], G.phase, gone);
+          if (G.mesh) G.mesh.string(at(s0, aisles.half), at(s1, aisles.half), aisles.wall - .5, 1.1, out, G.phase, gone);
           G.quad(at(s0, aisles.half + .4), at(s1, aisles.half + .4), aisles.wall + .2, at(s0, vessel.half + .7), at(s1, vessel.half + .7), aisles.top, G.lead, G.phase, gone);
           if (chapels) {
             G.wall(at(s0, chapels.half), at(s1, chapels.half), 0, chapels.wall, 1.1, out, chapels.windows ? [{kind: 'pointed', twin: true, ...chapels.windows}] : [], chapelPhase);
+            if (G.mesh) G.mesh.string(at(s0, chapels.half), at(s1, chapels.half), chapels.wall - .5, 1.1, out, chapelPhase);
             G.quad(at(s0, chapels.half + .4), at(s1, chapels.half + .4), chapels.wall + .2, at(s0, vessel.half + .7), at(s1, vessel.half + .7), aisles.top, G.lead, chapelPhase);
             if (chapels.gables) {
               const len = Math.hypot(at(s1, chapels.half)[0] - at(s0, chapels.half)[0], at(s1, chapels.half)[1] - at(s0, chapels.half)[1]), inset = Math.max(.6, (len - chapels.gables.width) / 2), d = chapels.half + .3;
@@ -1519,16 +1614,20 @@ export const generators = {
       if (butt) for (const [i, s] of line.entries()) {
         if (butt.ends === false && (i === 0 || i === line.length - 1)) continue;
         const d0 = aisles?.half ?? vessel.half, d1 = butt.half, w = butt.width ?? 1.6, step = butt.step ?? 1.6, low = chapels?.wall ?? aisles?.wall ?? 8;
-        for (let y = 0; y < butt.top - .05;) {
+        if (G.mesh) G.mesh.pier(at, s, d0, d1, w, 0, butt.top, G.phase, {}, {low, step});
+        else for (let y = 0; y < butt.top - .05;) {
           const h = Math.min(1.1, butt.top - y), c = d1 - (y + h / 2 > low ? step : 0);
           G.box('stone', at(s, (d0 + c) / 2), y + h / 2, [c - d0, h * .96, w], s.n, G.tint(G.stone), G.phase);
           y += h;
         }
         if (butt.pinnacle) G.pinnacle(at(s, d1 - step - w / 2), butt.top, butt.pinnacle, w * .9, G.phase);
+        // A stone gutter out of the upper face of the pier, under the pinnacle, to throw the water of the flyer clear of the aisle roofs.
+        if (butt.spouts && G.mesh) G.mesh.gargoyle(at(s, d1 - step - .3), butt.top - (butt.spouts.drop ?? 1.2), Math.atan2(s.n[1], s.n[0]), G.phase, {}, {kind: 'spout', length: butt.spouts.length ?? 1.6});
         if (flyers && aisles) {
           const ph = flyers.phase ? P(flyers.phase) : G.phase, dA = d0 + .5, dB = vessel.half + .6, m = 9, drop = flyers.drop ?? 4.5;
           const top = t => flyers.from + (flyers.to - flyers.from) * t + .4, low2 = t => flyers.from - drop + (flyers.to - 1.8 - flyers.from + drop) * Math.sin(t * Math.PI / 2);
-          for (let j = 0; j < m; j++) {
+          if (G.mesh) G.mesh.flyer(at, s, dA, dB, top, t => Math.min(low2(t), top(t) - .7), flyers.thick ?? .9, ph);
+          else for (let j = 0; j < m; j++) {
             const t = (j + .5) / m, yt = top(t), yb = low2(t);
             G.box('stone', at(s, dA + (dB - dA) * t), (yt + yb) / 2, [Math.abs(dB - dA) / m * 1.04, Math.max(.7, yt - yb), flyers.thick ?? .9], s.n, G.tint(G.stone), ph);
           }
@@ -1808,6 +1907,21 @@ export const generators = {
 
 };
 
+// The order of the works. Within each phase, pieces are laid from the bottom up (by `order`, the height by
+// default), evenly from 3 % to 89 % of the phase; what a phase takes down goes between 10 % and 60 % of the
+// phase that removes it. Kept in one place so that scripts/chronology.mjs holds the film to the rule the
+// viewer plays, not to a copy of it.
+export const DEATH = {from: .1, span: .5};
+export function layPieces(pieces, phases) {
+  const byPhase = Array.from({length: phases}, () => []);
+  pieces.forEach(piece => byPhase[piece.phase].push(piece));
+  byPhase.forEach((list, phase) => {
+    list.sort((a, b) => a.order - b.order);
+    list.forEach((piece, rank) => { piece.birth = phase + .03 + .86 * rank / Math.max(1, list.length); });
+  });
+  return byPhase;
+}
+
 // ——— Scene ———
 // Builds every piece of a monument (with its phase, removal and lean) without any scene, so that scripts
 // can measure the model too: scripts/plan.mjs compares its footprint with the measured outline.
@@ -1815,6 +1929,9 @@ export function buildPieces(data) {
   const index = Object.fromEntries(data.phases.map((p, i) => [p.id, i]));
   const P = id => { if (!(id in index)) throw new Error(`Unknown phase: ${id}`); return index[id]; };
   const k = kit(random(data.seed ?? 7));
+  k.masonry = data.masonry ?? 'blocks';
+  // Chord error of the curves of continuous masonry, in metres: what the monument's visual quality asks of its meshes.
+  k.tolerance = {basic: .01, standard: .005, cinematic: .0025}[data.visualStyle?.quality] ?? .005;
   for (const [elementIndex, element] of data.elements.entries()) {
     const before = k.pieces.length, flatsBefore = k.flats.length;
     if(!generators[element.type])throw new Error(`Unknown brick: ${element.type}. Add a generator before loading this monument.`);
@@ -1855,7 +1972,8 @@ export function createStage(host) {
   let moved = false;
   controls.addEventListener('start', () => { moved = true; });
   const composer = new EffectComposer(renderer, new T.WebGLRenderTarget(1, 1, {type: T.HalfFloatType, samples: 4}));
-  composer.addPass(new RenderPass(scene, camera));
+  const renderPass = new RenderPass(scene, camera);
+  composer.addPass(renderPass);
   // Ambient occlusion: deep arcades, galleries and portals darken as they do in daylight. Its normal pass
   // shares the pieces' growth shader, so a piece casts no occlusion before it is laid.
   const ao = new GTAOPass(scene, camera, 1, 1);
@@ -1885,7 +2003,7 @@ export function createStage(host) {
   const rim = new T.DirectionalLight('#5c7cff', LIGHT.rimI);
   const ambient = new T.AmbientLight('#dbe6ef', LIGHT.ambient);
   scene.add(hemi, sun, rim, ambient, sun.target);
-  renderer.toneMappingExposure = 1.02; renderer.shadowMap.type = T.PCFSoftShadowMap;
+  renderer.toneMappingExposure = 1.02; renderer.shadowMap.type = T.PCFShadowMap;
   // The linear colour that ACES tone mapping (as three.js applies it, at this exposure) turns into `target`:
   // the backdrop then shows exactly as paper.
   const acesInverse = (target, exposure) => {
@@ -2206,7 +2324,7 @@ export function createStage(host) {
   function growVertex(shader, pbr) {
     shader.vertexShader = shader.vertexShader
       .replace('#include <common>', `#include <common>
-        attribute vec2 aLife; attribute float aSeed; attribute float aLean;
+        attribute vec2 aLife; attribute float aSeed; attribute float aLean; attribute vec3 aCenter;
         uniform float uTime,uFly,uDrop,uLeanAngle; uniform vec3 uLeanPivot,uLeanAxis;
         varying float vGlow; varying float vWorldY; varying float vSeed;
         ${pbr ? 'varying vec3 vPbrPosition; varying vec3 vPbrNormal;' : ''}`)
@@ -2216,7 +2334,8 @@ export function createStage(host) {
         float kOut=piece?clamp((uTime-aLife.y)/uFly,0.,1.):0.;
         float eIn=1.-pow(1.-kIn,3.);
         float alive=piece?step(aLife.x,uTime)*(1.-kOut):1.;
-        transformed*=alive*mix(.55,1.,eIn);
+        // A piece grows about its own centre: the origin of an instance, the middle of a patch of surface.
+        transformed=aCenter+(transformed-aCenter)*(alive*mix(.55,1.,eIn));
         vGlow=piece?step(aLife.x,uTime)*(1.-smoothstep(0.,1.,(uTime-aLife.x)/(uFly*2.))):0.;
         float drop=(1.-eIn)*uDrop-kOut*uDrop*.4;
         vSeed=aSeed;`)
@@ -2236,13 +2355,17 @@ export function createStage(host) {
         gl_Position=projectionMatrix*mvPosition;`);
   }
 
-  function material(kind) {
-    const {pbr, ...surface} = pbrOptions(kind, visual, renderer), mat = new T.MeshStandardMaterial({color: '#ffffff', ...KINDS[kind], ...surface, clippingPlanes: sectionPlanes});
+  // `merged`: the material of a mesh of patches (kit/masonry.js), which carries its colour per vertex and, for stone,
+  // draws its own joints from `aMason` (s along the wall, height, course): a continuous wall still reads as coursed
+  // ashlar, with its joints the width they are in the photographs, fading out where a pixel is wider than a joint.
+  function material(kind, merged = false) {
+    const {pbr, ...surface} = pbrOptions(kind, visual, renderer), mat = new T.MeshStandardMaterial({color: '#ffffff', ...KINDS[kind], ...surface, vertexColors: merged, clippingPlanes: sectionPlanes});
+    const joints = merged && kind === 'stone', leaded = merged && kind === 'glass', slated = merged && kind === 'slate', patterned = joints || leaded || slated;
     // Gold leaf reflects the studio round it: without it a metal looks dark and olive.
     if (kind === 'gilt') { mat.userData.gilt = true; mat.envMapIntensity = .85; }
     // Every kind compiles its own program: three.js would otherwise reuse a textured (PBR) program for a
     // plain material with the same parameters, which then samples a stray texture.
-    mat.customProgramCacheKey = () => `piece:${kind}:${pbr ? ['albedo', 'normal', 'roughness', 'ao'].map(key => pbr[key] ? key[0] : '-').join('') : 'plain'}`;
+    mat.customProgramCacheKey = () => `piece:${kind}:${merged ? 'patch' : 'instance'}:${pbr ? ['albedo', 'normal', 'roughness', 'ao'].map(key => pbr[key] ? key[0] : '-').join('') : 'plain'}`;
     mat.onBeforeCompile = shader => {
       Object.assign(shader.uniforms, uniforms);
       shader.uniforms.uGlow = {value: new T.Color(kind === 'metal' ? '#ffb15c' : kind === 'wood' ? '#ffcf8a' : '#ffd9a8')};
@@ -2255,15 +2378,18 @@ export function createStage(host) {
       // Evidence mode: each piece takes the colour of its provenance (measured, documented, interpreted).
       shader.vertexShader = shader.vertexShader
         .replace('#include <common>', `#include <common>
-          attribute float aProof; varying float vProof;`)
+          attribute float aProof; varying float vProof;${patterned ? 'attribute vec3 aMason; varying vec3 vMason;' : ''}`)
         .replace('#include <begin_vertex>', `#include <begin_vertex>
-          vProof=aProof;`);
+          vProof=aProof;${patterned ? 'vMason=aMason;' : ''}`);
       shader.fragmentShader = shader.fragmentShader
         .replace('#include <common>', `#include <common>
           uniform float uProof; varying float vProof;`)
         .replace('#include <color_fragment>', `#include <color_fragment>
+          ${joints ? MASON_COLOR : leaded ? GLASS_COLOR : slated ? SLATE_COLOR : ''}
           if(uProof>0.){vec3 proof=vProof<.5?vec3(.2,.78,.62):vProof<1.5?vec3(.38,.53,1.):vProof<2.5?vec3(1.,.66,.25):vec3(.5,.5,.52);
             diffuseColor.rgb=mix(diffuseColor.rgb,proof*.9,.72*uProof);}`);
+      if (patterned) shader.fragmentShader = shader.fragmentShader.replace('#include <common>', `#include <common>
+          ${MASON_PARS}`);
       // Shelter: a piece deep in the shade of a gallery or a portal (piece.shelter, 0 to 1) takes that share less
       // of the direct lights that no shadow map stops (the cool rim light; the sun too when shadows are off), so
       // that it neither glows blue nor mirrors that light at a grazing angle, where the photos show deep shade.
@@ -2293,7 +2419,7 @@ export function createStage(host) {
           vec3 pbrWn=pbrWeights(),baseN=normalize(vPbrNormal);
           vec3 tx=texture2D(uPbrNormal,vPbrPosition.zy*uPbrScale).xyz*2.-1.,ty=texture2D(uPbrNormal,vPbrPosition.xz*uPbrScale).xyz*2.-1.,tz=texture2D(uPbrNormal,vPbrPosition.xy*uPbrScale).xyz*2.-1.;
           vec3 nx=vec3(tx.z*sign(baseN.x),tx.y,tx.x),ny=vec3(ty.x,ty.z*sign(baseN.y),ty.y),nz=vec3(tz.x,tz.y,tz.z*sign(baseN.z));
-          vec3 pbrMapped=normalize(nx*pbrWn.x+ny*pbrWn.y+nz*pbrWn.z);normal=normalize(mix(normal,normalize(mat3(viewMatrix)*pbrMapped),min(.5,uPbrNormalScale*.45)));` : '#include <normal_fragment_maps>')
+          vec3 pbrMapped=normalize(nx*pbrWn.x+ny*pbrWn.y+nz*pbrWn.z);normal=normalize(mix(normal,normalize(mat3(viewMatrix)*pbrMapped),min(.5,uPbrNormalScale*.45)));${joints ? MASON_NORMAL : ''}` : `#include <normal_fragment_maps>${joints ? MASON_NORMAL : ''}`)
         .replace('#include <aomap_fragment>', pbr?.ao ? `#include <aomap_fragment>
           reflectedLight.indirectDiffuse*=mix(1.,pbrSample(uPbrAo,pbrWeights()).r,.65);` : '#include <aomap_fragment>')
         .replace('#include <emissivemap_fragment>', `#include <emissivemap_fragment>
@@ -2391,6 +2517,7 @@ export function createStage(host) {
     geometry.setAttribute('aLife', new T.BufferAttribute(life, 2));
     geometry.setAttribute('aSeed', new T.BufferAttribute(new Float32Array(count), 1));
     geometry.setAttribute('aLean', new T.BufferAttribute(new Float32Array(count), 1));
+    geometry.setAttribute('aCenter', new T.BufferAttribute(new Float32Array(count * 3), 3));
     geometry.setAttribute('aProof', new T.BufferAttribute(new Float32Array(count).fill(provenanceOf(spec)), 1));
     geometry.setAttribute('aReliefUv', geometry.attributes.uv.clone());
     const local = {uPhoto: {value: null}, uHomography: {value: new T.Matrix3()}, uSize: {value: new T.Vector2(w, h)}, uPixels: {value: new T.Vector2(512, 512)},
@@ -2455,9 +2582,34 @@ export function createStage(host) {
     scene.add(mesh); meshes.push(mesh);
   }
 
+  // ——— The captured layer ———
+  // A monument may carry `scan`: the building as photographed or surveyed, as gaussian splats (a 3D reconstruction of
+  // real photographs). Spark (MIT, kit/vendor/spark, imported only here) draws them in a scene of their own, through the
+  // same camera, backdrop and output pass as the built model, so the one gives way to the other without a jump.
+  const captureScene = new T.Scene();
+  let scanSpec = null, capture = null, capturing = false;
+  async function ensureCapture() {
+    if (!scanSpec) throw new Error('This monument has no scan.');
+    capture ??= (async () => {
+      const {SparkRenderer, SplatMesh} = await import('./vendor/spark/spark.module.js');
+      const spark = new SparkRenderer({renderer}), group = new T.Group(), splat = new SplatMesh({url: scanSpec.url});
+      // The matrix places the scan in the monument's own frame, which the monument's `rotate` then turns like everything else.
+      group.rotation.y = turnY; splat.matrixAutoUpdate = false; splat.matrix.fromArray(scanSpec.matrix); group.add(splat);
+      captureScene.add(spark, group); captureScene.background = scene.background; captureScene.fog = scene.fog;
+      await splat.initialized;
+      return {spark, group, splat};
+    })();
+    try { return await capture; } catch (error) { capture = null; throw error; }
+  }
+  function disposeCapture() {
+    capturing = false; renderPass.scene = scene; ao.enabled = Boolean(visual?.quality.ao);
+    capture?.then(({spark, group, splat}) => { captureScene.remove(spark, group); splat.dispose(); spark.dispose?.(); }, () => {});
+    capture = null; scanSpec = null;
+  }
+
   function clear() {
     for (const mesh of meshes) { scene.remove(mesh); mesh.geometry.dispose(); mesh.material.dispose(); mesh.customDepthMaterial?.dispose(); mesh.material.userData?.photo?.dispose(); }
-    meshes.length = 0; reliefsPending = 0; reliefGeneration++;
+    meshes.length = 0; reliefsPending = 0; reliefGeneration++; disposeCapture();
     if (outlineGroup) { scene.remove(outlineGroup); outlineGroup.traverse(o => { o.geometry?.dispose(); o.material?.dispose(); }); outlineGroup = null; }
     for (const {group, scaffoldSets} of siteGroups) { scene.remove(group); for (const set of scaffoldSets) set.mesh.dispose(); }
     siteGroups.length = 0; siteActors.length = 0; siteDust.length = 0; siteRigs.length = 0; siteGeneration++;
@@ -2481,6 +2633,7 @@ export function createStage(host) {
   function load(data, {base = location.href} = {}) {
     clear();
     monument = data; moved = false; turnY = (data.rotate ?? 0) * Math.PI / 180;
+    scanSpec = data.scan?.file && data.scan.matrix?.length === 16 ? {url: new URL(data.scan.file, base).href, matrix: data.scan.matrix} : null;
     visual = resolveVisualStyle(data.visualStyle ?? {quality: 'basic'});
     renderer.setPixelRatio(Math.min(PIXEL_RATIO, visual.quality.pixelRatio));
     renderer.shadowMap.enabled = Boolean(visual.quality.shadows); renderer.shadowMap.needsUpdate = true;
@@ -2504,18 +2657,13 @@ export function createStage(host) {
     const {pieces: built, reliefs, P} = buildPieces(data), k = {pieces: built, rand: random((data.seed ?? 7) + 1)};
     builtPieces = built;
     total = data.phases.length;
-    // Within each phase, pieces are laid from the bottom up.
-    const byPhase = data.phases.map(() => []);
-    k.pieces.forEach(piece => byPhase[piece.phase].push(piece));
-    byPhase.forEach((list, phase) => {
-      list.sort((a, b) => a.order - b.order);
-      list.forEach((piece, rank) => { piece.birth = phase + .03 + .86 * rank / Math.max(1, list.length); });
-    });
-    const death = phase => phase + .1 + .5 * k.rand();
-    const groups = new Map();
+    const byPhase = layPieces(k.pieces, data.phases.length);
+    const death = phase => phase + DEATH.from + DEATH.span * k.rand();
+    const groups = new Map(), patches = new Map();
     // One instanced mesh per material, architectural shape and adaptive LOD. Pieces with the same profile
     // still share one geometry; only the tessellation required by their real diameter separates them.
     for (const piece of k.pieces) {
+      if (piece.mesh) { if (!patches.has(piece.kind)) patches.set(piece.kind, []); patches.get(piece.kind).push(piece); continue; }
       const shape = piece.shape ?? 'box', shapeFactory = SHAPES[shape];
       if (!shapeFactory) throw new Error(`Unknown geometry shape "${shape}"; refusing to replace it with a square box.`);
       const variant = shapeFactory.adaptive ? adaptiveContext(piece, shapeFactory, visual.qualityName) : {context: {}, key: 'fixed'};
@@ -2537,7 +2685,47 @@ export function createStage(host) {
       geometry.setAttribute('aLife', new T.InstancedBufferAttribute(life, 2));
       geometry.setAttribute('aSeed', new T.InstancedBufferAttribute(seed, 1));
       geometry.setAttribute('aLean', new T.InstancedBufferAttribute(lean, 1));
+      geometry.setAttribute('aCenter', new T.InstancedBufferAttribute(new Float32Array(list.length * 3), 3));
       geometry.setAttribute('aShelter', new T.InstancedBufferAttribute(shelter, 1));
+      mesh.frustumCulled = false;
+      mesh.castShadow = mesh.receiveShadow = Boolean(visual.quality.shadows);
+      mesh.customDepthMaterial = shadowMaterial();
+      scene.add(mesh); meshes.push(mesh);
+    }
+    // Patches of real surface (kit/masonry.js): one mesh per material, every piece's triangles baked into the scene
+    // and carrying its own birth, death and centre, so that it grows like a block does.
+    for (const [kind, list] of patches) {
+      let vertices = 0, indices = 0;
+      for (const piece of list) { vertices += piece.mesh.position.length / 3; indices += piece.mesh.index.length; }
+      // What a vertex carries, in as few bytes as it can: normals in 16 bits, colours and flags in 8.
+      const attr = n => new Float32Array(vertices * n), position = attr(3), mason = attr(3), center = attr(3), life = attr(2), seed = attr(1);
+      const normal = new Int16Array(vertices * 3), color = new Uint8Array(vertices * 3), lean = new Uint8Array(vertices), proof = new Uint8Array(vertices), shelter = new Uint8Array(vertices);
+      const byte = x => Math.max(0, Math.min(255, Math.round(x * 255)));
+      const index = new Uint32Array(indices), starts = new Int32Array(list.length + 1), nm = new T.Matrix3(), v = new T.Vector3(), c = new T.Vector3();
+      let vo = 0, io = 0;
+      list.forEach((piece, n) => {
+        const {mesh} = piece, count = mesh.position.length / 3, died = piece.until === undefined ? 1e6 : death(piece.until), sd = k.rand() * 100, pv = provenanceOf(data.elements[piece.element]);
+        piece.death = died; starts[n] = io / 3;
+        nm.getNormalMatrix(piece.matrix); c.setFromMatrixPosition(piece.matrix);
+        for (let i = 0; i < count; i++) {
+          const o = vo + i;
+          v.fromArray(mesh.position, i * 3).applyMatrix4(piece.matrix).toArray(position, o * 3);
+          v.fromArray(mesh.normal, i * 3).applyMatrix3(nm).normalize();
+          normal[o * 3] = Math.round(v.x * 32767); normal[o * 3 + 1] = Math.round(v.y * 32767); normal[o * 3 + 2] = Math.round(v.z * 32767);
+          mason[o * 3] = mesh.mason[i * 3]; mason[o * 3 + 1] = mesh.mason[i * 3 + 1]; mason[o * 3 + 2] = mesh.mason[i * 3 + 2];
+          color[o * 3] = byte(piece.color.r); color[o * 3 + 1] = byte(piece.color.g); color[o * 3 + 2] = byte(piece.color.b);
+          c.toArray(center, o * 3);
+          life[o * 2] = piece.birth; life[o * 2 + 1] = died; seed[o] = sd; lean[o] = piece.lean ?? 0; proof[o] = pv; shelter[o] = byte(piece.shelter ?? 0);
+        }
+        for (let i = 0; i < mesh.index.length; i++) index[io + i] = mesh.index[i] + vo;
+        vo += count; io += mesh.index.length;
+      });
+      starts[list.length] = io / 3;
+      const geometry = new T.BufferGeometry();
+      for (const [name, array, size, normalized] of [['position', position, 3], ['normal', normal, 3, true], ['color', color, 3, true], ['aMason', mason, 3], ['aCenter', center, 3], ['aLife', life, 2], ['aSeed', seed, 1], ['aLean', lean, 1], ['aProof', proof, 1], ['aShelter', shelter, 1, true]]) geometry.setAttribute(name, new T.BufferAttribute(array, size, Boolean(normalized)));
+      geometry.setIndex(new T.BufferAttribute(index, 1));
+      const mesh = new T.Mesh(geometry, material(kind, true));
+      mesh.userData.pieces = list; mesh.userData.starts = starts;
       mesh.frustumCulled = false;
       mesh.castShadow = mesh.receiveShadow = Boolean(visual.quality.shadows);
       mesh.customDepthMaterial = shadowMaterial();
@@ -2685,6 +2873,14 @@ export function createStage(host) {
       v.project(camera);
       return {x: (v.x * .5 + .5) * host.clientWidth, y: (-v.y * .5 + .5) * host.clientHeight, visible: v.z < 1 && Math.abs(v.x) < 1.1 && Math.abs(v.y) < 1.1};
     },
+    // Whether the monument carries a scan, whether it shows, and the switch (it loads the scan the first time).
+    get hasCapture() { return Boolean(scanSpec); },
+    get capturing() { return capturing; },
+    async capture(on) {
+      if (on) await ensureCapture();
+      capturing = Boolean(on); renderPass.scene = capturing ? captureScene : scene; ao.enabled = !capturing && Boolean(visual.quality.ao);
+      return capturing;
+    },
     get duration() { return total; },
     get insets() { return {...insets}; },
     // Where the camera stands and looks: [x, y, z, target x, y, z].
@@ -2764,7 +2960,14 @@ export function createStage(host) {
       for (const hit of hits) {
         const relief = hit.object.userData.relief;
         if (relief) { if (relief.birth <= t && relief.death > t) return {element: relief.element, phase: relief.phase, kind: 'relief', point: hit.point.toArray()}; continue; }
-        const piece = hit.object.userData.pieces[hit.instanceId];
+        const {pieces: list, starts} = hit.object.userData;
+        let piece = list[hit.instanceId];
+        if (hit.instanceId === undefined && starts) {
+          // A mesh of patches: the piece whose triangles hold the face that was hit.
+          let lo = 0, hi = list.length - 1;
+          while (lo < hi) { const mid = (lo + hi + 1) >> 1; if (starts[mid] <= hit.faceIndex) lo = mid; else hi = mid - 1; }
+          piece = list[lo];
+        }
         if (piece && piece.birth <= t && piece.death > t) return {element: piece.element, phase: piece.phase, kind: piece.kind, point: hit.point.toArray()};
       }
       return null;
