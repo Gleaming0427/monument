@@ -319,10 +319,10 @@
           }
         ],
         "planFit": {
-          "p90": 1.41,
+          "p90": 1.5,
           "max": 2.92,
           "coverage": 0.98,
-          "overflow": 0.05
+          "overflow": 0.06
         },
         "photoRms": [
           0.7,
