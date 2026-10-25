@@ -29,6 +29,10 @@ jobs:
         run: node scripts/build-site.mjs
       - name: Check golden monument geometry
         run: node scripts/measure.mjs --label golden-geometry-ci --out .artifacts/metrics.jsonl -- node scripts/golden.test.mjs
+      - name: Check scan alignment and the scan field
+        run: node scripts/scan.test.mjs
+      - name: Check the captured layer in a browser
+        run: node scripts/capture-layer.test.mjs
       - name: Check phone, tablet and desktop layouts
         run: node scripts/measure.mjs --label responsive-ci --out .artifacts/metrics.jsonl -- node scripts/responsive.test.mjs
       - name: Keep P0 measurements and responsive captures

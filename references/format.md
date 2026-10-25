@@ -68,6 +68,21 @@ Every element says where it comes from, so the viewer's evidence mode can colour
 
 A `relief` element lays a photograph of carving on the model (see [bricks.md](bricks.md)). Its `image` lives in `<id>.evidence/reliefs/` next to the file and travels with it; its `credit` names the photo's page, author and licence, which validation checks against Wikimedia Commons, and the viewer's evidence mode lists. Its `provenance` is `documented` (the carving is photographed), and its `note` says what it shows. A relief has a phase like any element, `until` to take it down and `rebuild` to set it back.
 
+## The scan
+
+A monument may carry a capture of the building, shown by the viewer's **Captured** button (or `?scan`) in place of the model:
+
+```json
+"scan": {"file": "<id>.evidence/scan/capture.spz", "matrix": [16 numbers],
+         "credit": {"author": "…", "license": "CC BY 4.0", "source": "https://…"},
+         "fit": {"scale": 1, "points": 2000000, "median": 0.013, "p90": 0.04, "covered": 0.93, "rigid": true, "elements": [], "date": "2026-10-25"}}
+```
+
+- `file`: a `.splat`, `.ply`, `.spz`, `.ksplat` or `.sog` under `<id>.evidence/scan/`, 50 MB at most. Drawn by [Spark](https://sparkjs.dev), vendored in `kit/vendor/spark` and loaded only for a monument that has a scan.
+- `matrix`: the 4 × 4 (column-major) that places the scan in the monument's own frame, `rotate` then turning it with everything else. `scripts/align-scan.mjs --write` computes it from three or more pairs of points and refines it.
+- `fit`: how far the model stands from the scan, in metres: the median and 90th percentile of the distance of the scan's points to the model's surface, the share of the scan within 2 m of the model, and the same for each element with 200 points or more. It is the model's error where the scan is good; see [capture.md](capture.md).
+- `credit`: needed for the gallery (`validate.mjs --strict`): who captured it, under a free licence, with a public page.
+
 ## Orientation
 
 Model a building in the frame that suits it (its axis along x, say), then set `"rotate"` (degrees, counter-clockwise seen from above) to turn it onto its real orientation. `rotate` turns the elements, the moment `anchor`s and the worksite scenes; `view` and the reference viewpoints stay geographic (x east, z south), like the measured outline.

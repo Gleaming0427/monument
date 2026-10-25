@@ -1,6 +1,6 @@
 ---
 name: monument
-description: Builds a researched, measured, animated 3D reconstruction of how a named building was built and transformed (historic or contemporary, anywhere in the world), placed on its real plan, compared with photos, and opens it in a live viewer. Use for /monument followed by a building, city and country; for any request to see or explain how a building, castle, bridge, tower, cathedral, palace or monument was built; and to publish a monument to the community gallery.
+description: Builds a researched, measured, animated 3D reconstruction of how a named building was built and transformed (historic or contemporary, anywhere in the world), placed on its real plan, compared with photos, and opens it in a live viewer. Use for /monument followed by a building, city and country; for any request to see or explain how a building, castle, bridge, tower, cathedral, palace or monument was built; to hold a model against a captured scan (photogrammetry, laser, gaussian splats) and report to the centimetre where the capture allows it; and to publish a monument to the community gallery.
 ---
 
 # Monument
@@ -48,6 +48,17 @@ Use this mode for one named structure. Spend the time on the building itself: it
 
 If the architecture needs a brand-new complex brick, say that the first build can take 20–35 minutes. Do not spend that time on decorative context.
 
+### Centimetre build: from a capture
+
+Use this when the user wants the building to the centimetre, or has a scan, or can capture one. The standard build is good to decimetres where a photograph is fitted and to metres where only a figure is documented; a centimetre is a claim that needs a **capture** and **control**. Read [references/capture.md](references/capture.md) first: it says what the research of 2026 supports (photogrammetry for numbers, gaussian splats for the picture, feed-forward models such as VGGT and Depth Anything 3 only to bootstrap camera poses), how to shoot, and what may be claimed.
+
+1. **Ask what exists.** A scan the user holds, a survey, a capture they can make. Search for a public one (Sketchfab, Europeana, the heritage authority) and say plainly when none is found. Do not turn a handful of Commons photographs into a "centimetre" model: they carry no control.
+2. **Build the standard model first** (steps above). The scan does not replace it: it keeps the history, the timeline and the parametric elements; the scan is what it is measured against.
+3. **Align.** `node <skill>/scripts/align-scan.mjs monuments/<id>.json <scan> --pairs '[[sx, sy, sz, mx, my, mz], …]'` with three or more pairs a few decimetres right; add `--rigid` for a scan scaled by control. It fits the scan, refines it by point-to-plane ICP and prints the model's distance to the scan overall and element by element.
+4. **Correct the model where the scan says it is wrong**, element by element, worst p90 first, then align again. A residual is the model's distance to the scan: it is the building's only where the scan is good (its GSD and its control bound it).
+5. **Record and show.** `--write` puts `scan` in the monument (file under `<id>.evidence/scan/`, matrix, fit); the viewer then offers **Captured** (`?scan`), which swaps the model for the splats. `validate.mjs --strict` asks the gallery for the scan's credit and its fit.
+6. **Report in classes.** Say which elements are surveyed (a residual of a few centimetres against a scan with control), which are photo-fitted, documented or interpreted. Never write "centimetre" for the building as a whole.
+
 ### Publication build
 
 Use this only when the user asks for maximum documentation or wants to publish. Add at least three pages from two sites, four photos from three sides, each with its viewpoint fitted by `calibrate.mjs`, the complete plan evidence, phase captures and a second comparison pass. `node <skill>/scripts/validate.mjs --strict monuments/<id>.json` is the publication gate. A standard build is a valid local result; it is not publishable until strict validation passes.
@@ -66,6 +77,7 @@ Use this only when the user asks for maximum documentation or wants to publish. 
 - **The scaffold is a start, not evidence of history.** It automates mapped geometry for buildings that have a usable outline; it does not infer dates, architects, hidden structure or past states.
 - **No invented spectacle.** A worksite tableau needs a source for its craft and temporary structures. Generic figures may communicate scale, but clothes, machines, scaffolds and methods must fit the sourced period; state any interpretation in `evidence.uncertainties`.
 - **Temporary works follow the building and the clock.** A curved wall gets a ring or arc scaffold, a facade gets a planar scaffold, and a pier gets a tower cage. Reveal it level by level and move the hoist with the work front; do not reuse one static rig across unrelated forms or periods.
+- **A centimetre needs a capture and control.** Without a scan aligned by `align-scan.mjs` and control points, never claim better than the photo fit (decimetres). With one, claim it only for the elements whose residual says so, and say that the scan shows the building of the day it was captured.
 - **Do not claim** exhaustive historical coverage or an "exact" model.
 
 ## Publish to the community gallery
