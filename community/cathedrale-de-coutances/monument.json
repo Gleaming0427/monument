@@ -100,8 +100,8 @@
       "outline": "cathedrale-de-coutances.evidence/outline.json",
       "tolerance": 3,
       "fit": {
-        "p90": 1.5,
-        "max": 2.5,
+        "p90": 1.41,
+        "max": 2.92,
         "coverage": 0.98,
         "overflow": 0.05
       }
@@ -993,6 +993,7 @@
     }
   ],
   "rotate": -14.5,
+  "masonry": "mesh",
   "bricks": "cathedrale-de-coutances.bricks.js",
   "catalogue": {
     "chevetLevel#note": {
@@ -2074,12 +2075,18 @@
       },
       "vault": {
         "spring": 15.2,
-        "crown": 21.9
+        "crown": 21.9,
+        "end": false,
+        "trim": [
+          0,
+          1.8
+        ]
       }
     },
     {
       "use": "transeptFront",
       "name": "Pignon du croisillon nord",
+      "glass": "#5d7391",
       "center": [
         0.9,
         -14.1
@@ -2130,12 +2137,18 @@
       },
       "vault": {
         "spring": 15.2,
-        "crown": 21.9
+        "crown": 21.9,
+        "end": false,
+        "trim": [
+          1.8,
+          0
+        ]
       }
     },
     {
       "use": "transeptFront",
       "name": "Pignon du croisillon sud",
+      "glass": "#5d7391",
       "center": [
         0.9,
         16.9

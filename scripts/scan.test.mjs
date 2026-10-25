@@ -85,7 +85,7 @@ test('a noisy scan with outliers, hand-picked pairs a few decimetres out, lands 
   const sources = [0, 1, 2, 3].map(i => mesh.triangles[(i * 150001 + 7) % mesh.triangles.length][0]);
   const pairs = sources.map(m => ({scan: apply(toScan, m), model: m.map(v => v + (random() - .5) * .6)}));
   const first = fitSimilarity(pairs.map(p => p.scan), pairs.map(p => p.model));
-  const fit = refine(scan, grid, first, {sample: 6000, rounds: 25});
+  const fit = refine(scan, grid, first, {sample: 6000, rounds: 60});
 
   assert.ok(Math.abs(fit.scale * toScan.scale - 1) < .001, `scale off by ${(Math.abs(fit.scale * toScan.scale - 1) * 100).toFixed(3)} %`);
   const result = residuals(scan, grid, fit, {sample: 30000});

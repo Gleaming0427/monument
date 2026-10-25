@@ -2,7 +2,7 @@
 // Aligns a captured scan (photogrammetry, laser, gaussian splats) onto a monument and says how far the model stands
 // from it, element by element:
 //   node scripts/align-scan.mjs <monument.json> <scan.ply|.splat|.obj|.xyz> --pairs '[[sx, sy, sz, mx, my, mz], …]'
-//        [--rigid] [--no-icp] [--sample 8000] [--rounds 30] [--elements 13,14] [--write <file in the evidence folder>]
+//        [--rigid] [--no-icp] [--sample 8000] [--rounds 80] [--elements 13,14] [--write <file in the evidence folder>]
 // Each pair is a place in the scan (its own units) and the same place on the model (metres, the monument's own frame,
 // before "rotate"), three or more and not on one line: corners of the towers, the foot of a buttress, the apex of a
 // gable. They only have to be right to a few decimetres: the point-to-plane refinement does the rest. `--rigid` keeps
@@ -18,7 +18,7 @@ import {readPoints, fitSimilarity, apply, compose, toMatrix, turnY, modelTriangl
 const args = process.argv.slice(2), flag = name => { const i = args.indexOf(`--${name}`); return i >= 0 ? args[i + 1] : undefined; };
 const [monument, scanFile] = args.filter((arg, i) => !arg.startsWith('--') && !['--pairs', '--sample', '--rounds', '--elements', '--write'].includes(args[i - 1]));
 if (!monument?.endsWith('.json') || !scanFile) {
-  console.error("Usage: node scripts/align-scan.mjs <monument.json> <scan.ply|.splat|.obj|.xyz> --pairs '[[sx, sy, sz, mx, my, mz], …]' [--rigid] [--no-icp] [--sample 8000] [--rounds 30] [--elements 13,14] [--write <evidence file>]");
+  console.error("Usage: node scripts/align-scan.mjs <monument.json> <scan.ply|.splat|.obj|.xyz> --pairs '[[sx, sy, sz, mx, my, mz], …]' [--rigid] [--no-icp] [--sample 8000] [--rounds 80] [--elements 13,14] [--write <evidence file>]");
   process.exit(1);
 }
 const path = resolve(monument), data = await readMonument(path), rigid = args.includes('--rigid');
@@ -35,7 +35,7 @@ const turn = turnY(data.rotate ?? 0), scene = pairs.map(pair => apply(turn, pair
 let T = fitSimilarity(pairs.map(pair => pair.slice(0, 3)), scene, {rigid});
 const pairError = pairs.map((pair, i) => Math.hypot(...apply(T, pair.slice(0, 3)).map((v, k) => v - scene[i][k])));
 console.log(`pairs: scale ${T.scale.toPrecision(6)}, worst pair ${Math.max(...pairError).toFixed(3)} m`);
-if (!args.includes('--no-icp')) T = refine(positions, grid, T, {sample: Number(flag('sample') ?? 8000), rounds: Number(flag('rounds') ?? 30), rigid});
+if (!args.includes('--no-icp')) T = refine(positions, grid, T, {sample: Number(flag('sample') ?? 8000), rounds: Number(flag('rounds') ?? 80), rigid});
 
 const result = residuals(positions, grid, T);
 const cm = value => value === null ? '—' : `${(value * 100).toFixed(1)} cm`;

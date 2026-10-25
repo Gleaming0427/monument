@@ -4,6 +4,7 @@
  "place": "Paris · France",
  "seed": 1163,
  "rotate": -25.6,
+ "masonry": "mesh",
  "view": {
   "target": [
    3.5,

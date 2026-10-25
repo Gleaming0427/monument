@@ -224,28 +224,29 @@
         "id": "cathedrale-de-coutances",
         "phases": 9,
         "elements": 59,
-        "pieces": 46659,
+        "pieces": 30107,
         "reliefs": 7,
         "bounds": {
           "min": [
             -51.26,
-            0,
-            -28.038
+            -0.01,
+            -28.077
           ],
           "max": [
-            50.292,
+            50.887,
             77,
-            27.505
+            27.403
           ]
         },
         "shapes": {
           "ball": 1120,
-          "box": 43607,
-          "drum": 270,
+          "box": 2603,
+          "drum": 242,
           "flare": 114,
-          "octagon": 584,
+          "octagon": 234,
+          "patch": 24888,
           "profiledShaft": 612,
-          "spike": 106,
+          "spike": 48,
           "torus": 246
         },
         "shapeGeometry": {
@@ -318,8 +319,8 @@
           }
         ],
         "planFit": {
-          "p90": 1.5,
-          "max": 2.5,
+          "p90": 1.41,
+          "max": 2.92,
           "coverage": 0.98,
           "overflow": 0.05
         },
@@ -330,7 +331,7 @@
           1.4,
           1.1
         ],
-        "digest": "e083cc3e074357b8a66d",
+        "digest": "6871a472ce09bf0e1a5b",
         "unknownShapes": []
       }
     },

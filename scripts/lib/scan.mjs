@@ -128,6 +128,13 @@ export function modelTriangles(engine, data, pieces, {elements} = {}) {
   for (const piece of pieces) {
     if (piece.phase > last || (piece.until !== undefined && piece.until <= last) || piece.kind === 'glass') continue;
     if (elements && !elements.includes(piece.element)) continue;
+    if (piece.mesh) {
+      // A patch of real surface (kit/masonry.js): its own triangles, held in its bounding box's unit cube.
+      const {position, index} = piece.mesh, m = piece.matrix.elements;
+      const at = i => { const x = position[i * 3], y = position[i * 3 + 1], z = position[i * 3 + 2]; return [m[0] * x + m[4] * y + m[8] * z + m[12], m[1] * x + m[5] * y + m[9] * z + m[13], m[2] * x + m[6] * y + m[10] * z + m[14]]; };
+      for (let i = 0; i < index.length; i += 3) { triangles.push([at(index[i]), at(index[i + 1]), at(index[i + 2])]); owner.push(piece.element); }
+      continue;
+    }
     const shape = piece.shape ?? 'box';
     if (!shapes.has(shape)) {
       if (shape === 'box') shapes.set(shape, CUBE);
@@ -228,7 +235,7 @@ function solve(A, b) {
 // they lie on the planes of their triangles, which lets a scan slide along a wall without being held by it. Points
 // with no triangle in reach (trees, neighbours, scaffolding) never count. `rigid` keeps the scale; otherwise the scale
 // is refitted too, which a scan that was not scaled by measurement needs.
-export function refine(positions, grid, start, {rounds = 30, keep = .7, sample = 8000, rigid = false} = {}) {
+export function refine(positions, grid, start, {rounds = 80, keep = .7, sample = 8000, rigid = false} = {}) {
   const picks = every(positions.length / 3, sample).map(i => [positions[i * 3], positions[i * 3 + 1], positions[i * 3 + 2]]);
   let T = start, last = Infinity;
   for (let round = 0; round < rounds; round++) {

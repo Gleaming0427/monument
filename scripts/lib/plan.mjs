@@ -31,8 +31,10 @@ export async function measurePlan(file) {
   const hulls = [];
   for (const p of pieces) {
     if (p.phase > last || p.until !== undefined || !(p.top > 1)) continue;
-    const e = p.matrix.elements;
-    hulls.push(hull(CORNERS.map(([x, y, z]) => [e[0] * x + e[4] * y + e[8] * z + e[12], e[2] * x + e[6] * y + e[10] * z + e[14]])));
+    const e = p.matrix.elements, at = (x, y, z) => [e[0] * x + e[4] * y + e[8] * z + e[12], e[2] * x + e[6] * y + e[10] * z + e[14]];
+    // A patch of real surface (kit/masonry.js) stands where its triangles do, not in its bounding box.
+    const points = p.mesh ? Array.from({length: p.mesh.position.length / 3}, (_, i) => at(p.mesh.position[i * 3], p.mesh.position[i * 3 + 1], p.mesh.position[i * 3 + 2])) : CORNERS.map(([x, y, z]) => at(x, y, z));
+    hulls.push(hull(points));
   }
   if (!hulls.length) throw new Error('the model has no piece above the ground');
 
