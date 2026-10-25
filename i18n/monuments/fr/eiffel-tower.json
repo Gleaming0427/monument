@@ -84,14 +84,14 @@
           "text": "Le bureau d'études produit 700 dessins d'exécution et 3.600 plans d'atelier pour les 18.038 pièces."
         },
         {
-          "tag": "Anecdote",
-          "title": "1.665 marches",
-          "text": "Le 31 mars 1889, Gustave Eiffel gravit les 1.665 marches qui mènent de l'esplanade au sommet, le jour de l'inauguration de la tour."
-        },
-        {
           "tag": "Technique",
           "title": "Des ascenseurs qui suivent une courbe",
           "text": "Aucune gaine n'était autorisée sous le premier étage : les ascenseurs montent donc le long des piliers inclinés, les cabines Otis en deux tractions droites jusqu'au deuxième étage, puis l'ascenseur vertical d'Edoux jusqu'au sommet, ses deux cabines se croisant à mi-hauteur."
+        },
+        {
+          "tag": "Anecdote",
+          "title": "1.665 marches",
+          "text": "Le 31 mars 1889, Gustave Eiffel gravit les 1.665 marches qui mènent de l'esplanade au sommet, le jour de l'inauguration de la tour."
         }
       ]
     },

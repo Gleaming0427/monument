@@ -559,7 +559,7 @@
    },
    "moments": [
     {
-     "at": 0.4,
+     "at": 0.68,
      "tag": "Towers",
      "title": "North 1240, south 1250",
      "text": "The north tower is finished in 1240 and the south tower in 1250.",
@@ -571,7 +571,7 @@
      "source": "https://fr.wikipedia.org/wiki/Cath%C3%A9drale_Notre-Dame_de_Paris"
     },
     {
-     "at": 0.75,
+     "at": 0.8,
      "tag": "Spire",
      "title": "A first spire, 78 m",
      "text": "Built from 1220 to 1230, the first spire reaches 78 m above the floor and also serves as a bell tower.",
@@ -783,7 +783,7 @@
    },
    "moments": [
     {
-     "at": 0.55,
+     "at": 0.9,
      "tag": "Spire",
      "title": "The golden cock",
      "text": "On 16 December 2023 the golden cock is set on the spire, some 96 m above the ground, completing the structural work.",
@@ -795,7 +795,7 @@
      "source": "https://www.rebatirnotredamedeparis.fr/en/restoration"
     },
     {
-     "at": 0.8,
+     "at": 0.94,
      "tag": "Reopening",
      "title": "7 December 2024",
      "text": "The cathedral reopens with an official ceremony on 7 December 2024, and to the public the next day.",
@@ -807,7 +807,7 @@
      "source": "https://fr.wikipedia.org/wiki/Cath%C3%A9drale_Notre-Dame_de_Paris"
     },
     {
-     "at": 0.95,
+     "at": 0.975,
      "tag": "Statues",
      "title": "The statues return",
      "text": "When the spire's scaffolding comes down in September 2025, the sixteen restored copper statues are back in place.",

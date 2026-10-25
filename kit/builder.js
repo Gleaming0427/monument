@@ -1808,6 +1808,21 @@ export const generators = {
 
 };
 
+// The order of the works. Within each phase, pieces are laid from the bottom up (by `order`, the height by
+// default), evenly from 3 % to 89 % of the phase; what a phase takes down goes between 10 % and 60 % of the
+// phase that removes it. Kept in one place so that scripts/chronology.mjs holds the film to the rule the
+// viewer plays, not to a copy of it.
+export const DEATH = {from: .1, span: .5};
+export function layPieces(pieces, phases) {
+  const byPhase = Array.from({length: phases}, () => []);
+  pieces.forEach(piece => byPhase[piece.phase].push(piece));
+  byPhase.forEach((list, phase) => {
+    list.sort((a, b) => a.order - b.order);
+    list.forEach((piece, rank) => { piece.birth = phase + .03 + .86 * rank / Math.max(1, list.length); });
+  });
+  return byPhase;
+}
+
 // ——— Scene ———
 // Builds every piece of a monument (with its phase, removal and lean) without any scene, so that scripts
 // can measure the model too: scripts/plan.mjs compares its footprint with the measured outline.
@@ -2504,14 +2519,8 @@ export function createStage(host) {
     const {pieces: built, reliefs, P} = buildPieces(data), k = {pieces: built, rand: random((data.seed ?? 7) + 1)};
     builtPieces = built;
     total = data.phases.length;
-    // Within each phase, pieces are laid from the bottom up.
-    const byPhase = data.phases.map(() => []);
-    k.pieces.forEach(piece => byPhase[piece.phase].push(piece));
-    byPhase.forEach((list, phase) => {
-      list.sort((a, b) => a.order - b.order);
-      list.forEach((piece, rank) => { piece.birth = phase + .03 + .86 * rank / Math.max(1, list.length); });
-    });
-    const death = phase => phase + .1 + .5 * k.rand();
+    const byPhase = layPieces(k.pieces, data.phases.length);
+    const death = phase => phase + DEATH.from + DEATH.span * k.rand();
     const groups = new Map();
     // One instanced mesh per material, architectural shape and adaptive LOD. Pieces with the same profile
     // still share one geometry; only the tessellation required by their real diameter separates them.

@@ -23,6 +23,8 @@ jobs:
         run: node scripts/site.test.mjs
       - name: Check the buildings against their sources
         run: node scripts/check.mjs
+      - name: Check the order of the works against the story
+        run: node scripts/chronology.mjs && node scripts/chronology.test.mjs
       - name: Build the site
         run: node scripts/build-site.mjs
       - name: Check golden monument geometry

@@ -95,7 +95,7 @@ At least two construction phases in a standard build carry `scene`, unless the w
 
 ## Moments
 
-- `at`: position in the phase, 0 to 1. Playback slows down on each moment and the camera eases towards it.
+- `at`: position in the phase, 0 to 1. Playback slows down on each moment and the camera eases towards it. List a phase's moments in increasing `at`: the viewer shows the last listed moment whose time has passed. Pieces are laid from the bottom up between 0.03 and 0.89 of a phase, so a moment about the top of a tower or a spire belongs late; `node scripts/chronology.mjs` tells you when the pin has nothing standing at it.
 - `tag`: one short word for the kind of moment (Technique, Figure, Anecdote, Controversy, Plan, Restoration…). Vary them within a file.
 - `anchor`: the point, in metres, where the pin goes. `distance` optionally moves the camera much closer for a tool, joint or ornament; keep enough context to understand what is being built.
 - `title` and `text`: one true, surprising detail, with its `source`.

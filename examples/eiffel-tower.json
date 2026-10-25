@@ -171,7 +171,7 @@
      "text": "The first heats the rivet, the second holds it, the third shapes the head, the fourth strikes it with a sledgehammer. Two thirds of the rivets are fitted in the works."
     },
     {
-     "at": 0.6,
+     "at": 0.66,
      "tag": "Technique",
      "title": "Cranes that climb",
      "anchor": [
@@ -239,18 +239,6 @@
      "text": "The design office produces 700 engineering drawings and 3,600 workshop plans for the 18,038 parts."
     },
     {
-     "at": 0.9,
-     "tag": "Anecdote",
-     "title": "1,665 steps",
-     "anchor": [
-      0,
-      306,
-      0
-     ],
-     "source": "https://www.toureiffel.paris/en/faq/spot/how-can-you-walk-eiffel-tower-foot",
-     "text": "On 31 March 1889, Gustave Eiffel climbs the 1,665 steps from the esplanade to the top, the day the tower is inaugurated."
-    },
-    {
      "at": 0.65,
      "tag": "Technique",
      "title": "Lifts that climb a curve",
@@ -262,6 +250,18 @@
      ],
      "distance": 150,
      "source": "https://www.gutenberg.org/ebooks/32282"
+    },
+    {
+     "at": 0.9,
+     "tag": "Anecdote",
+     "title": "1,665 steps",
+     "anchor": [
+      0,
+      306,
+      0
+     ],
+     "source": "https://www.toureiffel.paris/en/faq/spot/how-can-you-walk-eiffel-tower-foot",
+     "text": "On 31 March 1889, Gustave Eiffel climbs the 1,665 steps from the esplanade to the top, the day the tower is inaugurated."
     }
    ]
   },
