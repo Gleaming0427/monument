@@ -54,8 +54,18 @@ await rm(join(staging, 'view', 'kit', 'viewer.html'));
 const version = (process.env.GITHUB_SHA ?? (() => { try { return execFileSync('git', ['rev-parse', 'HEAD'], {cwd: root, encoding: 'utf8'}).trim(); } catch { return String(Date.now()); } })()).slice(0, 8);
 const stamp = async (file, pairs) => { let text = await readFile(file, 'utf8'); for (const [from, to] of pairs) { if (!text.includes(from)) throw new Error(`${from} not found in ${file}`); text = text.replaceAll(from, to); } await writeFile(file, text); };
 await stamp(join(staging, 'view', 'index.html'), [['href="kit/style.css"', `href="kit/style.css?v=${version}"`], ['src="kit/app.js"', `src="kit/app.js?v=${version}"`]]);
-await stamp(join(staging, 'view', 'kit', 'app.js'), [["from './builder.js'", `from './builder.js?v=${version}'`]]);
-await stamp(join(staging, 'view', 'kit', 'builder.js'), [["from './visuals.js'", `from './visuals.js?v=${version}'`]]);
+// Every module names the others through the same stamp: the kit's own (app → builder → visuals, geometry, masonry)
+// and a monument's bricks, which import the engine they extend. A bare `../kit/builder.js` in a bricks file is
+// another URL than the stamped one the viewer loads: a browser that kept the old file for ten minutes hands the
+// new bricks an engine that lacks what they ask for ("does not provide an export named 'gothic'"), and a clean
+// one runs the engine twice. Relative `.js` specifiers only: `three` and the rest come through the import map.
+const RELATIVE_IMPORT = /(\bfrom\s*|\bimport\s*\(\s*)(['"])(\.{1,2}\/[^'"?]+\.js)\2/g;
+const stampImports = text => text.replace(RELATIVE_IMPORT, (whole, head, quote, specifier) => `${head}${quote}${specifier}?v=${version}${quote}`);
+const stampModule = async file => { const text = await readFile(file, 'utf8'); await writeFile(file, stampImports(text)); };
+for (const name of (await readdir(join(staging, 'view', 'kit'))).filter(name => name.endsWith('.js'))) await stampModule(join(staging, 'view', 'kit', name));
+for (const [file, specifier] of [['app.js', './builder.js'], ['builder.js', './visuals.js']]) {
+  if (!(await readFile(join(staging, 'view', 'kit', file), 'utf8')).includes(`${specifier}?v=${version}`)) throw new Error(`${file} does not import ${specifier} through the deploy's stamp`);
+}
 await rm(join(staging, 'collection.json'));
 const monuments = join(staging, 'view', 'monuments');
 await mkdir(monuments, {recursive: true});
@@ -122,6 +132,8 @@ for (const id of (await readdir(join(root, 'community')).catch(() => [])).sort()
   community.push({id, name: d.name, place: d.place, thumb, video: await exists(join(root, 'site', 'media', `${id}.mp4`)), ...meta, title: meta.title ?? d.name});
 }
 community.sort((a, b) => String(b.date).localeCompare(String(a.date)));
+// The bricks are copied as they stand; the engine they import carries the stamp too (see above).
+for (const name of (await readdir(monuments)).filter(name => name.endsWith('.bricks.js'))) await stampModule(join(monuments, name));
 
 // A recorded construction (site/media/<id>.mp4) plays in a loop; otherwise the thumbnail, or a placeholder.
 // The strings a card carries are interface too, so they come from the same dictionary as the page around them.
