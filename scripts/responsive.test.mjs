@@ -12,12 +12,23 @@ const root = fileURLToPath(new URL('..', import.meta.url)), site = join(root, '_
 await access(join(site, 'view', 'index.html')).catch(() => { throw new Error('Build _site first with: node scripts/build-site.mjs'); });
 await mkdir(shots, {recursive: true});
 const types = {'.html': 'text/html; charset=utf-8', '.css': 'text/css', '.js': 'text/javascript', '.json': 'application/json', '.woff2': 'font/woff2', '.jpg': 'image/jpeg', '.png': 'image/png'};
+// What this test reads is where the panels sit and where the camera stops, and neither depends on how the scene is drawn.
+// A CI runner has no GPU: Chrome paints every frame on the CPU, and a frame of the standard quality (shadows, ambient
+// occlusion, texture maps) took 18 s at 390×844 where a basic one takes 3, which four page loads multiplied into fifteen
+// minutes. So the monument is served at the cheapest quality the viewer has; RESPONSIVE_QUALITY=standard looks at the
+// scene as a visitor gets it.
+const QUALITY = process.env.RESPONSIVE_QUALITY ?? 'basic';
+const MONUMENT_FILE = /^\/view\/monuments\/[a-z0-9-]+\.json$/;
 const server = createServer(async (request, response) => {
   const pathname = decodeURIComponent(new URL(request.url, 'http://localhost').pathname), rest = pathname === '/' ? 'index.html' : pathname.slice(1);
   let file = normalize(join(site, rest));
   if (!file.startsWith(site + sep)) { response.writeHead(403); return response.end(); }
   if (!extname(file)) file = join(file, 'index.html');
-  try { const body = await readFile(file); response.writeHead(200, {'Content-Type': types[extname(file)] ?? 'application/octet-stream', 'Cache-Control': 'no-store'}); response.end(body); }
+  try {
+    let body = await readFile(file);
+    if (MONUMENT_FILE.test(pathname)) { const data = JSON.parse(body); data.visualStyle = {...data.visualStyle, quality: QUALITY}; body = JSON.stringify(data); }
+    response.writeHead(200, {'Content-Type': types[extname(file)] ?? 'application/octet-stream', 'Cache-Control': 'no-store'}); response.end(body);
+  }
   catch { response.writeHead(404); response.end('Not found'); }
 });
 await new Promise((done, fail) => { server.once('error', fail); server.listen(0, '127.0.0.1', done); });
