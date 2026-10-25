@@ -27,6 +27,8 @@ jobs:
         run: node scripts/chronology.mjs && node scripts/chronology.test.mjs
       - name: Build the site
         run: node scripts/build-site.mjs
+      - name: Check that a deploy is one version, in every module URL
+        run: node scripts/deploy.test.mjs
       - name: Check golden monument geometry
         run: node scripts/measure.mjs --label golden-geometry-ci --out .artifacts/metrics.jsonl -- node scripts/golden.test.mjs
       - name: Check scan alignment and the scan field
