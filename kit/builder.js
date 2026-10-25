@@ -1870,7 +1870,8 @@ export function createStage(host) {
   let moved = false;
   controls.addEventListener('start', () => { moved = true; });
   const composer = new EffectComposer(renderer, new T.WebGLRenderTarget(1, 1, {type: T.HalfFloatType, samples: 4}));
-  composer.addPass(new RenderPass(scene, camera));
+  const renderPass = new RenderPass(scene, camera);
+  composer.addPass(renderPass);
   // Ambient occlusion: deep arcades, galleries and portals darken as they do in daylight. Its normal pass
   // shares the pieces' growth shader, so a piece casts no occlusion before it is laid.
   const ao = new GTAOPass(scene, camera, 1, 1);
@@ -2470,9 +2471,34 @@ export function createStage(host) {
     scene.add(mesh); meshes.push(mesh);
   }
 
+  // ——— The captured layer ———
+  // A monument may carry `scan`: the building as photographed or surveyed, as gaussian splats (a 3D reconstruction of
+  // real photographs). Spark (MIT, kit/vendor/spark, imported only here) draws them in a scene of their own, through the
+  // same camera, backdrop and output pass as the built model, so the one gives way to the other without a jump.
+  const captureScene = new T.Scene();
+  let scanSpec = null, capture = null, capturing = false;
+  async function ensureCapture() {
+    if (!scanSpec) throw new Error('This monument has no scan.');
+    capture ??= (async () => {
+      const {SparkRenderer, SplatMesh} = await import('./vendor/spark/spark.module.js');
+      const spark = new SparkRenderer({renderer}), group = new T.Group(), splat = new SplatMesh({url: scanSpec.url});
+      // The matrix places the scan in the monument's own frame, which the monument's `rotate` then turns like everything else.
+      group.rotation.y = turnY; splat.matrixAutoUpdate = false; splat.matrix.fromArray(scanSpec.matrix); group.add(splat);
+      captureScene.add(spark, group); captureScene.background = scene.background; captureScene.fog = scene.fog;
+      await splat.initialized;
+      return {spark, group, splat};
+    })();
+    try { return await capture; } catch (error) { capture = null; throw error; }
+  }
+  function disposeCapture() {
+    capturing = false; renderPass.scene = scene; ao.enabled = Boolean(visual?.quality.ao);
+    capture?.then(({spark, group, splat}) => { captureScene.remove(spark, group); splat.dispose(); spark.dispose?.(); }, () => {});
+    capture = null; scanSpec = null;
+  }
+
   function clear() {
     for (const mesh of meshes) { scene.remove(mesh); mesh.geometry.dispose(); mesh.material.dispose(); mesh.customDepthMaterial?.dispose(); mesh.material.userData?.photo?.dispose(); }
-    meshes.length = 0; reliefsPending = 0; reliefGeneration++;
+    meshes.length = 0; reliefsPending = 0; reliefGeneration++; disposeCapture();
     if (outlineGroup) { scene.remove(outlineGroup); outlineGroup.traverse(o => { o.geometry?.dispose(); o.material?.dispose(); }); outlineGroup = null; }
     for (const {group, scaffoldSets} of siteGroups) { scene.remove(group); for (const set of scaffoldSets) set.mesh.dispose(); }
     siteGroups.length = 0; siteActors.length = 0; siteDust.length = 0; siteRigs.length = 0; siteGeneration++;
@@ -2496,6 +2522,7 @@ export function createStage(host) {
   function load(data, {base = location.href} = {}) {
     clear();
     monument = data; moved = false; turnY = (data.rotate ?? 0) * Math.PI / 180;
+    scanSpec = data.scan?.file && data.scan.matrix?.length === 16 ? {url: new URL(data.scan.file, base).href, matrix: data.scan.matrix} : null;
     visual = resolveVisualStyle(data.visualStyle ?? {quality: 'basic'});
     renderer.setPixelRatio(Math.min(PIXEL_RATIO, visual.quality.pixelRatio));
     renderer.shadowMap.enabled = Boolean(visual.quality.shadows); renderer.shadowMap.needsUpdate = true;
@@ -2693,6 +2720,14 @@ export function createStage(host) {
         v.sub(uniforms.uLeanPivot.value).applyAxisAngle(uniforms.uLeanAxis.value, uniforms.uLeanAngle.value).add(uniforms.uLeanPivot.value);
       v.project(camera);
       return {x: (v.x * .5 + .5) * host.clientWidth, y: (-v.y * .5 + .5) * host.clientHeight, visible: v.z < 1 && Math.abs(v.x) < 1.1 && Math.abs(v.y) < 1.1};
+    },
+    // Whether the monument carries a scan, whether it shows, and the switch (it loads the scan the first time).
+    get hasCapture() { return Boolean(scanSpec); },
+    get capturing() { return capturing; },
+    async capture(on) {
+      if (on) await ensureCapture();
+      capturing = Boolean(on); renderPass.scene = capturing ? captureScene : scene; ao.enabled = !capturing && Boolean(visual.quality.ao);
+      return capturing;
     },
     get duration() { return total; },
     get insets() { return {...insets}; },

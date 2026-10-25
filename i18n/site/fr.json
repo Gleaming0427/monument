@@ -154,6 +154,8 @@
   "viewer.sectionTitle": "Coupe le monument du côté qui fait face, pour voir l'intérieur",
   "viewer.evidenceTitle": "D'où vient chaque pièce",
   "viewer.section": "Coupe",
+  "viewer.captured": "Relevé",
+  "viewer.capturedTitle": "Montre le bâtiment tel qu'il a été relevé (photographies, scan), à la place du modèle",
   "viewer.evidence": "Preuves",
   "viewer.fade": "Estomper",
   "viewer.back": "Retour au modèle",
