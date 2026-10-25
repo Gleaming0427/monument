@@ -108,7 +108,7 @@ function fillette(G, k, c, y0, top, tip, r, ph, extra = {}) {
 }
 // A turret of the Norman transept fronts, as the photograph of the south front shows it: a square pier that
 // batters up to a ledge, an octagonal drum ringed by slender colonnettes under a frieze of small round blind
-// arches, and an octagonal cone laid in scales, with a spout at four of its corners. `c` [u, v] is its axis;
+// arches, and an octagonal cone laid in scales, with a carved beast at four corners of the cornice. `c` [u, v] is its axis;
 // tw {width (the drum), ledge (the top of the pier), top (the drum's cornice), tip, pier (its width at the
 // ledge, default 1.1 times the drum)}.
 function normanTurret(G, k, c, tw, ph) {
@@ -135,9 +135,11 @@ function normanTurret(G, k, c, tw, ph) {
   }
   k.turned('octagon', 'stone', G.V(c[0], top + .2, c[1]).toArray(), [w * 1.2, .4], 0, tint(), ph, top);
   spirelet(G, k, c, top + .4, tw.tip, w * 1.15, ph);
+  // A beast at every other corner of the cornice, head up, as on the photograph.
   for (let j = 0; j < 4; j++) {
-    const a = (j + .5) * Math.PI / 2 + Math.PI / 4, r = w * .6, y = top + .6;
-    G.beam('stone', [c[0] + Math.cos(a) * r * .85, y, c[1] + Math.sin(a) * r * .85], [c[0] + Math.cos(a) * (r + .32), y - .12, c[1] + Math.sin(a) * (r + .32)], .2, tint(), ph);
+    const a = (j * 2 + .5) * face;
+    if (G.mesh) G.mesh.gargoyle([c[0] + Math.cos(a) * w * .5, c[1] + Math.sin(a) * w * .5], top + .62, a, ph, {}, {kind: 'beast', size: .6});
+    else G.beam('stone', [c[0] + Math.cos(a) * w * .5, top + .6, c[1] + Math.sin(a) * w * .5], [c[0] + Math.cos(a) * (w * .5 + .6), top + .5, c[1] + Math.sin(a) * (w * .5 + .6)], .2, tint(), ph);
   }
 }
 
@@ -630,9 +632,17 @@ export default {
   },
 
   // Free-standing pinnacles on buttresses or parapets: `at` [[u, v, foot, height, width], …].
+  //   spouts {out, length, drop, size}: a gutter-gargoyle under each pinnacle, `drop` below its foot, rooted `out` from its axis
+  //   and running `length` outwards (a stone gutter hollowed on top, as photographed under the parapets of the chapels)
   pinnacles(k, e, P) {
-    const G = gothicKit(k, e, P);
-    for (const [u, v, y0, h, w] of e.at ?? []) G.pinnacle([u, v], y0, h, w, G.phase);
+    const G = gothicKit(k, e, P), sp = e.spouts;
+    for (const [u, v, y0, h, w] of e.at ?? []) {
+      G.pinnacle([u, v], y0, h, w, G.phase);
+      if (sp && G.mesh) {
+        const side = v >= 0 ? 1 : -1;
+        G.mesh.gargoyle([u, v + side * (sp.out ?? .75)], y0 - (sp.drop ?? .6), side * Math.PI / 2, G.phase, {}, {kind: 'spout', length: sp.length ?? 1.4, size: sp.size ?? 1});
+      }
+    }
   },
 
   // A Romanesque tower in stages, square then octagonal, each stage lit by round-headed openings, under a low

@@ -473,7 +473,8 @@
           "Every window has swept mouldings (rolls and hollows stepping out of the face), jamb shafts with capitals and a pane of leaded glass set back in the wall; windows of two or more lights have a mullion and a plate of tracery, and those of three lights cusped lancets and a lattice of quatrefoils that nest towards the apex; the chapel of St John's windows are pairs of lancets under their great arch, as photographed.",
           "String courses run under the eaves of the vessel, the aisles, the chapels, the chevet and the transept fronts; gables have their coping, crockets and finial; balustrades are pierced by two rows of quatrefoils; the lantern has the shafts that flank its openings.",
           "The croisillons' vaults no longer poke through the front walls of the transept (vault.end and vault.trim).",
-          "The corner turrets of the transept fronts are redrawn from the south-transept photograph: a square pier up to 26.4 m, an octagonal drum of sixteen colonnettes with capitals under a frieze of small round blind arches, a cornice, an octagonal cone laid in scales to 37.6 m and a spout at four of its corners, where the model had a plain shaft from the ground to 29.5 m and a cone under 2 m high. The overhang recorded in pass 2 (1.285 times the cornice in the model against 1.08 in the photograph) compared a length in metres with one in pixels, the photograph's scale being about 20 % smaller at the turrets than at the cornice (40 against 50 px per metre): back-projected through the fitted camera, for an axis 0.4 to 1.4 m behind the front face, the photographed turrets stand 7.8 m (± 0.4) from the axis of the gable, the model's 8.08 m before this correction; the real gap was in their height and form, not their distance."
+          "The corner turrets of the transept fronts are redrawn from the south-transept photograph: a square pier up to 26.4 m, an octagonal drum of sixteen colonnettes with capitals under a frieze of small round blind arches, a cornice, an octagonal cone laid in scales to 37.6 m and a small carved beast (head up, open jaws, ears, haunches) at four corners of the cornice, where the model had a plain shaft from the ground to 29.5 m and a cone under 2 m high. The overhang recorded in pass 2 (1.285 times the cornice in the model against 1.08 in the photograph) compared a length in metres with one in pixels, the photograph's scale being about 20 % smaller at the turrets than at the cornice (40 against 50 px per metre): back-projected through the fitted camera, for an axis 0.4 to 1.4 m behind the front face, the photographed turrets stand 7.8 m (± 0.4) from the axis of the gable, the model's 8.08 m before this correction; the real gap was in their height and form, not their distance.",
+          "The gargoyles are carved shapes, not sticks: a beast of 0.6 m on the turrets (profile read on the south-transept photograph) and a stone gutter, square and hollowed on top, 1.7 m long and sloping down, under each pinnacle of the chapels (as photographed at the heads of the buttresses of the south side)."
         ],
         "remaining": [
           "The Romanesque cathedral (1030s–1056) is a reasoned massing on the Gothic nave's lines: its heights, openings, crossing tower, transept, apsidioles and short aisled choir are interpreted; its choir plan is too uncertain to restore.",
@@ -498,6 +499,7 @@
       "The first axial chapel of the 13th century, replaced in the 14th, is interpreted as a short apsed chapel.",
       "Reliefs show the carving as photographed today (2011–2023), including the bare tympanum of the central portal and the mutilated porch tympana.",
       "The porch tympana were photographed from below: their size and outline are read on the porches and are approximate.",
+      "The gargoyles are drawn from photographs, not surveyed: the small beasts at the corners of the transept turrets (0.6 m, their profile read on the south-transept photograph at the resolution of a few pixels), and a gutter under each chapel pinnacle (1.7 m, one per buttress head) where the photographs of the lantern and of the south elevation show gutters at several buttress heads, with no count, no survey of their lengths and none of the carved heads they end in.",
       "The corner turrets of the transept fronts are read on one photograph only (the south transept, its camera fitted with rms 1.1): the depth of their axis is not known, and each half metre of depth moves their heights by about a metre. They stand with the top of their pier at 26.4 m, the cornice of their drum at 32 m and the tip of their cone at 37.6 m, to within about 1.5 m. In that fitted view the right-hand turret reads about 2 m lower than the left-hand one, which the model, symmetrical, does not reproduce. The colonnettes, the blind arches, the spouts and the courses of the cone are drawn from the photograph, not surveyed.",
       "The chapel of St John against the south transept is 3.9 m high, as read on the south-transept photograph (its camera 1.9 m above the ground, 4.6 m from the wall). Its windows are one great pointed arch per bay of 3 m (apex 3.3 m) over two lancets, where the photograph shows pairs of lancets under one great arch at a pitch of about 4 m, with cusps in their heads that are not drawn.",
       "Only the south transept has a photograph laid over its capture, from the copy kept in the evidence folder. The other four fitted photographs are on Wikimedia Commons and could not be loaded when the captures were taken, so their comparison is by capture and by the fitted points (rms) alone.",
@@ -2016,6 +2018,11 @@
         0,
         1.4
       ],
+      "spouts": {
+        "out": 0.75,
+        "length": 1.7,
+        "drop": 0.6
+      },
       "at": [
         [
           -29.6,

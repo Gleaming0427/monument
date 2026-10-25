@@ -682,6 +682,38 @@ export function masonry(env) {
     flush(layers, 'stone', tint(stone), ph, extra);
   }
 
+  // ——— Gargoyles ———
+  // A stone spout or a carved beast jutting out of a cornice, built of silhouettes: each part is a profile [s, y] (s out along
+  // the spout, y up, s = 0 at the face of the wall, the first part's root running into it) with a width across, and may be
+  // `shift`ed off the axis (legs, ears, the rims of a gutter). Measured on the photographs of Coutances: a beast about 55 cm
+  // long perched at the corners of a cornice, head up; a gutter 1.5 to 2 m long, square, sloping down, hollowed on top.
+  const GARGOYLES = {
+    beast: () => [
+      {w: .36, poly: [[-.15, -.22], [-.15, .12], [-.08, .24], [.05, .29], [.2, .3], [.34, .27], [.44, .2], [.5, .08], [.5, -.04], [.44, -.16], [.36, -.22]]},
+      ...[-1, 1].map(side => ({w: .1, shift: side * .2, poly: [[-.12, -.2], [-.12, .1], [.04, .2], [.22, .06], [.2, -.2]]})),
+      ...[-1, 1].map(side => ({w: .1, shift: side * .13, poly: [[.3, -.2], [.3, -.36], [.46, -.36], [.46, -.18]]})),
+      {w: .26, poly: [[.42, .06], [.42, .26], [.5, .34], [.62, .34], [.76, .26], [.9, .2], [.96, .12], [.94, .07], [.8, .06], [.7, .08], [.5, .02]]},
+      {w: .2, poly: [[.5, -.04], [.7, -.03], [.9, -.04], [.92, -.1], [.82, -.17], [.62, -.19], [.5, -.15]]},
+      {w: .31, poly: [[.56, .3], [.76, .28], [.78, .33], [.6, .38]]},
+      ...[-1, 1].map(side => ({w: .05, shift: side * .15, poly: [[.64, .21], [.72, .21], [.72, .29], [.64, .29]]})),
+      ...[-1, 1].map(side => ({w: .05, shift: side * .1, poly: [[.46, .3], [.52, .5], [.6, .32]]}))
+    ],
+    spout: L => [
+      {w: .34, poly: [[-.2, -.24], [-.2, .18], [L, .03], [L, -.15], [L * .6, -.2], [.2, -.26]]},
+      ...[-1, 1].map(side => ({w: .06, shift: side * .14, poly: [[-.05, .18], [L, .03], [L, .11], [-.05, .26]]})),
+      {w: .4, poly: [[L - .08, .04], [L + .06, 0], [L + .06, -.2], [L - .08, -.18]]}
+    ]
+  };
+  // `c` [u, v] the point on the wall, `y` the height of the root, `turn` the direction it points in the frame (radians from +u
+  // towards +v), `size` a scale (a beast is 1 m long at size 1; `length` is a spout's, in metres).
+  function gargoyle(c, y, turn, ph = env.phase, extra = {}, {kind = 'beast', size = 1, length = 1.6} = {}) {
+    const d = [Math.cos(turn), Math.sin(turn)], n = [-d[1], d[0]], parts = (GARGOYLES[kind] ?? GARGOYLES.beast)(kind === 'spout' ? length / size : size);
+    for (const part of parts) {
+      const shift = (part.shift ?? 0) * size, F = (s, yy, off) => [c[0] + d[0] * s + n[0] * (off + shift), y + yy, c[1] + d[1] * s + n[1] * (off + shift)];
+      extrude(F, part.poly.map(([s, yy]) => [s * size, yy * size]), part.w * size, ph, extra);
+    }
+  }
+
   // A string course or a cornice: a moulding run along a wall line a→b ([u, v]) at height y, standing out of the face of
   // a wall of thickness t whose outward normal is `out`; `section` (see `moulding`) runs up from y.
   function string(a, b, y, t, out, ph = env.phase, extra = {}, section = null) {
@@ -727,5 +759,5 @@ export function masonry(env) {
     extrude(F, [...up, ...down.reverse()], thick, ph, extra);
   }
 
-  return {wall, gable, arch, ring, opening, panel, quad, rail, shaft, spirelet, pinnacle, pier, flyer, string, tube, loft, extrude, soup, emit, axes, dirOf};
+  return {wall, gable, arch, ring, opening, panel, quad, rail, shaft, spirelet, pinnacle, pier, flyer, gargoyle, string, tube, loft, extrude, soup, emit, axes, dirOf};
 }

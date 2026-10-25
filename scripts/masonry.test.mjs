@@ -116,6 +116,31 @@ test('a moulding is a section run along a path: its depth, its width, and mitred
   assert.ok(Math.max(...ys) > 3 - 1e-6, 'the path is followed to its end');
 });
 
+// A beast and a gutter jutting out of a wall: the first heads along +u, the second along +v.
+engine.generators.meshGargoyle = (k, e, P) => {
+  const G = engine.gothic(k, e, P);
+  G.mesh.gargoyle([0, 0], 5, 0, G.phase, {}, {kind: 'beast', size: 1});
+  G.mesh.gargoyle([0, 0], 8, Math.PI / 2, G.phase, {}, {kind: 'spout', length: 2});
+};
+test('a gargoyle is carved to its profile: a beast about a metre long with ears and open jaws, a gutter as long as it is told', () => {
+  const {pieces} = engine.buildPieces({phases: [{id: 'a'}], masonry: 'mesh', elements: [{type: 'meshGargoyle', phase: 'a', color: '#cfc6b1'}]}), tris = triangles(pieces);
+  const beast = tris.filter(t => t.p.every(v => v[1] < 7)), spout = tris.filter(t => t.p.every(v => v[1] >= 7));
+  const extent = (list, axis) => [Math.min(...list.flatMap(t => t.p.map(v => v[axis]))), Math.max(...list.flatMap(t => t.p.map(v => v[axis])))];
+  const [x0, x1] = extent(beast, 0), [y0, y1] = extent(beast, 1), [z0, z1] = extent(beast, 2);
+  assert.ok(Math.abs(x0 + .15) < .01 && Math.abs(x1 - .96) < .01, `the beast runs from ${x0.toFixed(2)} to ${x1.toFixed(2)} m along its axis`);
+  assert.ok(Math.abs(y0 - (5 - .36)) < .01 && Math.abs(y1 - (5 + .5)) < .01, `from its paws to its ears: ${y0.toFixed(2)} to ${y1.toFixed(2)} m`);
+  assert.ok(z1 - z0 > .45 && z1 - z0 < .55, `across the haunches ${(z1 - z0).toFixed(2)} m`);
+  const [sz0, sz1] = extent(spout, 2), [sx0, sx1] = extent(spout, 0);
+  assert.ok(Math.abs(sz1 - 2.06) < .01, `the gutter's lip stands at ${sz1.toFixed(2)} m`);
+  assert.ok(sx1 - sx0 > .39 && sx1 - sx0 < .41, `its lip is ${(sx1 - sx0).toFixed(2)} m across`);
+  // The ears and the gutter's rims stand off the axis.
+  assert.ok(beast.some(t => t.p.every(v => Math.abs(v[2]) > .08 && v[1] > 5.3)), 'the ears');
+  assert.ok(spout.some(t => t.p.every(v => Math.abs(v[0]) > .1 && v[2] > .5 && v[1] > 7.5 && Math.abs(v[0]) < .2)), 'the rims of the gutter');
+  const bad = tris.filter(t => { const g = cross(sub(t.p[1], t.p[0]), sub(t.p[2], t.p[0])); return g[0] * t.n[0] + g[1] * t.n[1] + g[2] * t.n[2] < 0; });
+  assert.equal(bad.length, 0, `${bad.length} triangles are wound against their normals`);
+  assert.ok(pieces.every(p => p.mesh && [...p.mesh.position, ...p.mesh.normal].every(Number.isFinite)), 'finite patches');
+});
+
 test('in a browser a mesh wall stands, is stone where it is wall and glass where it is not, and is not there before its phase', async () => {
   const dir = await mkdtemp(join(tmpdir(), 'monument-masonry-')), id = 'mesh-wall';
   try {
