@@ -31,8 +31,9 @@ body.empty #empty{display:block}
 body.empty :is(.building,.story,.timeline,.live,#moment,#pin,#leader){display:none!important}
 /* ?clean: the scene alone, to compare it with a photo. ?embed: scene and timeline only */
 body.embed :is(.top,.story,.live){display:none!important}
-/* ?clean&caption: the scene with only the phase date and title, for recordings */
-body.clean.caption .story{display:block!important;left:16px;bottom:16px;width:auto;max-width:70%;padding:10px 14px}
+/* ?clean&caption: the scene with only the phase date and title, for recordings. `top:auto`: from 721 to 1100 px the
+   tablet rule pins the card at the top, and with a bottom as well it stretched into a tall empty panel over the scene. */
+body.clean.caption .story{display:block!important;left:16px;top:auto;bottom:16px;width:auto;max-width:70%;max-height:none;padding:10px 14px}
 body.caption :is(#text,#source,#model-note){display:none!important}
 body.caption #title{font-size:20px;margin:2px 0 0}
 body.clean :is(.top,.timeline,.live,#moment,#pin,#leader,#labels){display:none!important}
