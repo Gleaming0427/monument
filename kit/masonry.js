@@ -386,6 +386,19 @@ export function masonry(env) {
     const holes = oculus ? [{kind: 'circle', s: c, y: oculus.y, r: oculus.r, spokes: 8}] : [];
     layWall({F, len, y0, y1, t, holes, ph, extra, course: .8, shape: {lo: y => c - half(y), hi: y => c + half(y)}});
     for (const o of holes) env.opening(F, o, t, ph, extra);
+    // The coping along the rakes (a section run up each, standing out of the face), crockets, a finial.
+    const lay = frameOf(F), layers = layersFor(1.2), apex = y1 + .3, coping = stack([moulding.fillet(.08, .06), moulding.keel(.34, .2), moulding.fillet(.08, .1)], .02);
+    sweep(layers, lay, [[0, y0], [c, apex]], coping, {base: t / 2 - .12, caps: true});
+    sweep(layers, lay, [[c, apex], [len, y0]], coping, {base: t / 2 - .12, caps: true});
+    flush(layers, 'stone', tint(env.stone), ph, extra);
+    const dirv = [dir[0], dir[1]];
+    for (const side of [0, len]) for (let f = .12; f < .95; f += .14) {
+      const p = F(side + (c - side) * f, 0, t / 2 + .25);
+      env.box('stone', [p[0], p[2]], y0 + H * f + .5, [.3, .42, .3], dirv, tint(env.stone), ph, extra);
+    }
+    const top = F(c, 0, t / 2);
+    env.box('stone', [top[0], top[2]], y1 + 1, [.5, 1.6, .5], dirv, tint(env.stone), ph, extra);
+    env.box('stone', [top[0], top[2]], y1 + 1.6, [1.2, .3, .3], dirv, tint(env.stone), ph, extra);
     return F;
   }
 
@@ -419,9 +432,15 @@ export function masonry(env) {
     const light = outline(o, {foot: y0, tol});
     // The glazing: one pane of leaded glass across the whole light, set back in the wall.
     const glaze = (poly, off, panes) => {
-      const layers = layersFor(1.8), pts = dedupe(poly), at = i => ({p: lay.P(pts[i][0], pts[i][1], off), n: lay.D(0, 0, 1), m: [pts[i][0], pts[i][1], panes]});
-      for (const [i, j, l] of triangulate(pts)) layers.tri(at(i), at(j), at(l));
-      flush(layers, 'glass', tint(o.colors ? o.colors[Math.floor(rand() * o.colors.length)] : env.glass, .2), ph, extra);
+      const pts = dedupe(poly), at = i => ({p: lay.P(pts[i][0], pts[i][1], off), n: lay.D(0, 0, 1), m: [pts[i][0], pts[i][1], panes]});
+      // A window of stained glass (`colors`) is glazed in cells of 1.2 m, each its own colour; plain glass in one pane.
+      const cells = new Map();
+      for (const tri of triangulate(pts)) {
+        const key = o.colors ? tri.map(i => pts[i]).reduce((k, [x, y]) => [k[0] + x / 3, k[1] + y / 3], [0, 0]).map(v => Math.floor(v / 1.2)).join(',') : 'all';
+        if (!cells.has(key)) cells.set(key, layersFor(1.8));
+        cells.get(key).tri(at(tri[0]), at(tri[1]), at(tri[2]));
+      }
+      for (const layers of cells.values()) flush(layers, 'glass', tint(o.colors ? o.colors[Math.floor(rand() * o.colors.length)] : env.glass, .2), ph, extra);
     };
     if (o.photo) { glaze(light, glassOff, o.panes ?? .4); return; }
     if (o.door) {
@@ -461,7 +480,18 @@ export function masonry(env) {
     const front = glassOff + .3, back = glassOff - .02, spring = o.spring, top = env.top(o);
     const lancet = c => ({kind: round ? 'round' : 'pointed', s: c, w: Wl, spring, sill: spring, rise: round ? undefined : Wl * .866});
     const centres = Array.from({length: count}, (_, i) => o.s - W / 2 + Wl / 2 + i * (Wl + m)).reverse();
-    const lights = centres.map(lancet), outlines = lights.map(l => outline(l, {foot: spring, tol}));
+    // A lancet with three or more lights has cusps: a spur of stone pointing in from either side of its head, as the lights
+    // of the photographed chapel windows have, making its head a trefoil.
+    const cusped = poly => {
+      const apexAt = poly.reduce((best, p, i) => p[1] > poly[best][1] ? i : best, 0), size = Math.min(.1, Wl * .09), out = poly.map(p => p);
+      for (const j of [Math.round(apexAt * .55), apexAt + Math.round((poly.length - 1 - apexAt) * .45)]) {
+        const a = poly[j - 1], b = poly[j + 1], l = Math.hypot(b[0] - a[0], b[1] - a[1]) || 1;
+        // The light is to the right of the way of travel (clockwise): the spur points to the right.
+        out[j] = [poly[j][0] + (b[1] - a[1]) / l * size, poly[j][1] - (b[0] - a[0]) / l * size];
+      }
+      return out;
+    };
+    const lights = centres.map(lancet), outlines = lights.map(l => count > 2 && !round ? cusped(outline(l, {foot: spring, tol})) : outline(l, {foot: spring, tol}));
     const head = outline(o, {foot: spring, tol});
     // The plate's contour: the main head, then the bottom edge from right to left with a notch for each lancet.
     const contour = [...head], lit = head.map(() => false);
@@ -474,21 +504,27 @@ export function masonry(env) {
         foils = [{c: [o.s, apex + rO + .09], r: rO}];
       } else {
         // A triangular lattice of foils above the lancets, its first row over the mullions, spaced as the lights are, kept
-        // inside the head and clear of the lancets' arches.
+        // inside the head and clear of the lancets' arches; then the gaps left towards the apex and the springing of the
+        // head are filled with smaller foils, as the photographed windows' heads are, mirrored about the axis.
         const pitch = Wl + m, web = .17, rF = clamp((pitch - web) / 2, .24, .7), margin = .2, rise = pitch * .87;
-        const fits = c => {
-          const ring = Array.from({length: 12}, (_, q) => [c[0] + Math.cos(q / 12 * Math.PI * 2) * rF, c[1] + Math.sin(q / 12 * Math.PI * 2) * rF]);
-          return ring.every(([x, yy]) => yy < top - margin && env.span(o, yy) > Math.abs(x - o.s) + margin) && outlines.every(poly => distance(c, poly) > rF + web * .6);
+        const fits = (c, r) => {
+          const ring = Array.from({length: 12}, (_, q) => [c[0] + Math.cos(q / 12 * Math.PI * 2) * r, c[1] + Math.sin(q / 12 * Math.PI * 2) * r]);
+          return ring.every(([x, yy]) => yy < top - margin && env.span(o, yy) > Math.abs(x - o.s) + margin) && outlines.every(poly => distance(c, poly) > r + web * .6) && foils.every(f => Math.hypot(f.c[0] - c[0], f.c[1] - c[1]) > f.r + r + web * .8);
         };
         const first = [centres[0] - (Wl + m) / 2];
         let y = spring + .3;
-        while (y < top && !fits([first[0], y])) y += .04;
+        while (y < top && !fits([first[0], y], rF)) y += .04;
         for (let row = 0; y + row * rise < top; row++) {
           const n = Math.ceil(W / pitch) + 1;
           for (let i = -n; i <= n; i++) {
             const c = [o.s + (i + (row % 2 ? .5 : 0)) * pitch + (count % 2 ? .5 * pitch : 0), y + row * rise];
-            if (fits(c)) foils.push({c, r: rF});
+            if (fits(c, rF)) foils.push({c, r: rF});
           }
+        }
+        for (const r of [rF * .8, rF * .62, rF * .48, rF * .36, .24]) for (let yy = spring + .3; yy < top; yy += .08) for (let x = 0; x <= W / 2; x += .08) {
+          const c = [o.s + x, yy], mirror = [o.s - x, yy];
+          if ((x > .02 && x < r + .1) || !fits(c, r)) continue;
+          foils.push({c, r}); if (x > .02) foils.push({c: mirror, r});
         }
       }
     }
