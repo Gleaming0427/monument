@@ -1621,6 +1621,8 @@ export const generators = {
           y += h;
         }
         if (butt.pinnacle) G.pinnacle(at(s, d1 - step - w / 2), butt.top, butt.pinnacle, w * .9, G.phase);
+        // A stone gutter out of the upper face of the pier, under the pinnacle, to throw the water of the flyer clear of the aisle roofs.
+        if (butt.spouts && G.mesh) G.mesh.gargoyle(at(s, d1 - step - .3), butt.top - (butt.spouts.drop ?? 1.2), Math.atan2(s.n[1], s.n[0]), G.phase, {}, {kind: 'spout', length: butt.spouts.length ?? 1.6});
         if (flyers && aisles) {
           const ph = flyers.phase ? P(flyers.phase) : G.phase, dA = d0 + .5, dB = vessel.half + .6, m = 9, drop = flyers.drop ?? 4.5;
           const top = t => flyers.from + (flyers.to - flyers.from) * t + .4, low2 = t => flyers.from - drop + (flyers.to - 1.8 - flyers.from + drop) * Math.sin(t * Math.PI / 2);

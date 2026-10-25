@@ -224,7 +224,8 @@ export default {
   // (straight bays or an apse, as `chevetLevel`).
   //   pier     {from (its inner face, in the wall), to (its outer face), width, top, steps: [[height, set back], …]}
   //   pinnacle the pinnacle's height on the pier; `flyer` {to (the vessel's wall line), foot (its upper edge on
-  //            the pier), head (its upper edge on the wall), drop, thick, phase}; `skip` stations left out
+  //            the pier), head (its upper edge on the wall), drop, thick, phase}; `skip` stations left out;
+  //   `spouts` {drop, length}: a stone gutter out of each pier's outer face, `drop` under its top
   flyingButtresses(k, e, P) {
     const G = gothicKit(k, e, P), {pier, flyer} = e, w = pier.width ?? 1.6;
     for (const line of runLines(e)) for (const [i, s] of line.entries()) {
@@ -241,6 +242,7 @@ export default {
       }
       const outer = pier.to - setAt(pier.top - .1);
       if (e.pinnacle) G.pinnacle(at(s, outer - w / 2), pier.top, e.pinnacle, w * .9, G.phase);
+      if (e.spouts && G.mesh) G.mesh.gargoyle(at(s, outer - .3), pier.top - (e.spouts.drop ?? 1), Math.atan2(s.n[1], s.n[0]), G.phase, {}, {kind: 'spout', length: e.spouts.length ?? 1.6});
       if (flyer) {
         const ph = flyer.phase ? P(flyer.phase) : G.phase, dA = Math.min(outer - w / 2, pier.from + 1), dB = flyer.to, m = 10, drop = flyer.drop ?? 3;
         const top = f => flyer.foot + (flyer.head - flyer.foot) * f + .3, low = f => flyer.foot - drop + (flyer.head - 1.6 - flyer.foot + drop) * Math.sin(f * Math.PI / 2);
