@@ -366,6 +366,16 @@ async function evidence(d, text, file, id, at, strict) {
   for (const c of passes) {
     check(Array.isArray(c.captures) && c.captures.length >= photos.length, `${at} pass ${c.pass}: one capture per reference photo (run compare.mjs again)`);
     for (const capture of [...c.captures ?? [], ...c.overlays ?? []]) check(await exists(join(dir, capture)), `${at} pass ${c.pass}: capture ${capture} not found`);
+    // An overlay is the capture with the photograph laid over it at half strength, so it carries the photograph's
+    // detail: a real one is at least a tenth heavier than the bare capture (the lightest in the collection, 1.10).
+    // One within 2 % of it is the capture alone, with the browser's broken-image icon where the photo was meant
+    // to be: the photograph never loaded, and the file claims a check nobody made.
+    for (const overlay of c.overlays ?? []) {
+      const capture = (c.captures ?? []).find(name => basename(name).replace(/^ref-/, '') === basename(overlay).replace(/^overlay-/, ''));
+      if (!capture || !(await exists(join(dir, overlay))) || !(await exists(join(dir, capture)))) continue;
+      const [laid, bare] = [(await stat(join(dir, overlay))).size, (await stat(join(dir, capture))).size];
+      check(laid > bare * 1.02, `${at} pass ${c.pass}: ${overlay} is the capture without a photograph (${laid} bytes against ${bare}): load the photo and run compare.mjs again, or take the overlay out of the pass`);
+    }
     check(Array.isArray(c.gaps) && c.gaps.length > 0 && c.gaps.every(g => typeof g === 'string' && g.length > 10), `${at} pass ${c.pass}: write in "gaps" what differs between each photo and its capture`);
     // The last pass shows the current timeline: one capture per phase. Earlier passes keep the phases of their day.
     if (strict) check(Array.isArray(c.phases) && c.phases.length >= (c === passes.at(-1) ? d.phases.length : 1), `${at} pass ${c.pass}: publication needs one capture per phase (run compare.mjs without --quick)`);

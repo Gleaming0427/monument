@@ -334,7 +334,7 @@
           "reference": 3,
           "element": 18,
           "method": "geometry",
-          "model": "Nave chapels align to the measured bays, with a lower and upper separate pinnacle on every buttress.",
+          "model": "Nave chapels on the measured outline, a lower and an upper separate pinnacle on every buttress; the buttress stations (4.8 m apart) fall within 0.2 m of the buttresses drawn on the north flank of the OpenStreetMap outline.",
           "checked": true,
           "result": "matched"
         },
@@ -380,13 +380,6 @@
           "cathedrale-de-coutances.evidence/compare/pass-1/ref-3.jpg",
           "cathedrale-de-coutances.evidence/compare/pass-1/ref-4.jpg"
         ],
-        "overlays": [
-          "cathedrale-de-coutances.evidence/compare/pass-1/overlay-0.jpg",
-          "cathedrale-de-coutances.evidence/compare/pass-1/overlay-1.jpg",
-          "cathedrale-de-coutances.evidence/compare/pass-1/overlay-2.jpg",
-          "cathedrale-de-coutances.evidence/compare/pass-1/overlay-3.jpg",
-          "cathedrale-de-coutances.evidence/compare/pass-1/overlay-4.jpg"
-        ],
         "phases": [
           "cathedrale-de-coutances.evidence/compare/pass-1/phase-0.jpg",
           "cathedrale-de-coutances.evidence/compare/pass-1/phase-1.jpg",
@@ -417,10 +410,6 @@
           "cathedrale-de-coutances.evidence/compare/pass-2/ref-4.jpg"
         ],
         "overlays": [
-          "cathedrale-de-coutances.evidence/compare/pass-2/overlay-0.jpg",
-          "cathedrale-de-coutances.evidence/compare/pass-2/overlay-1.jpg",
-          "cathedrale-de-coutances.evidence/compare/pass-2/overlay-2.jpg",
-          "cathedrale-de-coutances.evidence/compare/pass-2/overlay-3.jpg",
           "cathedrale-de-coutances.evidence/compare/pass-2/overlay-4.jpg"
         ],
         "phases": [
@@ -435,15 +424,19 @@
           "cathedrale-de-coutances.evidence/compare/pass-2/phase-8.jpg"
         ],
         "gaps": [
-          "After the portal correction, the calibrated west, east, north-east and south comparisons preserve the measured silhouette and major opening counts; the remaining visible differences are confined mainly to sculpture, erosion and details for which no measured survey was found."
+          "After the portal correction, the calibrated west, east, north-east and south comparisons preserve the measured silhouette and major opening counts; the remaining visible differences are confined mainly to sculpture, erosion and details for which no measured survey was found.",
+          "The south-transept photograph laid over the model shows the three lancets, the two cornices and the gable in register; the corner turrets are not (the model's right-hand turret is thicker and stands further out than the photographed one). It also showed the chapel of St John in front of the transept at twice its height.",
+          "Measured on the south-transept photograph and not yet corrected: the corner turrets of the transept fronts overhang too far."
         ],
         "fixed": [
-          "Re-rendered the corrected west façade, retained the unchanged calibrated side and chevet comparisons, and captured the end of all nine construction and transformation phases with the final geometry."
+          "Re-rendered the corrected west façade, retained the unchanged calibrated side and chevet comparisons, and captured the end of all nine construction and transformation phases with the final geometry.",
+          "Lowered the chapel of St John from 8 m at the eaves and 12.5 m at the ridge to 3.9 m with a low lean-to roof against the transept, as read on the south-transept photograph, and shot that viewpoint again. The photograph overlays of the other four viewpoints held no photograph (the capture alone, with a broken-image icon) and were taken out."
         ],
         "remaining": [
           "The Romanesque cathedral (1030s–1056) is a reasoned massing on the Gothic nave's lines: its heights, openings, crossing tower, transept, apsidioles and short aisled choir are interpreted; its choir plan is too uncertain to restore.",
           "No survey of the roof frames was found: they are drawn on the system of Gothic France from about 1220.",
-          "The west portal, south porch and Circata sculpture is shown through credited photographic reliefs over measured architectural openings; worn or hidden carving is not invented as unsupported geometry."
+          "The west portal, south porch and Circata sculpture is shown through credited photographic reliefs over measured architectural openings; worn or hidden carving is not invented as unsupported geometry.",
+          "The corner turrets of the transept fronts overhang more than on the south-transept photograph fitted to the model: the silhouette is 1.285 times the cornice in the model, 1.08 in the photograph."
         ]
       }
     ],
@@ -457,7 +450,11 @@
       "The roof of the lantern burnt in 1944 is shown remade in the same phase: the date of its remaking is not in the sources read.",
       "The first axial chapel of the 13th century, replaced in the 14th, is interpreted as a short apsed chapel.",
       "Reliefs show the carving as photographed today (2011–2023), including the bare tympanum of the central portal and the mutilated porch tympana.",
-      "The porch tympana were photographed from below: their size and outline are read on the porches and are approximate."
+      "The porch tympana were photographed from below: their size and outline are read on the porches and are approximate.",
+      "The corner turrets of the transept fronts overhang more than on the south-transept photograph fitted to the model: the silhouette is 1.285 times the cornice in the model, 1.08 in the photograph.",
+      "The chapel of St John against the south transept is 3.9 m high, as read on the south-transept photograph (its camera 1.9 m above the ground, 4.6 m from the wall). Its windows are one pointed opening per bay of 4.9 m, where the photograph shows pairs of lancets under one great arch at a pitch of about 4 m, and the tracery is not modelled.",
+      "Only the south transept has a photograph laid over its capture, from the copy kept in the evidence folder. The other four fitted photographs are on Wikimedia Commons and could not be loaded when the captures were taken, so their comparison is by capture and by the fitted points (rms) alone.",
+      "The buttresses of the nave chapels stand 4.8 m apart in the model. The north flank of the OpenStreetMap outline draws them at 4.4 to 4.9 m (stations within 0.2 m of the model's); a photograph of the south flank had been read as 3.1 to 3.9 m at the west end and 4.1 to 4.4 m at the east, and that reading is not confirmed by the outline. The two have not been settled on a fitted photograph."
     ],
     "generated": {
       "query": "Cathédrale Notre-Dame de Coutances, Coutances, France",
@@ -2620,7 +2617,7 @@
       "provenance": "interpreted",
       "phase": "chapelles",
       "glass": "#36414e",
-      "note": "Single-storey chapel against the south transept on its outline; its date is not given in the sources used, and its height, windows and roof are interpreted.",
+      "note": "Single-storey chapel against the south transept on its outline. Its date is not given in the sources used. Its height is read on the south-transept photograph fitted to the model (its camera 1.9 m above the ground, 4.6 m from the chapel wall): the top of the wall stands about 3.9 m up, and the roof, a low lean-to against the transept, shows only as a dark band above it. Its windows (pairs of lancets under one great pointed arch, about 3 m wide, apex about 3.3 m) are drawn as one pointed opening each; their tracery is not modelled.",
       "center": [
         1.7,
         21
@@ -2633,19 +2630,22 @@
       ],
       "half": 4.1,
       "thick": 1.1,
-      "wall": 8,
+      "wall": 3.9,
       "windows": {
-        "width": 2,
-        "sill": 2.5,
-        "spring": 5.6
+        "width": 3,
+        "sill": 0.5,
+        "spring": 1.8,
+        "rise": 1.5
       },
       "roof": {
-        "ridge": 12.5
+        "inner": -4.1,
+        "top": 5.1
       },
       "ends": [
         "from",
         "to"
-      ]
+      ],
+      "rail": false
     },
     {
       "use": "chevetLevel#color",
