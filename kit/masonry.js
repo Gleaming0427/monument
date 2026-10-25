@@ -126,14 +126,19 @@ const curveHeights = (o, tol) => [...new Set(outline(o, {tol}).map(p => +p[1].to
 // becomes its own patch, built from the bottom up like the wall beside it.
 export class Layers {
   constructor(frame, step = .9) { this.frame = frame; this.step = step; this.soups = new Map(); }
-  soupAt(y) { const key = Math.floor(y / this.step); if (!this.soups.has(key)) this.soups.set(key, {soup: new Soup(this.frame), seen: new Map()}); return this.soups.get(key); }
-  // A vertex is {p: [u, y, v], n: [u, y, v], m: [s, y, course]}; vertices alike share one index within a layer.
+  soupAt(y) { const key = Math.floor(y / this.step); if (!this.soups.has(key)) this.soups.set(key, {soup: new Soup(this.frame), table: new Map(), q: []}); return this.soups.get(key); }
+  // A vertex is {p: [u, y, v], n: [u, y, v], m: [s, y, course]}; vertices alike (to 0.2 mm, a hundredth of a normal) share
+  // one index within a layer.
   tri(a, b, c) {
-    const slot = this.soupAt((a.p[1] + b.p[1] + c.p[1]) / 3), {soup, seen} = slot;
+    const slot = this.soupAt((a.p[1] + b.p[1] + c.p[1]) / 3), {soup, table, q} = slot;
     const id = v => {
-      const key = `${Math.round(v.p[0] * 5000)},${Math.round(v.p[1] * 5000)},${Math.round(v.p[2] * 5000)},${Math.round(v.n[0] * 500)},${Math.round(v.n[1] * 500)},${Math.round(v.n[2] * 500)},${Math.round(v.m[0] * 100)},${Math.round(v.m[1] * 100)},${v.m[2]}`;
-      let i = seen.get(key);
-      if (i === undefined) { i = soup.vertex(v.p, v.n, v.m); seen.set(key, i); }
+      const k0 = Math.round(v.p[0] * 5000), k1 = Math.round(v.p[1] * 5000), k2 = Math.round(v.p[2] * 5000), k3 = Math.round(v.n[0] * 100), k4 = Math.round(v.n[1] * 100), k5 = Math.round(v.n[2] * 100), k6 = Math.round(v.m[0] * 100), k7 = Math.round(v.m[1] * 100), k8 = v.m[2] * 1000 | 0;
+      let h = Math.imul(k0, 73856093) ^ Math.imul(k1, 19349663) ^ Math.imul(k2, 83492791); h = Math.imul(h ^ k3 * 7 ^ k4 * 131 ^ k5 * 8191, 2654435761) ^ Math.imul(k6 ^ k7 * 31 ^ k8 * 17, 40503);
+      const list = table.get(h);
+      if (list) for (const i of list) { const o = i * 9; if (q[o] === k0 && q[o + 1] === k1 && q[o + 2] === k2 && q[o + 3] === k3 && q[o + 4] === k4 && q[o + 5] === k5 && q[o + 6] === k6 && q[o + 7] === k7 && q[o + 8] === k8) return i; }
+      const i = soup.vertex(v.p, v.n, v.m);
+      q.push(k0, k1, k2, k3, k4, k5, k6, k7, k8);
+      if (list) list.push(i); else table.set(h, [i]);
       return i;
     };
     soup.tri(id(a), id(b), id(c));
@@ -239,7 +244,7 @@ export function plate(layers, lay, contour, holes, {front, back, lit = null, mas
 
 // ——— Foils ———
 // A cusped circle, clockwise: `lobes` arcs of equal radius round [cx, cy], each meeting the next in a point. `r` is
-// the radius of the circle through the tips of the lobes' outer edges; `cusp` (0 to 1) how deep the cusps bite.
+// the radius of the circle through the tips of the lobes' outer edges; `turn` the angle of the first lobe's axis.
 export function foil(cx, cy, r, lobes = 4, {turn = Math.PI / 2, tol = .004} = {}) {
   const half = Math.PI / lobes, rho = r * Math.sin(half) / (1 + Math.sin(half)), ring = r - rho;
   const cusp = ring * Math.cos(half) + Math.sqrt(Math.max(0, rho * rho - (ring * Math.sin(half)) ** 2));
@@ -251,7 +256,6 @@ export function foil(cx, cy, r, lobes = 4, {turn = Math.PI / 2, tol = .004} = {}
   }
   return pts;
 }
-export const circlePoints = (cx, cy, r, tol = .004) => outline({kind: 'circle', s: cx, y: cy, r}, {tol});
 
 // ——— Toolkit ———
 // env: {k (the kit), frame, rand, tint, stone, glass, phase, V, span, top, box (a block of the kit's toolkit)}.
@@ -295,7 +299,7 @@ export function masonry(env) {
       const w = Math.min(o.width ?? o.w ?? 2, len - (o.margin ?? 1.4));
       return w > .7 ? {...o, w, s: o.s ?? len / 2} : null;
     }).filter(Boolean);
-    layWall({a, dir, F, len, y0, y1, t, out, holes, ph, extra, course, shape});
+    layWall({F, len, y0, y1, t, holes, ph, extra, course, shape});
     for (const o of holes) env.opening(F, o, t, ph, extra);
     return F;
   }
@@ -438,7 +442,9 @@ export function masonry(env) {
       for (const tri of triangulate(pts)) {
         const key = o.colors ? tri.map(i => pts[i]).reduce((k, [x, y]) => [k[0] + x / 3, k[1] + y / 3], [0, 0]).map(v => Math.floor(v / 1.2)).join(',') : 'all';
         if (!cells.has(key)) cells.set(key, layersFor(1.8));
-        cells.get(key).tri(at(tri[0]), at(tri[1]), at(tri[2]));
+        // A pane is seen from both sides: from outside, and from the inside of the church.
+        const [a, b, c] = tri.map(at), back = v => ({...v, n: v.n.map(x => -x)});
+        cells.get(key).tri(a, b, c); cells.get(key).tri(back(a), back(c), back(b));
       }
       for (const layers of cells.values()) flush(layers, 'glass', tint(o.colors ? o.colors[Math.floor(rand() * o.colors.length)] : env.glass, .2), ph, extra);
     };
@@ -451,13 +457,21 @@ export function masonry(env) {
         const hw = Math.max(.2, env.span(o, y + .1)), p = F(o.s, 0, 0);
         env.box('wood', [p[0], p[2]], y, [2 * hw, .12, t * .5], dir, tint(o.louvres, .06), ph, extra);
       }
-    } else if (o.glass !== false) glaze(light, glassOff, o.panes ?? .36);
+    } else if (o.glass !== false) glaze(light, glassOff, o.panes ?? .46);
     // The orders round the light, running down its jambs to the sill, standing out of the face.
     const layers = layersFor(1.2), orders = o.orders ?? (W > 4 ? 4 : W > 2.4 ? 3 : 2);
     sweep(layers, lay, light, surroundSection(orders, k), {base: face, closed: circle, caps: true});
     flush(layers, 'stone', tint(stone), ph, extra);
     if (circle) { rose(lay, o, t, ph, extra, face, glassOff, k); return; }
-    if (o.twin && W > 1.6 && o.glass !== false) twin(lay, o, W, y0, face, glassOff, ph, extra, k);
+    // Slim colonnettes up the jambs, each capped by a ring at the springing, as the lancets of the photographed fronts have.
+    if (o.shafts !== false && o.kind !== 'rect' && o.glass !== false && !o.door && !o.louvres && o.spring - y0 > 1.4 && W >= 1.1) {
+      for (const side of [-1, 1]) {
+        const p = F(o.s + side * (W / 2 + .1 * k), 0, face + .08), ys = [y0]; for (let y = y0 + 2.4; y < o.spring - .05; y += 2.4) ys.push(y); ys.push(o.spring);
+        loft([p[0], p[2]], ys, () => .055, ph, extra, {sides: 8, smooth: true, step: 2.4});
+        env.k.turned('torus', 'stone', env.V(p[0], o.spring + .03, p[2]).toArray(), [.17, .08, .17], 0, tint(stone), ph, o.spring, extra);
+      }
+    }
+    if (o.twin && W > 1.6 && o.glass !== false) tracery(lay, o, W, y0, face, glassOff, ph, extra, k);
   }
 
   // The distance from a point to a polyline.
@@ -474,7 +488,7 @@ export function masonry(env) {
   // foiled light (two lights) or a net of foiled lights set in a triangular lattice (three or more), as the chapels'
   // windows have in the photographs. The lancets are open at the bottom, notched into a plate of stone; the mullions
   // are bars that run down to the sill.
-  function twin(lay, o, W, y0, face, glassOff, ph, extra, k) {
+  function tracery(lay, o, W, y0, face, glassOff, ph, extra, k) {
     const layers = layersFor(1.2), count = o.lights ?? (W >= 5 ? 4 : W >= 3.3 ? 3 : 2), round = o.kind === 'round';
     const m = Math.max(.2, W * (count > 2 ? .045 : .07)), Wl = (W - (count - 1) * m) / count;
     const front = glassOff + .3, back = glassOff - .02, spring = o.spring, top = env.top(o);
@@ -584,7 +598,7 @@ export function masonry(env) {
       // The four edges of the slab.
       const edge = (P, Q, n) => soup.fan([P, Q].map(X => soup.vertex(corner(X, up).toArray(), n.toArray())).concat([Q, P].map(X => soup.vertex(corner(X, down).toArray(), n.toArray()))));
       edge(L0, R0, sd.clone().negate()); edge(L1, R1, sd.clone()); edge(L0, L1, tg.clone().negate()); edge(R0, R1, tg.clone());
-      emit(kind === 'lead' && extra?.slateKind ? 'slate' : kind, soup, tint(color, .05), ph, extra);
+      emit(kind, soup, tint(color, .05), ph, extra);
     }
   }
   const quad = (e0, e1, ye, r0, r1, yr, color, ph, extra, kind) => panel(env.V(e0[0], ye, e0[1]), env.V(e1[0], ye, e1[1]), env.V(r0[0], yr, r0[1]), env.V(r1[0], yr, r1[1]), color, ph, extra, kind);
@@ -614,8 +628,8 @@ export function masonry(env) {
 
   // ——— Solids of rings: shafts, cones, spires ———
   // `ys` the heights of the rings, `radius(y)` the circumradius of the regular polygon (`sides`) centred on c ([u, v]),
-  // its first vertex at `turn` + half a side. Flat faces, or smooth normals for a round shaft; `mason` [s scale,
-  // course] draws coursing on the faces ([_, 0] for none, a negative course for scales).
+  // its first vertex at `turn` + half a side. Flat faces, or smooth normals for a round shaft; `course` draws coursing on
+  // the faces (0 for none, a negative course for rows of scales: the height of one).
   function loft(c, ys, radius, ph, extra, {sides = 8, turn = 0, smooth = false, course = 0, cap = true, color = stone, step = 1.2} = {}) {
     const layers = layersFor(step), ring = y => Array.from({length: sides}, (_, k) => { const a = turn + (k + .5) / sides * Math.PI * 2, r = radius(y); return [c[0] + Math.cos(a) * r, c[1] + Math.sin(a) * r, Math.cos(a), Math.sin(a)]; });
     const rings = ys.map(ring);

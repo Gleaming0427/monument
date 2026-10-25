@@ -254,7 +254,7 @@
           "reference": 0,
           "element": 14,
           "method": "geometry",
-          "model": "Square shafts, octagonal belfries, twin openings, clustered fillettes and separately coursed stone spires.",
+          "model": "Square shafts, octagonal belfries, twin openings, clustered fillettes and continuous stone spires dressed in rows of scales.",
           "checked": true,
           "result": "matched"
         },
@@ -438,6 +438,50 @@
           "The west portal, south porch and Circata sculpture is shown through credited photographic reliefs over measured architectural openings; worn or hidden carving is not invented as unsupported geometry.",
           "The corner turrets of the transept fronts overhang more than on the south-transept photograph fitted to the model: the silhouette is 1.285 times the cornice in the model, 1.08 in the photograph."
         ]
+      },
+      {
+        "pass": 3,
+        "captures": [
+          "cathedrale-de-coutances.evidence/compare/pass-3/ref-0.jpg",
+          "cathedrale-de-coutances.evidence/compare/pass-3/ref-1.jpg",
+          "cathedrale-de-coutances.evidence/compare/pass-3/ref-2.jpg",
+          "cathedrale-de-coutances.evidence/compare/pass-3/ref-3.jpg",
+          "cathedrale-de-coutances.evidence/compare/pass-3/ref-4.jpg"
+        ],
+        "overlays": [
+          "cathedrale-de-coutances.evidence/compare/pass-3/overlay-4.jpg"
+        ],
+        "phases": [
+          "cathedrale-de-coutances.evidence/compare/pass-3/phase-0.jpg",
+          "cathedrale-de-coutances.evidence/compare/pass-3/phase-1.jpg",
+          "cathedrale-de-coutances.evidence/compare/pass-3/phase-2.jpg",
+          "cathedrale-de-coutances.evidence/compare/pass-3/phase-3.jpg",
+          "cathedrale-de-coutances.evidence/compare/pass-3/phase-4.jpg",
+          "cathedrale-de-coutances.evidence/compare/pass-3/phase-5.jpg",
+          "cathedrale-de-coutances.evidence/compare/pass-3/phase-6.jpg",
+          "cathedrale-de-coutances.evidence/compare/pass-3/phase-7.jpg",
+          "cathedrale-de-coutances.evidence/compare/pass-3/phase-8.jpg"
+        ],
+        "gaps": [
+          "South transept (ref 4), photograph and capture side by side: the three lancets, the cornice and the gable stand where they do in the photograph, but their reveals are shallower and their glass plainer: the photograph shows a lattice of iron bars every four or five panes and slender shafts with capitals up the jambs, which the model reduces to two orders of mouldings, a shaft and a ring per jamb, and panes of 46 cm with an iron bar every fourth row.",
+          "The stone: the photographs' walls are irregular (blocks of every size, repairs, lichen, dark crusts on the upper walls and the north side); the model's courses are a regular pattern of about 32 cm whose beds and heads wander, with a tone per block and a slow weathering. It is typical of the walls photographed, not a drawing of any course of the building.",
+          "The chapel windows of the south side (photographs of the lantern and of the south elevation): the model has the lancets, the mullions and a head filled with foils that nest as they do in the photograph, but every window of a given width has the same design, where the photographs show a net of quatrefoils on one bay and trefoil-headed lights under ogee arches on the next.",
+          "The corner turrets of the transept fronts are still thicker than the photographed ones (recorded in pass 2); the upper walls and the lantern are lighter in the model than the dark weathered stone of the photographs."
+        ],
+        "fixed": [
+          "Walls, gables, arches, roofs, balustrades, pinnacles, flying buttresses, spires and the ribs of the vaults are continuous surfaces, not 43,000 blocks and chains of beams: openings are cut by their true outline (arch curves sampled to 5 mm), with reveals, sills and soffits, and the joints are drawn by the material at the size of the photographed courses.",
+          "Every window has swept mouldings (rolls and hollows stepping out of the face), jamb shafts with capitals and a pane of leaded glass set back in the wall; windows of two or more lights have a mullion and a plate of tracery, and those of three lights cusped lancets and a lattice of quatrefoils that nest towards the apex; the chapel of St John's windows are pairs of lancets under their great arch, as photographed.",
+          "String courses run under the eaves of the vessel, the aisles, the chapels, the chevet and the transept fronts; gables have their coping, crockets and finial; balustrades are pierced by two rows of quatrefoils; the lantern has the shafts that flank its openings.",
+          "The croisillons' vaults no longer poke through the front walls of the transept (vault.end and vault.trim)."
+        ],
+        "remaining": [
+          "The Romanesque cathedral (1030s–1056) is a reasoned massing on the Gothic nave's lines: its heights, openings, crossing tower, transept, apsidioles and short aisled choir are interpreted; its choir plan is too uncertain to restore.",
+          "No survey of the roof frames was found: they are drawn on the system of Gothic France from about 1220.",
+          "The west portal, south porch and Circata sculpture is shown through credited photographic reliefs over measured architectural openings; worn or hidden carving is not invented as unsupported geometry.",
+          "The corner turrets of the transept fronts overhang more than on the south-transept photograph fitted to the model: the silhouette is 1.285 times the cornice in the model, 1.08 in the photograph.",
+          "The tracery of the windows is drawn by family, not surveyed window by window (see evidence.uncertainties): only the west window, the gallery of roses, the portals and the tympana carry their real tracery, as photographs laid on the model.",
+          "The stone is continuous masonry whose courses and tones are read on the photographs, not surveyed (see evidence.uncertainties)."
+        ]
       }
     ],
     "uncertainties": [
@@ -448,11 +492,13 @@
       "The sacristy and chapter house before the north transept and the chapel of St John against the south transept are drawn on their outlines with interpreted heights and dates (shown with the nave chapels).",
       "The organ case's date is not given in the sources read: it is shown with the organ installed in 1812; the tribune's depth and the altar's depth are not measured.",
       "The roof of the lantern burnt in 1944 is shown remade in the same phase: the date of its remaking is not in the sources read.",
+      "The tracery of the windows is drawn by family, not surveyed window by window: lancets between mullions under a head filled with foils that nest and decrease in size (as in the chapel windows photographed on the south side), a pane of leaded glass behind, the number of lights following the width. Only the west window, the gallery of roses, the portals and the tympana carry their real tracery, as photographs laid on the model; their depth is a parallax read from the light and shade.",
+      "The stone is drawn as continuous masonry whose courses (about 32 cm, their beds and heads wandering, a tone to each block) are read on the photographs: the pattern is typical of the walls photographed, not a survey of any course, and no scan or survey of the joints was found.",
       "The first axial chapel of the 13th century, replaced in the 14th, is interpreted as a short apsed chapel.",
       "Reliefs show the carving as photographed today (2011–2023), including the bare tympanum of the central portal and the mutilated porch tympana.",
       "The porch tympana were photographed from below: their size and outline are read on the porches and are approximate.",
       "The corner turrets of the transept fronts overhang more than on the south-transept photograph fitted to the model: the silhouette is 1.285 times the cornice in the model, 1.08 in the photograph.",
-      "The chapel of St John against the south transept is 3.9 m high, as read on the south-transept photograph (its camera 1.9 m above the ground, 4.6 m from the wall). Its windows are one pointed opening per bay of 4.9 m, where the photograph shows pairs of lancets under one great arch at a pitch of about 4 m, and the tracery is not modelled.",
+      "The chapel of St John against the south transept is 3.9 m high, as read on the south-transept photograph (its camera 1.9 m above the ground, 4.6 m from the wall). Its windows are one great pointed arch per bay of 3 m (apex 3.3 m) over two lancets, where the photograph shows pairs of lancets under one great arch at a pitch of about 4 m, with cusps in their heads that are not drawn.",
       "Only the south transept has a photograph laid over its capture, from the copy kept in the evidence folder. The other four fitted photographs are on Wikimedia Commons and could not be loaded when the captures were taken, so their comparison is by capture and by the fitted points (rms) alone.",
       "The buttresses of the nave chapels stand 4.8 m apart in the model. The north flank of the OpenStreetMap outline draws them at 4.4 to 4.9 m (stations within 0.2 m of the model's); a photograph of the south flank had been read as 3.1 to 3.9 m at the west end and 4.1 to 4.4 m at the east, and that reading is not confirmed by the outline. The two have not been settled on a fitted photograph."
     ],
@@ -2086,7 +2132,7 @@
     {
       "use": "transeptFront",
       "name": "Pignon du croisillon nord",
-      "glass": "#5d7391",
+      "glass": "#52647c",
       "center": [
         0.9,
         -14.1
@@ -2148,7 +2194,7 @@
     {
       "use": "transeptFront",
       "name": "Pignon du croisillon sud",
-      "glass": "#5d7391",
+      "glass": "#52647c",
       "center": [
         0.9,
         16.9
@@ -2630,7 +2676,7 @@
       "provenance": "interpreted",
       "phase": "chapelles",
       "glass": "#36414e",
-      "note": "Single-storey chapel against the south transept on its outline. Its date is not given in the sources used. Its height is read on the south-transept photograph fitted to the model (its camera 1.9 m above the ground, 4.6 m from the chapel wall): the top of the wall stands about 3.9 m up, and the roof, a low lean-to against the transept, shows only as a dark band above it. Its windows (pairs of lancets under one great pointed arch, about 3 m wide, apex about 3.3 m) are drawn as one pointed opening each; their tracery is not modelled.",
+      "note": "Single-storey chapel against the south transept on its outline. Its date is not given in the sources used. Its height is read on the south-transept photograph fitted to the model (its camera 1.9 m above the ground, 4.6 m from the chapel wall): the top of the wall stands about 3.9 m up, and the roof, a low lean-to against the transept, shows only as a dark band above it. Its windows (pairs of lancets under one great pointed arch, about 3 m wide, apex about 3.3 m) are drawn as such, two lights under the great arch with a mullion, without the cusps the photograph shows in the lancets' heads.",
       "center": [
         1.7,
         21
@@ -2648,7 +2694,9 @@
         "width": 3,
         "sill": 0.5,
         "spring": 1.8,
-        "rise": 1.5
+        "rise": 1.5,
+        "twin": true,
+        "oculus": false
       },
       "roof": {
         "inner": -4.1,

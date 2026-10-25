@@ -67,7 +67,7 @@ test('a wall of patches is the wall: cut by the opening\'s own outline, faces tu
     assert.ok(p.top <= e[13] + half[1] + 1e-4 && p.top > e[13] + half[1] - .0201, `top ${p.top} against its box`);
     assert.ok([...p.mesh.position, ...p.mesh.normal].every(Number.isFinite));
   }
-  // The outer skin (normal +v, z = thick / 2... the wall's face): its area is the wall's, less the opening's.
+  // The outer skin (the faces looking out, in the plane of the wall's face): its area is the wall's, less the opening's.
   const face = tris.filter(t => t.n[2] > .99 && t.p.every(v => Math.abs(v[2] - WALL.thick / 2) < 1e-6));
   const skin = face.reduce((s, t) => s + area(t), 0);
   // The opening's area by its own formula: straight sides up to the springing, then two arcs up to the apex.
@@ -101,19 +101,18 @@ test('a wall of patches is the wall: cut by the opening\'s own outline, faces tu
 });
 
 test('a moulding is a section run along a path: its depth, its width, and mitred corners', () => {
-  const layers = new Map(), emit = [];
-  const soupLayers = new engine.Layers(null, 100);
-  const F = (s, y, off) => [s, y, off];
-  engine.sweep(soupLayers, engine.frameOf(F), [[0, 0], [4, 0], [4, 3]], engine.moulding.fillet(.2, .1), {base: 0, caps: true});
-  soupLayers.flush(soup => emit.push(soup));
-  void layers;
+  const emit = [], layers = new engine.Layers(null, 100);
+  // A path that goes along 4 m, then turns up 3 m (clockwise seen from outside, so "outwards" is to its left), a fillet 0.2 wide
+  // and 0.1 proud of the face, in the plane z = 0 of the frame (s, y, off).
+  engine.sweep(layers, engine.frameOf((s, y, off) => [s, y, off]), [[0, 0], [4, 0], [4, 3]], engine.moulding.fillet(.2, .1), {base: 0, caps: true});
+  layers.flush(soup => emit.push(soup));
   assert.equal(emit.length, 1);
-  const P = emit[0].pos, ys = [], zs = [], xs = [];
+  const P = emit[0].pos, xs = [], ys = [], zs = [];
   for (let i = 0; i < P.length; i += 3) { xs.push(P[i]); ys.push(P[i + 1]); zs.push(P[i + 2]); }
-  // The path turns a right angle at (4, 0): the outer side of the section (r = .2, to the left of travel) is mitred, so the
-  // outside corner lands at (4.2, 0.2)... on the left of the way of travel, which here is up then right-to-left.
-  assert.ok(Math.max(...zs) - .1 < 1e-9 && Math.min(...zs) > -1e-9, 'the section stands .1 out of the face');
-  assert.ok(xs.some(x => Math.abs(x - 3.8) < 1e-6) || xs.some(x => Math.abs(x - 4.2) < 1e-6), 'the corner is mitred');
+  assert.ok(Math.max(...zs) <= .1 + 1e-9 && Math.min(...zs) >= -1e-9, 'the section stands .1 out of the face');
+  // Travelling along +s, "outwards" (to the left) is +y; turning up, it is -x. At the corner the two offsets meet in a mitre:
+  // the outer edge of the section is at y = .2 along the first leg, at x = 3.8 along the second, and they meet at (3.8, .2).
+  assert.ok(xs.some((x, i) => Math.abs(x - 3.8) < 1e-9 && Math.abs(ys[i] - .2) < 1e-9), 'the corner is mitred');
   assert.ok(Math.max(...ys) > 3 - 1e-6, 'the path is followed to its end');
 });
 

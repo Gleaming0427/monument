@@ -106,10 +106,10 @@ const GLASS_COLOR = `
     vec2 cell=vec2(vMason.x/pw,vMason.y/ph),id=floor(cell),f=fract(cell);
     float fp=max(max(fwidth(vMason.x),fwidth(vMason.y)),1e-4);
     float edge=min(min(f.x*pw,(1.-f.x)*pw),min(f.y*ph,(1.-f.y)*ph));
-    float lead=(1.-smoothstep(.006,.006+fp,edge))*clamp(.012/fp,0.,1.);
+    float lead=(1.-smoothstep(.008,.008+fp,edge))*clamp(.016/fp,0.,1.);
     float bar=mod(id.y,4.)<.5?(1.-smoothstep(.012,.012+fp,abs(f.y*ph-.02)))*clamp(.024/fp,0.,1.):0.;
     float tone=mh21(id);
-    diffuseColor.rgb*=(.82+.34*tone)*vec3(.94+.12*mh21(id+1.7),.96+.08*mh21(id+3.3),1.);
+    diffuseColor.rgb*=(.93+.14*tone)*vec3(.97+.06*mh21(id+1.7),.98+.04*mh21(id+3.3),1.);
     diffuseColor.rgb=mix(diffuseColor.rgb,vec3(.2,.21,.23),max(lead,bar)*.92);
   }`;
 const MASON_NORMAL = `
@@ -470,7 +470,7 @@ function gothic(k, e, P) {
   // outline of their openings (kit/masonry.js), not as courses of boxes. The toolkit is the same either way.
   if (k.masonry === 'mesh') {
     const frame = {point: ([u, y, v]) => V(u, y, v).toArray(), vector: ([a, y, b]) => [a * co + b * si, y, -a * si + b * co]};
-    const M = masonry({k, frame, rand: k.rand, tint, stone, glass, phase, V, rot, span, top, box, opening: (...args) => toolkit.opening(...args), jointCourse: e.jointCourse});
+    const M = masonry({k, frame, rand: k.rand, tol: k.tolerance, tint, stone, glass, phase, V, rot, span, top, box, opening: (...args) => toolkit.opening(...args), jointCourse: e.jointCourse});
     Object.assign(toolkit, {wall: M.wall, gable: M.gable, arch: M.arch, ring: M.ring, opening: M.opening, panel: M.panel, quad: M.quad, rail: M.rail, pinnacle: M.pinnacle, mesh: M});
   }
   return toolkit;
@@ -1531,6 +1531,7 @@ export const generators = {
           if (arcade) windows.push({kind: 'pointed', w: len - (e.piers ?? 1.3) * .7, sill: from, spring: from, glass: false, margin: 0});
           if (arcade && vessel.tribune && len > (vessel.tribune.width ?? 3) + 1) windows.push({kind: 'pointed', twin: true, oculus: false, glass: false, ...vessel.tribune});
           G.wall(at(a0, vessel.half), at(a1, vessel.half), from, vessel.eave, vessel.thick ?? 1.2, out, windows, G.phase);
+          if (G.mesh) G.mesh.string(at(a0, vessel.half), at(a1, vessel.half), vessel.eave - .55, vessel.thick ?? 1.2, out, G.phase);
           G.rail(at(a0, eaveOut - .2), at(a1, eaveOut - .2), vessel.eave, G.phase);
         }
         if (vault && !ribbed) {
@@ -1560,9 +1561,11 @@ export const generators = {
           // The aisle wall and its roof, replaced when chapels are built out between the buttresses.
           const gone = chapels?.phase ? {until: chapelPhase} : {};
           G.wall(at(s0, aisles.half), at(s1, aisles.half), 0, aisles.wall, 1.1, out, aisles.windows ? [{kind: 'pointed', ...aisles.windows}] : [], G.phase, gone);
+          if (G.mesh) G.mesh.string(at(s0, aisles.half), at(s1, aisles.half), aisles.wall - .5, 1.1, out, G.phase, gone);
           G.quad(at(s0, aisles.half + .4), at(s1, aisles.half + .4), aisles.wall + .2, at(s0, vessel.half + .7), at(s1, vessel.half + .7), aisles.top, G.lead, G.phase, gone);
           if (chapels) {
             G.wall(at(s0, chapels.half), at(s1, chapels.half), 0, chapels.wall, 1.1, out, chapels.windows ? [{kind: 'pointed', twin: true, ...chapels.windows}] : [], chapelPhase);
+            if (G.mesh) G.mesh.string(at(s0, chapels.half), at(s1, chapels.half), chapels.wall - .5, 1.1, out, chapelPhase);
             G.quad(at(s0, chapels.half + .4), at(s1, chapels.half + .4), chapels.wall + .2, at(s0, vessel.half + .7), at(s1, vessel.half + .7), aisles.top, G.lead, chapelPhase);
             if (chapels.gables) {
               const len = Math.hypot(at(s1, chapels.half)[0] - at(s0, chapels.half)[0], at(s1, chapels.half)[1] - at(s0, chapels.half)[1]), inset = Math.max(.6, (len - chapels.gables.width) / 2), d = chapels.half + .3;
@@ -1925,6 +1928,8 @@ export function buildPieces(data) {
   const P = id => { if (!(id in index)) throw new Error(`Unknown phase: ${id}`); return index[id]; };
   const k = kit(random(data.seed ?? 7));
   k.masonry = data.masonry ?? 'blocks';
+  // Chord error of the curves of continuous masonry, in metres: what the monument's visual quality asks of its meshes.
+  k.tolerance = {basic: .01, standard: .005, cinematic: .0025}[data.visualStyle?.quality] ?? .005;
   for (const [elementIndex, element] of data.elements.entries()) {
     const before = k.pieces.length, flatsBefore = k.flats.length;
     if(!generators[element.type])throw new Error(`Unknown brick: ${element.type}. Add a generator before loading this monument.`);
