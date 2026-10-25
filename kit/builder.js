@@ -1900,7 +1900,7 @@ export function createStage(host) {
   const rim = new T.DirectionalLight('#5c7cff', LIGHT.rimI);
   const ambient = new T.AmbientLight('#dbe6ef', LIGHT.ambient);
   scene.add(hemi, sun, rim, ambient, sun.target);
-  renderer.toneMappingExposure = 1.02; renderer.shadowMap.type = T.PCFSoftShadowMap;
+  renderer.toneMappingExposure = 1.02; renderer.shadowMap.type = T.PCFShadowMap;
   // The linear colour that ACES tone mapping (as three.js applies it, at this exposure) turns into `target`:
   // the backdrop then shows exactly as paper.
   const acesInverse = (target, exposure) => {
