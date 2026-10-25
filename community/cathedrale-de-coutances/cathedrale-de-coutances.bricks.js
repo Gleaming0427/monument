@@ -106,6 +106,40 @@ function fillette(G, k, c, y0, top, tip, r, ph, extra = {}) {
   }
   spirelet(G, k, c, top + .4, tip, 2 * r * .95, ph, extra);
 }
+// A turret of the Norman transept fronts, as the photograph of the south front shows it: a square pier that
+// batters up to a ledge, an octagonal drum ringed by slender colonnettes under a frieze of small round blind
+// arches, and an octagonal cone laid in scales, with a spout at four of its corners. `c` [u, v] is its axis;
+// tw {width (the drum), ledge (the top of the pier), top (the drum's cornice), tip, pier (its width at the
+// ledge, default 1.1 times the drum)}.
+function normanTurret(G, k, c, tw, ph) {
+  const w = tw.width, ledge = tw.ledge ?? tw.top - 3, top = tw.top, pier = tw.pier ?? w, foot = pier + .5, tint = () => G.tint(G.stone);
+  const wide = y => foot - (foot - pier) * Math.min(1, y / ledge);
+  if (G.mesh) {
+    const ys = []; for (let y = 0; y < ledge - .05; y += 1.2) ys.push(y); ys.push(ledge);
+    G.mesh.loft(c, ys, y => wide(y) / 2 * Math.SQRT2, ph, {}, {sides: 4, turn: 0, course: .35, step: 1.2});
+    G.mesh.loft(c, [ledge, ledge + .3], y => (pier + .4 - (y - ledge) / .3 * .25) / 2 * Math.SQRT2, ph, {}, {sides: 4, turn: 0, course: .35, step: .3});
+  } else for (let y = 0; y < ledge - .05;) { const h = Math.min(1, ledge - y); G.box('stone', c, y + h / 2, [wide(y + h / 2), h * .96, wide(y + h / 2)], [1, 0], tint(), ph); y += h; }
+  const y0 = ledge + .3, y1 = top - .5, apothem = w / 2 * Math.cos(Math.PI / 8), face = Math.PI / 4;
+  shaft(G, k, c, y0, y1, w, ph);
+  shaft(G, k, c, y1 - .05, top, w * 1.08, ph);
+  // Colonnettes on every face and on every arris, the frieze of blind arches between them.
+  for (let i = 0; i < 16; i++) {
+    const a = i * face / 2, r = i % 2 ? w / 2 : apothem + .05, q = G.V(c[0] + Math.cos(a) * r, 0, c[1] + Math.sin(a) * r);
+    k.turned('drum', 'stone', [q.x, (y0 + y1 - .5) / 2, q.z], [.18, y1 - .5 - y0], 0, tint(), ph, y0);
+    k.turned('drum', 'stone', [q.x, y0 + .12, q.z], [.27, .24], 0, tint(), ph, y0);
+    k.turned('drum', 'stone', [q.x, y1 - .56, q.z], [.27, .2], 0, tint(), ph, y1 - .66);
+  }
+  if (G.mesh) for (let j = 0; j < 8; j++) {
+    const phi = j * face, n = [Math.cos(phi), Math.sin(phi)], tg = [-n[1], n[0]], F = (ss, y, off) => [c[0] + n[0] * (apothem + off) + tg[0] * ss, y, c[1] + n[1] * (apothem + off) + tg[1] * ss];
+    for (const ss of [-.24, .24]) G.arch(F, ss, .38, y1 - .78, .03, .1, ph, {}, 'round', 3);
+  }
+  k.turned('octagon', 'stone', G.V(c[0], top + .2, c[1]).toArray(), [w * 1.2, .4], 0, tint(), ph, top);
+  spirelet(G, k, c, top + .4, tw.tip, w * 1.15, ph);
+  for (let j = 0; j < 4; j++) {
+    const a = (j + .5) * Math.PI / 2 + Math.PI / 4, r = w * .6, y = top + .6;
+    G.beam('stone', [c[0] + Math.cos(a) * r * .85, y, c[1] + Math.sin(a) * r * .85], [c[0] + Math.cos(a) * (r + .32), y - .12, c[1] + Math.sin(a) * (r + .32)], .2, tint(), ph);
+  }
+}
 
 export default {
   // A Gothic church body (the kit's `basilica`) under slate roofs, as in Normandy and Brittany: the same
@@ -531,8 +565,9 @@ export default {
 
   // The end of a Norman transept arm, facing -u from the front line (u = 0): tall lancets side by side (their
   // sill raised where an annex stands before them), a gable with blind lancets rising to its apex, and two
-  // turrets clad with shafts, crowned by stone cones.
-  //   width, thick, eave, apex, windows {count, width, sill, spring}, gable {count}, turrets {width, top, tip}
+  // turrets (a pier, a drum of colonnettes and blind arches, a scaled cone).
+  //   width, thick, eave, apex, windows {count, width, sill, spring}, gable {count},
+  //   turrets {width (the drum), ledge (the top of the pier), top (the drum's cornice), tip, pier, offset (of the axis beyond the front's end, in drum widths), depth (of the axis behind the front face)}
   transeptFront(k, e, P) {
     const G = gothicKit(k, e, P), hw = e.width / 2, t = e.thick ?? 1.8, out = [-1, 0], W = e.windows, n = W.count ?? 3, step = (2 * hw - 2) / n;
     G.wall([t / 2, -hw], [t / 2, hw], 0, e.eave, t, out, Array.from({length: n}, (_, i) => ({kind: 'pointed', s: 1 + step * (i + .5), w: W.width ?? step - 1, sill: W.sill, spring: W.spring + (i === (n - 1) / 2 ? W.middle ?? 0 : 0), twin: W.twin ?? false, margin: 0})), G.phase);
@@ -550,13 +585,7 @@ export default {
       G.arch(F, s, gw - .2, spring, 0, .24, G.phase, {}, 'pointed', 3);
     }
     const tw = e.turrets;
-    if (tw) for (const side of [-1, 1]) {
-      const c = [t / 2 - .2, side * (hw + tw.width * .3)];
-      shaft(G, k, c, 0, tw.top, tw.width, G.phase);
-      for (let i = 0; i < 8; i++) { const a = (i + .5) / 8 * Math.PI * 2, q = G.V(c[0] + Math.cos(a) * tw.width * .52, 0, c[1] + Math.sin(a) * tw.width * .52); k.turned('drum', 'stone', [q.x, tw.top * .6, q.z], [.22, tw.top * .78], 0, G.tint(G.stone), G.phase, tw.top * .2); }
-      k.turned('octagon', 'stone', G.V(c[0], tw.top + .2, c[1]).toArray(), [tw.width * 1.2, .4], 0, G.tint(G.stone), G.phase, tw.top);
-      spirelet(G, k, c, tw.top + .4, tw.tip, tw.width * .95, G.phase);
-    }
+    if (tw) for (const side of [-1, 1]) normanTurret(G, k, [tw.depth ?? 1.1, side * (hw + tw.width * (tw.offset ?? .3))], tw, G.phase);
   },
 
   // A square Norman turret with a stone cone: a shaft laid course by course with a blind arcade on each face and

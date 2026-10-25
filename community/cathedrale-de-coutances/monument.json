@@ -344,7 +344,7 @@
           "reference": 3,
           "element": 22,
           "method": "geometry",
-          "model": "Each transept front has three deep pointed windows, a seven-lancet gable field and paired shaft-clad turrets.",
+          "model": "Each transept front has three deep pointed windows, a seven-lancet gable field and two turrets, each a square pier under an octagonal drum of colonnettes and blind arches, crowned by a scaled cone.",
           "checked": true,
           "result": "matched"
         },
@@ -466,19 +466,20 @@
           "South transept (ref 4), photograph and capture side by side: the three lancets, the cornice and the gable stand where they do in the photograph, but their reveals are shallower and their glass plainer: the photograph shows a lattice of iron bars every four or five panes and slender shafts with capitals up the jambs, which the model reduces to two orders of mouldings, a shaft and a ring per jamb, and panes of 46 cm with an iron bar every fourth row.",
           "The stone: the photographs' walls are irregular (blocks of every size, repairs, lichen, dark crusts on the upper walls and the north side); the model's courses are a regular pattern of about 32 cm whose beds and heads wander, with a tone per block and a slow weathering. It is typical of the walls photographed, not a drawing of any course of the building.",
           "The chapel windows of the south side (photographs of the lantern and of the south elevation): the model has the lancets, the mullions and a head filled with foils that nest as they do in the photograph, but every window of a given width has the same design, where the photographs show a net of quatrefoils on one bay and trefoil-headed lights under ogee arches on the next.",
-          "The corner turrets of the transept fronts are still thicker than the photographed ones (recorded in pass 2); the upper walls and the lantern are lighter in the model than the dark weathered stone of the photographs."
+          "The upper walls and the lantern are lighter in the model than the dark weathered stone of the photographs."
         ],
         "fixed": [
           "Walls, gables, arches, roofs, balustrades, pinnacles, flying buttresses, spires and the ribs of the vaults are continuous surfaces, not 43,000 blocks and chains of beams: openings are cut by their true outline (arch curves sampled to 5 mm), with reveals, sills and soffits, and the joints are drawn by the material at the size of the photographed courses.",
           "Every window has swept mouldings (rolls and hollows stepping out of the face), jamb shafts with capitals and a pane of leaded glass set back in the wall; windows of two or more lights have a mullion and a plate of tracery, and those of three lights cusped lancets and a lattice of quatrefoils that nest towards the apex; the chapel of St John's windows are pairs of lancets under their great arch, as photographed.",
           "String courses run under the eaves of the vessel, the aisles, the chapels, the chevet and the transept fronts; gables have their coping, crockets and finial; balustrades are pierced by two rows of quatrefoils; the lantern has the shafts that flank its openings.",
-          "The croisillons' vaults no longer poke through the front walls of the transept (vault.end and vault.trim)."
+          "The croisillons' vaults no longer poke through the front walls of the transept (vault.end and vault.trim).",
+          "The corner turrets of the transept fronts are redrawn from the south-transept photograph: a square pier up to 26.4 m, an octagonal drum of sixteen colonnettes with capitals under a frieze of small round blind arches, a cornice, an octagonal cone laid in scales to 37.6 m and a spout at four of its corners, where the model had a plain shaft from the ground to 29.5 m and a cone under 2 m high. The overhang recorded in pass 2 (1.285 times the cornice in the model against 1.08 in the photograph) compared a length in metres with one in pixels, the photograph's scale being about 20 % smaller at the turrets than at the cornice (40 against 50 px per metre): back-projected through the fitted camera, for an axis 0.4 to 1.4 m behind the front face, the photographed turrets stand 7.8 m (± 0.4) from the axis of the gable, the model's 8.08 m before this correction; the real gap was in their height and form, not their distance."
         ],
         "remaining": [
           "The Romanesque cathedral (1030s–1056) is a reasoned massing on the Gothic nave's lines: its heights, openings, crossing tower, transept, apsidioles and short aisled choir are interpreted; its choir plan is too uncertain to restore.",
           "No survey of the roof frames was found: they are drawn on the system of Gothic France from about 1220.",
           "The west portal, south porch and Circata sculpture is shown through credited photographic reliefs over measured architectural openings; worn or hidden carving is not invented as unsupported geometry.",
-          "The corner turrets of the transept fronts overhang more than on the south-transept photograph fitted to the model: the silhouette is 1.285 times the cornice in the model, 1.08 in the photograph.",
+          "The corner turrets of the transept fronts are read on a single photograph (see evidence.uncertainties): their heights hold to within about 1.5 m and the two turrets are drawn alike, where the photograph shows the right-hand one about 2 m lower.",
           "The tracery of the windows is drawn by family, not surveyed window by window (see evidence.uncertainties): only the west window, the gallery of roses, the portals and the tympana carry their real tracery, as photographs laid on the model.",
           "The stone is continuous masonry whose courses and tones are read on the photographs, not surveyed (see evidence.uncertainties)."
         ]
@@ -497,7 +498,7 @@
       "The first axial chapel of the 13th century, replaced in the 14th, is interpreted as a short apsed chapel.",
       "Reliefs show the carving as photographed today (2011–2023), including the bare tympanum of the central portal and the mutilated porch tympana.",
       "The porch tympana were photographed from below: their size and outline are read on the porches and are approximate.",
-      "The corner turrets of the transept fronts overhang more than on the south-transept photograph fitted to the model: the silhouette is 1.285 times the cornice in the model, 1.08 in the photograph.",
+      "The corner turrets of the transept fronts are read on one photograph only (the south transept, its camera fitted with rms 1.1): the depth of their axis is not known, and each half metre of depth moves their heights by about a metre. They stand with the top of their pier at 26.4 m, the cornice of their drum at 32 m and the tip of their cone at 37.6 m, to within about 1.5 m. In that fitted view the right-hand turret reads about 2 m lower than the left-hand one, which the model, symmetrical, does not reproduce. The colonnettes, the blind arches, the spouts and the courses of the cone are drawn from the photograph, not surveyed.",
       "The chapel of St John against the south transept is 3.9 m high, as read on the south-transept photograph (its camera 1.9 m above the ground, 4.6 m from the wall). Its windows are one great pointed arch per bay of 3 m (apex 3.3 m) over two lancets, where the photograph shows pairs of lancets under one great arch at a pitch of about 4 m, with cusps in their heads that are not drawn.",
       "Only the south transept has a photograph laid over its capture, from the copy kept in the evidence folder. The other four fitted photographs are on Wikimedia Commons and could not be loaded when the captures were taken, so their comparison is by capture and by the fitted points (rms) alone.",
       "The buttresses of the nave chapels stand 4.8 m apart in the model. The north flank of the OpenStreetMap outline draws them at 4.4 to 4.9 m (stations within 0.2 m of the model's); a photograph of the south flank had been read as 3.1 to 3.9 m at the west end and 4.1 to 4.4 m at the east, and that reading is not confirmed by the outline. The two have not been settled on a fitted photograph."
@@ -1138,8 +1139,12 @@
       },
       "turrets": {
         "width": 2.6,
-        "top": 29.5,
-        "tip": 31.7
+        "offset": 0.25,
+        "depth": 1.1,
+        "ledge": 26.4,
+        "top": 32,
+        "tip": 37.6,
+        "pier": 2.6
       },
       "windows": {
         "count": 3,
