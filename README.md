@@ -81,6 +81,7 @@ The world's most recognised monuments, built one by one. Each animation is recor
 |---|---|
 | <a href="https://gleaming0427.github.io/monument/view/#notre-dame-de-paris"><img src=".github/assets/notre-dame-de-paris.gif" alt="Notre-Dame de Paris built from 1163, its spire pulled down, rebuilt, burnt in 2019 and rebuilt again"></a><br><b>Notre-Dame de Paris</b>, 1163–2025 | <a href="https://gleaming0427.github.io/monument/view/#colosseum"><img src=".github/assets/colosseum.gif" alt="The Colosseum being built, then ruined"></a><br><b>Colosseum</b>, Rome |
 | <a href="https://gleaming0427.github.io/monument/view/#leaning-tower-of-pisa"><img src=".github/assets/leaning-tower-of-pisa.gif" alt="The Leaning Tower of Pisa being built"></a><br><b>Leaning Tower of Pisa</b>, Italy | <a href="https://gleaming0427.github.io/monument/view/#eiffel-tower"><img src=".github/assets/eiffel-tower.gif" alt="The Eiffel Tower being built"></a><br><b>Eiffel Tower</b>, Paris |
+| <a href="https://gleaming0427.github.io/monument/view/#chateau-de-chambord"><img src=".github/assets/chateau-de-chambord.gif" alt="The Château de Chambord built from 1519, its mansards added and removed, its lanternons restored in 2023"></a><br><b>Château de Chambord</b>, France | |
 
 Every one is live on the [website](https://gleaming0427.github.io/monument/collection/).
 

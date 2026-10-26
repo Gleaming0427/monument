@@ -220,9 +220,21 @@ function pinMoment() {
   leader.style.width = `${Math.hypot(dx, dy)}px`; leader.style.transform = `rotate(${Math.atan2(dy, dx)}rad)`;
 }
 
+// The recorder (scripts/record.mjs, capture.mjs) draws by hand through monument.step(): once it has, the loop only
+// schedules itself. A software renderer takes seconds over a frame, and a loop left running piles frames up
+// behind every screenshot, which then waits for all of them.
+let stepping = false;
+
 function frame(now) {
   requestAnimationFrame(frame);
   if (!data) return stage.render(now / 1000);
+  if (stepping) return;
+  advance(now);
+  draw(now);
+}
+
+// One step of the film: the timeline, the story, and the camera easing a little towards where the film wants it.
+function advance(now) {
   const phase = data.phases[Math.min(data.phases.length - 1, Math.floor(time))];
   if (playing) {
     // A frame timestamp can precede the start of playback: never a negative time.
@@ -241,6 +253,9 @@ function frame(now) {
     const open = Boolean(moment?.inside) && (!touched || stage.sectioning);
     if (open !== stage.sectioning) { stage.section(open); $('section-toggle').setAttribute('aria-pressed', String(open)); }
   }
+}
+
+function draw(now) {
   stage.render(now / 1000);
   pinMoment();
   placeLabels();
@@ -501,6 +516,13 @@ try {
 window.monument = {
   capture(on) { return capture(on); },
   seek(t) { time = Math.max(0, Math.min(stage.duration, t)); play(false); },
+  // `frames` steps of the film, which ease the camera as that many frames of playback would, then one drawing, at
+  // `clock` seconds (what the worksite figures sway with). The page stays still afterwards, until the next step.
+  step(frames = 1, clock = performance.now() / 1000) {
+    stepping = true;
+    for (let i = 0; i < Math.max(1, frames); i++) advance(clock * 1000);
+    draw(clock * 1000);
+  },
   get duration() { return stage?.duration ?? 0; },
   get ready() { return Boolean(data) && stage.ready; },
   get eye() { return stage?.eye ?? []; },

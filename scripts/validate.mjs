@@ -13,8 +13,9 @@ import {measurePlan} from './lib/plan.mjs';
 import {expand} from './lib/compact.mjs';
 
 const skill = fileURLToPath(new URL('..', import.meta.url));
-const bricksOf = source => new Set([...source.matchAll(/^\s{2}(\w+)\(k,\s*e,\s*P\)/gm)].map(m => m[1]));
-const kit = bricksOf(await readFile(join(skill, 'kit', 'builder.js'), 'utf8'));
+// A brick is a generator `name(k, e, P)`: a method of `generators` in kit/builder.js, or a function of a kit module (kit/renaissance.js).
+const bricksOf = source => new Set([...source.matchAll(/^\s{2}(?:function\s+)?(\w+)\(k,\s*e,\s*P\)/gm)].map(m => m[1]));
+const kit = new Set([...bricksOf(await readFile(join(skill, 'kit', 'builder.js'), 'utf8')), ...bricksOf(await readFile(join(skill, 'kit', 'renaissance.js'), 'utf8'))]);
 const table = await readFile(join(skill, 'references', 'bricks.md'), 'utf8');
 let failures = 0;
 const check = (ok, message) => { if (!ok) { console.error(`✗ ${message}`); failures++; } };

@@ -1,0 +1,143 @@
+{
+  "_read": "Translate every string into this language. Keep every number, date, measurement and name exactly as written. Dates in `when` and every `source` are not here: they never change.",
+  "modelNote": "Mesuré : le plan, d’après le contour cartographié (tours de 20 m de large, 44,8 m entre les axes des tours du donjon). Relevé sur photographies : hauteurs, toits, fenêtres. Simplifié : décor sculpté, lucarnes et souches de cheminée, couronnement de la tour-lanterne, voûtes des salles.",
+  "live": [
+    {
+      "label": "Hauteur"
+    }
+  ],
+  "facts": [
+    {
+      "value": "156 m",
+      "label": "d’une tour à l’autre"
+    },
+    {
+      "value": "56 m",
+      "label": "tour-lanterne, selon le Domaine"
+    },
+    {
+      "value": "1519",
+      "label": "travaux ordonnés"
+    }
+  ],
+  "phases": {
+    "donjon": {
+      "title": "Le donjon s’élève",
+      "text": "Le 6 septembre 1519, les travaux sont ordonnés : un donjon carré flanqué de quatre tours d’angle rondes, conçu comme un palais à part entière. Il est achevé en décembre 1539, quand François Ier y reçoit Charles Quint.",
+      "moments": [
+        {
+          "tag": "Technique",
+          "title": "Des fondations sur le calcaire",
+          "text": "Des fouilles menées en 2007 ont montré que les fondations reposent sur du calcaire, de 5 à 6 m sous la cour actuelle : les bâtisseurs ont décapé le sol sur environ 3 m et posé un batardeau en bois pour retenir les boues."
+        },
+        {
+          "tag": "Métier",
+          "title": "Du tuffeau par chariot",
+          "text": "Des chariots amenaient du port de Saint-Dyé le tuffeau, une pierre blanche et tendre. Les tailleurs de pierre, payés à la tâche, gravaient leur marque sur chaque pierre pour que le trésorier puisse évaluer leur travail."
+        },
+        {
+          "tag": "Plan",
+          "title": "Un escalier pour deux",
+          "text": "Deux rampes s’enroulent l’une au-dessus de l’autre autour d’un noyau ajouré. Deux personnes qui montent, chacune sur une rampe, s’aperçoivent par les ouvertures du noyau sans jamais se rencontrer."
+        },
+        {
+          "tag": "Chiffre",
+          "title": "Charles Quint à Chambord",
+          "text": "Dans la nuit du 18 au 19 décembre 1539, François Ier y reçoit son vieux rival Charles Quint, en route pour Gand."
+        }
+      ]
+    },
+    "wings": {
+      "title": "Ailes et enceinte",
+      "text": "À partir de 1526 environ, après le retour du roi de sa captivité à Madrid, deux ailes latérales et une enceinte sont ajoutées. À sa mort en 1547, l’aile de la chapelle et l’enceinte basse sont encore inachevées.",
+      "moments": [
+        {
+          "tag": "Plan",
+          "title": "Après Pavie",
+          "text": "Vers 1526, le roi étant revenu de deux ans de captivité à Madrid après la défaite de Pavie, le donjon reçoit deux bâtiments latéraux et une enceinte."
+        },
+        {
+          "tag": "Détail",
+          "title": "L’oratoire de 1540",
+          "text": "Bâti en dehors du bloc d’origine, près du logis du roi, l’oratoire rompt la symétrie de la grande façade ; une date sculptée dans l’un de ses caissons en donne l’année : 1540."
+        },
+        {
+          "tag": "Chantier",
+          "title": "Resté sans toit",
+          "text": "À la mort de François Ier en 1547, l’aile de la chapelle et l’enceinte basse ne sont pas achevées ; elles attendront un toit jusqu’à Louis XIV."
+        }
+      ]
+    },
+    "louis-xiv": {
+      "title": "Louis XIV couvre le château",
+      "text": "L’aile de la chapelle et l’enceinte basse sont enfin couvertes, l’enceinte d’un comble brisé en mansarde. Il est destiné au logement du personnel.",
+      "moments": [
+        {
+          "tag": "Anecdote",
+          "title": "Une comédie pour la cour",
+          "text": "Louis XIV séjourne neuf fois à Chambord avec sa cour, la dernière en 1685. Le 14 octobre 1670, Molière et Lully y donnent la première représentation du Bourgeois gentilhomme devant le roi et sa cour."
+        },
+        {
+          "tag": "Technique",
+          "title": "Des chambres sous les toits",
+          "text": "Les bâtiments qui ferment la cour étaient à l’origine des terrasses couvrant des cuisines et des pièces de service restées inachevées ; ils reçoivent ensuite des mansardes pour loger les domestiques au-dessus des cuisines et des écuries, du 17e au 19e siècle."
+        }
+      ]
+    },
+    "xixe": {
+      "title": "Restauration et plomb",
+      "text": "Après la Révolution, les couvertures de plomb des terrasses, des lanternes et des tourelles avaient disparu ; les travaux de restauration s’étendent de 1882 à 1894. De 1895 à 1898, trois des quatre tours du donjon reçoivent des ornements de plomb de l’atelier Monduit.",
+      "moments": [
+        {
+          "tag": "Métier",
+          "title": "Du plomb venu de Paris",
+          "text": "Les ornements sortent de l’atelier parisien Monduit, qui est aussi intervenu sur la flèche de Notre-Dame de Paris et sur la statue de la Liberté. Une partie du décor de plomb de la tour ouest, livrée en 1899, est restée en caisses dans une pièce du château pendant plus d’un siècle ; les caisses ont été ouvertes en 2016."
+        }
+      ]
+    },
+    "etat": {
+      "title": "Retour à la Renaissance",
+      "text": "L’État, propriétaire depuis 1930, présente le château dans l’état le plus proche de la Renaissance : les mansardes qui coiffaient l’enceinte basse sont supprimées.",
+      "moments": [
+        {
+          "tag": "Restauration",
+          "title": "Les mansardes déposées",
+          "text": "Les toits de Louis XIV qui couvraient l’enceinte basse sont supprimés."
+        }
+      ]
+    },
+    "feu": {
+      "title": "Incendie dans la tour sud",
+      "text": "Un incendie accidentel détruit les combles de la tour sud, aujourd’hui appelée tour Henri V, et de son canton.",
+      "moments": [
+        {
+          "tag": "Anecdote",
+          "title": "Les toits brûlent",
+          "text": "L’horloge sonnante commandée par Louis XIV en 1683 avait son mécanisme dans cette tour sud, longtemps appelée tour des Cloches ; après l’incendie, l’ensemble est en partie détruit ou démonté."
+        }
+      ]
+    },
+    "reconstruction": {
+      "title": "Reconstruit sans ornement",
+      "text": "Les toits du canton sud sont rebâtis dans un style sobre et une balustrade de pierre est créée en haut de l’enceinte basse. Les lanternons perdent leurs ornements de plomb de la fin du 19e siècle.",
+      "moments": [
+        {
+          "tag": "Restauration",
+          "title": "Un style sobre",
+          "text": "Les toits du canton Henri V sont rebâtis dans le style très sobre de la première moitié du 19e siècle, et les lanternons de François Ier et de Caroline de Berry sont restaurés sur le même modèle, sans les ornements de plomb de la fin du 19e siècle."
+        }
+      ]
+    },
+    "lanternons": {
+      "title": "Les six lanternons restaurés",
+      "text": "De 2021 à juin 2023, les six lanternons sont restaurés en une seule opération : charpentes reprises, ornements de plomb et girouettes dorées rendus à leur dernier état connu, celui de la seconde moitié du 19e siècle.",
+      "moments": [
+        {
+          "tag": "Chiffre",
+          "title": "Quinze tonnes chacun",
+          "text": "Chaque lanternon mesure 12 m de haut avec sa girouette et pèse 15 tonnes. 30 personnes ont travaillé sous 80 tonnes d’échafaudages montant jusqu’à 54 m."
+        }
+      ]
+    }
+  }
+}

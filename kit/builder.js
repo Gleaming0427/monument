@@ -11,6 +11,7 @@ import {clone as cloneSkinned} from 'three/addons/utils/SkeletonUtils.js';
 import {resolveVisualStyle, pbrOptions} from './visuals.js';
 import {adaptive, adaptiveContext, profiledGeometry, segmentsForChordError} from './geometry.js';
 import {masonry} from './masonry.js';
+import {renaissance} from './renaissance.js';
 export {CURVE_QUALITY, chordError, segmentsForChordError, profileAt, sampleProfile, profiledGeometry, adaptiveContext} from './geometry.js';
 export {Soup, Layers, moulding, stack, outline, sweep, plate, foil, frameOf, radiusOf as archRadius} from './masonry.js';
 
@@ -1906,6 +1907,8 @@ export const generators = {
   },
 
 };
+// The Renaissance château bricks (kit/renaissance.js) stand on the Gothic toolkit's walls, roofs and string courses.
+Object.assign(generators, renaissance(gothic));
 
 // The order of the works. Within each phase, pieces are laid from the bottom up (by `order`, the height by
 // default), evenly from 3 % to 89 % of the phase; what a phase takes down goes between 10 % and 60 % of the

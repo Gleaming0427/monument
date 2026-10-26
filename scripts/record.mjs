@@ -1,9 +1,13 @@
 #!/usr/bin/env node
 // Records a monument being built, from the first piece to the last phase, as a GIF and an MP4.
 //   node scripts/record.mjs <id> [--dir monuments] [--cam azimuth,elevation,distance[,x,y,z]] [--size 640,400]
-//                           [--frames 96] [--fps 12] [--hold 1.5] [--out .] [--no-caption]
+//                           [--frames 96] [--fps 12] [--hold 1.5] [--ease 40] [--out .] [--no-caption]
 // The viewer is opened once in a headless Chrome; the timeline is moved frame by frame through
 // window.monument.seek and each frame is photographed. ffmpeg turns the frames into <id>.gif and <id>.mp4.
+// Each frame is drawn once, by hand (window.monument.step): the camera eases as --ease frames of playback would,
+// and the page draws nothing in between, so a software renderer is not left with a queue of frames to get through
+// before every screenshot. The viewer plays a phase in 8 to 18 s: about 12 recorded frames, so 40 frames of easing
+// each, which lets the camera finish a swing round to a moment's side instead of stopping half way over the top.
 import {execFileSync} from 'node:child_process';
 import {mkdtemp, writeFile, rm, mkdir} from 'node:fs/promises';
 import {join, resolve} from 'node:path';
@@ -12,8 +16,8 @@ import {startViewer, openBrowser} from './lib/browser.mjs';
 
 const args = process.argv.slice(2), flag = (name, fallback) => { const i = args.indexOf(`--${name}`); return i >= 0 ? args[i + 1] : fallback; };
 const id = args.find((arg, i) => !arg.startsWith('--') && !args[i - 1]?.startsWith('--'));
-if (!id) { console.error('Usage: node scripts/record.mjs <id> [--dir monuments] [--cam az,el,dist[,x,y,z]] [--size 640,400] [--frames 96] [--fps 12] [--out .]'); process.exit(1); }
-const [width, height] = flag('size', '640,400').split(',').map(Number), frames = Number(flag('frames', 96)), fps = Number(flag('fps', 12));
+if (!id) { console.error('Usage: node scripts/record.mjs <id> [--dir monuments] [--cam az,el,dist[,x,y,z]] [--size 640,400] [--frames 96] [--fps 12] [--ease 40] [--out .]'); process.exit(1); }
+const [width, height] = flag('size', '640,400').split(',').map(Number), frames = Number(flag('frames', 96)), fps = Number(flag('fps', 12)), ease = Number(flag('ease', 40));
 const out = resolve(flag('out', '.'));
 await mkdir(out, {recursive: true});
 
@@ -28,7 +32,7 @@ try {
   const duration = await browser.run('monument.duration');
   for (let i = 0; i <= frames; i++) {
     await browser.run(`monument.seek(${(duration * i / frames).toFixed(4)})`);
-    await browser.settle();
+    await browser.run(`monument.step(${ease}, ${(i / fps).toFixed(4)})`);
     await writeFile(join(shots, `${String(i).padStart(4, '0')}.png`), await browser.shot());
     if (i % 24 === 0) process.stdout.write(`frame ${i}/${frames}\r`);
   }
