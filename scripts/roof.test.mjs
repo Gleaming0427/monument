@@ -1,13 +1,16 @@
 #!/usr/bin/env node
 // A roof is a covering on a frame, and a building has no roof without one. In the model the frame is the pieces laid for the
-// role `frame` (and the rafters of the gilded eaves), the covering is the shingles. Three things go wrong when it is drawn by
-// hand, and none of them is caught by the golden baselines, which hold positions and counts of pieces, not how they sit:
+// role `frame` and the eaves (bracket sets, eave purlin, rafters, soffit boards, closing wall: the role `eave`), the covering is
+// the shingles. Four things go wrong when it is drawn by hand, and none of them is caught by the golden baselines, which hold
+// positions and counts of pieces, not how they sit:
 //   poke-through  a strut or a purlin laid as high as the roof's top stands up through the shingles where the roof is lower;
 //   order         the shingles appear before the frame they lie on, so that the film shows a roof hanging in the air;
-//   coverage      a stretch of roof has nothing under it at all: shingles on posts, as the gabled annex of the Golden Pavilion had.
+//   coverage      a stretch of roof has nothing under it at all: shingles on posts, as the gabled annex of the Golden Pavilion had;
+//   eaves         the eave purlin laid at the height of the brackets' tips is a gilded bar lying half out of a roof that is lower
+//                 than that where it passes, and the tips, the soffit boards and the closing wall stand up along with it.
 // This reads the pieces the engine lays for Kinkaku-ji, the building whose roofs are timber frames under shingles, and holds each
-// of the three. A frame member is sampled along its axis and across its section, a vertical line through each sample is cut
-// by the shingle boards (oriented boxes), and what the line meets is the roof at that place.
+// of the four. A member is sampled along its axis and across its section (the eaves, over their footprint), a vertical line
+// through each sample is cut by the shingle boards (oriented boxes), and what the line meets is the roof at that place.
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import {dirname, resolve} from 'node:path';
@@ -74,14 +77,25 @@ function samples(piece) {
   }
   return out;
 }
+// A piece over its footprint: a vertical line every `step` metres, with where the piece's box is cut by it (for the eaves, which are
+// blocks, boards and bars of every direction, not beams).
+function* columns(piece, step = .1) {
+  const f = frame(piece);
+  if (!f.inv) return;
+  for (let x = f.box.x0; x <= f.box.x1 + 1e-9; x += step) for (let z = f.box.z0; z <= f.box.z1 + 1e-9; z += step) {
+    const cut = crossing(f, x, z);
+    if (cut) yield {x, z, top: cut[1], bottom: cut[0]};
+  }
+}
 // A piece stands from its birth until the phase after the one that took it down (and a little more: a piece is taken down at a
 // random moment of that phase).
 const stands = piece => ({from: piece.birth, to: piece.until === undefined ? Infinity : piece.until + DEATH.from + DEATH.span});
 
-const framing = pieces.filter(piece => piece.role === 'frame');
+const framing = pieces.filter(piece => piece.role === 'frame'), eaves = pieces.filter(piece => piece.role === 'eave');
 
 test('the pavilion lays a frame for each roof: the two storey roofs, and the gabled annex', () => {
   assert.ok(framing.length > 300, `${framing.length} frame pieces`);
+  assert.ok(eaves.length > 1000, `${eaves.length} eave pieces`);
   assert.ok(boards.length > 4000, `${boards.length} shingle boards`);
   // The annex roof is the low gable at the west of the pavilion: its frame is rafters on the eave beams under the boards.
   const annex = framing.filter(piece => piece.matrix.elements[12] < -7 && piece.matrix.elements[13] < 3.5);
@@ -104,11 +118,32 @@ test('no member of a roof frame stands up into the shingles it carries', () => {
   assert.equal(bad.length, 0, `${bad.length} samples of the frame reach into the shingles over them: ${worst}`);
 });
 
-test('the frame is raised before the shingles that lie on it', () => {
+test('nothing of the eaves shows above the shingles: purlins, bracket tips, rafters, boards and walls stay under the roof', () => {
+  const over = [];
+  let tested = 0;
+  for (const piece of eaves) {
+    let worst = null;
+    for (const c of columns(piece, .08)) {
+      const hits = roofOver(c);
+      if (!hits) continue;
+      tested++;
+      // The roof's surface here: the highest top of the boards that lie over each other (they are laid in courses).
+      const by = c.top - Math.max(...hits.map(hit => hit.y[1]));
+      if (by > .005 && (!worst || by > worst.by)) worst = {by, x: c.x, y: c.top, z: c.z};
+    }
+    if (worst) over.push({piece, ...worst});
+  }
+  assert.ok(tested > 50000, `${tested} columns of the eaves under shingles`);
+  over.sort((a, b) => b.by - a.by);
+  const worst = over.slice(0, 3).map(o => `${(o.by * 100).toFixed(1)} cm at (${o.x.toFixed(2)}, ${o.y.toFixed(2)}, ${o.z.toFixed(2)}), ${o.piece.kind} of element ${o.piece.element}`).join('; ');
+  assert.equal(over.length, 0, `${over.length} pieces of the eaves rise above the shingles over them: ${worst}`);
+});
+
+test('the frame and the eaves are raised before the shingles that lie on them', () => {
   const late = [];
-  for (const piece of framing) {
+  for (const piece of [...framing, ...eaves]) {
     const life = stands(piece), seen = new Set();
-    for (const s of samples(piece)) for (const hit of roofOver(s) ?? []) {
+    for (const s of piece.role === 'eave' ? columns(piece, .15) : samples(piece)) for (const hit of roofOver(s) ?? []) {
       const roof = hit.board.piece;
       // What is built in the same phase: an older roof still being taken down while its frame is rebuilt is a replacement, not a roof
       // without its frame.

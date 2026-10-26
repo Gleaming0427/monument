@@ -15,7 +15,9 @@ import * as T from 'three';
 // bird), annex, rods (metal rods at the roof corners); `skip` leaves out the pieces tagged so ("skeleton": the
 // posts and beams that stand after a fire), `only` keeps only those. `finish` gives each role its colour.
 // Every piece carries the role it was laid for (`piece.role`). A roof never stands without its frame: the frame is
-// raised before the shingles and kept under them, wherever the surface dips (scripts/roof.test.mjs holds it).
+// raised before the shingles and kept under them, wherever the surface dips (scripts/roof.test.mjs holds it). What
+// carries a roof at its eaves (bracket sets, eave purlin, rafters, soffit boards, closing wall) is laid as `eave`, and
+// held the same way: built before the shingles, none of it showing above them.
 // Gilded timber is a core and a leaf laid over it, so that the leaf can wear away, burn or be laid again
 // without the timber. Frame: u east, v south (the front faces +v), y up from the water; plans in `unit`
 // metres (one shaku, 0.303 m, by default).
@@ -49,7 +51,7 @@ function storeyedPavilion(k, e, P) {
   const rod = (role, a, b, d, o = {}) => {
     if (!on(role, o.tag)) return;
     const A = V(...a), B = V(...b), len = A.distanceTo(B);
-    if (len > .01) k.lying('drum', kindOf(role), A.clone().add(B).multiplyScalar(.5), B.clone().sub(A), [d, len], k.tint(o.color ?? F[role], .04), ph, Math.min(A.y, B.y), ex(role));
+    if (len > .01) k.lying('drum', kindOf(role), A.clone().add(B).multiplyScalar(.5), B.clone().sub(A), [d, len], k.tint(o.color ?? F[role], .04), ph, o.order ?? Math.min(A.y, B.y), ex(o.as ?? role));
   };
   // Gilded timber: the core, then the leaf wrapped round it (posts, rails, brackets) or laid on its outer face
   // only (`face`: the outward [u, v], for walls lacquered inside).
@@ -301,7 +303,7 @@ function storeyedPavilion(k, e, P) {
       if (!on(role, o.tag)) return;
       const x = du.clone().normalize(), n = new T.Vector3().crossVectors(ds, du).normalize();
       if (n.y < 0) n.negate();
-      k.oriented(kindOf(role), p, x, n, new T.Vector3().crossVectors(x, n).normalize(), size, k.tint(o.color ?? F[role], .06), ph, o.order ?? p.y, ex(role));
+      k.oriented(kindOf(role), p, x, n, new T.Vector3().crossVectors(x, n).normalize(), size, k.tint(o.color ?? F[role], .06), ph, o.order ?? p.y, ex(o.as ?? role));
     };
     // Where the shingles lie: the height of their underside at plan point [u, v], or null where there is no roof (beyond the eaves,
     // or inside the rectangle the next storey stands on). The surface of a hip roof at a point is that of the face the point is
@@ -312,6 +314,11 @@ function storeyedPavilion(k, e, P) {
       const g = side(te <= ts ? 'e' : 's');
       return ye + prof(t) + up(g, te <= ts ? v : u, t) - .01;
     };
+    // What carries the roof at its eaves (bracket sets, eave purlin, rafters, soffit and closing wall, hip rafters) is laid as `eave`:
+    // built after the walls and before the frame and the shingles, and seen from under the roof, never above its surface. Where the
+    // roof is lower than a member of half-thickness `half` would stand, `low` puts it under the shingles (scripts/roof.test.mjs).
+    const eave = {as: 'eave', order: yh + .01};
+    const low = (u, y, v, half, keep = .02) => { const cap = under(u, v); return cap === null ? y : Math.min(y, cap - keep - half); };
     const eaveDrop = .22, fascia = .12, out = r.bracket ?? .85;
     for (const f of ['s', 'n', 'e', 'w']) {
       const Fa = FACES[f], g = side(f), run = g.o - g.i, rows = Math.max(4, Math.ceil(run / .3));
@@ -337,7 +344,7 @@ function storeyedPavilion(k, e, P) {
         const A = point(f, 0, sA), B = point(f, 0, sB);
         beam('roof', [A[0], A[1] - eaveDrop / 2 + .05, A[2]], [B[0], B[1] - eaveDrop / 2 + .05, B[2]], eaveDrop + .02, {color: F.roof});
         const a2 = at(Fa, 0, sA, A[1] - eaveDrop - fascia / 2 + .05, g.o - .06), b2 = at(Fa, 0, sB, B[1] - eaveDrop - fascia / 2 + .05, g.o - .06);
-        giltBeam(a2, b2, fascia);
+        giltBeam(a2, b2, fascia, eave);
       }
       // Rafters: base rafters from the wall to the second fascia (kioi), flying rafters out to the eave; beyond
       // the wall's corner they start on the hip rafter (sumiki).
@@ -347,31 +354,41 @@ function storeyedPavilion(k, e, P) {
         const q = Math.max(0, (Math.abs(s) - g.lw) / (g.lo - g.lw)), d0 = g.w + (g.o - g.w) * q;
         if (d0 > g.o - .3) continue;
         const A = at(Fa, 0, s, yAt(d0, s) - .04, d0), M = at(Fa, 0, s, yAt(Math.max(d0, mid2), s) - .04, Math.max(d0, mid2)), B = at(Fa, 0, s, yAt(g.o - .1, s) - .04, g.o - .1);
-        if (mid2 > d0 + .1) giltBeam(A, M, .1);
-        giltBeam(at(Fa, 0, s, yAt(Math.max(d0, mid2 - .5), s) + .07, Math.max(d0, mid2 - .5)), [B[0], B[1] + .07, B[2]], .09);
+        if (mid2 > d0 + .1) giltBeam(A, M, .1, eave);
+        giltBeam(at(Fa, 0, s, yAt(Math.max(d0, mid2 - .5), s) + .07, Math.max(d0, mid2 - .5)), [B[0], B[1] + .07, B[2]], .09, eave);
       }
-      // The gilded soffit boards over the rafters, and the second fascia.
+      // The gilded soffit boards over the rafters, and the second fascia. A board lies 14 cm over the rafter line, which the roof
+      // surface is not always that far above: its two ends go under the shingles where the roof is lower (across its width as well).
       for (let s = -g.lo; s < g.lo - .01; s += .9) {
         const sB = Math.min(g.lo, s + .9), sc = (s + sB) / 2, q = Math.max(0, (Math.abs(sc) - g.lw) / (g.lo - g.lw)), d0 = g.w + (g.o - g.w) * q;
         if (d0 > g.o - .3) continue;
-        const A = at(Fa, 0, sc, yAt(d0, sc) + .14, d0), B = at(Fa, 0, sc, yAt(g.o - .05, sc) + .14, g.o - .05);
-        if (on('skin') || on('core')) { const len = Math.hypot(B[0] - A[0], B[1] - A[1], B[2] - A[2]); const pA = V(...A), pB = V(...B), dir = pB.clone().sub(pA); const acr = V(...at(Fa, 0, sB, 0, 0)).sub(V(...at(Fa, 0, s, 0, 0))); lay('core', pA.clone().add(pB).multiplyScalar(.5), acr, dir, [sB - s, .04, len]); lay('skin', pA.clone().add(pB).multiplyScalar(.5).add(new T.Vector3(0, -.03, 0)), acr, dir, [sB - s, .015, len]); }
+        const end = d => { const y = yAt(d, sc) + .14; return at(Fa, 0, sc, [s, sc, sB].reduce((y, x) => { const [u, , v] = at(Fa, 0, x, 0, d); return low(u, y, v, .02); }, y), d); };
+        const A = end(d0), B = end(g.o - .05);
+        if (on('skin') || on('core')) { const len = Math.hypot(B[0] - A[0], B[1] - A[1], B[2] - A[2]); const pA = V(...A), pB = V(...B), dir = pB.clone().sub(pA); const acr = V(...at(Fa, 0, sB, 0, 0)).sub(V(...at(Fa, 0, s, 0, 0))); lay('core', pA.clone().add(pB).multiplyScalar(.5), acr, dir, [sB - s, .04, len], eave); lay('skin', pA.clone().add(pB).multiplyScalar(.5).add(new T.Vector3(0, -.03, 0)), acr, dir, [sB - s, .015, len], eave); }
       }
-      giltBeam(at(Fa, 0, -g.lw - (g.lo - g.lw) * .62, yAt(mid2, -g.lw) - .02, mid2), at(Fa, 0, g.lw + (g.lo - g.lw) * .62, yAt(mid2, g.lw) - .02, mid2), .1);
-      // Bracket sets (demitsudo) on the posts and between them, carrying the eave purlin (gangyō).
+      giltBeam(at(Fa, 0, -g.lw - (g.lo - g.lw) * .62, yAt(mid2, -g.lw) - .02, mid2), at(Fa, 0, g.lw + (g.lo - g.lw) * .62, yAt(mid2, g.lw) - .02, mid2), .1, eave);
+      // Bracket sets (demitsudo) on the posts and between them, carrying the eave purlin (gangyō) at the tips of their arms.
       const along = Fa.t[0] ? r.postsU : r.postsV, sets = [];
       along.forEach((s, i) => { sets.push(s); if (i < along.length - 1 && r.between) sets.push((s + along[i + 1]) / 2); });
+      const tip = s => { const [u, , v] = at(Fa, g.w, s, 0, out); return low(u, yh + .4, v, .06); };
       for (const s of sets) {
-        gilt(at(Fa, g.w, s, yh + .1, 0), dims(Fa, [.3, .2, .3]), {order: yh});
-        gilt(at(Fa, g.w, s, yh + .27, .05), dims(Fa, [.85, .14, .16]), {order: yh});
-        gilt(at(Fa, g.w, s, yh + .27, out / 2), dims(Fa, [.16, .14, out + .3]), {order: yh});
-        for (const d of [-.32, 0, .32]) gilt(at(Fa, g.w, s + d, yh + .4, .05), dims(Fa, [.16, .12, .16]), {order: yh});
-        gilt(at(Fa, g.w, s, yh + .4, out), dims(Fa, [.17, .12, .17]), {order: yh});
+        gilt(at(Fa, g.w, s, yh + .1, 0), dims(Fa, [.3, .2, .3]), eave);
+        gilt(at(Fa, g.w, s, yh + .27, .05), dims(Fa, [.85, .14, .16]), eave);
+        gilt(at(Fa, g.w, s, yh + .27, out / 2), dims(Fa, [.16, .14, out + .3]), eave);
+        for (const d of [-.32, 0, .32]) gilt(at(Fa, g.w, s + d, yh + .4, .05), dims(Fa, [.16, .12, .16]), eave);
+        gilt(at(Fa, g.w, s, tip(s), out), dims(Fa, [.17, .12, .17]), eave);
       }
-      const pa = at(Fa, 0, -g.lw - .9, yh + .53, g.w + out), pb = at(Fa, 0, g.lw + .9, yh + .53, g.w + out);
-      rod('core', pa, pb, .16); rod('skin', pa, pb, .19);
-      // The wall between the head beam and the soffit, closing the eave.
-      giltSlab(Fa, g.w, 0, yh + .4, -.02, [2 * g.lw + .3, .55, .08], {wrap: true});
+      // The purlin is a straight bar. It lies where the roof is lowest over it, under the rafters and the shingles: at the height
+      // of the brackets' tips it would stand up through the roof, which is lower than that where it passes.
+      const reach = g.lw + .9, stride = 2 * reach / Math.ceil(2 * reach / .3);
+      let yp = yh + .53;
+      for (let s = -reach; s <= reach + 1e-9; s += stride) { const [u, , v] = at(Fa, 0, s, 0, g.w + out); yp = low(u, yp, v, .095); }
+      const pa = at(Fa, 0, -reach, yp, g.w + out), pb = at(Fa, 0, reach, yp, g.w + out);
+      rod('core', pa, pb, .16, eave); rod('skin', pa, pb, .19, {...eave, order: eave.order + .001});
+      // The wall between the head beam and the soffit, closing the eave: up to the rafters, as high as the roof lets it be.
+      let wall = yh + .675;
+      for (let s = -g.lw - .15; s <= g.lw + .15 + 1e-9; s += .3) { const [u, , v] = at(Fa, g.w, s, 0, -.02); wall = low(u, wall, v, 0); }
+      giltSlab(Fa, g.w, 0, (yh + .125 + wall) / 2, -.02, [2 * g.lw + .3, wall - yh - .125, .08], {wrap: true, ...eave});
     }
     // Hip rafters (sumiki), gilded, from the wall corners out to the eave corners.
     for (const [su, sv] of [[1, 1], [1, -1], [-1, 1], [-1, -1]]) {
@@ -380,7 +397,7 @@ function storeyedPavilion(k, e, P) {
         const f = i / n, point = [A[0] + (B[0] - A[0]) * f, A[1] + (B[1] - A[1]) * f, A[2] + (B[2] - A[2]) * f], cap = under(point[0], point[2]);
         return cap === null ? point : [point[0], Math.min(point[1], cap - .13), point[2]];
       });
-      for (let i = 1; i <= n; i++) giltBeam(line[i - 1], line[i], .16);
+      for (let i = 1; i <= n; i++) giltBeam(line[i - 1], line[i], .16, eave);
     }
     // Wind bells (fūtaku) hung under the ends of the hip rafters (`bells`).
     if (r.bells) for (const [su, sv] of [[1, 1], [1, -1], [-1, 1], [-1, -1]]) {
