@@ -1,0 +1,3049 @@
+{
+ "id": "chateau-de-chambord",
+ "name": "Château de Chambord",
+ "place": "Chambord · Loir-et-Cher · France",
+ "seed": 1519,
+ "rotate": -48.45,
+ "masonry": "mesh",
+ "view": {
+  "target": [
+   0,
+   22,
+   0
+  ],
+  "distance": 290,
+  "width": 190,
+  "radius": 120,
+  "height": 56,
+  "start": {
+   "target": [
+    -11.6,
+    14,
+    -50.6
+   ],
+   "distance": 95
+  }
+ },
+ "visualStyle": {
+  "quality": "standard",
+  "materialPreset": "gothic-limestone",
+  "surfaces": {
+   "stone": "limestone-paris",
+   "slate": "slate-aged"
+  }
+ },
+ "live": [
+  {
+   "label": "Height",
+   "kind": "height",
+   "unit": "m"
+  }
+ ],
+ "facts": [
+  {
+   "value": "156 m",
+   "label": "across, tower to tower"
+  },
+  {
+   "value": "56 m",
+   "label": "lantern tower, per the Domaine"
+  },
+  {
+   "value": "1519",
+   "label": "works ordered"
+  }
+ ],
+ "modelNote": "Measured: the plan, from the mapped outline (towers 20 m across, 44.8 m between the keep's tower axes). Read on photographs: heights, roofs, windows. Simplified: carved ornament, dormers and chimney stacks, the lantern tower's crown, the halls' vaults.",
+ "evidence": {
+  "size": "building",
+  "identity": "Château de Chambord, Chambord, Loir-et-Cher, Centre-Val de Loire, France (OSM way 240990589; Wikidata Q205367)",
+  "sources": [
+   {
+    "url": "https://www.openstreetmap.org/way/240990589",
+    "read": "The château as mapped (way 240990589, tagged historic=castle and building=castle, Wikidata Q205367): its geometry gives 156 m by 112 m overall, four corner towers 20 m across at the corners of the enceinte, and the keep, 44.8 m between the axes of its four towers, in the middle of the north-west side; the model's plan is fitted to it."
+   },
+   {
+    "url": "https://www.chambord.org/fr/histoire/le-chateau/architecture/",
+    "read": "The keep is a square block with four corner towers, the new palace of François I at the start of the works; two side buildings and an enclosing wall come from about 1526. Plan in a Greek cross: four halls 9 m wide and 18 m long meeting at the stair, four apartments in the angles. The double-revolution staircase rises to the terraces under the lantern tower. Façades of moulded string courses and flat pilasters in a regular grid; the architect is unknown, Leonardo da Vinci is an influence."
+   },
+   {
+    "url": "https://www.chambord.org/fr/histoire/le-chateau/au-fil-de-lhistoire/",
+    "read": "The château is built from 1519 at the order of François I; Louis XIV finishes it; the low enceinte is roofed with mansards that the State removes after buying the estate in 1930; the château is on the first list of historic monuments (1840) and on the UNESCO list since 1981."
+   },
+   {
+    "url": "https://www.chambord.org/fr/histoire/le-chateau/les-personnages-marquants/",
+    "read": "François I begins the works in 1519 and receives Charles V in 1539; at his death in 1547 the chapel wing and the low enceinte are unfinished. Gaston d'Orléans, count of Blois from 1626, repairs the terraces, the lantern tower and the carved vaults of the second floor. Louis XIV has the chapel wing and the enceinte roofed; Le Bourgeois gentilhomme is first played before him on 14 October 1670."
+   },
+   {
+    "url": "https://www.chambord.org/fr/histoire/le-chateau/les-salles/",
+    "read": "Four great halls in a Greek cross around the double-revolution stair; the two opposite wings are the royal wing (east) and the chapel wing (west); the enclosing buildings are a low enceinte, first terraces over unfinished kitchens, then mansarded from the 17th to the 19th century. The lantern tower is the highest point of the château, 56 m, crowned by a fleur-de-lis; the terraces carry turrets, chimney stacks and dormers."
+   },
+   {
+    "url": "https://www.chambord.org/fr/histoire/le-chateau/loratoire-royal-du-chateau-chambord/",
+    "read": "The royal oratory, added in the François I wing next to the king's lodging, stands outside the original building and breaks the symmetry of the great façade; a date carved in one of its coffers, 1540, gives the year it was built."
+   },
+   {
+    "url": "https://www.chambord.org/fr/les-lanternons-restaures/",
+    "read": "Six lanternons crown the towers: four in lead on the keep (Tour Dieudonné, François Ier, Henri V, Caroline de Berry) and two in slate on the wings; 12 m high with the vane, 15 t each. Lead ornaments by the Monduit workshop were set on three keep towers from 1895 to 1898; the south tower's roofs burnt on 7 July 1945; restoration from 2021 to June 2023 under 80 t of scaffolding up to 54 m, with about 30 people."
+   },
+   {
+    "url": "https://fr.wikipedia.org/wiki/Ch%C3%A2teau_de_Chambord",
+    "read": "The works are ordered on 6 September 1519; stopped 1525–1526 and resumed from 1526 when the keep gets two wings; the keep is finished when Charles V is received on 18–19 December 1539; the royal wing is finished in 1544. Foundations on limestone 5–6 m under today's court, a wooden cofferdam, tuffeau carted from the port of Saint-Dyé, masons paid by the task who marked their stones. Hardouin-Mansart roofs the chapel wing and the enceinte, 1680–1686; the mansards are removed after 1930; fire of 7 July 1945; roofs rebuilt 1950–1952, stone balustrade on the low enceinte from 1950; terraces of porous slabs over the vaults."
+   },
+   {
+    "url": "https://en.wikipedia.org/wiki/Ch%C3%A2teau_de_Chambord",
+    "read": "Keep with four bastion towers at the corners, part of the front wall of a larger compound with two larger towers; bases for two more towers at the rear were never raised above the wall. Works ordered 6 September 1519, walls barely above ground in 1524, resumed September 1526 with 1,800 workers; open double-spiral staircase; the roofscape is likened to the skyline of a town."
+   }
+  ],
+  "plan": {
+   "source": "OpenStreetMap way 240990589",
+   "url": "https://www.openstreetmap.org/way/240990589",
+   "outline": "chateau-de-chambord.evidence/outline.json",
+   "fit": {
+    "p90": 1,
+    "max": 2.92,
+    "coverage": 1,
+    "overflow": 0.03
+   }
+  },
+  "references": [
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:North-west_facade_of_the_Castle_of_Chambord_05.jpg",
+    "view": "north-west",
+    "azimuth": 315.2,
+    "elevation": -3.7,
+    "distance": 237.2,
+    "target": [
+     -5.7,
+     18.4,
+     -26
+    ],
+    "fov": 45.5,
+    "phase": "reconstruction",
+    "camera": "about 260 m from the keep, across the canal; Commons camera location, 27 mm (35 mm equivalent) lens; taken 2 July 2018, before the lanternon works",
+    "calibration": {
+     "points": 7,
+     "rms": 0.3
+    }
+   },
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:Château_de_Chambord,_Southeast_view_20170610_1.jpg",
+    "view": "south-east",
+    "azimuth": 139,
+    "elevation": -6.5,
+    "distance": 163.4,
+    "target": [
+     -6.7,
+     20.5,
+     -9.8
+    ],
+    "fov": 42.3,
+    "phase": "reconstruction",
+    "camera": "about 150 m from the enceinte, on the axis of the court (a stitched panorama); Commons camera location; taken 10 June 2017, before the lanternon works",
+    "calibration": {
+     "points": 5,
+     "rms": 0.4
+    }
+   },
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:West_tower_of_the_Chambord_Castle.jpg",
+    "view": "west tower",
+    "azimuth": 192.4,
+    "elevation": -14.4,
+    "distance": 62.2,
+    "target": [
+     -81.1,
+     17.5,
+     10.8
+    ],
+    "fov": 65.8,
+    "phase": "reconstruction",
+    "camera": "a portrait frame of the chapel tower from about 60 m; Commons camera location, 27 mm (35 mm equivalent) lens; taken 2 July 2018, before the lanternon works",
+    "calibration": {
+     "points": 7,
+     "rms": 1.4
+    }
+   },
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:Chateau_de_Chambord_-_Tower_Detail.jpg",
+    "view": "roofs, south-west",
+    "azimuth": 224.4,
+    "elevation": -17.6,
+    "distance": 114.7,
+    "target": [
+     -15.8,
+     36.7,
+     13.9
+    ],
+    "fov": 15,
+    "phase": "reconstruction",
+    "camera": "a 72 mm view of the keep's roofs and a tower from about 130 m, over the low enceinte; Commons camera location; taken 12 May 2026, after the lanternon works (their lead ornaments are not modelled)",
+    "calibration": {
+     "points": 6,
+     "rms": 0.5
+    }
+   },
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:Chateau_de_Chambord_-_Many_Towers.jpg",
+    "view": "roofs, north-west",
+    "azimuth": 284.1,
+    "elevation": -11.1,
+    "distance": 216.1,
+    "target": [
+     -11.8,
+     43.5,
+     -29.5
+    ],
+    "fov": 10.7,
+    "phase": "reconstruction",
+    "camera": "a 115 mm view of the keep's roofs from about 230 m; Commons camera location; taken 12 May 2026, after the lanternon works (their lead ornaments are not modelled)",
+    "calibration": {
+     "points": 5,
+     "rms": 0.8
+    }
+   }
+  ],
+  "features": [
+   {
+    "text": "A square keep with four round corner towers, 44.8 m between the axes of its towers",
+    "source": "https://www.chambord.org/fr/histoire/le-chateau/architecture/"
+   },
+   {
+    "text": "Façades of three storeys separated by moulded string courses, with flat pilasters between the bays",
+    "source": "https://www.chambord.org/fr/histoire/le-chateau/architecture/"
+   },
+   {
+    "text": "A plan in a Greek cross: four halls 9 m wide and 18 m long meeting at the central stair, with an apartment in each angle",
+    "source": "https://www.chambord.org/fr/histoire/le-chateau/architecture/"
+   },
+   {
+    "text": "A double-revolution staircase of two helical ramps round an open core, rising to the terraces",
+    "source": "https://www.chambord.org/fr/histoire/le-chateau/architecture/"
+   },
+   {
+    "text": "The lantern tower over the stair, the highest point of the château at 56 m, crowned by a fleur-de-lis",
+    "source": "https://www.chambord.org/fr/histoire/le-chateau/les-salles/"
+   },
+   {
+    "text": "Six lanternons crowning the towers, 12 m high with their vanes: four in lead on the keep, two in slate on the wings",
+    "source": "https://www.chambord.org/fr/les-lanternons-restaures/"
+   },
+   {
+    "text": "Terraces, dormers, chimney stacks and turrets over the keep, a roofscape like a village in the sky",
+    "source": "https://www.chambord.org/fr/histoire/le-chateau/les-salles/"
+   },
+   {
+    "text": "Two wings in line with the keep, and two return wings and a low enceinte closing the court",
+    "source": "https://www.chambord.org/fr/histoire/le-chateau/architecture/"
+   },
+   {
+    "text": "The low enceinte, covered with mansards from the 17th century until the State took them off after 1930",
+    "source": "https://www.chambord.org/fr/histoire/le-chateau/au-fil-de-lhistoire/"
+   },
+   {
+    "text": "The royal oratory, built outside the original block and dated 1540, which breaks the symmetry of the great façade",
+    "source": "https://www.chambord.org/fr/histoire/le-chateau/loratoire-royal-du-chateau-chambord/"
+   },
+   {
+    "text": "Two low corner towers at the south-east of the enceinte, never raised to the height of the others",
+    "source": "https://en.wikipedia.org/wiki/Ch%C3%A2teau_de_Chambord"
+   },
+   {
+    "text": "A stone balustrade along the low enceinte and round the heads of the towers",
+    "source": "https://fr.wikipedia.org/wiki/Ch%C3%A2teau_de_Chambord"
+   }
+  ],
+  "geometry": "The plan is the mapped outline (OpenStreetMap way 240990589, © OpenStreetMap contributors, ODbL), turned 48.45° onto the building's own axes: towers fitted by circle to within 0.1 m (20 m across), the keep 44.8 × 44.9 m between its tower axes, the wings 7 m, 12.9 m and the low enceinte 12.6 m thick. Heights are read on five photographs fitted on points of that plan and set against the Domaine's 56 m for the lantern tower.",
+  "comparisons": [
+   {
+    "pass": 1,
+    "captures": [
+     "chateau-de-chambord.evidence/compare/pass-1/ref-0.jpg",
+     "chateau-de-chambord.evidence/compare/pass-1/ref-1.jpg",
+     "chateau-de-chambord.evidence/compare/pass-1/ref-2.jpg",
+     "chateau-de-chambord.evidence/compare/pass-1/ref-3.jpg",
+     "chateau-de-chambord.evidence/compare/pass-1/ref-4.jpg"
+    ],
+    "phases": [
+     "chateau-de-chambord.evidence/compare/pass-1/phase-0.jpg",
+     "chateau-de-chambord.evidence/compare/pass-1/phase-1.jpg",
+     "chateau-de-chambord.evidence/compare/pass-1/phase-2.jpg",
+     "chateau-de-chambord.evidence/compare/pass-1/phase-3.jpg",
+     "chateau-de-chambord.evidence/compare/pass-1/phase-4.jpg",
+     "chateau-de-chambord.evidence/compare/pass-1/phase-5.jpg",
+     "chateau-de-chambord.evidence/compare/pass-1/phase-6.jpg",
+     "chateau-de-chambord.evidence/compare/pass-1/phase-7.jpg"
+    ],
+    "gaps": [
+     "Photos 3 and 4 (roofs): the dormers and chimney stacks of the capture are plain blocks. The real ones carry carved pediments, pilasters, shells and finials, and their stacks have diamonds of slate; their counts and places were not matched one by one and the real roofscape is denser.",
+     "Dormers: the cheeks of the modelled dormers ran forward from the wall, in front of their windows, instead of back into the roof; the blocks seen round the heads of the towers in the captures come from this.",
+     "Slate: the cones and roofs of the captures are near black; on the photographs the slate is a mid grey tinted with blue.",
+     "Stone: the captures are tan; the tuffeau of the photographs is paler and whiter.",
+     "Photo 4 (centre): the crown of the lantern tower is a plain spire on stacked drums; the real one is an openwork stack of arches and ribs under a fleur-de-lis.",
+     "Photos 3 and 4 (taken in May 2026): the six lanternons wear lead ornaments (candelabras, salamanders, fleurs-de-lis) that the model does not have.",
+     "Photos 3 and 4: the captures show the scaffold of the 2021–2023 restoration, because the references were taken at the end of the last phase; the photographs were taken before (photos 0 to 2, 2017 and 2018) or after (photos 3 and 4, 2026) those works.",
+     "Photo 2: the chapel tower's lanternon is drawn about 3% of the photograph's height lower than on the photograph.",
+     "The canal, the lawns and the trees round the château are on the photographs and are not modelled; the round-headed bays of the loggias of the keep are drawn as rectangular windows."
+    ],
+    "fixed": [
+     "The dormers' cheeks now run back into the roof or the cone, behind the window, as a dormer's do (kit/renaissance.js).",
+     "The diamonds of slate on the chimney stacks and the dormers are now flat diamonds laid on the face; they were thin slits (boxes turned about the vertical axis).",
+     "The stone is lighter (#f4eedd on the lodgings, #f1ead8 on the drum towers) and the slate is lighter and bluer (#68717d).",
+     "Each reference is now captured in the state its photograph shows: the end of the 1950–1952 phase, without the scaffold of 2021–2023, and its note gives the date of the photograph."
+    ],
+    "overlays": [
+     "chateau-de-chambord.evidence/compare/pass-1/overlay-0.jpg",
+     "chateau-de-chambord.evidence/compare/pass-1/overlay-1.jpg",
+     "chateau-de-chambord.evidence/compare/pass-1/overlay-2.jpg",
+     "chateau-de-chambord.evidence/compare/pass-1/overlay-3.jpg",
+     "chateau-de-chambord.evidence/compare/pass-1/overlay-4.jpg"
+    ]
+   },
+   {
+    "pass": 2,
+    "captures": [
+     "chateau-de-chambord.evidence/compare/pass-2/ref-0.jpg",
+     "chateau-de-chambord.evidence/compare/pass-2/ref-1.jpg",
+     "chateau-de-chambord.evidence/compare/pass-2/ref-2.jpg",
+     "chateau-de-chambord.evidence/compare/pass-2/ref-3.jpg",
+     "chateau-de-chambord.evidence/compare/pass-2/ref-4.jpg"
+    ],
+    "phases": [
+     "chateau-de-chambord.evidence/compare/pass-2/phase-0.jpg",
+     "chateau-de-chambord.evidence/compare/pass-2/phase-1.jpg",
+     "chateau-de-chambord.evidence/compare/pass-2/phase-2.jpg",
+     "chateau-de-chambord.evidence/compare/pass-2/phase-3.jpg",
+     "chateau-de-chambord.evidence/compare/pass-2/phase-4.jpg",
+     "chateau-de-chambord.evidence/compare/pass-2/phase-5.jpg",
+     "chateau-de-chambord.evidence/compare/pass-2/phase-6.jpg",
+     "chateau-de-chambord.evidence/compare/pass-2/phase-7.jpg"
+    ],
+    "gaps": [
+     "Photos 3 and 4 (roofs): the dormers and chimney stacks are not where the real ones stand, and are simpler. The dormers are plain pedimented windows, without the niches, shells, pilasters and finials of the real ones; the stacks are straight shafts with slate diamonds, without carved cornices or pinnacled caps.",
+     "Photo 4 (centre): the crown of the lantern tower is still a plain spire on stacked drums; the real one is an openwork stack of arches and ribs under a fleur-de-lis.",
+     "Photos 3 and 4 (taken in May 2026): the six lanternons are drawn with a lead dome, a vane and open columns but without the restored lead ornaments (candelabras, salamanders, fleurs-de-lis).",
+     "Stone: the tuffeau of the capture is still a little yellower than on the photographs.",
+     "Photos 0 and 1: the canal and its quay wall, the lawns, the avenue and the trees are on the photographs and are not modelled; the round-headed bays of the keep's loggias are drawn as rectangular windows.",
+     "Photo 2: the chapel tower's lanternon is drawn about 3% of the photograph's height lower than on the photograph."
+    ],
+    "fixed": [],
+    "overlays": [
+     "chateau-de-chambord.evidence/compare/pass-2/overlay-0.jpg",
+     "chateau-de-chambord.evidence/compare/pass-2/overlay-1.jpg",
+     "chateau-de-chambord.evidence/compare/pass-2/overlay-2.jpg",
+     "chateau-de-chambord.evidence/compare/pass-2/overlay-3.jpg",
+     "chateau-de-chambord.evidence/compare/pass-2/overlay-4.jpg"
+    ],
+    "remaining": [
+     "The dormers and chimney stacks are standard shapes at plausible places; their counts, pediments and carved ornament were not matched one by one with the photographs.",
+     "The lantern tower is modelled as stacked drums, with none of the crown of arches, ribs and carved ornament of the real one.",
+     "The lead ornaments of the lanternons, and the carved ornament of the façades, are not modelled.",
+     "The loggias' round-headed bays are drawn as rectangular windows; the four halls are an open cross without their coffered vaults.",
+     "The canal, the gardens and the trees round the château are not modelled."
+    ]
+   }
+  ],
+  "uncertainties": [
+   "A plan in a Greek cross: four halls 9 m wide and 18 m long meeting at the central stair, with an apartment in each angle: simplified; the four halls are left as an open cross between the cantons' floors, without their coffered vaults, which the Domaine's own pages describe.",
+   "A double-revolution staircase of two helical ramps round an open core, rising to the terraces: simplified; the radius of the stair, its number of treads and the openings of its core are interpreted, no measured survey having been read.",
+   "The lantern tower over the stair, the highest point of the château at 56 m, crowned by a fleur-de-lis: simplified; the lantern tower is modelled as stacked drums, with none of the crown of arches, ribs and carved ornament of the real one.",
+   "Terraces, dormers, chimney stacks and turrets over the keep, a roofscape like a village in the sky: simplified; the dormers and chimney stacks are standard shapes at plausible places, and their counts, pediments and carved ornament were not matched one by one with the photographs.",
+   "The royal oratory, built outside the original block and dated 1540, which breaks the symmetry of the great façade: simplified; the oratory is a plain block of the plan's size, without its carved decoration.",
+   "The windows are rectangular windows with a cross of mullion and transom throughout; the round-headed bays of the loggias and the arches of the wings' ground floor are not modelled.",
+   "The front of the keep stands about 2 m lower, against the photographs, on its north-west side than the court: the model has one ground level, the one of the court.",
+   "Heights are read on photographs fitted on points of the plan (the lantern tower 56 m, the keep's cornice 21 m, the wings' 18.4 m, the low enceinte 6.4 m); the lead ornaments of the lanternons and the carved ornament of the façades are not modelled.",
+   "The figures given for the length of the façade differ between sources (156 m for the French Wikipedia, 128 m for the English one); the model follows the mapped outline, 156 m tower to tower.",
+   "The sources differ on the first of Louis XIV's nine stays (1660 on the Domaine's page, 1650 on the French Wikipedia): the film gives the number and the last one, 1685, on which they agree.",
+   "Dates of the roofs of the chapel tower and of the stair towers are interpreted from the chapel wing's: the Domaine's pages say the chapel wing was roofed under Louis XIV and give no date for the towers.",
+   "The timber scaffold and the gin-pole of the 16th-century site are reconstructions: the sources read describe the stone, the foundations and the masons' pay, not the lifting gear.",
+   "The mansard roofs of 1680–1686 are drawn as a typical broken roof of the period; their exact profile, and the position of their dormers, were not read in a source."
+  ],
+  "detailReview": {
+   "version": 1,
+   "status": "complete",
+   "items": [
+    {
+     "feature": "A square keep with four round corner towers, 44.8 m between the axes of its towers",
+     "source": "https://www.chambord.org/fr/histoire/le-chateau/architecture/",
+     "reference": 0,
+     "element": 0,
+     "method": "geometry",
+     "model": "A block of 44.8 × 44.9 m on the mapped outline with four drum towers of 10 m radius at its corners, placed by circle fits to within 0.1 m",
+     "checked": true,
+     "result": "matched"
+    },
+    {
+     "feature": "Façades of three storeys separated by moulded string courses, with flat pilasters between the bays",
+     "source": "https://www.chambord.org/fr/histoire/le-chateau/architecture/",
+     "reference": 2,
+     "element": 2,
+     "method": "geometry",
+     "model": "Drum towers with two string courses, twenty flat piers and three rows of windows; walls cut by the true outline of their windows",
+     "checked": true,
+     "result": "matched"
+    },
+    {
+     "feature": "A plan in a Greek cross: four halls 9 m wide and 18 m long meeting at the central stair, with an apartment in each angle",
+     "source": "https://www.chambord.org/fr/histoire/le-chateau/architecture/",
+     "reference": 0,
+     "element": 6,
+     "method": "geometry",
+     "model": "Four 17.9 m squares of floor at each level leave a cross 9 m wide between them; the vaults of the halls and the apartments' partitions are not built",
+     "checked": true,
+     "result": "named simplification"
+    },
+    {
+     "feature": "A double-revolution staircase of two helical ramps round an open core, rising to the terraces",
+     "source": "https://www.chambord.org/fr/histoire/le-chateau/architecture/",
+     "reference": 0,
+     "element": 13,
+     "method": "geometry",
+     "model": "Two helices of 24 treads a storey round an open newel of eight columns, 4.2 m in radius",
+     "checked": true,
+     "result": "named simplification"
+    },
+    {
+     "feature": "The lantern tower over the stair, the highest point of the château at 56 m, crowned by a fleur-de-lis",
+     "source": "https://www.chambord.org/fr/histoire/le-chateau/les-salles/",
+     "reference": 4,
+     "element": 12,
+     "method": "geometry",
+     "model": "An octagonal shaft with four corner turrets, two open lanterns of columns, a stone spire and a gilded finial; its tip stands at 56 m",
+     "checked": true,
+     "result": "named simplification"
+    },
+    {
+     "feature": "Six lanternons crowning the towers, 12 m high with their vanes: four in lead on the keep, two in slate on the wings",
+     "source": "https://www.chambord.org/fr/les-lanternons-restaures/",
+     "reference": 3,
+     "element": 3,
+     "method": "geometry",
+     "model": "An open lantern of six columns under a lead dome and a vane, 12 m high with the vane, on a narrow neck at the head of a slate cone",
+     "checked": true,
+     "result": "matched"
+    },
+    {
+     "feature": "Terraces, dormers, chimney stacks and turrets over the keep, a roofscape like a village in the sky",
+     "source": "https://www.chambord.org/fr/histoire/le-chateau/les-salles/",
+     "reference": 4,
+     "element": 8,
+     "method": "geometry",
+     "model": "Four hipped pavilions over the cantons with dormers and chimney stacks, a ring of dormers and stacks round each tower's cone, a paved terrace over the crossing",
+     "checked": true,
+     "result": "named simplification"
+    },
+    {
+     "feature": "Two wings in line with the keep, and two return wings and a low enceinte closing the court",
+     "source": "https://www.chambord.org/fr/histoire/le-chateau/architecture/",
+     "reference": 0,
+     "element": 20,
+     "method": "geometry",
+     "model": "Wings of 7 m and 13 m in depth, the low enceinte of 12.6 m, set on the mapped outline",
+     "checked": true,
+     "result": "matched"
+    },
+    {
+     "feature": "The low enceinte, covered with mansards from the 17th century until the State took them off after 1930",
+     "source": "https://www.chambord.org/fr/histoire/le-chateau/au-fil-de-lhistoire/",
+     "reference": 1,
+     "element": 20,
+     "method": "geometry",
+     "model": "A mansard roof laid in 1680–1686 and taken off after 1930, the terrace showing again",
+     "checked": true,
+     "result": "matched"
+    },
+    {
+     "feature": "The royal oratory, built outside the original block and dated 1540, which breaks the symmetry of the great façade",
+     "source": "https://www.chambord.org/fr/histoire/le-chateau/loratoire-royal-du-chateau-chambord/",
+     "reference": 0,
+     "element": 26,
+     "method": "geometry",
+     "model": "A small block of 6.4 × 6.2 m with two storeys and a hipped roof, standing out of the north-west face as the outline shows",
+     "checked": true,
+     "result": "named simplification"
+    },
+    {
+     "feature": "Two low corner towers at the south-east of the enceinte, never raised to the height of the others",
+     "source": "https://en.wikipedia.org/wiki/Ch%C3%A2teau_de_Chambord",
+     "reference": 1,
+     "element": 23,
+     "method": "geometry",
+     "model": "Two drum towers of the height of the enceinte, with balustrade rings, at the south-east corners",
+     "checked": true,
+     "result": "matched"
+    },
+    {
+     "feature": "A stone balustrade along the low enceinte and round the heads of the towers",
+     "source": "https://fr.wikipedia.org/wiki/Ch%C3%A2teau_de_Chambord",
+     "reference": 1,
+     "element": 20,
+     "method": "geometry",
+     "model": "A turned-baluster balustrade with posts every 4.5 m round the terrace of the enceinte and the heads of the towers",
+     "checked": true,
+     "result": "matched"
+    }
+   ]
+  }
+ },
+ "phases": [
+  {
+   "id": "donjon",
+   "when": "1519–1539",
+   "title": "The keep rises",
+   "source": "https://fr.wikipedia.org/wiki/Ch%C3%A2teau_de_Chambord",
+   "text": "On 6 September 1519 the works are ordered: a square keep with four round corner towers, planned as a palace of its own. It stands finished by December 1539, when François I receives Charles V.",
+   "scene": {
+    "craft": "masonry",
+    "at": [
+     -45.64,
+     -24.84
+    ],
+    "focus": [
+     -45.6,
+     9,
+     -24.8
+    ],
+    "distance": 46,
+    "radius": 15,
+    "height": 14,
+    "workers": 9,
+    "materials": true,
+    "figures": "traditional",
+    "scaffold": {
+     "kind": "tower",
+     "width": 13,
+     "height": 18,
+     "material": "timber"
+    },
+    "hoist": {
+     "kind": "gin-pole",
+     "from": 2,
+     "to": 14
+    },
+    "dust": 0.3,
+    "source": "https://fr.wikipedia.org/wiki/Ch%C3%A2teau_de_Chambord"
+   },
+   "moments": [
+    {
+     "at": 0.1,
+     "tag": "Technique",
+     "title": "Foundations on limestone",
+     "anchor": [
+      -45.8,
+      1.2,
+      -2.45
+     ],
+     "source": "https://fr.wikipedia.org/wiki/Ch%C3%A2teau_de_Chambord",
+     "text": "Digs in 2007 showed the foundations rest on limestone 5 to 6 m under today's court: the builders stripped about 3 m of ground and set a wooden cofferdam to hold back the mud."
+    },
+    {
+     "at": 0.34,
+     "tag": "Craft",
+     "title": "Tuffeau by cart",
+     "anchor": [
+      -55.4,
+      3,
+      -24.8
+     ],
+     "source": "https://fr.wikipedia.org/wiki/Ch%C3%A2teau_de_Chambord",
+     "text": "Carts brought the soft white tuffeau from the port of Saint-Dyé. The masons, paid by the task, cut their mark in every stone so that the treasurer could count their work."
+    },
+    {
+     "at": 0.8,
+     "tag": "Plan",
+     "title": "A stair for two",
+     "anchor": [
+      -28.6,
+      9,
+      -2.45
+     ],
+     "inside": true,
+     "look": [
+      318,
+      14
+     ],
+     "source": "https://www.chambord.org/fr/histoire/le-chateau/architecture/",
+     "text": "Two ramps wind one over the other round an open newel. Two people climbing, one on each, see each other through the openings in the core and never meet."
+    },
+    {
+     "at": 0.95,
+     "tag": "Figure",
+     "title": "Charles V at Chambord",
+     "anchor": [
+      4,
+      9,
+      -2.45
+     ],
+     "source": "https://fr.wikipedia.org/wiki/Ch%C3%A2teau_de_Chambord",
+     "text": "On the night of 18 to 19 December 1539 François I receives his old rival Charles V here, on the emperor's way to Ghent."
+    }
+   ]
+  },
+  {
+   "id": "wings",
+   "when": "c. 1526–1547",
+   "title": "Wings and enceinte",
+   "source": "https://www.chambord.org/fr/histoire/le-chateau/architecture/",
+   "text": "From about 1526, after the king's return from captivity in Madrid, two side wings and an enclosing wall are added. When he dies in 1547 the chapel wing and the low enceinte are still unfinished.",
+   "moments": [
+    {
+     "at": 0.2,
+     "tag": "Plan",
+     "title": "After Pavia",
+     "anchor": [
+      -41.85,
+      12,
+      -43.65
+     ],
+     "source": "https://www.chambord.org/fr/histoire/le-chateau/architecture/",
+     "text": "About 1526, with the king back from two years of captivity in Madrid after the defeat at Pavia, the keep is given two side buildings and an enclosing wall."
+    },
+    {
+     "at": 0.55,
+     "tag": "Detail",
+     "title": "The oratory of 1540",
+     "anchor": [
+      -52.9,
+      6.5,
+      -56.7
+     ],
+     "source": "https://www.chambord.org/fr/histoire/le-chateau/loratoire-royal-du-chateau-chambord/",
+     "text": "Built outside the original block, next to the king's lodging, the oratory breaks the symmetry of the great façade; a date carved in one of its coffers gives its year: 1540."
+    },
+    {
+     "at": 0.88,
+     "tag": "Works",
+     "title": "Left unroofed",
+     "anchor": [
+      -42.6,
+      18.4,
+      44
+     ],
+     "source": "https://www.chambord.org/fr/histoire/le-chateau/les-personnages-marquants/",
+     "text": "At François I's death in 1547 the chapel wing and the low enceinte are not finished; they wait for a roof until Louis XIV."
+    }
+   ]
+  },
+  {
+   "id": "louis-xiv",
+   "when": "1680–1686",
+   "title": "Louis XIV roofs the château",
+   "source": "https://fr.wikipedia.org/wiki/Ch%C3%A2teau_de_Chambord",
+   "text": "The chapel wing and the low enceinte are at last covered, the enceinte with a broken mansard roof. It is meant to house the staff.",
+   "moments": [
+    {
+     "at": 0.15,
+     "tag": "Anecdote",
+     "title": "A comedy for the court",
+     "anchor": [
+      12,
+      3,
+      -2.45
+     ],
+     "source": "https://www.chambord.org/fr/histoire/le-chateau/les-personnages-marquants/",
+     "text": "Louis XIV stays nine times at Chambord with his court, the last in 1685. On 14 October 1670 Molière and Lully give the first performance of Le Bourgeois gentilhomme before the king and his court at Chambord."
+    },
+    {
+     "at": 0.7,
+     "tag": "Technique",
+     "title": "Rooms under the roofs",
+     "anchor": [
+      37.1,
+      6.4,
+      24
+     ],
+     "source": "https://www.chambord.org/fr/histoire/le-chateau/les-salles/",
+     "text": "The buildings that close the court began as terraces over kitchens and service rooms left unfinished; they were then given mansards to house the servants above the kitchens and stables, from the 17th to the 19th century."
+    }
+   ]
+  },
+  {
+   "id": "xixe",
+   "when": "1882–1898",
+   "title": "Restoration and lead",
+   "source": "https://www.chambord.org/fr/les-lanternons-restaures/",
+   "text": "After the Revolution the lead roofs of the terraces, lanterns and turrets were gone; restoration works run from 1882 to 1894. From 1895 to 1898 three of the four keep towers receive lead ornaments from the Monduit workshop.",
+   "moments": [
+    {
+     "at": 0.6,
+     "tag": "Craft",
+     "title": "Lead from Paris",
+     "anchor": [
+      -45.9,
+      38,
+      20.1
+     ],
+     "source": "https://www.chambord.org/fr/les-lanternons-restaures/",
+     "text": "The ornaments come from the Monduit workshop in Paris, which also worked on the spire of Notre-Dame and on the Statue of Liberty. Part of the lead decoration for the west tower, delivered in 1899, stayed in crates in a room of the château for over a century; the crates were opened in 2016."
+    }
+   ]
+  },
+  {
+   "id": "etat",
+   "when": "after 1930",
+   "title": "Back to the Renaissance",
+   "source": "https://www.chambord.org/fr/histoire/le-chateau/au-fil-de-lhistoire/",
+   "text": "The State, owner since 1930, shows the château as close as possible to its Renaissance state: the mansards that crowned the low enceinte are taken off.",
+   "moments": [
+    {
+     "at": 0.5,
+     "tag": "Restoration",
+     "title": "Mansards taken off",
+     "anchor": [
+      37.1,
+      6.4,
+      -30
+     ],
+     "source": "https://www.chambord.org/fr/histoire/le-chateau/au-fil-de-lhistoire/",
+     "text": "The roofs of Louis XIV that covered the low enceinte are removed."
+    }
+   ]
+  },
+  {
+   "id": "feu",
+   "when": "7 July 1945",
+   "title": "Fire in the south tower",
+   "source": "https://www.chambord.org/fr/les-lanternons-restaures/",
+   "text": "An accidental fire destroys the roofs of the south tower, now called the Tour Henri V, and of its canton.",
+   "moments": [
+    {
+     "at": 0.5,
+     "tag": "Anecdote",
+     "title": "The roofs burn",
+     "anchor": [
+      -1.14,
+      36,
+      19.98
+     ],
+     "source": "https://www.chambord.org/fr/les-lanternons-restaures/",
+     "text": "The striking clock that Louis XIV ordered in 1683 had its mechanism in this south tower, long called the Tower of the Bells; after the fire it is partly destroyed or taken down."
+    }
+   ]
+  },
+  {
+   "id": "reconstruction",
+   "when": "1950–1952",
+   "title": "Rebuilt without ornament",
+   "source": "https://fr.wikipedia.org/wiki/Ch%C3%A2teau_de_Chambord",
+   "text": "The roofs of the south canton are rebuilt in a plain style and a stone balustrade is made at the top of the low enceinte. The lanternons lose their late-19th-century lead ornaments.",
+   "moments": [
+    {
+     "at": 0.6,
+     "tag": "Restoration",
+     "title": "A sober style",
+     "anchor": [
+      -1.14,
+      37.5,
+      19.98
+     ],
+     "source": "https://www.chambord.org/fr/les-lanternons-restaures/",
+     "text": "The roofs of the Henri V canton are rebuilt in the very plain style of the early 19th century, and the lanternons of François I and Caroline de Berry are restored on the same model, without the late-19th-century lead ornaments."
+    }
+   ]
+  },
+  {
+   "id": "lanternons",
+   "when": "2021–2023",
+   "title": "The six lanternons restored",
+   "source": "https://www.chambord.org/fr/les-lanternons-restaures/",
+   "text": "From 2021 to June 2023 the six lanternons are restored in one operation: carpentry mended, lead ornaments and gilded vanes returned to their last known state, that of the second half of the 19th century.",
+   "scene": {
+    "craft": "restoration",
+    "at": [
+     -1.14,
+     19.98
+    ],
+    "focus": [
+     -1.14,
+     38,
+     19.98
+    ],
+    "distance": 48,
+    "radius": 14,
+    "height": 20,
+    "workers": 8,
+    "materials": true,
+    "figures": "modern",
+    "scaffold": {
+     "kind": "tower",
+     "width": 13,
+     "height": 30,
+     "base": 21,
+     "material": "steel",
+     "rise": "first"
+    },
+    "dust": 0.25,
+    "source": "https://www.chambord.org/fr/les-lanternons-restaures/"
+   },
+   "moments": [
+    {
+     "at": 0.5,
+     "tag": "Figure",
+     "title": "Fifteen tonnes each",
+     "anchor": [
+      -1.14,
+      44,
+      19.98
+     ],
+     "source": "https://www.chambord.org/fr/les-lanternons-restaures/",
+     "text": "Each lanternon is 12 m high with its vane and weighs 15 tonnes. 30 people worked under 80 tonnes of scaffolding rising to 54 m."
+    }
+   ]
+  }
+ ],
+ "elements": [
+  {
+   "type": "lodgingRange",
+   "phase": "donjon",
+   "provenance": "measured",
+   "center": [
+    -23.4,
+    -2.45
+   ],
+   "length": 44.8,
+   "depth": 44.9,
+   "levels": [
+    6.2,
+    6.2,
+    8.6
+   ],
+   "thickness": 2.4,
+   "corniceHeight": 1.6,
+   "windows": [
+    {
+     "w": 1.6,
+     "sill": 1.5,
+     "head": 4.7
+    },
+    {
+     "w": 1.6,
+     "sill": 1.6,
+     "head": 4.9
+    },
+    {
+     "w": 1.6,
+     "sill": 1.5,
+     "head": 5.2
+    }
+   ],
+   "sides": {
+    "u-": {
+     "from": 10,
+     "to": 34.9,
+     "bays": 5
+    },
+    "u+": {
+     "from": 10,
+     "to": 34.9,
+     "bays": 5
+    },
+    "v-": {
+     "from": 10,
+     "to": 34.9,
+     "bays": 5
+    },
+    "v+": {
+     "from": 10,
+     "to": 34.9,
+     "bays": 5
+    }
+   }
+  },
+  {
+   "type": "drumTower",
+   "phase": "donjon",
+   "provenance": "measured",
+   "center": [
+    -45.64,
+    -24.84
+   ],
+   "radius": 10,
+   "y0": 0,
+   "height": 21,
+   "thickness": 1.7,
+   "courses": [
+    6.2,
+    12.4
+   ],
+   "piers": 20,
+   "pierWidth": 0.6,
+   "cornice": {
+    "height": 1.7,
+    "out": 0.95,
+    "corbels": 56
+   },
+   "windows": [
+    {
+     "angles": [
+      165,
+      195,
+      225,
+      255,
+      285
+     ],
+     "w": 1.6,
+     "sill": 1.5,
+     "head": 4.7
+    },
+    {
+     "angles": [
+      165,
+      195,
+      225,
+      255,
+      285
+     ],
+     "w": 1.6,
+     "sill": 7.800000000000001,
+     "head": 11.100000000000001
+    },
+    {
+     "angles": [
+      165,
+      195,
+      225,
+      255,
+      285
+     ],
+     "w": 1.6,
+     "sill": 13.9,
+     "head": 17.6
+    }
+   ],
+   "balustrade": {
+    "phase": "donjon",
+    "height": 1.05
+   },
+   "top": {
+    "deck": 6.9,
+    "dormers": {
+     "count": 6,
+     "arc": [
+      120,
+      330
+     ],
+     "r": 7.7,
+     "h": 4.4,
+     "w": 2.4
+    },
+    "chimneys": [
+     {
+      "a": 295,
+      "r": 6,
+      "base": 6,
+      "h": 7
+     },
+     {
+      "a": 155,
+      "r": 6,
+      "base": 6,
+      "h": 7
+     },
+     {
+      "a": 405,
+      "r": 5.2,
+      "base": 5,
+      "h": 6
+     }
+    ]
+   },
+   "roof": {
+    "profile": [
+     [
+      6.9,
+      0
+     ],
+     [
+      6.4,
+      2.2
+     ],
+     [
+      4.9,
+      7.6049999999999995
+     ],
+     [
+      3,
+      13.52
+     ],
+     [
+      1.95,
+      16.9
+     ]
+    ],
+    "lantern": {
+     "radius": 1.35,
+     "spire": 5.2
+    }
+   }
+  },
+  {
+   "type": "drumTower",
+   "phase": "donjon",
+   "provenance": "measured",
+   "center": [
+    -45.91,
+    20.09
+   ],
+   "radius": 10,
+   "y0": 0,
+   "height": 21,
+   "thickness": 1.7,
+   "courses": [
+    6.2,
+    12.4
+   ],
+   "piers": 20,
+   "pierWidth": 0.6,
+   "cornice": {
+    "height": 1.7,
+    "out": 0.95,
+    "corbels": 56
+   },
+   "windows": [
+    {
+     "angles": [
+      75,
+      105,
+      135,
+      165,
+      195
+     ],
+     "w": 1.6,
+     "sill": 1.5,
+     "head": 4.7
+    },
+    {
+     "angles": [
+      75,
+      105,
+      135,
+      165,
+      195
+     ],
+     "w": 1.6,
+     "sill": 7.800000000000001,
+     "head": 11.100000000000001
+    },
+    {
+     "angles": [
+      75,
+      105,
+      135,
+      165,
+      195
+     ],
+     "w": 1.6,
+     "sill": 13.9,
+     "head": 17.6
+    }
+   ],
+   "balustrade": {
+    "phase": "donjon",
+    "height": 1.05
+   },
+   "top": {
+    "deck": 6.9,
+    "dormers": {
+     "count": 6,
+     "arc": [
+      30,
+      240
+     ],
+     "r": 7.7,
+     "h": 4.4,
+     "w": 2.4
+    },
+    "chimneys": [
+     {
+      "a": 205,
+      "r": 6,
+      "base": 6,
+      "h": 7
+     },
+     {
+      "a": 65,
+      "r": 6,
+      "base": 6,
+      "h": 7
+     },
+     {
+      "a": 315,
+      "r": 5.2,
+      "base": 5,
+      "h": 6
+     }
+    ]
+   },
+   "roof": {
+    "profile": [
+     [
+      6.9,
+      0
+     ],
+     [
+      6.4,
+      2.2
+     ],
+     [
+      4.9,
+      7.6049999999999995
+     ],
+     [
+      3,
+      13.52
+     ],
+     [
+      1.95,
+      16.9
+     ]
+    ],
+    "lantern": {
+     "radius": 1.35,
+     "spire": 5.2
+    }
+   }
+  },
+  {
+   "type": "drumTower",
+   "phase": "donjon",
+   "provenance": "measured",
+   "center": [
+    -1.14,
+    19.98
+   ],
+   "radius": 10,
+   "y0": 0,
+   "height": 21,
+   "thickness": 1.7,
+   "courses": [
+    6.2,
+    12.4
+   ],
+   "piers": 20,
+   "pierWidth": 0.6,
+   "cornice": {
+    "height": 1.7,
+    "out": 0.95,
+    "corbels": 56
+   },
+   "windows": [
+    {
+     "angles": [
+      -15,
+      15,
+      45,
+      75,
+      105
+     ],
+     "w": 1.6,
+     "sill": 1.5,
+     "head": 4.7
+    },
+    {
+     "angles": [
+      -15,
+      15,
+      45,
+      75,
+      105
+     ],
+     "w": 1.6,
+     "sill": 7.800000000000001,
+     "head": 11.100000000000001
+    },
+    {
+     "angles": [
+      -15,
+      15,
+      45,
+      75,
+      105
+     ],
+     "w": 1.6,
+     "sill": 13.9,
+     "head": 17.6
+    }
+   ],
+   "balustrade": {
+    "phase": "donjon",
+    "height": 1.05
+   },
+   "top": {
+    "until": "feu",
+    "rebuild": "reconstruction",
+    "deck": 6.9,
+    "dormers": {
+     "count": 6,
+     "arc": [
+      -60,
+      150
+     ],
+     "r": 7.7,
+     "h": 4.4,
+     "w": 2.4
+    },
+    "chimneys": [
+     {
+      "a": 115,
+      "r": 6,
+      "base": 6,
+      "h": 7
+     },
+     {
+      "a": -25,
+      "r": 6,
+      "base": 6,
+      "h": 7
+     },
+     {
+      "a": 225,
+      "r": 5.2,
+      "base": 5,
+      "h": 6
+     }
+    ]
+   },
+   "roof": {
+    "until": "feu",
+    "rebuild": "reconstruction",
+    "profile": [
+     [
+      6.9,
+      0
+     ],
+     [
+      6.4,
+      2.2
+     ],
+     [
+      4.9,
+      7.6049999999999995
+     ],
+     [
+      3,
+      13.52
+     ],
+     [
+      1.95,
+      16.9
+     ]
+    ],
+    "lantern": {
+     "radius": 1.35,
+     "spire": 5.2
+    }
+   }
+  },
+  {
+   "type": "drumTower",
+   "phase": "donjon",
+   "provenance": "measured",
+   "center": [
+    -0.82,
+    -24.94
+   ],
+   "radius": 10,
+   "y0": 0,
+   "height": 21,
+   "thickness": 1.7,
+   "courses": [
+    6.2,
+    12.4
+   ],
+   "piers": 20,
+   "pierWidth": 0.6,
+   "cornice": {
+    "height": 1.7,
+    "out": 0.95,
+    "corbels": 56
+   },
+   "windows": [
+    {
+     "angles": [
+      255,
+      285,
+      315,
+      345,
+      375
+     ],
+     "w": 1.6,
+     "sill": 1.5,
+     "head": 4.7
+    },
+    {
+     "angles": [
+      255,
+      285,
+      315,
+      345,
+      375
+     ],
+     "w": 1.6,
+     "sill": 7.800000000000001,
+     "head": 11.100000000000001
+    },
+    {
+     "angles": [
+      255,
+      285,
+      315,
+      345,
+      375
+     ],
+     "w": 1.6,
+     "sill": 13.9,
+     "head": 17.6
+    }
+   ],
+   "balustrade": {
+    "phase": "donjon",
+    "height": 1.05
+   },
+   "top": {
+    "deck": 6.9,
+    "dormers": {
+     "count": 6,
+     "arc": [
+      210,
+      420
+     ],
+     "r": 7.7,
+     "h": 4.4,
+     "w": 2.4
+    },
+    "chimneys": [
+     {
+      "a": 385,
+      "r": 6,
+      "base": 6,
+      "h": 7
+     },
+     {
+      "a": 245,
+      "r": 6,
+      "base": 6,
+      "h": 7
+     },
+     {
+      "a": 495,
+      "r": 5.2,
+      "base": 5,
+      "h": 6
+     }
+    ]
+   },
+   "roof": {
+    "profile": [
+     [
+      6.9,
+      0
+     ],
+     [
+      6.4,
+      2.2
+     ],
+     [
+      4.9,
+      7.6049999999999995
+     ],
+     [
+      3,
+      13.52
+     ],
+     [
+      1.95,
+      16.9
+     ]
+    ],
+    "lantern": {
+     "radius": 1.35,
+     "spire": 5.2
+    }
+   }
+  },
+  {
+   "type": "lodgingRange",
+   "phase": "donjon",
+   "provenance": "measured",
+   "center": [
+    0.45,
+    -2.75
+   ],
+   "length": 2.9,
+   "depth": 13.7,
+   "levels": [
+    6.2
+   ],
+   "thickness": 1.2,
+   "floors": false,
+   "windows": [
+    {
+     "w": 1.6,
+     "sill": 1.5,
+     "head": 4.7
+    }
+   ],
+   "sides": {
+    "u+": {
+     "bays": 2
+    },
+    "u-": {
+     "windows": [
+      false
+     ]
+    },
+    "v+": {
+     "windows": [
+      false
+     ]
+    },
+    "v-": {
+     "windows": [
+      false
+     ]
+    }
+   },
+   "roofs": [
+    {
+     "kind": "terrace",
+     "balustrade": false
+    }
+   ]
+  },
+  {
+   "type": "furnishing",
+   "phase": "donjon",
+   "provenance": "interpreted",
+   "note": "Floors of the four cantons at each level; the cross-shaped halls between them are left open for the stair and are not modelled as vaults.",
+   "center": [
+    -23.4,
+    -2.45
+   ],
+   "parts": [
+    {
+     "at": [
+      -12.95,
+      6.08,
+      -12.95
+     ],
+     "size": [
+      17.9,
+      0.24,
+      17.9
+     ],
+     "kind": "wood",
+     "color": "#a58a63"
+    },
+    {
+     "at": [
+      -12.95,
+      6.08,
+      12.95
+     ],
+     "size": [
+      17.9,
+      0.24,
+      17.9
+     ],
+     "kind": "wood",
+     "color": "#a58a63"
+    },
+    {
+     "at": [
+      12.95,
+      6.08,
+      -12.95
+     ],
+     "size": [
+      17.9,
+      0.24,
+      17.9
+     ],
+     "kind": "wood",
+     "color": "#a58a63"
+    },
+    {
+     "at": [
+      12.95,
+      6.08,
+      12.95
+     ],
+     "size": [
+      17.9,
+      0.24,
+      17.9
+     ],
+     "kind": "wood",
+     "color": "#a58a63"
+    },
+    {
+     "at": [
+      -12.95,
+      12.280000000000001,
+      -12.95
+     ],
+     "size": [
+      17.9,
+      0.24,
+      17.9
+     ],
+     "kind": "wood",
+     "color": "#a58a63"
+    },
+    {
+     "at": [
+      -12.95,
+      12.280000000000001,
+      12.95
+     ],
+     "size": [
+      17.9,
+      0.24,
+      17.9
+     ],
+     "kind": "wood",
+     "color": "#a58a63"
+    },
+    {
+     "at": [
+      12.95,
+      12.280000000000001,
+      -12.95
+     ],
+     "size": [
+      17.9,
+      0.24,
+      17.9
+     ],
+     "kind": "wood",
+     "color": "#a58a63"
+    },
+    {
+     "at": [
+      12.95,
+      12.280000000000001,
+      12.95
+     ],
+     "size": [
+      17.9,
+      0.24,
+      17.9
+     ],
+     "kind": "wood",
+     "color": "#a58a63"
+    }
+   ]
+  },
+  {
+   "type": "furnishing",
+   "phase": "donjon",
+   "provenance": "documented",
+   "center": [
+    -23.4,
+    -2.45
+   ],
+   "color": "#d9cfb8",
+   "parts": [
+    {
+     "at": [
+      0,
+      20.7,
+      0
+     ],
+     "size": [
+      44.8,
+      0.5,
+      9
+     ],
+     "kind": "stone",
+     "color": "#d9cfb8"
+    },
+    {
+     "at": [
+      0,
+      20.7,
+      0
+     ],
+     "size": [
+      9,
+      0.5,
+      44.9
+     ],
+     "kind": "stone",
+     "color": "#d9cfb8"
+    }
+   ]
+  },
+  {
+   "type": "lodgingRange",
+   "phase": "donjon",
+   "provenance": "documented",
+   "center": [
+    -36.349999999999994,
+    -15.399999999999999
+   ],
+   "length": 16.9,
+   "depth": 16.9,
+   "y0": 21,
+   "levels": [
+    6.5
+   ],
+   "thickness": 1.6,
+   "floors": false,
+   "corniceHeight": 1.2,
+   "windows": [
+    {
+     "w": 1.5,
+     "sill": 1.5,
+     "head": 4.9
+    }
+   ],
+   "sides": {
+    "u-": {
+     "bays": 3
+    },
+    "u+": {
+     "bays": 3
+    },
+    "v-": {
+     "bays": 3
+    },
+    "v+": {
+     "bays": 3
+    }
+   },
+   "roof": {
+    "kind": "hip",
+    "rise": 9,
+    "overhang": 0.5,
+    "dormers": [
+     {
+      "side": "u-",
+      "count": 3,
+      "w": 2.6,
+      "h": 3.8
+     },
+     {
+      "side": "v-",
+      "count": 3,
+      "w": 2.6,
+      "h": 3.8
+     }
+    ],
+    "chimneys": [
+     {
+      "at": [
+       -5,
+       -5
+      ],
+      "w": 1.7,
+      "d": 1.3,
+      "h": 7.5,
+      "y": 30.972067039106143
+     },
+     {
+      "at": [
+       -5,
+       5
+      ],
+      "w": 1.7,
+      "d": 1.3,
+      "h": 7.5,
+      "y": 30.972067039106143
+     },
+     {
+      "at": [
+       5,
+       -5
+      ],
+      "w": 1.7,
+      "d": 1.3,
+      "h": 7.5,
+      "y": 30.972067039106143
+     },
+     {
+      "at": [
+       5,
+       5
+      ],
+      "w": 1.7,
+      "d": 1.3,
+      "h": 7.5,
+      "y": 30.972067039106143
+     }
+    ]
+   }
+  },
+  {
+   "type": "lodgingRange",
+   "phase": "donjon",
+   "provenance": "documented",
+   "center": [
+    -36.349999999999994,
+    10.5
+   ],
+   "length": 16.9,
+   "depth": 16.9,
+   "y0": 21,
+   "levels": [
+    6.5
+   ],
+   "thickness": 1.6,
+   "floors": false,
+   "corniceHeight": 1.2,
+   "windows": [
+    {
+     "w": 1.5,
+     "sill": 1.5,
+     "head": 4.9
+    }
+   ],
+   "sides": {
+    "u-": {
+     "bays": 3
+    },
+    "u+": {
+     "bays": 3
+    },
+    "v-": {
+     "bays": 3
+    },
+    "v+": {
+     "bays": 3
+    }
+   },
+   "roof": {
+    "kind": "hip",
+    "rise": 9,
+    "overhang": 0.5,
+    "dormers": [
+     {
+      "side": "u-",
+      "count": 3,
+      "w": 2.6,
+      "h": 3.8
+     },
+     {
+      "side": "v+",
+      "count": 3,
+      "w": 2.6,
+      "h": 3.8
+     }
+    ],
+    "chimneys": [
+     {
+      "at": [
+       -5,
+       -5
+      ],
+      "w": 1.7,
+      "d": 1.3,
+      "h": 7.5,
+      "y": 30.972067039106143
+     },
+     {
+      "at": [
+       -5,
+       5
+      ],
+      "w": 1.7,
+      "d": 1.3,
+      "h": 7.5,
+      "y": 30.972067039106143
+     },
+     {
+      "at": [
+       5,
+       -5
+      ],
+      "w": 1.7,
+      "d": 1.3,
+      "h": 7.5,
+      "y": 30.972067039106143
+     },
+     {
+      "at": [
+       5,
+       5
+      ],
+      "w": 1.7,
+      "d": 1.3,
+      "h": 7.5,
+      "y": 30.972067039106143
+     }
+    ]
+   }
+  },
+  {
+   "type": "lodgingRange",
+   "phase": "donjon",
+   "provenance": "documented",
+   "center": [
+    -10.45,
+    -15.399999999999999
+   ],
+   "length": 16.9,
+   "depth": 16.9,
+   "y0": 21,
+   "levels": [
+    6.5
+   ],
+   "thickness": 1.6,
+   "floors": false,
+   "corniceHeight": 1.2,
+   "windows": [
+    {
+     "w": 1.5,
+     "sill": 1.5,
+     "head": 4.9
+    }
+   ],
+   "sides": {
+    "u-": {
+     "bays": 3
+    },
+    "u+": {
+     "bays": 3
+    },
+    "v-": {
+     "bays": 3
+    },
+    "v+": {
+     "bays": 3
+    }
+   },
+   "roof": {
+    "kind": "hip",
+    "rise": 9,
+    "overhang": 0.5,
+    "dormers": [
+     {
+      "side": "u+",
+      "count": 3,
+      "w": 2.6,
+      "h": 3.8
+     },
+     {
+      "side": "v-",
+      "count": 3,
+      "w": 2.6,
+      "h": 3.8
+     }
+    ],
+    "chimneys": [
+     {
+      "at": [
+       -5,
+       -5
+      ],
+      "w": 1.7,
+      "d": 1.3,
+      "h": 7.5,
+      "y": 30.972067039106143
+     },
+     {
+      "at": [
+       -5,
+       5
+      ],
+      "w": 1.7,
+      "d": 1.3,
+      "h": 7.5,
+      "y": 30.972067039106143
+     },
+     {
+      "at": [
+       5,
+       -5
+      ],
+      "w": 1.7,
+      "d": 1.3,
+      "h": 7.5,
+      "y": 30.972067039106143
+     },
+     {
+      "at": [
+       5,
+       5
+      ],
+      "w": 1.7,
+      "d": 1.3,
+      "h": 7.5,
+      "y": 30.972067039106143
+     }
+    ]
+   }
+  },
+  {
+   "type": "lodgingRange",
+   "phase": "donjon",
+   "provenance": "documented",
+   "center": [
+    -10.45,
+    10.5
+   ],
+   "length": 16.9,
+   "depth": 16.9,
+   "y0": 21,
+   "levels": [
+    6.5
+   ],
+   "thickness": 1.6,
+   "floors": false,
+   "corniceHeight": 1.2,
+   "windows": [
+    {
+     "w": 1.5,
+     "sill": 1.5,
+     "head": 4.9
+    }
+   ],
+   "sides": {
+    "u-": {
+     "bays": 3
+    },
+    "u+": {
+     "bays": 3
+    },
+    "v-": {
+     "bays": 3
+    },
+    "v+": {
+     "bays": 3
+    }
+   },
+   "roof": {
+    "until": "feu",
+    "rebuild": "reconstruction",
+    "kind": "hip",
+    "rise": 9,
+    "overhang": 0.5,
+    "dormers": [
+     {
+      "side": "u+",
+      "count": 3,
+      "w": 2.6,
+      "h": 3.8
+     },
+     {
+      "side": "v+",
+      "count": 3,
+      "w": 2.6,
+      "h": 3.8
+     }
+    ],
+    "chimneys": [
+     {
+      "at": [
+       -5,
+       -5
+      ],
+      "w": 1.7,
+      "d": 1.3,
+      "h": 7.5,
+      "y": 30.972067039106143
+     },
+     {
+      "at": [
+       -5,
+       5
+      ],
+      "w": 1.7,
+      "d": 1.3,
+      "h": 7.5,
+      "y": 30.972067039106143
+     },
+     {
+      "at": [
+       5,
+       -5
+      ],
+      "w": 1.7,
+      "d": 1.3,
+      "h": 7.5,
+      "y": 30.972067039106143
+     },
+     {
+      "at": [
+       5,
+       5
+      ],
+      "w": 1.7,
+      "d": 1.3,
+      "h": 7.5,
+      "y": 30.972067039106143
+     }
+    ]
+   }
+  },
+  {
+   "type": "lanternTower",
+   "phase": "donjon",
+   "provenance": "documented",
+   "center": [
+    -23.4,
+    -2.45
+   ],
+   "y0": 21,
+   "shaft": {
+    "radius": 3.6,
+    "height": 10.5
+   },
+   "lantern": {
+    "height": 5
+   },
+   "upper": {
+    "height": 3.6
+   },
+   "spire": {
+    "height": 10.5
+   }
+  },
+  {
+   "type": "doubleHelixStair",
+   "phase": "donjon",
+   "provenance": "documented",
+   "center": [
+    -23.4,
+    -2.45
+   ],
+   "radius": 4.2,
+   "core": 1.7,
+   "levels": [
+    0,
+    6.2,
+    12.4,
+    21
+   ]
+  },
+  {
+   "type": "lodgingRange",
+   "phase": "wings",
+   "provenance": "measured",
+   "center": [
+    -41.85,
+    -43.65
+   ],
+   "length": 7.1,
+   "depth": 19.3,
+   "levels": [
+    6.2,
+    6.2,
+    6
+   ],
+   "thickness": 1.6,
+   "windows": [
+    {
+     "w": 1.6,
+     "sill": 1.5,
+     "head": 4.7
+    },
+    {
+     "w": 1.6,
+     "sill": 1.5,
+     "head": 4.7
+    },
+    {
+     "w": 1.6,
+     "sill": 1.4,
+     "head": 4.4
+    }
+   ],
+   "sides": {
+    "u-": {
+     "bays": 4,
+     "from": 1.5,
+     "to": 17.5,
+     "arches": [
+      {
+       "s": 3.5,
+       "w": 4.1,
+       "spring": 3.7
+      },
+      {
+       "s": 9.65,
+       "w": 4.1,
+       "spring": 3.7
+      },
+      {
+       "s": 15.4,
+       "w": 4.1,
+       "spring": 3.7
+      }
+     ]
+    },
+    "u+": {
+     "bays": 4,
+     "from": 1.5,
+     "to": 17.5
+    },
+    "v-": {
+     "windows": [
+      false
+     ]
+    },
+    "v+": {
+     "windows": [
+      false
+     ]
+    }
+   },
+   "roof": {
+    "kind": "gable",
+    "axis": "v",
+    "rise": 5.3,
+    "overhang": 0.4,
+    "dormers": [
+     {
+      "side": "u-",
+      "count": 3,
+      "w": 2.4,
+      "h": 3.4
+     },
+     {
+      "side": "u+",
+      "count": 3,
+      "w": 2.4,
+      "h": 3.4
+     }
+    ]
+   }
+  },
+  {
+   "type": "lodgingRange",
+   "phase": "wings",
+   "provenance": "measured",
+   "center": [
+    -42.6,
+    44
+   ],
+   "length": 7.2,
+   "depth": 28,
+   "levels": [
+    6.2,
+    6.2,
+    6
+   ],
+   "thickness": 1.6,
+   "windows": [
+    {
+     "w": 1.6,
+     "sill": 1.5,
+     "head": 4.7
+    },
+    {
+     "w": 1.6,
+     "sill": 1.5,
+     "head": 4.7
+    },
+    {
+     "w": 1.6,
+     "sill": 1.4,
+     "head": 4.4
+    }
+   ],
+   "sides": {
+    "u-": {
+     "bays": 5,
+     "from": 1.5,
+     "to": 26,
+     "arches": [
+      {
+       "s": 25.8,
+       "w": 4.8,
+       "spring": 3.7
+      },
+      {
+       "s": 18.8,
+       "w": 4.8,
+       "spring": 3.7
+      },
+      {
+       "s": 12.2,
+       "w": 4.8,
+       "spring": 3.7
+      },
+      {
+       "s": 6,
+       "w": 4.8,
+       "spring": 3.7
+      }
+     ]
+    },
+    "u+": {
+     "bays": 5,
+     "from": 1.5,
+     "to": 26
+    },
+    "v-": {
+     "windows": [
+      false
+     ]
+    },
+    "v+": {
+     "windows": [
+      false
+     ]
+    }
+   },
+   "roof": {
+    "phase": "louis-xiv",
+    "kind": "gable",
+    "axis": "v",
+    "rise": 5.3,
+    "overhang": 0.4,
+    "dormers": [
+     {
+      "side": "u-",
+      "count": 4,
+      "w": 2.4,
+      "h": 3.4
+     },
+     {
+      "side": "u+",
+      "count": 4,
+      "w": 2.4,
+      "h": 3.4
+     }
+    ]
+   }
+  },
+  {
+   "type": "lodgingRange",
+   "phase": "wings",
+   "provenance": "measured",
+   "center": [
+    -24.2,
+    -59.55
+   ],
+   "length": 22.6,
+   "depth": 12.9,
+   "levels": [
+    6.2,
+    6.2,
+    6
+   ],
+   "thickness": 1.8,
+   "windows": [
+    {
+     "w": 1.6,
+     "sill": 1.5,
+     "head": 4.7
+    },
+    {
+     "w": 1.6,
+     "sill": 1.5,
+     "head": 4.7
+    },
+    {
+     "w": 1.6,
+     "sill": 1.4,
+     "head": 4.4
+    }
+   ],
+   "sides": {
+    "v-": {
+     "bays": 4,
+     "from": 1,
+     "to": 21.6
+    },
+    "v+": {
+     "bays": 4,
+     "from": 1,
+     "to": 21.6
+    },
+    "u+": {
+     "bays": 2
+    },
+    "u-": {
+     "windows": [
+      false
+     ]
+    }
+   },
+   "roof": {
+    "kind": "gable",
+    "axis": "u",
+    "rise": 9.8,
+    "overhang": 0.45,
+    "dormers": [
+     {
+      "side": "v-",
+      "count": 4,
+      "w": 2.4,
+      "h": 3.4
+     },
+     {
+      "side": "v+",
+      "count": 4,
+      "w": 2.4,
+      "h": 3.4
+     }
+    ]
+   }
+  },
+  {
+   "type": "lodgingRange",
+   "phase": "wings",
+   "provenance": "measured",
+   "center": [
+    -25.6,
+    59.25
+   ],
+   "length": 21.6,
+   "depth": 12.7,
+   "levels": [
+    6.2,
+    6.2,
+    6
+   ],
+   "thickness": 1.8,
+   "windows": [
+    {
+     "w": 1.6,
+     "sill": 1.5,
+     "head": 4.7
+    },
+    {
+     "w": 1.6,
+     "sill": 1.5,
+     "head": 4.7
+    },
+    {
+     "w": 1.6,
+     "sill": 1.4,
+     "head": 4.4
+    }
+   ],
+   "sides": {
+    "v-": {
+     "bays": 4,
+     "from": 1,
+     "to": 20.6
+    },
+    "v+": {
+     "bays": 4,
+     "from": 1,
+     "to": 20.6
+    },
+    "u+": {
+     "bays": 2
+    },
+    "u-": {
+     "windows": [
+      false
+     ]
+    }
+   },
+   "roof": {
+    "phase": "louis-xiv",
+    "kind": "gable",
+    "axis": "u",
+    "rise": 9.8,
+    "overhang": 0.45,
+    "dormers": [
+     {
+      "side": "v-",
+      "count": 4,
+      "w": 2.4,
+      "h": 3.4
+     },
+     {
+      "side": "v+",
+      "count": 4,
+      "w": 2.4,
+      "h": 3.4
+     }
+    ]
+   }
+  },
+  {
+   "type": "lodgingRange",
+   "phase": "wings",
+   "provenance": "measured",
+   "center": [
+    12,
+    -59.55
+   ],
+   "length": 49.8,
+   "depth": 12.9,
+   "levels": [
+    6.4
+   ],
+   "thickness": 1.8,
+   "windows": [
+    {
+     "w": 1.7,
+     "sill": 1.9,
+     "head": 6.2,
+     "cross": true
+    }
+   ],
+   "sides": {
+    "v-": {
+     "bays": 9,
+     "from": 1,
+     "to": 48.8
+    },
+    "v+": {
+     "bays": 9,
+     "from": 1,
+     "to": 48.8
+    },
+    "u+": {
+     "windows": [
+      false
+     ]
+    },
+    "u-": {
+     "windows": [
+      false
+     ]
+    }
+   },
+   "roofs": [
+    {
+     "phase": "louis-xiv",
+     "until": "etat",
+     "kind": "mansard",
+     "rise": 5.4,
+     "overhang": 0.45
+    },
+    {
+     "phase": "etat",
+     "kind": "terrace",
+     "balustrade": {
+      "phase": "reconstruction"
+     }
+    }
+   ]
+  },
+  {
+   "type": "lodgingRange",
+   "phase": "wings",
+   "provenance": "measured",
+   "center": [
+    9.9,
+    59.25
+   ],
+   "length": 49.4,
+   "depth": 12.7,
+   "levels": [
+    6.4
+   ],
+   "thickness": 1.8,
+   "windows": [
+    {
+     "w": 1.7,
+     "sill": 1.9,
+     "head": 6.2,
+     "cross": true
+    }
+   ],
+   "sides": {
+    "v-": {
+     "bays": 9,
+     "from": 1,
+     "to": 48.4
+    },
+    "v+": {
+     "bays": 9,
+     "from": 1,
+     "to": 48.4
+    },
+    "u+": {
+     "windows": [
+      false
+     ]
+    },
+    "u-": {
+     "windows": [
+      false
+     ]
+    }
+   },
+   "roofs": [
+    {
+     "phase": "louis-xiv",
+     "until": "etat",
+     "kind": "mansard",
+     "rise": 5.4,
+     "overhang": 0.45
+    },
+    {
+     "phase": "etat",
+     "kind": "terrace",
+     "balustrade": {
+      "phase": "reconstruction"
+     }
+    }
+   ]
+  },
+  {
+   "type": "lodgingRange",
+   "phase": "wings",
+   "provenance": "measured",
+   "center": [
+    37.1,
+    -0.1
+   ],
+   "length": 12.6,
+   "depth": 112,
+   "levels": [
+    6.4
+   ],
+   "thickness": 1.8,
+   "windows": [
+    {
+     "w": 1.7,
+     "sill": 1.9,
+     "head": 6.2,
+     "cross": true
+    }
+   ],
+   "sides": {
+    "u+": {
+     "bays": 18,
+     "from": 6,
+     "to": 106
+    },
+    "u-": {
+     "bays": 18,
+     "from": 6,
+     "to": 106
+    },
+    "v+": {
+     "windows": [
+      false
+     ]
+    },
+    "v-": {
+     "windows": [
+      false
+     ]
+    }
+   },
+   "roofs": [
+    {
+     "phase": "louis-xiv",
+     "until": "etat",
+     "kind": "mansard",
+     "rise": 5.4,
+     "overhang": 0.45
+    },
+    {
+     "phase": "etat",
+     "kind": "terrace",
+     "balustrade": {
+      "phase": "reconstruction"
+     }
+    }
+   ]
+  },
+  {
+   "type": "drumTower",
+   "phase": "wings",
+   "provenance": "measured",
+   "center": [
+    -45.17,
+    -68.18
+   ],
+   "radius": 10,
+   "y0": 0,
+   "height": 18.4,
+   "thickness": 1.7,
+   "courses": [
+    6.2,
+    12.4
+   ],
+   "piers": 20,
+   "pierWidth": 0.6,
+   "cornice": {
+    "height": 1.6,
+    "out": 0.8,
+    "corbels": 52
+   },
+   "windows": [
+    {
+     "angles": [
+      165,
+      195,
+      225,
+      255,
+      285
+     ],
+     "w": 1.5,
+     "sill": 1.5,
+     "head": 4.5
+    },
+    {
+     "angles": [
+      165,
+      195,
+      225,
+      255,
+      285
+     ],
+     "w": 1.5,
+     "sill": 7.7,
+     "head": 10.9
+    },
+    {
+     "angles": [
+      165,
+      195,
+      225,
+      255,
+      285
+     ],
+     "w": 1.5,
+     "sill": 13.8,
+     "head": 17
+    }
+   ],
+   "roof": {
+    "profile": [
+     [
+      10.5,
+      0
+     ],
+     [
+      9.7,
+      1.4
+     ],
+     [
+      7.6,
+      4.95
+     ],
+     [
+      4.699999999999999,
+      9.9
+     ],
+     [
+      2.7,
+      14.19
+     ],
+     [
+      1.9,
+      16.5
+     ]
+    ],
+    "lantern": {
+     "radius": 1.3,
+     "spire": 5.2
+    }
+   }
+  },
+  {
+   "type": "drumTower",
+   "phase": "wings",
+   "provenance": "measured",
+   "center": [
+    -46.19,
+    67.85
+   ],
+   "radius": 10,
+   "y0": 0,
+   "height": 18.4,
+   "thickness": 1.7,
+   "courses": [
+    6.2,
+    12.4
+   ],
+   "piers": 20,
+   "pierWidth": 0.6,
+   "cornice": {
+    "height": 1.6,
+    "out": 0.8,
+    "corbels": 52
+   },
+   "windows": [
+    {
+     "angles": [
+      75,
+      105,
+      135,
+      165,
+      195
+     ],
+     "w": 1.5,
+     "sill": 1.5,
+     "head": 4.5
+    },
+    {
+     "angles": [
+      75,
+      105,
+      135,
+      165,
+      195
+     ],
+     "w": 1.5,
+     "sill": 7.7,
+     "head": 10.9
+    },
+    {
+     "angles": [
+      75,
+      105,
+      135,
+      165,
+      195
+     ],
+     "w": 1.5,
+     "sill": 13.8,
+     "head": 17
+    }
+   ],
+   "roof": {
+    "phase": "louis-xiv",
+    "profile": [
+     [
+      10.5,
+      0
+     ],
+     [
+      9.7,
+      1.4
+     ],
+     [
+      7.6,
+      4.95
+     ],
+     [
+      4.699999999999999,
+      9.9
+     ],
+     [
+      2.7,
+      14.19
+     ],
+     [
+      1.9,
+      16.5
+     ]
+    ],
+    "lantern": {
+     "radius": 1.3,
+     "spire": 5.2
+    }
+   }
+  },
+  {
+   "type": "drumTower",
+   "phase": "wings",
+   "provenance": "measured",
+   "center": [
+    46.67,
+    -67.39
+   ],
+   "radius": 10,
+   "y0": 0,
+   "height": 6.4,
+   "thickness": 1.7,
+   "courses": [],
+   "piers": 14,
+   "pierWidth": 0.7,
+   "cornice": {
+    "height": 1.3,
+    "out": 0.7,
+    "corbels": 44
+   },
+   "windows": [
+    {
+     "angles": [
+      279,
+      315,
+      351
+     ],
+     "w": 2,
+     "sill": 2,
+     "head": 6.4
+    }
+   ],
+   "balustrade": {
+    "phase": "reconstruction"
+   }
+  },
+  {
+   "type": "drumTower",
+   "phase": "wings",
+   "provenance": "measured",
+   "center": [
+    44.65,
+    68
+   ],
+   "radius": 10.2,
+   "y0": 0,
+   "height": 6.4,
+   "thickness": 1.7,
+   "courses": [],
+   "piers": 14,
+   "pierWidth": 0.7,
+   "cornice": {
+    "height": 1.3,
+    "out": 0.7,
+    "corbels": 44
+   },
+   "windows": [
+    {
+     "angles": [
+      9,
+      45,
+      81
+     ],
+     "w": 2,
+     "sill": 2,
+     "head": 6.4
+    }
+   ],
+   "balustrade": {
+    "phase": "reconstruction"
+   }
+  },
+  {
+   "type": "lodgingRange",
+   "phase": "wings",
+   "provenance": "measured",
+   "center": [
+    37.25,
+    -0.9
+   ],
+   "length": 13.1,
+   "depth": 16,
+   "levels": [
+    6.4
+   ],
+   "thickness": 1.8,
+   "windows": [
+    {
+     "w": 1.7,
+     "sill": 1.6,
+     "head": 5.4
+    }
+   ],
+   "floors": false,
+   "sides": {
+    "u+": {
+     "bays": 3,
+     "openings": [
+      {
+       "kind": "round",
+       "s": 8,
+       "w": 2.8,
+       "sill": 0,
+       "spring": 3.8,
+       "glass": false,
+       "shafts": false
+      }
+     ],
+     "skip": [
+      [
+       0,
+       1
+      ]
+     ]
+    },
+    "u-": {
+     "bays": 3
+    },
+    "v+": {
+     "windows": [
+      false
+     ]
+    },
+    "v-": {
+     "windows": [
+      false
+     ]
+    }
+   },
+   "roofs": [
+    {
+     "kind": "gable",
+     "axis": "u",
+     "rise": 2.1,
+     "overhang": 0.3,
+     "phase": "wings"
+    }
+   ]
+  },
+  {
+   "type": "lodgingRange",
+   "phase": "wings",
+   "provenance": "measured",
+   "center": [
+    -50.2,
+    -56.7
+   ],
+   "length": 6.4,
+   "depth": 6.2,
+   "levels": [
+    6.2,
+    6
+   ],
+   "thickness": 1.4,
+   "windows": [
+    {
+     "w": 1.4,
+     "sill": 1.5,
+     "head": 4.4
+    }
+   ],
+   "floors": false,
+   "sides": {
+    "u-": {
+     "bays": 1
+    },
+    "v-": {
+     "bays": 1
+    },
+    "v+": {
+     "bays": 1
+    },
+    "u+": {
+     "windows": [
+      false
+     ]
+    }
+   },
+   "roof": {
+    "kind": "hip",
+    "rise": 4.6,
+    "overhang": 0.4
+   }
+  },
+  {
+   "type": "drumTower",
+   "phase": "wings",
+   "provenance": "measured",
+   "center": [
+    -37.4,
+    -52.8
+   ],
+   "radius": 5.3,
+   "y0": 0,
+   "height": 21.5,
+   "thickness": 1.2,
+   "courses": [
+    6.2,
+    12.4
+   ],
+   "piers": 12,
+   "pierWidth": 0.5,
+   "cornice": {
+    "height": 1.3,
+    "out": 0.6,
+    "corbels": 28
+   },
+   "windows": [
+    {
+     "angles": [
+      20,
+      60,
+      100
+     ],
+     "w": 1.1,
+     "sill": 1.5,
+     "head": 4
+    },
+    {
+     "angles": [
+      20,
+      60,
+      100
+     ],
+     "w": 1.1,
+     "sill": 7.7,
+     "head": 10.2
+    }
+   ],
+   "roof": {
+    "profile": [
+     [
+      5.6499999999999995,
+      0
+     ],
+     [
+      4.505,
+      1.4
+     ],
+     [
+      2.65,
+      3.2
+     ],
+     [
+      0.5,
+      5
+     ]
+    ]
+   }
+  },
+  {
+   "type": "drumTower",
+   "phase": "wings",
+   "provenance": "measured",
+   "center": [
+    -38.9,
+    52.8
+   ],
+   "radius": 5.4,
+   "y0": 0,
+   "height": 21.5,
+   "thickness": 1.2,
+   "courses": [
+    6.2,
+    12.4
+   ],
+   "piers": 12,
+   "pierWidth": 0.5,
+   "cornice": {
+    "height": 1.3,
+    "out": 0.6,
+    "corbels": 28
+   },
+   "windows": [
+    {
+     "angles": [
+      250,
+      290,
+      330
+     ],
+     "w": 1.1,
+     "sill": 1.5,
+     "head": 4
+    },
+    {
+     "angles": [
+      250,
+      290,
+      330
+     ],
+     "w": 1.1,
+     "sill": 7.7,
+     "head": 10.2
+    }
+   ],
+   "roof": {
+    "profile": [
+     [
+      5.75,
+      0
+     ],
+     [
+      4.59,
+      1.4
+     ],
+     [
+      2.7,
+      3.2
+     ],
+     [
+      0.5,
+      5
+     ]
+    ]
+   }
+  }
+ ]
+}

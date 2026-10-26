@@ -51,6 +51,7 @@ Run `node scripts/geometry.test.mjs` for the mathematical contract and `node scr
 - **Plates** (`plate`, `foil`): a slab pierced by lights (a foil is a circle of lobes meeting in cusps), triangulated across its holes, with the sides of every hole: tracery, balustrades.
 - **Lofts** (`loft`): rings of a regular polygon at chosen heights: shafts, cones, spires (courses, or a pattern of scales).
 - **Material**: stone patches draw their coursing from `aMason` (s along the wall, height, course height) in the fragment shader: beds that wander, heads that stagger, a joint 14 mm wide whose contrast fades with the pixel's size, a tone per block, and a slow weathering; slate draws its rows of overlapping slates; glass its leaded panes.
+- **Renaissance bricks** (`kit/renaissance.js`: `drumTower`, `lodgingRange`, `lanternon`, `lanternTower`, `doubleHelixStair`): the same toolkit with rectangular windows dressed in stone, a roof of slates in courses (a cone, or any profile turned about a tower; a gable, hip, mansard or terrace over a range), dormers and chimney stacks with slate lozenges laid flat on their faces. They need `"masonry": "mesh"`.
 
 `node scripts/masonry.test.mjs` holds it: the skin of a wall with a pointed opening has the area of the wall less the opening, to 0.4 %, no triangle lies in the opening, every face is wound the way its normal points, and in a browser the wall is stone where it is wall and glass where it is not.
 
