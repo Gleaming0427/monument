@@ -341,7 +341,7 @@
         "id": "kinkaku-ji",
         "phases": 8,
         "elements": 17,
-        "pieces": 24617,
+        "pieces": 27440,
         "reliefs": 0,
         "bounds": {
           "min": [
@@ -358,7 +358,7 @@
         "shapes": {
           "ball": 15,
           "bell": 10,
-          "box": 24447,
+          "box": 27270,
           "cone": 24,
           "drum": 117,
           "flare": 4
@@ -428,7 +428,7 @@
           1.3,
           0.8
         ],
-        "digest": "3fe29b2d66ed985854ba",
+        "digest": "d138fee0d894d04b573d",
         "unknownShapes": []
       }
     }
