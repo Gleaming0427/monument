@@ -37,6 +37,8 @@ jobs:
         run: node scripts/capture-layer.test.mjs
       - name: Check continuous masonry, in geometry and in a browser
         run: node scripts/masonry.test.mjs
+      - name: Check that every roof has a frame under it, laid first, and none rising through it
+        run: node scripts/roof.test.mjs
       - name: Check phone, tablet and desktop layouts
         run: node scripts/measure.mjs --label responsive-ci --out .artifacts/metrics.jsonl -- node scripts/responsive.test.mjs
       - name: Keep P0 measurements and responsive captures
