@@ -24,15 +24,10 @@ const out = resolve(flag('out', `${id}.png`));
 try {
   // Once the monument is built and its photo reliefs are in.
   await browser.open(url);
-  // Without --cam, the film's camera eases from its opening shot to the overall view a little every frame:
-  // wait until it stands still (a software renderer draws few frames a second).
-  if (!flag('cam')) for (let i = 0, last = null; i < 600; i++) {
-    await browser.settle();
-    const eye = await browser.run('monument.eye');
-    if (last && Math.hypot(...eye.map((v, j) => v - last[j])) < 2e-4 * Math.hypot(eye[0] - eye[3], eye[1] - eye[4], eye[2] - eye[5])) break;
-    last = eye;
-  }
-  await browser.settle();
+  // Without --cam, the film's camera eases from its opening shot to the overall view, 6 % of the way each frame:
+  // 240 steps bring it to rest, then the page draws once (a software renderer draws a frame in seconds, and one
+  // left running piles up frames behind the screenshot).
+  await browser.run(`monument.step(${flag('cam') ? 1 : 240})`);
   await writeFile(out, await browser.shot(out.endsWith('.jpg') ? 'jpeg' : 'png'));
   console.log(`${out}  ←  ${url}`);
 } finally { await browser.close(); viewer.stop(); }
