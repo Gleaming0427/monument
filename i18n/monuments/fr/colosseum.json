@@ -1,5 +1,8 @@
 {
   "_read": "Translate every string into this language. Keep every number, date, measurement and name exactly as written. Dates in `when` and every `source` are not here: they never change.",
+  "name": "Colisée",
+  "place": "Rome · Italie",
+  "blurb": "Bâti en dix ans, inauguré en 80, brisé par le séisme de 1349 et exploité comme carrière pendant des siècles : la ruine que l'on voit aujourd'hui, posée sur son contour réel.",
   "modelNote": "Anneaux, hauteurs et arc encore debout du mur extérieur repris du contour 3D d’OpenStreetMap ; dimensions et dates issues des sources ; travées, ordres, corniches, attique et extrémités du mur dressé relevés sur quatre photographies de référence calées à moins de 0,6–0,7 % de leur hauteur. Gradins, galeries souterraines et usure sont schématiques.",
   "live": [
     {
@@ -23,6 +26,7 @@
   "phases": {
     "vespasian": {
       "title": "L’amphithéâtre de Vespasien",
+      "when": "v. 70–79",
       "text": "Vespasien entame l’amphithéâtre vers 70–72. À sa mort en 79, trois niveaux d’arcades ceignent l’arène et les gradins montent à l’intérieur.",
       "moments": [
         {
@@ -78,6 +82,7 @@
     },
     "quarry": {
       "title": "Une carrière pour Rome",
+      "when": "Après 1349",
       "text": "La pierre tombée est emportée en charrette pour des palais, des églises et des hôpitaux, et le marbre est calciné pour en tirer de la chaux. Les gradins disparaissent ; les voûtes qui les portaient restent.",
       "moments": [
         {
@@ -109,5 +114,53 @@
         }
       ]
     }
+  },
+  "evidence": {
+    "plan": {
+      "source": "OpenStreetMap relation 1834818 (parties du bâtiment avec leurs hauteurs)"
+    },
+    "references": [
+      {
+        "view": "nord"
+      },
+      {
+        "view": "est"
+      },
+      {
+        "view": "sud"
+      },
+      {
+        "view": "ouest"
+      }
+    ],
+    "sources": [
+      {
+        "read": "Ellipse de 189 × 156 m, mur extérieur de 48 m de haut ; trois niveaux d'arcades à colonnes engagées et un attique à pilastres corinthiens et fenêtres ; plus de 100 000 m³ de travertin sans mortier et 300 t de crampons de fer ; Vespasien le commence vers 70–72, Titus achève le niveau supérieur en 80 ; Domitien ajoute l'hypogée ; 240 corbeaux à mâts pour le velarium ; l'incendie de 217 ; le côté sud s'effondre lors du séisme de 1349 ; récupération de la pierre ; cales de brique de 1807 et 1827 ; le nettoyage de 2013–2016."
+      },
+      {
+        "read": "L'amphithéâtre sous forme de parties de bâtiment avec hauteurs : le mur extérieur à 48,5 m côté nord, l'anneau intérieur à 36 m tout autour, la cavea à 24 m et 12 m, le mur de l'arène à 3 m ; les contours ont servi à caler les ellipses."
+      },
+      {
+        "read": "Bâti au 1er siècle de notre ère par les empereurs flaviens, le plus grand amphithéâtre du monde ; les visites comprennent les niveaux souterrains et l'attique ; après la période romantique, il est devenu un lieu de fouilles et de restaurations systématiques."
+      }
+    ],
+    "uncertainties": [
+      "Hauteurs des niveaux du mur extérieur (10,5, 11,8, 11,6 m et un attique de 14,6 m) réparties à partir du total de 48,5 m.",
+      "Gradins dessinés en une seule pente ; la galerie haute en bois et son incendie de 217 ne sont pas montrés.",
+      "Galeries souterraines dessinées comme des murs parallèles, et non selon leur plan réel.",
+      "L'échafaudage de bois de façade et les chèvres de levage expliquent la suite des maçonneries ; leur disposition exacte sur le chantier romain est interprétative.",
+      "Quelle extrémité date de 1807 et laquelle de 1827 n'est pas dit dans les sources utilisées ; le coin (est) et les arcs en gradins (ouest) suivent les photos.",
+      "80 travées par anneau ; les chapiteaux des ordres sont des formes tournées simplifiées (échine, volutes, deux rangs de feuilles), non sculptées.",
+      "L'altération de la pierre et les croûtes noires ne sont pas dessinées ; les trous de crampons sont dispersés, non placés un à un.",
+      "Le contrefort de 1807 est une pente de brique rectiligne lue sur la photo est (du sommet du mur, à son extrémité, jusqu'au sol, à environ 22 m) ; le contour OpenStreetMap l'omet, si bien qu'il fait à lui seul le plus grand écart de bord du plan de contrôle (90 % des bords sont à moins de 2 m).",
+      "Vus du sud et de l'ouest, la haute extrémité ouest du mur extérieur resté debout et les arcs en gradins de Valadier se tiennent plus au nord-ouest sur les photos que dans le modèle, alors que l'anneau intérieur s'y ajuste à 0,7 % près : la position exacte de l'extrémité et la longueur des arcs en gradins ne sont pas établies.",
+      "L'anneau intérieur nord se dresse sur deux niveaux derrière le mur extérieur, comme l'exige le ciel que l'on voit à travers les arcades du troisième niveau sur la photo nord ; sa hauteur restante exacte à cet endroit n'est pas mesurée.",
+      "Vu du sud, la photo ne montre pas le contrefort de 1807 que le modèle met en vue : soit l'extrémité est du mur debout se tient plus au nord, soit le point de vue sud (calé à 170 m là où Commons en enregistre 99 m) est faux.",
+      "L'encoche de l'attique nord, les deux baies murées près du contrefort de 1807 et les fenêtres carrées du haut de l'anneau intérieur ne sont pas modélisées."
+    ]
+  },
+  "notes": {
+    "5": "Derrière le mur extérieur resté debout, teinté comme l'ombre de la galerie, que le moteur de rendu ne calcule pas. Il se dresse sur deux niveaux : depuis 11 m de haut, à 130 m au nord, la ligne de visée à travers les arcades du troisième niveau du mur extérieur le rencontrerait au-dessus de 24 m, et les photos y montrent le ciel.",
+    "10": "Sa pente est lue sur la photo est : du sommet du mur, à son extrémité, jusqu'au sol, à environ 22 m, en brique."
   }
 }

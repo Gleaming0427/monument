@@ -1,5 +1,8 @@
 {
   "_read": "Translate every string into this language. Keep every number, date, measurement and name exactly as written. Dates in `when` and every `source` are not here: they never change.",
+  "name": "Notre-Dame de Paris",
+  "place": "Paris · France",
+  "blurb": "Huit siècles sur une même emprise : le chœur de 1163, les tours et les arcs-boutants, la flèche abattue en 1792 et rebâtie en 1859, l'incendie de 2019 et la reconstruction.",
   "modelNote": "Posée sur l'empreinte OpenStreetMap et sur les dimensions publiées (127 m de long, 48 m de large, voûtes à 33 m, toitures à 43 m, tours à 69 m, flèche à 96 m) ; les travées, les rosaces et les portails sont mesurés sur des photographies. Les portails, la galerie des rois, la rosace occidentale et les statues des niches sont des photographies libres de Wikimedia Commons posées sur le modèle avec leur profondeur ; le reste de la sculpture est simplifié, et la forme de la première flèche est interprétée. À l'intérieur, le grand orgue et les jubés sont eux aussi des photographies libres : ils traversent la vue en coupe.",
   "live": [
     {
@@ -156,6 +159,7 @@
     },
     "incendie": {
       "title": "L'incendie",
+      "when": "15 avril 2019",
       "text": "Un incendie se déclare dans la toiture vers 6 h 18 de l'après-midi. La flèche s'effondre à 7 h 45 de l'après-midi, emportant une partie des voûtes ; la charpente de bois et les toitures de plomb sont perdues. Les seize statues avaient été déposées quatre jours plus tôt.",
       "moments": [
         {
@@ -186,5 +190,91 @@
         }
       ]
     }
+  },
+  "evidence": {
+    "references": [
+      {
+        "view": "façade occidentale depuis le parvis (Haech, 2015, CC BY-SA 4.0)"
+      },
+      {
+        "view": "sud-ouest, depuis le square René-Viviani (Tangopaso, 2011, domaine public)"
+      },
+      {
+        "view": "nord-est, depuis la rive droite de la Seine (Tangopaso, 2011, domaine public)"
+      },
+      {
+        "view": "est, le chevet depuis la Seine (DXR, 2014, CC BY-SA 3.0)"
+      }
+    ],
+    "sources": [
+      {
+        "read": "Dimensions (127 × 48 m, nef de 60 m de long, vaisseau central de 13 m de large, voûtes à 33 m, toits à 43 m, transept de 48 × 14 m, dix travées de nef et cinq travées de chœur, tours de 69 m, flèche de 96 m, façade de 43,5 × 45 m, roses de 9,70 m et 13,10 m) et les campagnes : chœur 1163–1182 (autel consacré le 19 mai 1182), nef 1182–1225, façade à partir de 1208 avec le niveau des roses en 1220–1225, tours en 1240 et 1250, chapelles à partir de 1235, transept par Jehan de Chelles et Pierre de Montreuil, arcs-boutants du chevet par Jean Ravy en 1318–1344, fin en 1345 ; 21 des 28 têtes de rois retrouvées en 1977 ; l'incendie du 15 avril 2019 ; la réouverture le 7 décembre 2024. À l'intérieur : une élévation à trois niveaux (grandes arcades sur de grosses colonnes, tribunes de 8 m de haut sous leurs voûtes, fenêtres hautes), doubles collatéraux prolongés en double déambulatoire, voûtes sexpartites dans la nef ; le maître-autel consacré le 19 mai 1182 par le légat Henri de Château-Marçay et Maurice de Sully, le chœur achevé en 1177."
+      },
+      {
+        "read": "Notice Mérimée : première pierre posée par Maurice de Sully en 1163 ; chœur, nef et collatéraux 1163–1225 ; galeries hautes, flèche et tours 1225–1250 ; transept, roses et chapelles plus tard au Moyen Âge ; sous la Révolution, la flèche est abattue et les statues des rois sont déposées, Temple de la Raison en 1793 ; restauration décidée en 1844 et confiée à Viollet-le-Duc et Lassus, qui rebâtissent la flèche, inventent les chimères, refont les rois et bâtissent une nouvelle sacristie ; les travaux s'achèvent le 3 janvier 1865."
+      },
+      {
+        "read": "Éduscol (ministère de l'Éducation, avril 2019) : le chœur achevé avec sa charpente en 1177 tandis que l'ancienne cathédrale est démolie ; tailleurs de pierre, poseurs et fabricants de mortier, du bois dans toutes les structures, du plomb pour les agrafes et les vitraux ; les tours achevées en 1245 ; les arcs-boutants de Jean Ravy au 14e siècle ; Lassus et Viollet-le-Duc restaurent les 28 rois, dessinent une nouvelle flèche en chêne couverte de plomb et remplacent la sacristie de Soufflot ; la flèche tombe dans la soirée du 15 avril 2019, ses statues de cuivre ayant été déposées auparavant."
+      },
+      {
+        "read": "L'établissement public chargé de la reconstruction : mille chênes pour les charpentes de la flèche et du transept, près de 1 300 m3 de pierre ; le coq doré posé le 16 décembre 2023, à quelque 96 m du sol, achevant le gros œuvre ; l'échafaudage de la flèche déposé en septembre 2025, révélant les seize statues de cuivre restaurées."
+      },
+      {
+        "read": "La première flèche, bâtie en 1220–1230, s'élevait à 78 m au-dessus du sol et fut démontée en 1786–1792 ; celle de Viollet-le-Duc mesure 96 m de haut, soit 18 m de plus, avec environ 250 t de plomb ; seize statues (douze apôtres et les quatre symboles des évangélistes) en quatre groupes, un par toit, tournés vers les points cardinaux, déposées quatre jours avant l'incendie ; la flèche est tombée vers 7 h 45 du soir le 15 avril 2019 ; le coq a été posé sur la nouvelle flèche le 16 décembre 2023."
+      },
+      {
+        "read": "Vannucci, Structural study of the Notre-Dame ancient charpente (2020) : la charpente mesurait 115,6 m de long, 13 m de large et 9,75 m de haut sur la nef et le chœur ; charpente du chœur après 1220 (vers 1225–1230), charpente de la nef vers 1230–1240, transept, flèche et charpentes voisines rebâtis par Lassus et Viollet-le-Duc après 1843 selon le système de fermes, pannes et chevrons ; « chevrons formant fermes » : fermes principales (entrait, poinçon, faux entraits, jambettes) avec quatre fermettes entre elles, à 4,1 m et 82 cm d'écartement dans le chœur, à 3,5 m et 75 cm dans la nef ; des liens longitudinaux et des contrefiches relient les poinçons ; pente du toit d'environ 55° ; certains bois réemployés du premier toit d'environ 1160–1170, dont la forme est inconnue."
+      },
+      {
+        "read": "Rebâtir Notre-Dame : les charpentes de chêne et les toits de plomb de la nef, du chœur et du transept ont brûlé le 15 avril 2019 et sont reconstitués à l'identique ; les charpentes de la nef et du chœur dataient du début du 13e siècle, celles de la flèche et du transept de 1859–1864, par Viollet-le-Duc ; troncs équarris et façonnés à l'herminette ou à la hache comme au 13e siècle ; le système médiéval des « chevrons formant fermes » alterne des fermes principales complexes avec des chevrons plus simples, chaque ferme étant différente ; les fermes sont couvertes de tables de plomb coulées sur sable et d'une crête de faîtage en plomb."
+      },
+      {
+        "read": "Grand orgue de Notre-Dame de Paris : sous la rose ouest ; bâti dans son buffet actuel par François Thierry en 1733, reconstruit par François-Henri Clicquot en 1783 et par Aristide Cavaillé-Coll en 1868 (86 jeux) ; 115 jeux et 7 952 tuyaux depuis 2014 ; peu endommagé par l'incendie de 2019 mais rendu inutilisable par la suie et la poussière, il a été démonté à l'exception de son buffet, de ses soufflets et de quelques tuyaux de 10 m, nettoyé, remonté sous la rose ouest et joué à la réouverture du 7 décembre 2024."
+      },
+      {
+        "read": "Palissy PM75000695, clôture de chœur : pierre peinte et dorée, du 13e siècle au milieu du 14e ; commencée par Jean Ravy et achevée par son neveu Jean le Bouteiller ; hauteur de 220 cm côté sud, de 145 cm côté nord ; panneaux nord de la Visitation au mont des Oliviers, panneaux sud des apparitions du Christ après la Résurrection ; grattée, repeinte et en partie complétée par Viollet-le-Duc ; classée le 20 février 1905."
+      }
+    ],
+    "uncertainties": [
+      "La première flèche (1220–1230, 78 m) est dessinée comme celle de Viollet-le-Duc, en plus petit : sa forme exacte n'est pas documentée dans les sources utilisées.",
+      "Les arcs-boutants du 12e siècle, remplacés aux 13e et 14e siècles, et les façades d'origine du transept ne sont pas modélisés en détail ; les bras du transept montrent des extrémités nues jusqu'aux façades des années 1250.",
+      "Le décor sculpté de la façade occidentale est montré par des photographies de 2014 et 2025, posées sur le modèle : les portails apparaissent tels qu'ils sont aujourd'hui à chaque phase, si bien que leurs états antérieurs et les restaurations du 19e siècle ne sont pas montrés (seule la galerie des rois est déposée sous la Révolution puis remise). Les autres sculptures (portails du transept, chimères, crochets) sont simplifiées.",
+      "La sacristie est dessinée comme trois blocs nus sur son emprise OpenStreetMap ; sa hauteur est estimée. La sacristie antérieure de Soufflot n'est pas montrée.",
+      "L'effondrement d'une partie des voûtes en 2019 et leur reconstruction ne sont pas montrés.",
+      "Vu du nord-est, le modèle et la photo diffèrent encore d'environ 5 % de la hauteur de la photo après calage du point de vue ; la cause (la position enregistrée de la photo ou le plan des tours) n'est pas établie.",
+      "À l'intérieur, seuls sont montrés le grand orgue (sur une tribune dessinée simplement), les clôtures de chœur (leur maçonnerie, leur hauteur au-dessus du sol et leur place le long du chœur lues sur des photographies) et le maître-autel de 1182 (forme et emplacement inconnus) ; les stalles du chœur, l'autel de Robert de Cotte et le Vœu de Louis XIII ne le sont pas.",
+      "L'élévation intérieure est dessinée d'après la hauteur de voûte publiée et les 8 m des tribunes : la naissance des arcades (7,2 m), les ouvertures des tribunes et les voûtes des collatéraux et des chapelles (6,5–11 m) sont lues sur des photographies, non relevées ; les voûtes du chœur sont dessinées sexpartites comme celles de la nef, et la croisée et le transept en simples travées quadripartites."
+    ]
+  },
+  "notes": {
+    "4": "Les premières charpentes, des années 1160 aux années 1210, ne sont pas connues : dessinées comme Viollet-le-Duc lisait les toits du premier gothique, sans entraits, les chevrons tenus par des faux entraits et des contrefiches (Vannucci 2020, fig. 4a). Remplacées à partir de 1225.",
+    "5": "Les premières charpentes, des années 1160 aux années 1210, ne sont pas connues : dessinées comme Viollet-le-Duc lisait les toits du premier gothique, sans entraits, les chevrons tenus par des faux entraits et des contrefiches (Vannucci 2020, fig. 4a). Remplacées à partir de 1225.",
+    "6": "Les premières charpentes, des années 1160 aux années 1210, ne sont pas connues : dessinées comme Viollet-le-Duc lisait les toits du premier gothique, sans entraits, les chevrons tenus par des faux entraits et des contrefiches (Vannucci 2020, fig. 4a). Remplacées à partir de 1225.",
+    "7": "La charpente du chœur d'environ 1225–1230 : « chevrons formant fermes », une ferme principale à entrait et poinçon tous les 4,1 m et quatre fermettes entre elles, à 82 cm d'écartement (Vannucci 2020, relevé de Fromont et Trentesaux). Brûlée en 2019 et reconstruite à l'identique en chêne non séché taillé à la hache.",
+    "8": "La charpente du chœur d'environ 1225–1230 : « chevrons formant fermes », une ferme principale à entrait et poinçon tous les 4,1 m et quatre fermettes entre elles, à 82 cm d'écartement (Vannucci 2020, relevé de Fromont et Trentesaux). Brûlée en 2019 et reconstruite à l'identique en chêne non séché taillé à la hache.",
+    "9": "La charpente de la nef d'environ 1230–1240 : le même système, avec des fermes principales tous les 3,5 m et quatre fermettes à 75 cm d'écartement (Vannucci 2020). Brûlée en 2019 et reconstruite à l'identique en chêne non séché taillé à la hache.",
+    "10": "La charpente du transept du 13e siècle, remplacée au 19e siècle, n'est pas décrite dans les sources utilisées : dessinée comme celle de la nef.",
+    "11": "La charpente du transept et les premières charpentes près de la flèche, rebâties par Lassus et Viollet-le-Duc en 1859–1864 selon le système du 19e siècle de fermes, pannes et chevrons (Vannucci 2020 ; Rebâtir Notre-Dame) ; l'espacement de ses fermes est dessiné à 4 m, non mesuré. Brûlée en 2019, reconstruite à l'identique.",
+    "13": "Les 28 rois refaits sous Lassus et Viollet-le-Duc, photographiés en 2014 ; les rois médiévaux abattus sous la Révolution se tenaient dans les mêmes niches.",
+    "14": "Le portail de la Vierge : sa mort et son couronnement dans le tympan au-dessus du linteau des prophètes et des rois ; sa porte n'est pas centrée sous son arc, comme le montre la photo.",
+    "15": "Le Jugement dernier : le Christ en jugement au-dessus de la pesée des âmes et de la résurrection des morts sur les deux linteaux, les apôtres sur les piédroits.",
+    "16": "Le portail Sainte-Anne : la Vierge en majesté sous un dais dans le tympan, au-dessus de deux linteaux, des saints sur les piédroits.",
+    "17": "La rose ouest, de 9,70 m de diamètre, avec la Vierge à l'Enfant entre deux anges debout sur la balustrade devant elle ; photographiée en 2014 et posée dans l'ouverture de la rose.",
+    "18": "L'une des quatre statues debout dans des niches sur le devant des contreforts au niveau des portails, d'après la photographie de 2025 de la façade.",
+    "19": "L'une des quatre statues debout dans des niches sur le devant des contreforts au niveau des portails, d'après la photographie de 2025 de la façade.",
+    "20": "L'une des quatre statues debout dans des niches sur le devant des contreforts au niveau des portails, d'après la photographie de 2025 de la façade.",
+    "21": "L'une des quatre statues debout dans des niches sur le devant des contreforts au niveau des portails, d'après la photographie de 2025 de la façade.",
+    "24": "La rose du transept nord, de 13,1 m de diamètre, photographiée d'en bas en 2017 et redressée : sa partie la plus basse, derrière la balustrade, n'est pas vue sur la photo.",
+    "25": "La rose du transept sud, de 13,1 m de diamètre, d'après une photographie de 2010 du côté sud ; la balustrade au pied de la rose fait partie de la photo.",
+    "26": "La première flèche (1220–1230) s'élevait à 78 m au-dessus du sol ; sa forme n'est pas documentée dans les sources utilisées, elle est donc dessinée comme celle qui lui a succédé, en plus petit.",
+    "29": "La sacristie de Viollet-le-Duc sur son emprise OpenStreetMap ; dessinée en blocs nus de hauteur estimée, aucune photo utilisée ne la montrant.",
+    "30": "La sacristie de Viollet-le-Duc sur son emprise OpenStreetMap ; dessinée en blocs nus de hauteur estimée, aucune photo utilisée ne la montrant.",
+    "31": "La sacristie de Viollet-le-Duc sur son emprise OpenStreetMap ; dessinée en blocs nus de hauteur estimée, aucune photo utilisée ne la montrant.",
+    "32": "La tribune à l'extrémité ouest de la nef et la masse du buffet d'orgue derrière sa photographie : les deux colonnes de la tribune, la profondeur du buffet et le plan de ses tours sont dessinés simplement ; la largeur et la hauteur du buffet sont lues sur la photographie, mise à l'échelle sur la rose ouest (9,70 m).",
+    "33": "Le buffet du grand orgue de 1733 avec ses tuyaux, devant la rose ouest, photographié depuis la nef en décembre 2024 après sa restauration ; posé sur le buffet à sa largeur et à sa hauteur.",
+    "34": "La maçonnerie des clôtures de chœur nord et sud, contre les piles du chœur, derrière les photographies de leur sculpture : la hauteur du soubassement (2,5 m jusqu'à la tablette sous les scènes) et la place des clôtures le long du chœur sont lues sur des photographies, non mesurées.",
+    "35": "L'extrémité ouest de la clôture nord, commencée sous Jean Ravy : le repas de Béthanie, l'entrée à Jérusalem, la Cène, le lavement des pieds et le mont des Oliviers (sa dernière scène), sous leur dais, tels que Viollet-le-Duc les a repeints ; 1,45 m de la tablette au dais (Palissy) donne l'échelle.",
+    "36": "La clôture sud, achevée par Jean le Bouteiller en 1351 : le Christ apparaissant à Marie-Madeleine, aux saintes femmes, à Pierre et aux pèlerins d'Emmaüs, sous sa crête ajourée ; 2,20 m de la tablette à la crête (Palissy) donne l'échelle. Le fichier Commons est intitulé nord, mais ces scènes sont celles de la clôture sud.",
+    "37": "Le maître-autel consacré le 19 mai 1182, à la tête du chœur : sa forme et son emplacement sont inconnus, il est dessiné comme un simple autel de pierre sur deux marches ; il fut remplacé en 1699 par celui de Robert de Cotte, et est dessiné jusqu'au 18e siècle."
   }
 }

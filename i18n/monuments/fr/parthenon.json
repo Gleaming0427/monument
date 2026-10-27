@@ -1,5 +1,7 @@
 {
   "_read": "Translate every string into this language. Keep every number, date, measurement and name exactly as written. Dates in `when` and every `source` are not here: they never change.",
+  "name": "Parthénon",
+  "place": "Acropole · Athènes · Grèce",
   "modelNote": "Emprise ajustée sur OpenStreetMap ; stylobate, colonnes, entablement et frontons repris des dimensions publiées ; l’état de ruine après 1687 et les restaurations sont lus sur des photographies. L’intérieur, les toitures, la statue et les ajouts postérieurs sont interprétés d’après des descriptions.",
   "live": [
     {
@@ -23,6 +25,7 @@
   "phases": {
     "older": {
       "title": "Le plus ancien Parthénon",
+      "when": "v. 490–480 av. J.-C.",
       "text": "Après Marathon, une immense plateforme de calcaire nivelle le sud de l’Acropole, et un temple de marbre y est entrepris. Le chantier s’arrête alors que ses colonnes ne comptent que deux ou trois tambours de haut.",
       "moments": [
         {
@@ -34,6 +37,7 @@
     },
     "persians": {
       "title": "Incendié par les Perses",
+      "when": "480 av. J.-C.",
       "text": "Les Perses pillent Athènes et le temple inachevé brûle. Le lieu reste en ruine pendant 33 ans.",
       "moments": [
         {
@@ -45,6 +49,7 @@
     },
     "temple": {
       "title": "Le temple de Périclès",
+      "when": "447–438 av. J.-C.",
       "text": "Iktinos et Kallikratès édifient un temple dorique de 8 sur 17 colonnes en marbre du Pentélique, sous la direction de Phidias. En 438 av. J.-C., son Athéna d’or et d’ivoire est consacrée à l’intérieur.",
       "moments": [
         {
@@ -76,6 +81,7 @@
     },
     "sculpture": {
       "title": "Les frontons",
+      "when": "438–432 av. J.-C.",
       "text": "Des statues remplissent les frontons : la Naissance d’Athéna à l’est, son conflit avec Poséidon à l’ouest. Avec les 92 métopes et les 160 m de frise, aucun temple n’avait porté autant de sculpture.",
       "moments": [
         {
@@ -87,6 +93,7 @@
     },
     "fire": {
       "title": "L’incendie et une toiture plus raide",
+      "when": "3e–4e siècle",
       "text": "Un incendie survenu après le milieu du 3e siècle détruit la toiture et une grande partie de l’intérieur. Les réparations dotent la seule cella d’une nouvelle toiture de bois couverte de tuiles de terre, plus raide que la première.",
       "moments": [
         {
@@ -98,6 +105,7 @@
     },
     "church": {
       "title": "L’église de la Vierge",
+      "when": "6e siècle",
       "text": "Le temple devient une église : une abside est construite à l’extrémité est pour le Saint Bême, et l’entrée est déplacée à l’ouest.",
       "moments": [
         {
@@ -109,6 +117,7 @@
     },
     "byzantine": {
       "title": "Panaghia Atheniotissa",
+      "when": "12e siècle",
       "text": "L’église devient un lieu de pèlerinage. Elle est réparée au 12e siècle et un escalier est ajouté dans le porche arrière.",
       "moments": [
         {
@@ -131,6 +140,7 @@
     },
     "mosque": {
       "title": "Une mosquée",
+      "when": "1458 · v. 1466–70",
       "text": "Après la conquête ottomane, l’église devient une mosquée, probablement vers 1466–70. La tour est élevée en minaret et l’abside sert de mihrab.",
       "moments": [
         {
@@ -153,6 +163,7 @@
     },
     "ruin-mosque": {
       "title": "Une mosquée dans les ruines",
+      "when": "début du 18e s. – 1843",
       "text": "Une petite mosquée à un seul dôme est construite dans l’espace dégagé du naos. Entre 1801 et 1812, les agents d’Elgin emportent environ la moitié des sculptures survivantes en Grande-Bretagne.",
       "moments": [
         {
@@ -221,5 +232,157 @@
         }
       ]
     }
+  },
+  "evidence": {
+    "plan": {
+      "source": "OpenStreetMap way 910010406 (la marche la plus basse du crépis)"
+    },
+    "references": [
+      {
+        "view": "est"
+      },
+      {
+        "view": "ouest"
+      },
+      {
+        "view": "nord-est"
+      },
+      {
+        "view": "sud"
+      },
+      {
+        "view": "sud-est"
+      }
+    ],
+    "sources": [
+      {
+        "read": "Stylobate de 69,5 × 30,9 m, hauteur de 13,72 m, 8 × 17 colonnes, 92 métopes (14/14/32/32) ; le Parthénon ancien commencé après Marathon et détruit en 480 av. J.-C. ; bâti à partir de 447 av. J.-C., Athéna Parthénos consacrée en 439/438 av. J.-C. ; incendie du 3e siècle et toit de tuiles d'argile du 4e siècle sur la seule cella, plus pentu, les ailes à découvert ; église à abside à l'emplacement du pronaos ; tour latine à l'angle sud-ouest ; mosquée avec minaret ; explosion du 26 septembre 1687 : six colonnes au sud, huit au nord et le pronaos, à une exception près, s'effondrent, environ 300 morts ; mosquée plus petite dans la ruine ; Elgin 1801–1812 ; minaret abattu jusqu'à sa base et à son escalier après 1832 ; photographie de 1839 ; ESMA 1975 ; grue repliable sous la ligne du toit ; échafaudage ouest déposé en septembre 2025 ; fronton ouest restauré dévoilé en juin 2026."
+      },
+      {
+        "read": "Stylobate de 30,86 × 69,51 m sur un crépis de trois degrés ; colonnes de 1,90 m de diamètre et 10,43 m de haut, colonnes d'angle plus épaisses de 4,3 cm, 10–12 tambours, 20 cannelures ; contraction d'angle d'environ 61,5 cm ; entablement de 3,29 m ; fronton de 28,35 m de large, 3,46 m de haut, 0,91 m de profondeur ; naos de 29,80 × 19,20 m, porte de 4,92 m de large et 10 m de haut, nef de 10,60 m dans œuvre ; colonnade dorique intérieure à deux niveaux sur trois côtés ; porches de six colonnes ; salle ouest de 13,36 m de profondeur à quatre colonnes ioniques ; courbure de 60 mm sur les petits côtés et de 110 mm sur les grands ; colonnes inclinées de 7,4 cm vers l'intérieur ; Athéna d'environ 11 m sur une base de 4,09 × 8,04 m."
+      },
+      {
+        "read": "Brochure du Service de restauration de l'Acropole : temple dorique périptère, 8 par 17 colonnes avec une rangée intérieure de 6 à chaque extrémité ; colonnades intérieures à deux niveaux ; bâti en 447–438 av. J.-C. par Ictinos et Callicratès sous Phidias ; frise ionique de 160 m ; statue de 13 m ; sujets des frontons ; église du 6e siècle à abside à l'est et entrée déplacée à l'ouest ; réparations du 12e siècle et escalier dans l'opisthodome ; église catholique puis mosquée avec minaret ; explosion de 1687 ; Pittakis à partir de 1842 ; Balanos 1894–1933 avec du fer et du ciment, des éléments mal placés ; ESMA à partir de 1975, chantier à partir de 1983 ; côté est jusqu'en 1991 ; colonne sud 1993 ; frise ouest déposée en 1993 ; colonnade nord : 230 éléments, 900 t, tambours de ciment remplacés par du marbre pentélique, achevée en 2010 ; pronaos 1995–2004, cannelures des compléments restant à tailler ; la grue tournante dans la cella."
+      },
+      {
+        "read": "Interventions achevées : côté est 1984–1991 ; colonnade sud, 5e colonne depuis l'est 1992–1993, levée d'une seule pièce à partir du deuxième tambour ; pronaos 1995–2004 (colonnes 4 et 5 entièrement restaurées, 1–3 en partie, la 6e depuis le nord remontée) ; opisthodome 1992–2004 ; colonnade nord à partir d'octobre 2001, colonnes de la 4e à la 11e depuis l'est, cannelures taillées en 2011–2014 ; côté ouest 2011–2015 ; grue derrick dans la cella à partir de 1983 et grue Potain à partir de 2002."
+      },
+      {
+        "read": "Le Parthénon ancien commencé après Marathon (vers 490–88 av. J.-C.) sur une massive fondation de calcaire, encore en construction quand les Perses le détruisirent en 480 av. J.-C. ; laissé en ruine pendant 33 ans ; stylobate de Hill de 23,51 × 66,888 m ; plate-forme plus petite et légèrement au nord du Parthénon définitif ; trois degrés (deux de poros, un de calcaire de Karrha) ; ses tambours de colonnes sont emmurés dans le mur-rideau nord."
+      },
+      {
+        "read": "D'après Korres : le Parthénon ancien fut le premier temple dorique entièrement en marbre, les carrières du Pentélique ayant été ouvertes pour lui ; colonnes d'environ 1,90 m de diamètre ; les travaux avaient atteint les deuxièmes ou troisièmes tambours de colonnes quand ils furent interrompus."
+      },
+      {
+        "read": "NOVA sur la restauration : environ 70 000 pièces ; Balanos a placé des éléments aux mauvais endroits et employé des crampons de fer sans la gaine de plomb, qui ont rouillé et fissuré le marbre ; des paires de pièces de cèdre centraient les tambours comme une clé dans une serrure et sentaient encore le cèdre ; marbre neuf du Pentélique ; paires de titane pour la restauration."
+      },
+      {
+        "read": "Grues grecques à partir de la fin du 6e siècle av. J.-C., connues par des entailles pour des tenailles de levage et des louves sur des blocs de temple ; un système de treuil et de poulies qui remplaça les rampes ; blocs de moins de 15–20 t ; les grues à roue d'écureuil sont romaines."
+      },
+      {
+        "read": "Transformation en mosquée après 1458, plus probablement en 1466–70 ; la tour franque transformée en minaret ; la mosaïque de l'abside subsista ; détruite en 1687 ; une plus petite mosquée indépendante à une seule coupole dans le naos dégagé au début du 18e siècle, supprimée en 1843."
+      },
+      {
+        "read": "Consacrée en 438 av. J.-C. ; environ 11,50 m probablement avec sa base ; piédestal de poros de 8,065 × 4,10 m ; or 40–50 talents sur une armature de cyprès, visage et bras d'ivoire ; salle orientale de 29,90 × 19 m, plafond à environ 12,50 m ; bassin d'eau devant ; après l'incendie de l'Antiquité tardive, les colonnes doriques du naos furent remplacées par des colonnes de portiques (stoas) hellénistiques ; perdue à une date inconnue, non mentionnée une fois le temple devenu église."
+      },
+      {
+        "read": "Une colonnade de 23 colonnes doriques plus petites sur deux niveaux autour de la statue ; salle ouest à quatre colonnes ioniques ; largeurs de 30,875/30,8835 m et longueurs de 69,5151/69,5115 m ; environ 13 400 pierres ; 1180 : une section de l'entablement central retirée pour agrandir l'abside ; 1205 église latine ; 1458 mosquée."
+      },
+      {
+        "read": "Temple dorique périptère de 8 par 17 colonnes, bâti en 447–438 av. J.-C. par Ictinos et Callicratès ; une colonnade dorique à deux niveaux en Π à l'intérieur ; quatre colonnes ioniques dans la salle ouest ; toit de tuiles de marbre avec anthémions et gouttières à têtes de lion, statues en acrotères aux angles."
+      },
+      {
+        "read": "Evan Hadingham (Smithsonian, 2008), repris : 100 000 t de marbre d'une carrière à 11 miles d'Athènes ; cordes, poulies et grues de bois ; crampons de fer dans des rainures taillées, scellés au plomb fondu ; cannelures taillées après l'érection, aussi coûteuses que l'extraction, le transport et la pose réunis ; construit en huit ou neuf ans ; la grue repliable de la restauration dans la cella, échafaudage de poteaux d'acier, environ 70 artisans de Tinos, crampons et tiges de titane, ciment blanc soluble ; le collier de Korres soulevant la colonne de 55 tonnes."
+      }
+    ],
+    "uncertainties": [
+      "La place du temple plus ancien sur la plate-forme n'est pas connue : il est centré sur l'axe du temple postérieur et décalé de 1,5 m vers le nord.",
+      "Les colonnes des porches, l'épaisseur des murs de la cella, l'espacement de la colonnade intérieure, les colonnes de la salle ouest et les plafonds sont interprétés d'après les proportions doriques et les descriptions.",
+      "Wikipédia compte six colonnes tombées du côté sud en 1687 ; les photos de 2020–2022 montrent cinq vides, dont trois avec des colonnes encore debout à mi-hauteur. Le modèle suit les photos (de la 6e à la 10e depuis l'est).",
+      "La part et la place des tambours de ciment (Balanos) et des tambours de marbre neuf (restauration) sont interprétées.",
+      "Athéna Parthénos est une figure simplifiée : seuls sa taille, ses matériaux et ses attributs sont documentés.",
+      "La pente du toit du 4e siècle, l'abside, le haut de la tour, le minaret et la petite mosquée sont dimensionnés par interprétation.",
+      "Les acrotères et la sculpture des frontons et des métopes ne sont pas modélisés en pierre ; les échafaudages et engins de levage des chantiers antiques sont des reconstitutions (les sources parlent de grues de bois, de cordes et de poulies).",
+      "Les 28 métopes des façades est et ouest et trois groupes de fronton sont des reliefs photographiques de la sculpture telle qu'elle est en octobre 2025 (copies depuis 1984–1991 à l'est et 2011–2015 à l'ouest, YSMA, ou originaux altérés), posés sur tous les états depuis 438 av. J.-C. ; les autres métopes et la frise sont en pierre nue.",
+      "Les simas rampants, pour la plupart perdus aujourd'hui, sont montrés complets.",
+      "La grue du chantier moderne est montrée avec le modèle de grue métallique du kit, tenant lieu des grues derrick (1983) et Potain (2002) dans la cella.",
+      "Le rocher de l'Acropole et ses murs ne sont pas modélisés : vus d'en dessous du mur sud (réf. 4) ou depuis les Propylées, ils cachent le crépis sur les photos.",
+      "Le flanc nord garde quelques blocs de corniche entre les angles ; le modèle ne garde la corniche qu'à moins de 3 m de ceux-ci.",
+      "Le marbre est montré d'une seule couleur miel ; les photos montrent du marbre blanc neuf rapiécé dans des blocs antiques, ce que le modèle ne rend que tambour par tambour."
+    ]
+  },
+  "notes": {
+    "0": "Les trois degrés du temple plus ancien, dimensionnés sur le stylobate de Hill de 23,51 × 66,888 m ; sa place exacte sur la plate-forme est inconnue (Wikipédia : plus petite et légèrement au nord), il est donc centré sur l'axe du temple postérieur et décalé de 1,5 m vers le nord.",
+    "1": "6 × 16 colonnes d'environ 1,90 m, debout sur deux tambours de haut, la hauteur atteinte quand les travaux se sont arrêtés (archaeology.wiki, d'après Korres) ; sans cannelures, les tambours ayant été posés avant le cannelage. Espacement régulier, emplacements interprétés.",
+    "2": "Stylobate de 69,51 × 30,86 m sur trois degrés, calé sur le contour OpenStreetMap du degré le plus bas ; hauteurs de degrés lues sur les photos.",
+    "3": "Colonnes de 10,43 m de haut et 1,90 m de diamètre (colonnes d'angle 1,943 m), 20 cannelures, axes espacés de 4,296 m avec les angles resserrés de 61,5 cm, inclinées de 7,4 cm vers l'intérieur.",
+    "4": "Les tambours inférieurs des colonnes sud qui se tiennent encore à mi-hauteur dans la brèche ouverte en 1687, tels que les montrent les photos de 2020–2022.",
+    "5": "Les colonnes abattues en 1687 : huit au nord (de la 4e à la 11e depuis l'est, celles démontées et remontées en 2001–2010) et la brèche sud lue sur les photos.",
+    "6": "La réérection par Balanos de la colonnade nord en 1923–33, avec des tambours de ciment parmi les antiques ; quels tambours étaient de ciment est interprété.",
+    "7": "La colonnade nord remontée en 2001–2010, ses tambours de ciment remplacés par du marbre pentélique neuf (YSMA) ; la part et la place des tambours neufs sont interprétées d'après les photos.",
+    "8": "Porches prostyles de six colonnes (YSMA) ; leur diamètre (1,71 m), leur hauteur et leur espacement sont interprétés d'après les proportions doriques et les photos.",
+    "9": "Le porche avant s'est effondré en 1687 à l'exception d'une colonne, la 6e depuis le nord (Wikipédia, YSMA).",
+    "10": "Le pronaos restauré en 1995–2004 : deux colonnes entières, trois en partie, les cannelures de leur marbre neuf pas encore taillées (YSMA) ; les hauteurs partielles sont interprétées.",
+    "11": "L'entablement des façades, de 3,29 m de haut : architrave, frise de triglyphes et 14 métopes, geison à mutules.",
+    "12": "L'architrave et la frise de triglyphes des flancs, avec 32 métopes, là où se tiennent leurs colonnes.",
+    "13": "La corniche des flancs là où elle subsiste, aux angles, comme sur les photos.",
+    "14": "La corniche des flancs, perdue aujourd'hui entre les angles (photos) ; sa perte est montrée en 1687, date qu'aucune source lue ne donne.",
+    "15": "L'entablement porté par les colonnes tombées en 1687.",
+    "16": "L'entablement nord remis en place par Balanos (1923–33), démonté en 2001 (YSMA).",
+    "17": "L'entablement nord remonté en 2001–2010 avec du titane à la place du fer (YSMA).",
+    "18": "Fronton de 28,35 m de large, 3,46 m de haut et 0,91 m de profondeur (de.wikipedia), avec geison et sima rampants.",
+    "19": "Les extrémités du fronton est, qui sont encore debout.",
+    "20": "Le milieu du fronton est, disparu aujourd'hui ; son retrait est daté de 1180 par ancient-greece.org, et sa largeur est lue sur la photo est.",
+    "21": "Tuiles plates et tuiles de couvert de marbre avec antéfixes le long des avant-toits (visitgreece.gr) ; la taille des tuiles et la charpente de bois dessous sont interprétées.",
+    "22": "Les plafonds de marbre des ptères, poutres et dalles à caissons, simplifiés.",
+    "23": "Le plafond de marbre du ptéron ouest, simplifié ; une partie en est encore debout.",
+    "24": "Les murs de la cella encore debout : le mur ouest avec sa porte et les extrémités ouest des murs latéraux, s'abaissant vers l'est comme sur les photos ; hauteurs d'assises interprétées.",
+    "25": "Les murs de la cella abattus en 1687 ; le naos mesure 29,8 × 19,2 m à l'intérieur et sa porte 4,92 m de large et 10 m de haut (de.wikipedia), l'épaisseur des murs est interprétée.",
+    "26": "L'architrave du porche arrière avec ses règles et la frise ionique qui se poursuit autour de la cella (YSMA : 160 m).",
+    "27": "L'architrave et la frise du porche avant, tombées avec ses colonnes en 1687.",
+    "28": "Une colonnade dorique à deux niveaux sur trois côtés du naos, 23 colonnes (ancient-greece.org) en Π (visitgreece.gr) ; espacement et dimensions interprétés, nef centrale de 10,6 m dans œuvre (de.wikipedia).",
+    "29": "Après l'incendie de l'Antiquité tardive, les colonnes du naos furent remplacées par des colonnes de portiques hellénistiques (Wikipédia, Athéna Parthénos) ; montrées nues, interprétées.",
+    "30": "La salle ouest, de 13,36 m de profondeur (de.wikipedia), avec quatre colonnes ioniques (visitgreece.gr) ; leurs places et leur taille sont interprétées.",
+    "31": "Un plafond de bois à environ 12,5 m au-dessus du sol du naos (Wikipédia, Athéna Parthénos) ; ses poutres sont interprétées.",
+    "32": "Athéna Parthénos simplifiée : son piédestal de 8,065 × 4,10 m, environ 11,5 m avec lui, or et ivoire, la Victoire sur sa main droite, bouclier et lance, un bassin d'eau devant (Wikipédia). Perdue à une date inconnue ; non mentionnée une fois le temple devenu église.",
+    "33": "Le toit de tuiles d'argile du 4e siècle sur la seule cella, plus pentu que le premier et laissant les ailes ouvertes (Wikipédia) ; sa pente est interprétée.",
+    "34": "L'abside du Saint Bêma bâtie à l'extrémité est au 6e siècle (YSMA) ; sa taille et ses fenêtres sont interprétées.",
+    "35": "La tour à l'angle sud-ouest (Wikipédia) ; sa base et son escalier en vis se tiennent encore jusqu'à l'architrave. Sa taille en plan est interprétée.",
+    "36": "Le haut de la tour latine, peut-être un clocher (Wikipédia, mosquée du Parthénon) ; sa forme est interprétée.",
+    "37": "Le minaret élevé sur la tour (Wikipédia) ; sa hauteur et son balcon sont interprétés d'après la vue de 1839 décrite par Wikipédia.",
+    "38": "La petite mosquée à une seule coupole bâtie dans le naos au début du 18e siècle et supprimée en 1843 (Wikipédia, mosquée du Parthénon) ; sa taille et ses ouvertures sont interprétées.",
+    "39": "Des blocs tombés gisant autour du temple, comme sur toutes les photos ; leurs places sont interprétées.",
+    "40": "Des gravats laissés dans le naos après 1687 ; places interprétées.",
+    "41": "La 1re métope depuis le nord sur la façade ouest, telle que photographiée en octobre 2025 (la sculpture d'aujourd'hui, copies ou originaux altérés).",
+    "42": "La 2e métope depuis le nord sur la façade ouest, telle que photographiée en octobre 2025 (la sculpture d'aujourd'hui, copies ou originaux altérés).",
+    "43": "La 3e métope depuis le nord sur la façade ouest, telle que photographiée en octobre 2025 (la sculpture d'aujourd'hui, copies ou originaux altérés).",
+    "44": "La 4e métope depuis le nord sur la façade ouest, telle que photographiée en octobre 2025 (la sculpture d'aujourd'hui, copies ou originaux altérés).",
+    "45": "La 5e métope depuis le nord sur la façade ouest, telle que photographiée en octobre 2025 (la sculpture d'aujourd'hui, copies ou originaux altérés).",
+    "46": "La 6e métope depuis le nord sur la façade ouest, telle que photographiée en octobre 2025 (la sculpture d'aujourd'hui, copies ou originaux altérés).",
+    "47": "La 7e métope depuis le nord sur la façade ouest, telle que photographiée en octobre 2025 (la sculpture d'aujourd'hui, copies ou originaux altérés).",
+    "48": "La 8e métope depuis le nord sur la façade ouest, telle que photographiée en octobre 2025 (la sculpture d'aujourd'hui, copies ou originaux altérés).",
+    "49": "La 9e métope depuis le nord sur la façade ouest, telle que photographiée en octobre 2025 (la sculpture d'aujourd'hui, copies ou originaux altérés).",
+    "50": "La 10e métope depuis le nord sur la façade ouest, telle que photographiée en octobre 2025 (la sculpture d'aujourd'hui, copies ou originaux altérés).",
+    "51": "La 11e métope depuis le nord sur la façade ouest, telle que photographiée en octobre 2025 (la sculpture d'aujourd'hui, copies ou originaux altérés).",
+    "52": "La 12e métope depuis le nord sur la façade ouest, telle que photographiée en octobre 2025 (la sculpture d'aujourd'hui, copies ou originaux altérés).",
+    "53": "La 13e métope depuis le nord sur la façade ouest, telle que photographiée en octobre 2025 (la sculpture d'aujourd'hui, copies ou originaux altérés).",
+    "54": "La 14e métope depuis le nord sur la façade ouest, telle que photographiée en octobre 2025 (la sculpture d'aujourd'hui, copies ou originaux altérés).",
+    "55": "Le groupe de Cécrops (une copie) à l'angle nord du fronton ouest, tel que photographié en octobre 2025 ; les autres statues du fronton sont perdues ou dans des musées.",
+    "56": "La 1re métope depuis le sud sur la façade est, telle que photographiée en octobre 2025 (la sculpture d'aujourd'hui, copies ou originaux altérés), sa partie basse au soleil.",
+    "57": "La 2e métope depuis le sud sur la façade est, telle que photographiée en octobre 2025 (la sculpture d'aujourd'hui, copies ou originaux altérés), sa partie basse au soleil.",
+    "58": "La 3e métope depuis le sud sur la façade est, telle que photographiée en octobre 2025 (la sculpture d'aujourd'hui, copies ou originaux altérés), sa partie basse au soleil.",
+    "59": "La 4e métope depuis le sud sur la façade est, telle que photographiée en octobre 2025 (la sculpture d'aujourd'hui, copies ou originaux altérés), sa partie basse au soleil.",
+    "60": "La 5e métope depuis le sud sur la façade est, telle que photographiée en octobre 2025 (la sculpture d'aujourd'hui, copies ou originaux altérés), sa partie basse au soleil.",
+    "61": "La 6e métope depuis le sud sur la façade est, telle que photographiée en octobre 2025 (la sculpture d'aujourd'hui, copies ou originaux altérés), sa partie basse au soleil.",
+    "62": "La 7e métope depuis le sud sur la façade est, telle que photographiée en octobre 2025 (la sculpture d'aujourd'hui, copies ou originaux altérés), sa partie basse au soleil.",
+    "63": "La 8e métope depuis le sud sur la façade est, telle que photographiée en octobre 2025 (la sculpture d'aujourd'hui, copies ou originaux altérés), sa partie basse au soleil.",
+    "64": "La 9e métope depuis le sud sur la façade est, telle que photographiée en octobre 2025 (la sculpture d'aujourd'hui, copies ou originaux altérés), sa partie basse au soleil.",
+    "65": "La 10e métope depuis le sud sur la façade est, telle que photographiée en octobre 2025 (la sculpture d'aujourd'hui, copies ou originaux altérés), sa partie basse au soleil.",
+    "66": "La 11e métope depuis le sud sur la façade est, telle que photographiée en octobre 2025 (la sculpture d'aujourd'hui, copies ou originaux altérés), sa partie basse au soleil.",
+    "67": "La 12e métope depuis le sud sur la façade est, telle que photographiée en octobre 2025 (la sculpture d'aujourd'hui, copies ou originaux altérés), sa partie basse au soleil.",
+    "68": "La 13e métope depuis le sud sur la façade est, telle que photographiée en octobre 2025 (la sculpture d'aujourd'hui, copies ou originaux altérés), sa partie basse au soleil.",
+    "69": "La 14e métope depuis le sud sur la façade est, telle que photographiée en octobre 2025 (la sculpture d'aujourd'hui, copies ou originaux altérés), sa partie basse au soleil.",
+    "70": "Les figures (copies) à l'angle sud du fronton est, telles que photographiées en octobre 2025 ; les autres statues du fronton sont perdues ou dans des musées.",
+    "71": "La tête d'un cheval du char de la Lune (une copie) à l'angle nord du fronton est, telle que photographiée en octobre 2025 ; les autres statues du fronton sont perdues ou dans des musées."
   }
 }

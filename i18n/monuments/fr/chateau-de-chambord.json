@@ -1,5 +1,8 @@
 {
   "_read": "Translate every string into this language. Keep every number, date, measurement and name exactly as written. Dates in `when` and every `source` are not here: they never change.",
+  "name": "Château de Chambord",
+  "place": "Chambord · Loir-et-Cher · France",
+  "blurb": "Ordonné par François Ier en 1519, ses ailes et son enceinte couvertes sous Louis XIV, dépouillé de ses mansardes après 1930, ses toits sud brûlés en 1945 et ses six lanternons restaurés en 2021–2023 : le donjon et ses toitures sur le contour cartographié.",
   "modelNote": "Mesuré : le plan, d’après le contour cartographié (tours de 20 m de large, 44,8 m entre les axes des tours du donjon). Relevé sur photographies : hauteurs, toits, fenêtres. Simplifié : décor sculpté, lucarnes et souches de cheminée, couronnement de la tour-lanterne, voûtes des salles.",
   "live": [
     {
@@ -49,6 +52,7 @@
     },
     "wings": {
       "title": "Ailes et enceinte",
+      "when": "v. 1526–1547",
       "text": "À partir de 1526 environ, après le retour du roi de sa captivité à Madrid, deux ailes latérales et une enceinte sont ajoutées. À sa mort en 1547, l’aile de la chapelle et l’enceinte basse sont encore inachevées.",
       "moments": [
         {
@@ -97,6 +101,7 @@
     },
     "etat": {
       "title": "Retour à la Renaissance",
+      "when": "après 1930",
       "text": "L’État, propriétaire depuis 1930, présente le château dans l’état le plus proche de la Renaissance : les mansardes qui coiffaient l’enceinte basse sont supprimées.",
       "moments": [
         {
@@ -108,6 +113,7 @@
     },
     "feu": {
       "title": "Incendie dans la tour sud",
+      "when": "7 juillet 1945",
       "text": "Un incendie accidentel détruit les combles de la tour sud, aujourd’hui appelée tour Henri V, et de son canton.",
       "moments": [
         {
@@ -139,5 +145,71 @@
         }
       ]
     }
+  },
+  "evidence": {
+    "references": [
+      {
+        "view": "nord-ouest"
+      },
+      {
+        "view": "sud-est"
+      },
+      {
+        "view": "tour ouest"
+      },
+      {
+        "view": "toits, sud-ouest"
+      },
+      {
+        "view": "toits, nord-ouest"
+      }
+    ],
+    "sources": [
+      {
+        "read": "Le château tel qu'il est cartographié (way 240990589, étiqueté historic=castle et building=castle, Wikidata Q205367) : sa géométrie donne 156 m sur 112 m hors tout, quatre tours d'angle de 20 m de large aux angles de l'enceinte, et le donjon, à 44,8 m entre les axes de ses quatre tours, au milieu du côté nord-ouest ; le plan du modèle y est calé."
+      },
+      {
+        "read": "Le donjon est un bloc carré flanqué de quatre tours d'angle, le nouveau palais de François Ier au début des travaux ; deux bâtiments latéraux et une enceinte viennent à partir de 1526 environ. Plan en croix grecque : quatre salles de 9 m de large et 18 m de long se rejoignant à l'escalier, quatre appartements dans les angles. L'escalier à double révolution monte jusqu'aux terrasses, sous la tour-lanterne. Façades de bandeaux moulurés et de pilastres plats selon une trame régulière ; l'architecte est inconnu, Léonard de Vinci est une influence."
+      },
+      {
+        "read": "Le château est bâti à partir de 1519 sur l'ordre de François Ier ; Louis XIV l'achève ; l'enceinte basse est couverte de mansardes que l'État retire après avoir acheté le domaine en 1930 ; le château figure sur la première liste des monuments historiques (1840) et sur la liste de l'UNESCO depuis 1981."
+      },
+      {
+        "read": "François Ier commence les travaux en 1519 et reçoit Charles Quint en 1539 ; à sa mort en 1547, l'aile de la chapelle et l'enceinte basse sont inachevées. Gaston d'Orléans, comte de Blois à partir de 1626, répare les terrasses, la tour-lanterne et les voûtes sculptées du deuxième étage. Louis XIV fait couvrir l'aile de la chapelle et l'enceinte ; Le Bourgeois gentilhomme est joué pour la première fois devant lui le 14 octobre 1670."
+      },
+      {
+        "read": "Quatre grandes salles en croix grecque autour de l'escalier à double révolution ; les deux ailes opposées sont l'aile royale (est) et l'aile de la chapelle (ouest) ; les bâtiments qui ferment la cour forment une enceinte basse, d'abord des terrasses au-dessus de cuisines inachevées, puis mansardée du 17e au 19e siècle. La tour-lanterne est le point culminant du château, à 56 m, couronnée d'une fleur de lis ; les terrasses portent des tourelles, des souches de cheminée et des lucarnes."
+      },
+      {
+        "read": "L'oratoire royal, ajouté dans l'aile de François Ier près du logis du roi, se dresse en dehors du bâtiment d'origine et rompt la symétrie de la grande façade ; une date sculptée dans l'un de ses caissons, 1540, donne l'année de sa construction."
+      },
+      {
+        "read": "Six lanternons couronnent les tours : quatre en plomb sur le donjon (tour Dieudonné, François Ier, Henri V, Caroline de Berry) et deux en ardoise sur les ailes ; 12 m de haut avec la girouette, 15 t chacun. Des ornements de plomb de l'atelier Monduit sont posés sur trois tours du donjon de 1895 à 1898 ; les toits de la tour sud brûlent le 7 juillet 1945 ; restauration de 2021 à juin 2023 sous 80 t d'échafaudages jusqu'à 54 m, avec environ 30 personnes."
+      },
+      {
+        "read": "Les travaux sont ordonnés le 6 septembre 1519 ; arrêtés en 1525–1526 et repris à partir de 1526, quand le donjon reçoit deux ailes ; le donjon est achevé lors de la réception de Charles Quint les 18 et 19 décembre 1539 ; l'aile royale est achevée en 1544. Fondations sur le calcaire à 5–6 m sous la cour actuelle, un batardeau en bois, du tuffeau amené en chariot depuis le port de Saint-Dyé, des tailleurs de pierre payés à la tâche qui marquaient leurs pierres. Hardouin-Mansart couvre l'aile de la chapelle et l'enceinte, 1680–1686 ; les mansardes sont retirées après 1930 ; incendie du 7 juillet 1945 ; toits reconstruits en 1950–1952, balustrade de pierre sur l'enceinte basse à partir de 1950 ; terrasses de dalles poreuses sur les voûtes."
+      },
+      {
+        "read": "Donjon à quatre tours bastionnées aux angles, partie du mur de façade d'un ensemble plus vaste avec deux tours plus grandes ; les bases de deux autres tours à l'arrière n'ont jamais été élevées au-dessus du mur. Travaux ordonnés le 6 septembre 1519, murs à peine sortis de terre en 1524, repris en septembre 1526 avec 1 800 ouvriers ; escalier ouvert à double spirale ; la toiture est comparée à la silhouette d'une ville."
+      }
+    ],
+    "uncertainties": [
+      "Un plan en croix grecque : quatre salles de 9 m de large et 18 m de long se rejoignant à l'escalier central, avec un appartement dans chaque angle : simplifié ; les quatre salles sont laissées en croix ouverte entre les étages des cantons, sans leurs voûtes à caissons, que décrivent les pages mêmes du Domaine.",
+      "Un escalier à double révolution de deux rampes hélicoïdales autour d'un noyau ouvert, montant jusqu'aux terrasses : simplifié ; le rayon de l'escalier, son nombre de marches et les ouvertures de son noyau sont interprétés, aucun relevé mesuré n'ayant été lu.",
+      "La tour-lanterne au-dessus de l'escalier, point culminant du château à 56 m, couronnée d'une fleur de lis : simplifié ; la tour-lanterne est modélisée en tambours superposés, sans la couronne d'arcs, de nervures et de décor sculpté de la vraie.",
+      "Terrasses, lucarnes, souches de cheminée et tourelles au-dessus du donjon, une toiture comme un village dans le ciel : simplifié ; les lucarnes et les souches de cheminée sont des formes standard placées à des endroits plausibles, et leur nombre, leurs frontons et leur décor sculpté n'ont pas été appariés un à un avec les photographies.",
+      "L'oratoire royal, bâti en dehors du bloc d'origine et daté de 1540, qui rompt la symétrie de la grande façade : simplifié ; l'oratoire est un bloc nu à la taille du plan, sans son décor sculpté.",
+      "Les fenêtres sont partout des fenêtres rectangulaires à croisée de meneau et de traverse ; les baies en plein cintre des loggias et les arcs du rez-de-chaussée des ailes ne sont pas modélisés.",
+      "Le devant du donjon se tient environ 2 m plus bas, d'après les photographies, sur son côté nord-ouest que la cour : le modèle n'a qu'un seul niveau de sol, celui de la cour.",
+      "Les hauteurs sont lues sur des photographies calées sur des points du plan (la tour-lanterne 56 m, la corniche du donjon 21 m, celle des ailes 18,4 m, l'enceinte basse 6,4 m) ; les ornements de plomb des lanternons et le décor sculpté des façades ne sont pas modélisés.",
+      "Les chiffres donnés pour la longueur de la façade diffèrent selon les sources (156 m pour Wikipédia en français, 128 m pour la version anglaise) ; le modèle suit le contour cartographié, 156 m d'une tour à l'autre.",
+      "Les sources diffèrent sur le premier des neuf séjours de Louis XIV (1660 sur la page du Domaine, 1650 sur Wikipédia en français) : le film donne le nombre et le dernier, 1685, sur lesquels elles s'accordent.",
+      "Les dates des toits de la tour de la chapelle et des tours d'escalier sont interprétées d'après celles de l'aile de la chapelle : les pages du Domaine disent que l'aile de la chapelle a été couverte sous Louis XIV et ne donnent aucune date pour les tours.",
+      "L'échafaudage de bois et la chèvre du chantier du 16e siècle sont des reconstitutions : les sources lues décrivent la pierre, les fondations et la paie des maçons, pas les engins de levage.",
+      "Les toits en mansarde de 1680–1686 sont dessinés comme un comble brisé typique de l'époque ; leur profil exact et la position de leurs lucarnes n'ont pas été lus dans une source."
+    ]
+  },
+  "notes": {
+    "6": "Planchers des quatre cantons à chaque niveau ; les salles en croix qui les relient sont laissées ouvertes pour l'escalier et ne sont pas modélisées en voûtes."
   }
 }

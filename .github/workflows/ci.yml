@@ -21,6 +21,8 @@ jobs:
         run: node scripts/catalogue.test.mjs
       - name: Check the site tabs share one column
         run: node scripts/site.test.mjs
+      - name: Check the translations and the translated site
+        run: node scripts/i18n.test.mjs
       - name: Check the buildings against their sources
         run: node scripts/check.mjs
       - name: Check the order of the works against the story

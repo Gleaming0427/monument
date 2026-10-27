@@ -158,7 +158,7 @@ const visual = (m, assets, dictionary) => m.video
   // A recorded construction sits over its own photograph. The poster is not a fallback bolted on after a
   // failure: it is the layer underneath, so a video that is slow, blocked or refused always shows the
   // finished model instead of an empty grey rectangle. The video fades in over it when it can play.
-  ? frame(loading + `<img class="media__poster" src="${assets}thumbs/${esc(m.id)}.jpg" alt="" aria-hidden="true" loading="lazy" decoding="async">`
+  ? frame(loading + `<img class="media__poster" src="${assets}thumbs/${esc(m.thumb ?? `${m.id}.jpg`)}" alt="" aria-hidden="true" loading="lazy" decoding="async">`
     + `<video src="${assets}media/${esc(m.id)}.mp4" autoplay muted loop playsinline preload="metadata" aria-label="${esc(say(dictionary, 'card.building', `${m.name} being built`, {name: m.name}))}"></video>`, ' media--video')
   : m.thumb === null ? absent(m.id, dictionary)
   : frame(loading + `<img src="${assets}thumbs/${esc(m.thumb ?? `${m.id}.jpg`)}" alt="${esc(say(dictionary, 'card.finished', `${m.name}, the finished model`, {name: m.name}))}" loading="lazy" decoding="async">`);
@@ -174,6 +174,20 @@ const card = (m, i, assets, viewer, dictionary) => `<a class="card" href="${view
     ? `<span class="by">@${esc(m.author)} · ${esc(m.model ?? say(dictionary, 'card.model', 'Model not given'))}${m.date ? ` · ${esc(m.date)}` : ''}</span>`
     : `<span class="by na">${esc(t(dictionary, 'card.uncredited', 'Author not given'))}${m.date ? ` · ${esc(m.date)}` : ''}</span>`)
   + `</span></a>`;
+// What a card says in a language: the monument's own name and place, and the line under a card of the collection.
+// A monument with no translation stays in the language it was written in, like its viewer page; a collection card
+// with a translation and no blurb is a gap, and stops the build rather than leaving one English line in a French row.
+const localized = (m, translation, language) => {
+  if (language === SOURCE || !translation) return m;
+  const local = {...m, name: translation.name ?? m.name, place: translation.place ?? m.place};
+  if (m.blurb !== undefined) {
+    if (typeof translation.blurb !== 'string' || !translation.blurb.trim()) throw new Error(`i18n: ${language}/${m.id} has no blurb`);
+    local.blurb = translation.blurb;
+  }
+  // A title the author chose for the gallery stays as chosen; one that is only the monument's name follows it.
+  if (m.title !== undefined && m.title === m.name) local.title = local.name;
+  return local;
+};
 const fill = async (page, values, language) => {
   const target = join(staging, language === SOURCE ? '' : language, page);
   let html = await readFile(target, 'utf8');
@@ -208,8 +222,11 @@ for (const {code: language} of LANGUAGES) {
   // the shared kit, one file per language, and the application reads its own <html lang> to pick one.
   await mkdir(join(staging, 'view', 'kit', 'i18n'), {recursive: true});
   await writeFile(join(staging, 'view', 'kit', 'i18n', `${language}.json`), `${JSON.stringify(dictionary, null, 2)}\n`);
+  const translations = new Map();
+  if (deeper) for (const [id] of published) translations.set(id, await json(join(root, 'i18n', 'monuments', language, `${id}.json`)).catch(() => null));
+  const local = m => localized(m, translations.get(m.id), language);
   if (deeper) for (const [id, monument] of published) {
-    const translation = await json(join(root, 'i18n', 'monuments', language, `${id}.json`)).catch(() => null);
+    const translation = translations.get(id);
     if (!translation) continue;                       // a monument with no translation stays in its own language
     await writeFile(join(staging, 'view', 'monuments', `${id}.${language}.json`), `${JSON.stringify(mergeMonument(monument, translation, language, id), null, 2)}\n`);
   }
@@ -218,23 +235,23 @@ for (const {code: language} of LANGUAGES) {
     await mkdir(join(target, '..'), {recursive: true});
     // The shell is the English one, in French. A <base> pointing at the shared viewer folder makes every
     // relative reference — the kit, the monuments, the fonts — resolve exactly as it does in English, so the
-    // application needs no second copy and no second set of paths. Only the way home is one level further out.
+    // application needs no second copy and no second set of paths. Only the way home differs, and it is measured from
+    // that <base> too: from /view/, the French home is ../fr/ — `../../` would climb out of the site.
     await writeFile(target, render(await readFile(join(staging, 'view', 'index.html'), 'utf8'), dictionary, language)
-      .replace('<head>', '<head><base href="../../view/">').replace('href="../"', 'href="../../"'));
+      .replace('<head>', '<head><base href="../../view/">').replace('href="../"', `href="../${language}/"`));
   }
   const home = '', assets = siteRoot(home, language), viewer = viewerAt(language, home, language);
   await fill('index.html', {
     COUNT: collection.length,
     // Three monuments across the opening panel: a collage, not a grid. A fourth would leave an orphan cell,
     // and the rest of the collection is one click away.
-    STRIP: collection.slice(0, 3).map(m => `<a href="${viewer}#${esc(m.id)}" aria-label="${esc(m.name)}">${visual(m, assets, dictionary)}</a>`).join(''),
-    COLLECTION: collection.slice(0, 4).map((m, i) => card(m, i, assets, viewer, dictionary)).join(''),
+    STRIP: collection.slice(0, 3).map(m => `<a href="${viewer}#${esc(m.id)}" aria-label="${esc(local(m).name)}">${visual(local(m), assets, dictionary)}</a>`).join(''),
   }, language);
-  await fill('collection/index.html', {COUNT: collection.length, COLLECTION: collection.map((m, i) => card(m, i, siteRoot('collection/', language), viewerAt(language, 'collection/', language), dictionary)).join('')}, language);
+  await fill('collection/index.html', {COUNT: collection.length, COLLECTION: collection.map((m, i) => card(local(m), i, siteRoot('collection/', language), viewerAt(language, 'collection/', language), dictionary)).join('')}, language);
   await fill('community/index.html', {
     COMMUNITY_COUNT: community.length,
     COMMUNITY_META: communityMeta(dictionary),
-    COMMUNITY: community.length ? community.map((m, i) => card(m, i, siteRoot('community/', language), viewerAt(language, 'community/', language), dictionary)).join('') : emptyGallery(dictionary),
+    COMMUNITY: community.length ? community.map((m, i) => card(local(m), i, siteRoot('community/', language), viewerAt(language, 'community/', language), dictionary)).join('') : emptyGallery(dictionary),
   }, language);
 }
 await writeFile(join(staging, '.nojekyll'), '');

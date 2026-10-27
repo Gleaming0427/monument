@@ -32,6 +32,9 @@ async function monuments() {
 // The site's languages are declared once, in the build; reading them from there keeps a single list.
 const languages = async () => [.../const LANGUAGES = \[(.*?)\], SOURCE/s.exec(await readFile(join(root, 'scripts', 'build-site.mjs'), 'utf8'))[1].matchAll(/code: '(\w+)'/g)].map(match => match[1]);
 
+// The line under a card of the collection is written once, in site/collection.json: it is the one piece of a
+// monument's words that is not in the monument file, so a translation of a collection monument carries it too.
+const blurbs = Object.fromEntries((await json(join(root, 'site', 'collection.json'))).map(({id, blurb}) => [id, blurb]));
 const [command, language, only] = process.argv.slice(2), every = (await monuments()).filter(([id]) => !only || id === only), others = (await languages()).filter(code => code !== 'en');
 if (command === 'skeletons') {
   const folder = join(root, 'i18n', 'monuments', language);
@@ -39,7 +42,7 @@ if (command === 'skeletons') {
   for (const [id, monument] of every) {
     const file = join(folder, `${id}.json`);
     if (await exists(file)) { console.log(`${id}: déjà traduit`); continue; }
-    await writeFile(file, `${JSON.stringify(translationSkeleton(monument), null, 2)}\n`);
+    await writeFile(file, `${JSON.stringify(translationSkeleton(monument, {blurb: blurbs[id]}), null, 2)}\n`);
     console.log(`${id}: squelette écrit (anglais à traduire)`);
   }
 } else if (command === 'missing') {
@@ -51,7 +54,7 @@ if (command === 'skeletons') {
       const file = join(root, 'i18n', 'monuments', code, `${id}.json`);
       if (!(await exists(file))) { console.log(`${code}/${id}: aucune traduction`); problems++; continue; }
       const translation = await json(file);
-      const found = checkTranslation(monument, translation, code);
+      const found = checkTranslation(monument, translation, code, {blurb: blurbs[id]});
       if (found.length) { console.log(`${code}/${id}:`); for (const problem of found.slice(0, 6)) console.log(`  ${problem}`); problems += found.length; }
       else {
         try { mergeMonument(monument, translation, code, id); console.log(`${code}/${id}: ${monument.phases.length} phases, tout est traduit`); }

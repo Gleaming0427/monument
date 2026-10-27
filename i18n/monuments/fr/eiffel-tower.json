@@ -1,5 +1,8 @@
 {
   "_read": "Translate every string into this language. Keep every number, date, measurement and name exactly as written. Dates in `when` and every `source` are not here: they never change.",
+  "name": "Tour Eiffel",
+  "place": "Paris · France",
+  "blurb": "18 038 pièces de fer sur quatre pieds, des caissons creusés sous la Seine au sommet à 300 m, son premier étage reconstruit en verre en 2015 et son illumination.",
   "modelNote": "Mesures reprises des dimensions officielles et des empreintes OpenStreetMap et IGN (écart de bord de 2,5 m au 90e centile) ; la treillis est simplifié à ses quatre piliers, ses arcs et ses trois étages, les pavillons et l'éclairage sont schématiques.",
   "live": [
     {
@@ -97,6 +100,7 @@
     },
     "lumiere": {
       "title": "La tour s'illumine",
+      "when": "Depuis 1985 et 2000",
       "text": "Depuis le 31 décembre 1985, 336 lampes installées dans la structure l'illuminent en doré. Depuis 2000, 20.000 ampoules la font scintiller."
     },
     "premier-2015": {
@@ -110,5 +114,64 @@
         }
       ]
     }
+  },
+  "evidence": {
+    "references": [
+      {
+        "view": "sud-est, depuis les pelouses du Champ-de-Mars (Jebulon, 2011, CC0)"
+      },
+      {
+        "view": "nord-ouest, depuis la berge de la Seine au pied du pont d'Iéna (Yann Caradec, 2013, CC BY-SA 2.0)"
+      },
+      {
+        "view": "ouest, depuis la Seine en aval, pendant la crue de 2018 (Ibex73, CC BY-SA 4.0)"
+      },
+      {
+        "view": "nord, au téléobjectif sur les pieds, les arcs et le premier étage, depuis l'autre rive de la Seine (dconvertini, 2022, CC BY-SA 2.0)"
+      }
+    ],
+    "sources": [
+      {
+        "read": "La tour a été bâtie pour l'Exposition universelle de 1889 : les travaux commencent le 26 janvier 1887, premier étage le 1er avril 1888, deuxième le 14 août 1888, sommet le 31 mars 1889 (2 ans, 2 mois et 5 jours). Base carrée de 125 m de côté, 18 038 pièces, 2 500 000 rivets, quatre poutres treillis réunies au sommet ; 150–300 ouvriers ; rivets posés par équipes de quatre ; boîtes à sable et vérins hydrauliques alignant au millimètre les poutres du premier étage ; caissons à air comprimé côté Seine ; les arcs monumentaux de Sauvestre à la base ont été conservés."
+      },
+      {
+        "read": "Seize massifs de pierre, un par arête de la tour, bâtis en cinq mois en maçonnerie ; 700 dessins d'ingénierie et 3 600 plans d'atelier pour les 18 000 pièces ; préfabrication à Levallois-Perret, les pièces défectueuses étant renvoyées ; les deux tiers des rivets posés en usine ; échafaudages de bois et grues à vapeur de 3 tonnes qui grimpaient le long des pieds ; le deuxième étage est atteint en juillet 1888 et le sommet à 300 m en mars 1889."
+      },
+      {
+        "read": "Le secret de l'assemblage en 22 mois était la préfabrication complète : 12 000 pièces calculées, dessinées, découpées, percées et pré-assemblées dans les ateliers de Levallois-Perret ; 150 à 300 ouvriers ; seize massifs de fondation en maçonnerie, un par arête, avec des caissons sous deux piliers près de la Seine ; le premier étage fut le moment critique, aligné avec des boîtes à sable et des vérins hydrauliques."
+      },
+      {
+        "read": "674 marches mènent du sol au deuxième étage et 1 665 au total de l'esplanade au sommet ; l'escalier au-dessus du deuxième étage n'est pas ouvert au public et grimpe le long du pied sud."
+      },
+      {
+        "read": "Des boîtes à sable et des vérins hydrauliques à la base de deux colonnes, actionnés par une pompe à main, montaient ou descendaient de quelques centimètres les poutres du premier étage pour que les trous de rivets se rejoignent ; les vérins ont été retirés et remplacés par des cales permanentes une fois le premier étage assemblé."
+      },
+      {
+        "read": "Depuis le 31 décembre 1985, 336 projecteurs au sodium placés dans la structure éclairent la tour en doré ; depuis 2000, 20 000 ampoules de 6 W la font scintiller cinq minutes au début de chaque heure ; un phare tournant coiffe le sommet ; le monument est illuminé depuis 1889 (becs de gaz)."
+      },
+      {
+        "read": "Dimensions techniques de la tour : fondations, étages à 57,63/115,73/276,13 m avec des côtés de 70,69/40,96/18,65 m, base de 125 × 125 m, écart de 74,24 m à l'intérieur et de 124,90 m à l'extérieur entre les piliers, 1 665 marches."
+      },
+      {
+        "read": "Bertrand Lemoine : le premier étage est ceint d'une grande poutre continue ponctuée de consoles qui portent le balcon ; entre elles, les noms de 72 savants français en lettres capitales dorées de 60 cm de haut, dix-huit de chaque côté, de douze lettres au plus chacun."
+      },
+      {
+        "read": "Communiqué de presse du 4 septembre 2015 : le premier étage a été entièrement rénové, avec un plancher transparent et des garde-corps de verre autour d'un vide central ; les pavillons Eiffel et Ferrié ont été reconstruits et le restaurant 58 Tour Eiffel a reçu de nouvelles façades vitrées."
+      },
+      {
+        "read": "Parties de bâtiment de la tour dans la BD TOPO de l'IGN (nature « Tour, donjon ») : une partie de 41,9 m dont l'anneau extérieur atteint 86,8 m du centre à la pointe des pieds et 37,6 m entre les pieds, une partie de 62 m au premier étage, une de 116,4 m au deuxième étage et une de 286,4 m au sommet ; l'anneau extérieur correspond au way OpenStreetMap 5013364."
+      },
+      {
+        "read": "Robert M. Vogel, Elevator Systems of the Eiffel Tower, 1889 (Smithsonian, 1961) : pas de gaine verticale sous la première plate-forme, si bien que les ascenseurs montaient dans les pieds inclinés ; ascenseurs hydrauliques Roux, Combaluzier et Lepape dans les pieds est et ouest jusqu'à la première plate-forme, en trajets rectilignes ; ascenseurs Otis dans les pieds nord et sud jusqu'à la deuxième plate-forme, sur deux longueurs de trajet rectilignes ; ascenseur à piston direct de Léon Edoux de la deuxième plate-forme au sommet, 525 pieds en deux moitiés de 262 pieds, avec deux cabines équilibrées qui se croisent à une plate-forme intermédiaire, un guide central sur l'axe de la tour ; les ascenseurs Roux remplacés par Fives-Lille en 1900, l'ascenseur Otis sud remplacé par un escalier en 1900."
+      }
+    ],
+    "uncertainties": [
+      "Le treillis est schématique : la vraie tour compte plusieurs centaines de pièces de treillis par panneau ; le modèle garde la silhouette et le rythme des panneaux.",
+      "La grue à vapeur grimpante et la cage d'échafaudage suivent la méthode de construction documentée, alors que leur position exacte dans le pied choisi est interprétative.",
+      "La largeur du pied entre la base et le premier étage est calée sur le contour mesuré (OpenStreetMap et la BD TOPO de l'IGN concordent) ; aucune coupe publiée des piliers n'a été trouvée.",
+      "Les pavillons du premier étage sont dessinés comme un seul bloc vitré entre les pieds de chaque côté ; leurs plans exacts ne sont pas dans les sources utilisées. La hauteur de poutre du deuxième étage est lue sur les photos.",
+      "Les antennes au-dessus de la lanterne (330 m depuis 2022) et le restaurant du deuxième étage sont laissés de côté. Les ascenseurs sont ceux de 1889, dessinés comme des rails le long du milieu de chaque pied et sur l'axe, avec leurs cabines ; l'endroit où les trajets Otis s'infléchissent n'est pas documenté (le premier étage est supposé), et leurs remplacements de 1900, 1965 et 1983, le long des mêmes pieds, ne sont pas dessinés séparément.",
+      "Dans la vue diagonale nord, le fût au-dessus du deuxième étage se tient un peu plus large que sur la photo (1,6 % de la hauteur de la photo), alors que la vue de face depuis le Champ-de-Mars tient à 1,5 % près : les angles du fût supérieur pourraient se tenir un peu plus en retrait que le profil utilisé."
+    ]
   }
 }
