@@ -1,0 +1,136 @@
+<?xml version='1.0' encoding='utf-8'?>
+<osm version="0.6" generator="extract of www.openstreetmap.org/api/0.6/map?bbox=135.5238,34.6862,135.5280,34.6884" copyright="OpenStreetMap and contributors" attribution="http://www.openstreetmap.org/copyright" license="http://opendatacommons.org/licenses/odbl/1-0/">
+  <node id="251378623" visible="true" version="30" changeset="174720315" timestamp="2025-11-16T10:37:41Z" user="km2bp" uid="3610826" lat="34.6875751" lon="135.5256739" />
+  <node id="402307328" visible="true" version="6" changeset="157859665" timestamp="2024-10-14T05:36:30Z" user="MaryHiroshige" uid="151227" lat="34.6875446" lon="135.5260774" />
+  <node id="402307329" visible="true" version="6" changeset="157859665" timestamp="2024-10-14T05:36:30Z" user="MaryHiroshige" uid="151227" lat="34.6871702" lon="135.5260389" />
+  <node id="402307330" visible="true" version="6" changeset="157859665" timestamp="2024-10-14T05:36:30Z" user="MaryHiroshige" uid="151227" lat="34.6872024" lon="135.5256320" />
+  <node id="4803452257" visible="true" version="4" changeset="157859665" timestamp="2024-10-14T05:36:30Z" user="MaryHiroshige" uid="151227" lat="34.6871994" lon="135.5256789" />
+  <node id="4803452260" visible="true" version="4" changeset="157859665" timestamp="2024-10-14T05:36:30Z" user="MaryHiroshige" uid="151227" lat="34.6871717" lon="135.5260209" />
+  <node id="5055019114" visible="true" version="3" changeset="143958468" timestamp="2023-11-13T07:39:40Z" user="John Bek" uid="3800987" lat="34.6871859" lon="135.5258401" />
+  <node id="5055033850" visible="true" version="4" changeset="157859665" timestamp="2024-10-14T05:36:33Z" user="MaryHiroshige" uid="151227" lat="34.6871909" lon="135.5257826">
+    <tag k="entrance" v="yes" />
+  </node>
+  <node id="11345834349" visible="true" version="2" changeset="157859665" timestamp="2024-10-14T05:36:33Z" user="MaryHiroshige" uid="151227" lat="34.6875534" lon="135.5256948" />
+  <node id="11345834350" visible="true" version="2" changeset="157859665" timestamp="2024-10-14T05:36:33Z" user="MaryHiroshige" uid="151227" lat="34.6872173" lon="135.5256579" />
+  <node id="11345834351" visible="true" version="2" changeset="157859665" timestamp="2024-10-14T05:36:33Z" user="MaryHiroshige" uid="151227" lat="34.6871922" lon="135.5260146" />
+  <node id="11345834352" visible="true" version="2" changeset="157859665" timestamp="2024-10-14T05:36:33Z" user="MaryHiroshige" uid="151227" lat="34.6875274" lon="135.5260515" />
+  <node id="11345834353" visible="true" version="2" changeset="157859665" timestamp="2024-10-14T05:36:33Z" user="MaryHiroshige" uid="151227" lat="34.6872207" lon="135.5259868" />
+  <node id="11345834354" visible="true" version="2" changeset="157859665" timestamp="2024-10-14T05:36:33Z" user="MaryHiroshige" uid="151227" lat="34.6875034" lon="135.5260167" />
+  <node id="11345834355" visible="true" version="2" changeset="157859665" timestamp="2024-10-14T05:36:33Z" user="MaryHiroshige" uid="151227" lat="34.6875246" lon="135.5257231" />
+  <node id="11345834356" visible="true" version="2" changeset="157859665" timestamp="2024-10-14T05:36:33Z" user="MaryHiroshige" uid="151227" lat="34.6872442" lon="135.5256895" />
+  <node id="11345834357" visible="true" version="2" changeset="157859665" timestamp="2024-10-14T05:36:33Z" user="MaryHiroshige" uid="151227" lat="34.6874781" lon="135.5257483" />
+  <node id="11345834358" visible="true" version="2" changeset="157859665" timestamp="2024-10-14T05:36:33Z" user="MaryHiroshige" uid="151227" lat="34.6872855" lon="135.5257288" />
+  <node id="11345834359" visible="true" version="2" changeset="157859665" timestamp="2024-10-14T05:36:33Z" user="MaryHiroshige" uid="151227" lat="34.6872687" lon="135.5259590" />
+  <node id="11345834360" visible="true" version="2" changeset="157859665" timestamp="2024-10-14T05:36:33Z" user="MaryHiroshige" uid="151227" lat="34.6874605" lon="135.5259802" />
+  <node id="11345834361" visible="true" version="2" changeset="157859665" timestamp="2024-10-14T05:36:33Z" user="MaryHiroshige" uid="151227" lat="34.6874273" lon="135.5257927" />
+  <node id="11345834362" visible="true" version="1" changeset="143958468" timestamp="2023-11-13T07:39:40Z" user="John Bek" uid="3800987" lat="34.6873270" lon="135.5257826" />
+  <node id="11345834363" visible="true" version="2" changeset="157859665" timestamp="2024-10-14T05:36:33Z" user="MaryHiroshige" uid="151227" lat="34.6873179" lon="135.5259160" />
+  <node id="11345834364" visible="true" version="2" changeset="157859665" timestamp="2024-10-14T05:36:33Z" user="MaryHiroshige" uid="151227" lat="34.6874182" lon="135.5259261" />
+  <way id="34619038" visible="true" version="42" changeset="187559376" timestamp="2026-08-16T22:10:32Z" user="Monolo23" uid="17519482">
+    <nd ref="251378623" />
+    <nd ref="402307328" />
+    <nd ref="402307329" />
+    <nd ref="4803452260" />
+    <nd ref="5055019114" />
+    <nd ref="5055033850" />
+    <nd ref="4803452257" />
+    <nd ref="402307330" />
+    <nd ref="251378623" />
+    <tag k="access" v="permissive" />
+    <tag k="addr:block_number" v="1" />
+    <tag k="addr:city" v="大阪市" />
+    <tag k="addr:country" v="JP" />
+    <tag k="addr:housenumber" v="1" />
+    <tag k="addr:postcode" v="540-0002" />
+    <tag k="addr:province" v="大阪府" />
+    <tag k="addr:quarter" v="大阪城" />
+    <tag k="addr:suburb" v="中央区" />
+    <tag k="alt_name" v="大阪城天守閣" />
+    <tag k="alt_name:es" v="Castillo Osaka;Castillo Kinjo;Kinjo;Torre Principal del Castillo de Osaka" />
+    <tag k="alt_name:ja" v="大阪城天守閣" />
+    <tag k="alt_name:ja-Hira" v="おおさかじょうてんしゅかく" />
+    <tag k="alt_name:ja-Latn" v="Ōsakajō Tenshukaku" />
+    <tag k="building" v="yes" />
+    <tag k="building:levels" v="8" />
+    <tag k="castle_type" v="shiro" />
+    <tag k="charge" v="700 JPY" />
+    <tag k="contact:tripadvisor" v="320970" />
+    <tag k="contact:website" v="https://www.museum.or.jp/osakajo/;https://osakacastle.net/" />
+    <tag k="description" v="建設者： 豊臣秀吉 建設： 1597年" />
+    <tag k="fee" v="yes" />
+    <tag k="height" v="58" />
+    <tag k="heritage" v="2" />
+    <tag k="heritage:operator" v="文部科学省" />
+    <tag k="heritage:type" v="重要文化財" />
+    <tag k="heritage:wikidata" v="Q858308" />
+    <tag k="historic" v="castle" />
+    <tag k="historic:civilization" v="medieval" />
+    <tag k="image" v="https://photos.app.goo.gl/7VXuq7mkuqV2UBW68" />
+    <tag k="loc_name" v="錦城" />
+    <tag k="material" v="concrete" />
+    <tag k="name" v="大阪城" />
+    <tag k="name:de" v="Burg Ōsaka" />
+    <tag k="name:en" v="Osaka Castle" />
+    <tag k="name:es" v="Castillo de Osaka" />
+    <tag k="name:fr" v="Château d'Osaka" />
+    <tag k="name:id" v="Istana Osaka" />
+    <tag k="name:it" v="Castello di Osaka" />
+    <tag k="name:ja" v="大阪城" />
+    <tag k="name:ja-Hira" v="おおさかじょう" />
+    <tag k="name:ja-Latn" v="Ōsaka-jō" />
+    <tag k="name:ko" v="오사카성;오사카 성" />
+    <tag k="name:ms" v="Istana kota Osaka" />
+    <tag k="name:nl" v="Kasteel Osaka" />
+    <tag k="name:pt" v="Castelo de Osaka" />
+    <tag k="name:ru" v="Замок в Осаке" />
+    <tag k="name:th" v="ปราสาทโอซากะ;ปราสาทโอซาก้า" />
+    <tag k="name:vi" v="Thành Osaka" />
+    <tag k="name:zh" v="大阪城;大阪城天守阁" />
+    <tag k="name:zh-Hans" v="大阪城;大阪城天守阁" />
+    <tag k="name:zh-Hant" v="大阪城;大阪城天守閣" />
+    <tag k="opening_hours" v="Mo-Su 09:00-17:00" />
+    <tag k="phone" v="+81 6 6941 3044" />
+    <tag k="source" v="Bing,2011-4" />
+    <tag k="start_date" v="1583" />
+    <tag k="wheelchair" v="yes" />
+    <tag k="wikidata" v="Q321242" />
+    <tag k="wikimedia_commons" v="Category:Osaka Castle" />
+    <tag k="wikipedia" v="ja:大坂城" />
+  </way>
+  <way id="1223142998" visible="true" version="1" changeset="143958468" timestamp="2023-11-13T07:39:40Z" user="John Bek" uid="3800987">
+    <nd ref="11345834349" />
+    <nd ref="11345834350" />
+    <nd ref="11345834351" />
+    <nd ref="11345834352" />
+    <nd ref="11345834349" />
+    <tag k="building:levels" v="4" />
+    <tag k="building:part" v="yes" />
+  </way>
+  <way id="1223142999" visible="true" version="1" changeset="143958468" timestamp="2023-11-13T07:39:40Z" user="John Bek" uid="3800987">
+    <nd ref="11345834353" />
+    <nd ref="11345834354" />
+    <nd ref="11345834355" />
+    <nd ref="11345834356" />
+    <nd ref="11345834353" />
+    <tag k="building:levels" v="5" />
+    <tag k="building:part" v="yes" />
+  </way>
+  <way id="1223143000" visible="true" version="1" changeset="143958468" timestamp="2023-11-13T07:39:40Z" user="John Bek" uid="3800987">
+    <nd ref="11345834357" />
+    <nd ref="11345834358" />
+    <nd ref="11345834359" />
+    <nd ref="11345834360" />
+    <nd ref="11345834357" />
+    <tag k="building:levels" v="6" />
+    <tag k="building:part" v="yes" />
+  </way>
+  <way id="1223143001" visible="true" version="1" changeset="143958468" timestamp="2023-11-13T07:39:40Z" user="John Bek" uid="3800987">
+    <nd ref="11345834361" />
+    <nd ref="11345834362" />
+    <nd ref="11345834363" />
+    <nd ref="11345834364" />
+    <nd ref="11345834361" />
+    <tag k="building:levels" v="8" />
+    <tag k="building:part" v="yes" />
+  </way>
+</osm>
