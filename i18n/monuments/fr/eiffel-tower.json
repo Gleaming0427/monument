@@ -1,5 +1,8 @@
 {
   "_read": "Translate every string into this language. Keep every number, date, measurement and name exactly as written. Dates in `when` and every `source` are not here: they never change.",
+  "name": "Tour Eiffel",
+  "place": "Paris · France",
+  "blurb": "18 038 pièces de fer sur quatre pieds, des caissons creusés sous la Seine au sommet à 300 m, son premier étage reconstruit en verre en 2015 et son illumination.",
   "modelNote": "Mesures reprises des dimensions officielles et des empreintes OpenStreetMap et IGN (écart de bord de 2,5 m au 90e centile) ; la treillis est simplifié à ses quatre piliers, ses arcs et ses trois étages, les pavillons et l'éclairage sont schématiques.",
   "live": [
     {
@@ -97,6 +100,7 @@
     },
     "lumiere": {
       "title": "La tour s'illumine",
+      "when": "Depuis 1985 et 2000",
       "text": "Depuis le 31 décembre 1985, 336 lampes installées dans la structure l'illuminent en doré. Depuis 2000, 20.000 ampoules la font scintiller."
     },
     "premier-2015": {
@@ -110,5 +114,21 @@
         }
       ]
     }
+  },
+  "evidence": {
+    "references": [
+      {
+        "view": "sud-est, depuis les pelouses du Champ-de-Mars (Jebulon, 2011, CC0)"
+      },
+      {
+        "view": "nord-ouest, depuis la berge de la Seine au pied du pont d'Iéna (Yann Caradec, 2013, CC BY-SA 2.0)"
+      },
+      {
+        "view": "ouest, depuis la Seine en aval, pendant la crue de 2018 (Ibex73, CC BY-SA 4.0)"
+      },
+      {
+        "view": "nord, au téléobjectif sur les pieds, les arcs et le premier étage, depuis l'autre rive de la Seine (dconvertini, 2022, CC BY-SA 2.0)"
+      }
+    ]
   }
 }

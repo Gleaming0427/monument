@@ -1,5 +1,8 @@
 {
  "_read": "Translate every string into this language. Keep every number, date, measurement and name exactly as written. Dates in `when` and every `source` are not here: they never change.",
+ "name": "Château d'Osaka",
+ "place": "Chūō-ku · Osaka · Japon",
+ "blurb": "Murs commandés par les Tokugawa en 1620 et posés sans mortier, tenshu incendié par la foudre en 1665, puis rebâti en béton armé en 1931 et restauré en 1997 : le donjon et son soubassement de pierre sur le contour cartographié.",
  "modelNote": "Mesuré : le plan, d’après le contour cartographié du donjon et de ses quatre parties cartographiées. Relevé sur photographies : la base de 13,3 m, la hauteur des niveaux, la montée des toits et les pignons ; le point le plus haut, 55,3 m, dépasse de 0,5 m les 54,8 m que donnent les sources. Simplifié : les tigres, les poissons et les ornements dorés, les faces sculptées des pignons, les blocs de pierre un à un, l’intérieur ; les douves, l’enceinte et les autres bâtiments ne sont pas dessinés, pas plus que les donjons antérieurs, celui de Hideyoshi et celui des Tokugawa.",
  "live": [
   {
@@ -23,6 +26,7 @@
  "phases": {
   "walls": {
    "title": "Des murs sans mortier",
+   "when": "À partir de 1620",
    "text": "En 1620, Tokugawa Hidetada commence la reconstruction du château, et les clans de samouraïs reçoivent l’ordre d’en bâtir les nouveaux murs. Assemblés sans mortier, ces murs se dressent encore aujourd’hui.",
    "moments": [
     {
@@ -110,5 +114,21 @@
     }
    ]
   }
+ },
+ "evidence": {
+  "references": [
+   {
+    "view": "sud"
+   },
+   {
+    "view": "sud-ouest"
+   },
+   {
+    "view": "nord-ouest"
+   },
+   {
+    "view": "nord-est"
+   }
+  ]
  }
 }

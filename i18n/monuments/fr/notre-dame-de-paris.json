@@ -1,5 +1,8 @@
 {
   "_read": "Translate every string into this language. Keep every number, date, measurement and name exactly as written. Dates in `when` and every `source` are not here: they never change.",
+  "name": "Notre-Dame de Paris",
+  "place": "Paris · France",
+  "blurb": "Huit siècles sur une même emprise : le chœur de 1163, les tours et les arcs-boutants, la flèche abattue en 1792 et rebâtie en 1859, l'incendie de 2019 et la reconstruction.",
   "modelNote": "Posée sur l'empreinte OpenStreetMap et sur les dimensions publiées (127 m de long, 48 m de large, voûtes à 33 m, toitures à 43 m, tours à 69 m, flèche à 96 m) ; les travées, les rosaces et les portails sont mesurés sur des photographies. Les portails, la galerie des rois, la rosace occidentale et les statues des niches sont des photographies libres de Wikimedia Commons posées sur le modèle avec leur profondeur ; le reste de la sculpture est simplifié, et la forme de la première flèche est interprétée. À l'intérieur, le grand orgue et les jubés sont eux aussi des photographies libres : ils traversent la vue en coupe.",
   "live": [
     {
@@ -156,6 +159,7 @@
     },
     "incendie": {
       "title": "L'incendie",
+      "when": "15 avril 2019",
       "text": "Un incendie se déclare dans la toiture vers 6 h 18 de l'après-midi. La flèche s'effondre à 7 h 45 de l'après-midi, emportant une partie des voûtes ; la charpente de bois et les toitures de plomb sont perdues. Les seize statues avaient été déposées quatre jours plus tôt.",
       "moments": [
         {
@@ -186,5 +190,21 @@
         }
       ]
     }
+  },
+  "evidence": {
+    "references": [
+      {
+        "view": "façade occidentale depuis le parvis (Haech, 2015, CC BY-SA 4.0)"
+      },
+      {
+        "view": "sud-ouest, depuis le square René-Viviani (Tangopaso, 2011, domaine public)"
+      },
+      {
+        "view": "nord-est, depuis la rive droite de la Seine (Tangopaso, 2011, domaine public)"
+      },
+      {
+        "view": "est, le chevet depuis la Seine (DXR, 2014, CC BY-SA 3.0)"
+      }
+    ]
   }
 }

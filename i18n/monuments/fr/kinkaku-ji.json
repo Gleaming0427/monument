@@ -1,5 +1,7 @@
 {
   "_read": "Translate every string into this language. Keep every number, date, measurement and name exactly as written. Dates in `when` and every `source` are not here: they never change.",
+  "name": "Kinkaku, le Pavillon d'or",
+  "place": "Rokuon-ji · Kyoto · Japon",
   "modelNote": "Emprise relevée sur OpenStreetMap ; plan établi d'après les travées publiées (33 × 24 shaku, l'étage supérieur carré de 18 shaku) ; hauteurs lues sur les photographies de référence ; ajustement de chaque travée d'après la description de chaque étage. Les consoles, les chevrons, le phénix et les statues intérieures sont simplifiés ; la charpente du toit est interprétée.",
   "live": [
     {
@@ -44,6 +46,7 @@
     },
     "weathered": {
       "title": "L'or s'use",
+      "when": "1420–années 1890",
       "text": "Après la mort de Yoshimitsu, la villa devient le temple zen Rokuon-ji, et la salle est la seule à survivre aux guerres. Sur les premières photographies, l'or a déjà disparu du bois gris.",
       "moments": [
         {
@@ -164,5 +167,21 @@
         }
       ]
     }
+  },
+  "evidence": {
+    "references": [
+      {
+        "view": "sud-est, de l'autre côté de l'étang"
+      },
+      {
+        "view": "nord-ouest"
+      },
+      {
+        "view": "nord-est, depuis le jardin"
+      },
+      {
+        "view": "sud-sud-est, de l'autre côté de l'étang"
+      }
+    ]
   }
 }

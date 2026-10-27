@@ -86,19 +86,30 @@ export const t = (dictionary, key, fallback = key) => typeof dictionary?.[key] =
 // the height and the note on what is measured. Phases are keyed by their authored `id`; the arrays that carry
 // no key of their own are keyed by position, and `checkTranslation` says so when a phase gains a moment.
 
+// A date written in numbers alone is evidence and never changes; one with words in it ("after 1930", "7 July 1945",
+// "c. 1526–1547") is a phrase, and the words are the language's to say.
+const hasWords = text => /[A-Za-zÀ-ÿ]/.test(String(text ?? ''));
+
 // The translation file a monument needs, with the English left in place to translate: every slot is already
-// where it belongs, so filling it in cannot move a title or lose a moment.
-export function translationSkeleton(monument) {
+// where it belongs, so filling it in cannot move a title or lose a moment. `blurb` is the line under a card of the
+// collection, which lives in site/collection.json rather than in the monument.
+export function translationSkeleton(monument, {blurb} = {}) {
+  const views = (monument.evidence?.references ?? []).map(reference => ({view: reference.view ?? ''}));
   return {
-    _read: 'Translate every string into this language. Keep every number, date, measurement and name exactly as written. Dates in `when` and every `source` are not here: they never change.',
+    _read: 'Translate every string into this language. Keep every number, date, measurement and name exactly as written. Every `source` is not here: it never changes. A `when` is here only when it has words in it: translate the words, keep the numbers.',
+    name: monument.name ?? '',
+    place: monument.place ?? '',
+    ...(blurb ? {blurb} : {}),
     modelNote: monument.modelNote ?? '',
     live: (monument.live ?? []).map(entry => ({label: entry.label})),
     facts: (monument.facts ?? []).map(fact => ({value: fact.value, label: fact.label})),
     phases: Object.fromEntries(monument.phases.map(phase => [phase.id, {
       title: phase.title ?? '',
+      ...(hasWords(phase.when) ? {when: phase.when} : {}),
       text: phase.text ?? '',
       ...(phase.moments?.length ? {moments: phase.moments.map(moment => ({tag: moment.tag, title: moment.title, text: moment.text}))} : {}),
     }])),
+    ...(views.length ? {evidence: {references: views}} : {}),
   };
 }
 
@@ -111,6 +122,8 @@ export function mergeMonument(monument, translation, language, id) {
     return value;
   };
   const out = {...monument};
+  if (translation.name !== undefined) out.name = text(translation.name, 'name');
+  if (translation.place !== undefined) out.place = text(translation.place, 'place');
   if (translation.modelNote !== undefined) out.modelNote = text(translation.modelNote, 'modelNote');
   if (translation.live) out.live = monument.live.map((entry, i) => ({...entry, label: text(translation.live[i]?.label, `live[${i}].label`)}));
   if (translation.facts) out.facts = monument.facts.map((fact, i) => ({
@@ -120,6 +133,7 @@ export function mergeMonument(monument, translation, language, id) {
     const t$ = translation.phases?.[phase.id];
     if (!t$) { missing.push(`${id}: phases.${phase.id}`); return phase; }
     const next = {...phase, title: text(t$.title, `phases.${phase.id}.title`), text: text(t$.text, `phases.${phase.id}.text`)};
+    if (hasWords(phase.when)) next.when = text(t$.when, `phases.${phase.id}.when`);
     if (phase.moments?.length) {
       if (!t$.moments) { missing.push(`${id}: phases.${phase.id}.moments`); return next; }
       next.moments = phase.moments.map((moment, i) => ({
@@ -130,6 +144,8 @@ export function mergeMonument(monument, translation, language, id) {
     }
     return next;
   });
+  if (translation.evidence?.references) out.evidence = {...monument.evidence, references: monument.evidence.references.map((reference, i) => reference.view ? {...reference, view: text(translation.evidence.references[i]?.view, `evidence.references[${i}].view`)} : reference)};
+  else if (monument.evidence?.references?.some(reference => reference.view)) missing.push(`${id}: evidence.references`);
   if (missing.length) throw new Error(`i18n: ${missing.length} untranslated slot(s) in ${language}/${id}\n  ${missing.join('\n  ')}`);
   return out;
 }
@@ -150,7 +166,7 @@ const figures = text => {
 const TYPOGRAPHY = {
   fr: [[/\d,\d{3}/g, 'séparateur de milliers anglais : en français, 9 000 ou 9.000 — la virgule se lit comme un décimal']],
 };
-export function checkTranslation(monument, translation, language) {
+export function checkTranslation(monument, translation, language, {blurb} = {}) {
   const problems = [], walk = (source, target, where) => {
     if (typeof source !== 'string' || source === target) return;
     if (typeof target !== 'string') { problems.push(`${where}: not translated`); return; }
@@ -159,6 +175,9 @@ export function checkTranslation(monument, translation, language) {
     if (from.join(' ') !== to.join(' ')) problems.push(`${where}: figures ${from.join(' ') || '—'} became ${to.join(' ') || '—'}`);
     for (const [pattern, complaint] of TYPOGRAPHY[language] ?? []) for (const hit of target.matchAll(pattern)) problems.push(`${where}: « ${hit[0]} » — ${complaint}`);
   };
+  walk(monument.name, translation.name, 'name');
+  walk(monument.place, translation.place, 'place');
+  if (blurb) walk(blurb, translation.blurb, 'blurb');
   if (monument.modelNote) walk(monument.modelNote, translation.modelNote, 'modelNote');
   monument.live?.forEach((entry, i) => walk(entry.label, translation.live?.[i]?.label, `live[${i}].label`));
   monument.facts?.forEach((fact, i) => {
@@ -169,6 +188,7 @@ export function checkTranslation(monument, translation, language) {
     const t$ = translation.phases?.[phase.id];
     if (!t$) { problems.push(`phases.${phase.id}: missing`); return; }
     walk(phase.title, t$.title, `phases.${phase.id}.title`);
+    if (hasWords(phase.when)) walk(phase.when, t$.when, `phases.${phase.id}.when`);
     walk(phase.text, t$.text, `phases.${phase.id}.text`);
     phase.moments?.forEach((moment, i) => {
       walk(moment.tag, t$.moments?.[i]?.tag, `phases.${phase.id}.moments[${i}].tag`);
@@ -176,5 +196,6 @@ export function checkTranslation(monument, translation, language) {
       walk(moment.text, t$.moments?.[i]?.text, `phases.${phase.id}.moments[${i}].text`);
     });
   });
+  (monument.evidence?.references ?? []).forEach((reference, i) => walk(reference.view, translation.evidence?.references?.[i]?.view, `evidence.references[${i}].view`));
   return problems;
 }

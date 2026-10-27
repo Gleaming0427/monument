@@ -1,5 +1,7 @@
 {
   "_read": "Translate every string into this language. Keep every number, date, measurement and name exactly as written. Dates in `when` and every `source` are not here: they never change.",
+  "name": "Parthénon",
+  "place": "Acropole · Athènes · Grèce",
   "modelNote": "Emprise ajustée sur OpenStreetMap ; stylobate, colonnes, entablement et frontons repris des dimensions publiées ; l’état de ruine après 1687 et les restaurations sont lus sur des photographies. L’intérieur, les toitures, la statue et les ajouts postérieurs sont interprétés d’après des descriptions.",
   "live": [
     {
@@ -23,6 +25,7 @@
   "phases": {
     "older": {
       "title": "Le plus ancien Parthénon",
+      "when": "v. 490–480 av. J.-C.",
       "text": "Après Marathon, une immense plateforme de calcaire nivelle le sud de l’Acropole, et un temple de marbre y est entrepris. Le chantier s’arrête alors que ses colonnes ne comptent que deux ou trois tambours de haut.",
       "moments": [
         {
@@ -34,6 +37,7 @@
     },
     "persians": {
       "title": "Incendié par les Perses",
+      "when": "480 av. J.-C.",
       "text": "Les Perses pillent Athènes et le temple inachevé brûle. Le lieu reste en ruine pendant 33 ans.",
       "moments": [
         {
@@ -45,6 +49,7 @@
     },
     "temple": {
       "title": "Le temple de Périclès",
+      "when": "447–438 av. J.-C.",
       "text": "Iktinos et Kallikratès édifient un temple dorique de 8 sur 17 colonnes en marbre du Pentélique, sous la direction de Phidias. En 438 av. J.-C., son Athéna d’or et d’ivoire est consacrée à l’intérieur.",
       "moments": [
         {
@@ -76,6 +81,7 @@
     },
     "sculpture": {
       "title": "Les frontons",
+      "when": "438–432 av. J.-C.",
       "text": "Des statues remplissent les frontons : la Naissance d’Athéna à l’est, son conflit avec Poséidon à l’ouest. Avec les 92 métopes et les 160 m de frise, aucun temple n’avait porté autant de sculpture.",
       "moments": [
         {
@@ -87,6 +93,7 @@
     },
     "fire": {
       "title": "L’incendie et une toiture plus raide",
+      "when": "3e–4e siècle",
       "text": "Un incendie survenu après le milieu du 3e siècle détruit la toiture et une grande partie de l’intérieur. Les réparations dotent la seule cella d’une nouvelle toiture de bois couverte de tuiles de terre, plus raide que la première.",
       "moments": [
         {
@@ -98,6 +105,7 @@
     },
     "church": {
       "title": "L’église de la Vierge",
+      "when": "6e siècle",
       "text": "Le temple devient une église : une abside est construite à l’extrémité est pour le Saint Bême, et l’entrée est déplacée à l’ouest.",
       "moments": [
         {
@@ -109,6 +117,7 @@
     },
     "byzantine": {
       "title": "Panaghia Atheniotissa",
+      "when": "12e siècle",
       "text": "L’église devient un lieu de pèlerinage. Elle est réparée au 12e siècle et un escalier est ajouté dans le porche arrière.",
       "moments": [
         {
@@ -131,6 +140,7 @@
     },
     "mosque": {
       "title": "Une mosquée",
+      "when": "1458 · v. 1466–70",
       "text": "Après la conquête ottomane, l’église devient une mosquée, probablement vers 1466–70. La tour est élevée en minaret et l’abside sert de mihrab.",
       "moments": [
         {
@@ -153,6 +163,7 @@
     },
     "ruin-mosque": {
       "title": "Une mosquée dans les ruines",
+      "when": "début du 18e s. – 1843",
       "text": "Une petite mosquée à un seul dôme est construite dans l’espace dégagé du naos. Entre 1801 et 1812, les agents d’Elgin emportent environ la moitié des sculptures survivantes en Grande-Bretagne.",
       "moments": [
         {
@@ -221,5 +232,24 @@
         }
       ]
     }
+  },
+  "evidence": {
+    "references": [
+      {
+        "view": "est"
+      },
+      {
+        "view": "ouest"
+      },
+      {
+        "view": "nord-est"
+      },
+      {
+        "view": "sud"
+      },
+      {
+        "view": "sud-est"
+      }
+    ]
   }
 }

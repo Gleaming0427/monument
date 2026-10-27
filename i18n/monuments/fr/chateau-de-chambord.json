@@ -1,5 +1,8 @@
 {
   "_read": "Translate every string into this language. Keep every number, date, measurement and name exactly as written. Dates in `when` and every `source` are not here: they never change.",
+  "name": "Château de Chambord",
+  "place": "Chambord · Loir-et-Cher · France",
+  "blurb": "Ordonné par François Ier en 1519, ses ailes et son enceinte couvertes sous Louis XIV, dépouillé de ses mansardes après 1930, ses toits sud brûlés en 1945 et ses six lanternons restaurés en 2021–2023 : le donjon et ses toitures sur le contour cartographié.",
   "modelNote": "Mesuré : le plan, d’après le contour cartographié (tours de 20 m de large, 44,8 m entre les axes des tours du donjon). Relevé sur photographies : hauteurs, toits, fenêtres. Simplifié : décor sculpté, lucarnes et souches de cheminée, couronnement de la tour-lanterne, voûtes des salles.",
   "live": [
     {
@@ -49,6 +52,7 @@
     },
     "wings": {
       "title": "Ailes et enceinte",
+      "when": "v. 1526–1547",
       "text": "À partir de 1526 environ, après le retour du roi de sa captivité à Madrid, deux ailes latérales et une enceinte sont ajoutées. À sa mort en 1547, l’aile de la chapelle et l’enceinte basse sont encore inachevées.",
       "moments": [
         {
@@ -97,6 +101,7 @@
     },
     "etat": {
       "title": "Retour à la Renaissance",
+      "when": "après 1930",
       "text": "L’État, propriétaire depuis 1930, présente le château dans l’état le plus proche de la Renaissance : les mansardes qui coiffaient l’enceinte basse sont supprimées.",
       "moments": [
         {
@@ -108,6 +113,7 @@
     },
     "feu": {
       "title": "Incendie dans la tour sud",
+      "when": "7 juillet 1945",
       "text": "Un incendie accidentel détruit les combles de la tour sud, aujourd’hui appelée tour Henri V, et de son canton.",
       "moments": [
         {
@@ -139,5 +145,24 @@
         }
       ]
     }
+  },
+  "evidence": {
+    "references": [
+      {
+        "view": "nord-ouest"
+      },
+      {
+        "view": "sud-est"
+      },
+      {
+        "view": "tour ouest"
+      },
+      {
+        "view": "toits, sud-ouest"
+      },
+      {
+        "view": "toits, nord-ouest"
+      }
+    ]
   }
 }

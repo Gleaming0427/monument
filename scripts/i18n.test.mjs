@@ -18,6 +18,7 @@ const SOURCE_PAGES = ['site/index.html', 'site/collection/index.html', 'site/com
 // The language of the site, read the same way the build reads it, so adding one is a line here and nowhere else.
 const LANGUAGES = /const LANGUAGES = \[(.*?)\], SOURCE/s.exec(await read('scripts/build-site.mjs'))?.[1].match(/\{code: '(\w+)'/g).map(entry => /'(\w+)'/.exec(entry)[1]) ?? ['en', 'fr'];
 const SOURCE = 'en';
+const figuresOf = text => [...String(text).matchAll(/\d+/g)].map(match => match[0]);
 const dictionaries = Object.fromEntries(await Promise.all(LANGUAGES.filter(code => code !== SOURCE).map(async code => [code, JSON.parse(await read(`i18n/site/${code}.json`))])));
 
 // The keys the build and the application ask for without a marker: the text of a card, and the strings the
@@ -139,6 +140,26 @@ test('each page declares its language and offers the others', async () => {
     }
   } finally { await rm(out, {recursive: true, force: true}); }
 });
+// A translated viewer carries a <base> onto the shared kit, and every address that is not absolute is measured from
+// it. Two of them are easy to get wrong, and both end the reader on the English site: the way home, and the
+// address the viewer writes into the bar once a monument is open.
+test('a translated viewer leads home to its own language and keeps its own address', async () => {
+  const out = await mkdtemp(join(tmpdir(), 'monument-i18n-'));
+  try {
+    execFileSync(process.execPath, [join(root, 'scripts', 'build-site.mjs'), '--out', out], {cwd: root, stdio: 'pipe'});
+    for (const code of LANGUAGES.filter(language => language !== SOURCE)) {
+      const shell = await readFile(join(out, code, 'view', 'index.html'), 'utf8');
+      const base = /<base href="([^"]+)"/.exec(shell)[1], brand = /<a href="([^"]+)" class="brand"/.exec(shell)[1];
+      // On a project site (https://owner.github.io/project/), so that a link climbing one level too far leaves the project.
+      const page = new URL(`${code}/view/`, 'https://owner.example/project/'), home = new URL(brand, new URL(base, page));
+      assert.equal(home.pathname, `/project/${code}/`, `${code}: the brand of the viewer leads to ${home.href}`);
+    }
+  } finally { await rm(out, {recursive: true, force: true}); }
+  const app = await read('kit/app.js'), calls = [...app.matchAll(/history\.(?:replaceState|pushState)\(([^;]*)\);/g)];
+  assert.ok(calls.length > 0, 'the viewer writes its address through history');
+  for (const [call, args] of calls) assert.match(args, /location\.pathname/, `${call} is measured from the <base>, not from the page`);
+});
+
 // A monument is written in every language the site publishes. The sentences around the evidence change; the
 // evidence does not: a date, a measurement, a source URL and the order of the phases are the same whatever
 // language reads them.
@@ -161,7 +182,11 @@ test('every monument is written in every language', async () => {
       const merged = mergeMonument(monument, translation, code, id);
       assert.equal(merged.phases.length, monument.phases.length, `${code}/${id}: a phase was lost`);
       merged.phases.forEach((phase, i) => {
-        assert.equal(phase.when, monument.phases[i].when, `${code}/${id}: ${phase.id} lost its date`);
+        // A date in numbers alone is the same in every language; one with words in it ("after 1930") is a phrase,
+        // and what has to survive its translation is every figure.
+        const said = monument.phases[i].when;
+        if (/[A-Za-zÀ-ÿ]/.test(said)) assert.deepEqual(figuresOf(phase.when), figuresOf(said), `${code}/${id}: ${phase.id} lost a figure of its date`);
+        else assert.equal(phase.when, said, `${code}/${id}: ${phase.id} lost its date`);
         assert.equal(phase.source, monument.phases[i].source, `${code}/${id}: ${phase.id} lost its source`);
       });
       assert.equal(merged.elements.length, monument.elements.length, `${code}/${id}: the geometry changed`);

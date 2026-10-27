@@ -1,5 +1,7 @@
 {
   "_read": "Translate every string into this language. Keep every number, date, measurement and name exactly as written. Dates in `when` and every `source` are not here: they never change.",
+  "name": "Cathédrale Notre-Dame de Coutances",
+  "place": "Coutances · Manche · France",
   "modelNote": "Mesuré : l'empreinte (OpenStreetMap), les hauteurs documentées (flèches 77 et 75 m, lanterne 57,45 m, voûte de la nef 21,90 m) et les hauteurs relevées sur quatre photographies de Commons ajustées au modèle. Documenté mais simplifié : les tours, la lanterne, le double déambulatoire, les porches. Interprété : la cathédrale romane, les charpentes, les annexes et la tribune.",
   "live": [
     {
@@ -23,6 +25,7 @@
   "phases": {
     "romane": {
       "title": "La cathédrale romane",
+      "when": "v. 1030–1056",
       "text": "L'évêque Robert reconstruit la cathédrale et Geoffroy de Montbray l'achève ; elle est consacrée à Notre-Dame en 1056, en présence du duc Guillaume. Sa masse, ici, est une reconstruction raisonnée.",
       "moments": [
         {
@@ -39,6 +42,7 @@
     },
     "nef": {
       "title": "Une peau gothique sur des murs romans",
+      "when": "v. 1190–1230",
       "text": "La cathédrale est reconstruite d'ouest en est, Hugues de Morville étant évêque depuis 1208 : la nef et la façade ouest gardent leurs murs et leurs tours romans à l'intérieur d'un parement de calcaire fin. Les tours deviennent octogonales et portent des flèches de pierre.",
       "moments": [
         {
@@ -60,6 +64,7 @@
     },
     "transept": {
       "title": "Transept et tour-lanterne",
+      "when": "v. 1208–1235",
       "text": "Le transept et la lanterne romans sont démolis, puis son chœur ; le nouveau transept, commencé vers 1208, approche de son achèvement vers 1225. Au-dessus de la croisée s'élève la lanterne dite « le Plomb », haute de 40,85 m à l'intérieur et de 57,45 m à l'extérieur.",
       "moments": [
         {
@@ -81,6 +86,7 @@
     },
     "choeur": {
       "title": "Chœur et double déambulatoire",
+      "when": "v. 1220–1238",
       "text": "Le chœur s'élève par gradins comme à Bourges : un bas-côté extérieur bas, formé de chapelles, un bas-côté intérieur plus haut avec ses propres fenêtres, et une haute claire-voie étayée par des arcs-boutants sur une seule travée. Il semble achevé vers 1235, avant qu'Hugues de Morville n'y soit enterré.",
       "moments": [
         {
@@ -102,6 +108,7 @@
     },
     "porches": {
       "title": "Les porches latéraux",
+      "when": "après 1228",
       "text": "Des porches s'ouvrent au nord et au sud au pied des tours, construits après 1228 par des maçons qui avaient travaillé au cloître du Mont-Saint-Michel. Le porche sud, profond de deux travées, montre la Vierge parmi les symboles des évangélistes.",
       "moments": [
         {
@@ -118,6 +125,7 @@
     },
     "chapelles": {
       "title": "Des chapelles entre les contreforts",
+      "when": "v. 1270–1315",
       "text": "À partir de 1270 environ, on bâtit des chapelles en saillie entre les contreforts de la nef, d'abord du côté nord, puis du côté sud sous Robert d'Harcourt (1291–1315). Leurs grandes fenêtres occupent chaque travée.",
       "moments": [
         {
@@ -171,6 +179,7 @@
     },
     "guerre": {
       "title": "Le toit de la lanterne en feu",
+      "when": "Juin 1944",
       "text": "Lors du bombardement de juin 1944, le toit de la lanterne prend feu et l'incendie s'arrête à peine dans la chambre des cloches ; le tympan du porche sud est la partie la plus endommagée. La toiture est refaite ensuite (sa date ne figure pas dans les sources lues).",
       "moments": [
         {
@@ -185,5 +194,24 @@
         }
       ]
     }
+  },
+  "evidence": {
+    "references": [
+      {
+        "view": "ouest, la façade depuis le parvis (Xfigpower, 2011, CC BY-SA 3.0)"
+      },
+      {
+        "view": "est, le chevet depuis la pelouse qui le prolonge (Ikmo-ned, 2008, CC BY-SA 3.0)"
+      },
+      {
+        "view": "nord-est, le chevet et le côté nord (cowbridgeguide.co.uk, 2014, CC BY 3.0)"
+      },
+      {
+        "view": "sud, les chapelles de la nef et les tours (Giogo, CC BY-SA 3.0)"
+      },
+      {
+        "view": "sud, le croisillon sud et ses grandes verrières (GO69, CC BY-SA 4.0)"
+      }
+    ]
   }
 }

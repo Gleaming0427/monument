@@ -30,15 +30,19 @@ let stage = null, data = null, time = 0, playing = false, touched = false, last 
 // Active construction moment: pinned in 3D; playback slows down long enough to read it.
 let moment = null, momentKey = '', momentSince = 0, reading = 0;
 
+// A date the monument gives in numbers and months follows the language of the page.
+const LOCALE = LANGUAGE === 'en' ? 'en-GB' : LANGUAGE;
+// A decimal reads with the language's own mark: 0,3 % in French, 0.3% in English.
+const num = value => LANGUAGE === 'en' ? value : String(value).replace('.', ',');
 function when(phase, local) {
   if (phase.when) return phase.when;
   const from = Date.parse(phase.from), to = Date.parse(phase.to);
-  return new Date(from + (to - from) * Math.min(1, local)).toLocaleDateString('en-GB', {month: 'long', year: 'numeric'});
+  return new Date(from + (to - from) * Math.min(1, local)).toLocaleDateString(LOCALE, {month: 'long', year: 'numeric'});
 }
 
 // Short date of a phase for the timeline: "Jul 1887" for a dated site, otherwise the period.
 // The word joiner after the dash keeps "1920–1925" in one piece when the date wraps.
-const short = phase => phase.when ? phase.when.replace(/–/g, '–\u2060') : new Date(Date.parse(phase.from)).toLocaleDateString('en-GB', {month: 'short', year: 'numeric'});
+const short = phase => phase.when ? phase.when.replace(/–/g, '–\u2060') : new Date(Date.parse(phase.from)).toLocaleDateString(LOCALE, {month: 'short', year: 'numeric'});
 
 // With no request, or for a building not built yet, the page says how to ask for it.
 function empty(id) {
@@ -117,7 +121,9 @@ async function open(id) {
   }
   buildProof();
   if (proofOn) setProof(true);
-  history.replaceState(null, '', `${location.search}#${id}`);
+  // The path is kept as the page has it: a translated shell carries a <base> onto the shared viewer, and a URL
+  // that is only `?query#id` is measured against that base, which would send the address bar to the English page.
+  history.replaceState(null, '', `${location.pathname}${location.search}#${id}`);
   shown = ''; touched = false;
   // ?t=2.5 opens the construction at a given instant (in phases), paused.
   const at = Number(params.get('t'));
@@ -342,7 +348,12 @@ addEventListener('keydown', event => {
 // measured outline and how closely the model fits it, the reference photos (each one laid over the model
 // from its own viewpoint, with a sliding divider), the pages read and what remains uncertain. Clicking a
 // piece names its phase and the page that dates it.
-const PROOF_LABELS = {measured: ['Measured', 'Placed on the measured plan and the published dimensions'], documented: ['Documented', 'Read in the sources and the reference photos'], interpreted: ['Interpreted', 'Not documented: a reasoned reconstruction, said as such'], unstated: ['Not stated', 'No provenance given in the monument file']};
+const PROOF_LABELS = {
+  measured: [t('proof.measured', 'Measured'), t('proof.measuredNote', 'Placed on the measured plan and the published dimensions')],
+  documented: [t('proof.documented', 'Documented'), t('proof.documentedNote', 'Read in the sources and the reference photos')],
+  interpreted: [t('proof.interpreted', 'Interpreted'), t('proof.interpretedNote', 'Not documented: a reasoned reconstruction, said as such')],
+  unstated: [t('proof.unstated', 'Not stated'), t('proof.unstatedNote', 'No provenance given in the monument file')],
+};
 let proofOn = false, photoRef = null, outlineFor = '';
 const host = url => { try { return new URL(url).hostname.replace(/^www\./, ''); } catch { return url; } };
 const commonsImage = (url, width) => { const m = /commons\.wikimedia\.org\/wiki\/(File:[^?#]+)/.exec(url ?? ''); return m ? `https://commons.wikimedia.org/wiki/Special:FilePath/${m[1].slice(5)}?width=${width}` : null; };
@@ -352,40 +363,40 @@ const link = (href, text) => el('a', {href, textContent: text, target: '_blank',
 function buildProof() {
   const panel = $('proof'), ev = data.evidence ?? {};
   panel.replaceChildren();
-  panel.append(el('h2', {textContent: 'Where every piece comes from'}), el('p', {textContent: 'Each piece of the model takes the colour of its source. Click a piece to see when it was built and which page says so.'}));
+  panel.append(el('h2', {textContent: t('proof.title', 'Where every piece comes from')}), el('p', {textContent: t('proof.intro', 'Each piece of the model takes the colour of its source. Click a piece to see when it was built and which page says so.')}));
   const legend = el('div', {className: 'legend'});
   panel.append(legend);
   if (ev.plan) {
     const fit = ev.plan.fit, box = el('input', {type: 'checkbox', checked: true});
     box.onchange = () => stage.showOutline(box.checked);
-    panel.append(el('h3', {textContent: 'Measured plan'}),
-      el('p', {}, 'Footprint from ', link(ev.plan.url, ev.plan.source), fit ? `. The model's edges seen from above lie within ${fit.p90} m of it along 90% of their length (largest gap ${fit.max} m).` : '.'),
-      el('label', {}, box, 'Draw it on the ground (gold)'));
+    panel.append(el('h3', {textContent: t('proof.plan', 'Measured plan')}),
+      el('p', {}, `${t('proof.footprint', 'Footprint from')} `, link(ev.plan.url, ev.plan.source), fit ? say('proof.fit', ". The model's edges seen from above lie within {p90} m of it along 90% of their length (largest gap {max} m).", {p90: num(fit.p90), max: num(fit.max)}) : '.'),
+      el('label', {}, box, t('proof.draw', 'Draw it on the ground (gold)')));
   }
   const refs = (ev.references ?? []).filter(r => Number.isFinite(r.azimuth));
   if (refs.length) {
     const grid = el('div', {className: 'photos'});
     for (const r of refs) {
-      const thumb = commonsImage(r.url, 360), button = el('button', {title: `Lay this photo over the model: ${r.view ?? ''}`});
+      const thumb = commonsImage(r.url, 360), button = el('button', {title: say('proof.layPhoto', 'Lay this photo over the model: {view}', {view: r.view ?? ''})});
       if (thumb) button.append(el('img', {src: thumb, alt: '', loading: 'lazy'}));
-      button.append(el('span', {textContent: `${r.view ?? ''}${r.calibration ? ` · within ${r.calibration.rms}%` : ''}`}));
+      button.append(el('span', {textContent: `${r.view ?? ''}${r.calibration ? say('proof.within', ' · within {rms}%', {rms: num(r.calibration.rms)}) : ''}`}));
       button.onclick = () => showPhoto(r);
       grid.append(button);
     }
-    panel.append(el('h3', {textContent: 'Reference photos'}), el('p', {textContent: 'Each one opens over the model, seen from the photographer\'s place. Drag the divider to compare.'}), grid);
+    panel.append(el('h3', {textContent: t('proof.photos', 'Reference photos')}), el('p', {textContent: t('proof.photosNote', 'Each one opens over the model, seen from the photographer\'s place. Drag the divider to compare.')}), grid);
   }
   // Carving shown as photographs: each one credited, as its licence requires.
   const reliefs = data.elements.filter(e => e.type === 'relief' && e.credit);
   if (reliefs.length) {
     const credits = new Map();
-    for (const e of reliefs) { const c = credits.get(e.credit.file) ?? {...e.credit, names: []}; c.names.push(e.name ?? 'carving'); credits.set(e.credit.file, c); }
-    panel.append(el('h3', {textContent: 'Carving from photographs'}),
-      el('p', {textContent: 'Sculpture too fine to build piece by piece is a photograph laid on the model, straightened and given its depth back.'}),
-      el('ul', {}, ...[...credits.values()].map(c => el('li', {}, `${[...new Set(c.names)].join(', ')}: `, link(c.file, `photo by ${c.author}`), `, ${c.license}`))));
+    for (const e of reliefs) { const c = credits.get(e.credit.file) ?? {...e.credit, names: []}; c.names.push(e.name ?? t('proof.carvingDefault', 'carving')); credits.set(e.credit.file, c); }
+    panel.append(el('h3', {textContent: t('proof.carving', 'Carving from photographs')}),
+      el('p', {textContent: t('proof.carvingNote', 'Sculpture too fine to build piece by piece is a photograph laid on the model, straightened and given its depth back.')}),
+      el('ul', {}, ...[...credits.values()].map(c => el('li', {}, `${[...new Set(c.names)].join(', ')}: `, link(c.file, say('proof.photoBy', 'photo by {author}', {author: c.author})), `, ${c.license}`))));
   }
-  if (ev.sources?.length) panel.append(el('h3', {textContent: 'Pages read'}), ...ev.sources.map(s => el('details', {}, el('summary', {}, link(s.url, host(s.url))), el('p', {textContent: s.read ?? ''}))));
-  if (ev.uncertainties?.length) panel.append(el('h3', {textContent: 'Interpreted or simplified'}), el('ul', {}, ...ev.uncertainties.map(u => el('li', {textContent: u}))));
-  if (data.modelNote) panel.append(el('h3', {textContent: 'In one line'}), el('p', {textContent: data.modelNote}));
+  if (ev.sources?.length) panel.append(el('h3', {textContent: t('proof.pages', 'Pages read')}), ...ev.sources.map(s => el('details', {}, el('summary', {}, link(s.url, host(s.url))), el('p', {textContent: s.read ?? ''}))));
+  if (ev.uncertainties?.length) panel.append(el('h3', {textContent: t('proof.uncertain', 'Interpreted or simplified')}), el('ul', {}, ...ev.uncertainties.map(u => el('li', {textContent: u}))));
+  if (data.modelNote) panel.append(el('h3', {textContent: t('proof.oneLine', 'In one line')}), el('p', {textContent: data.modelNote}));
 }
 
 async function setProof(on) {
@@ -429,7 +440,7 @@ $('stage').addEventListener('pointerup', event => {
   pick.replaceChildren(el('b', {textContent: `${short(phase)} · ${phase.title}`}), el('span', {className: 'prov', textContent: PROOF_LABELS[key][0]}));
   pick.lastChild.dataset.p = key;
   if (element.note) pick.append(el('p', {textContent: element.note}));
-  pick.append(el('br'), link(phase.source, `Source: ${host(phase.source)}`));
+  pick.append(el('br'), link(phase.source, say('viewer.source', 'Source: {host}', {host: host(phase.source)})));
   pick.hidden = false;
   pick.style.left = `${Math.min(innerWidth - pick.offsetWidth - 12, event.clientX + 14)}px`;
   pick.style.top = `${Math.min(innerHeight - pick.offsetHeight - 12, event.clientY + 14)}px`;
@@ -448,8 +459,8 @@ function showPhoto(ref) {
   stage.fov(ref.fov ?? 38); stage.shift(ref.shift ?? 0);
   const box = $('photo'), image = box.querySelector('img');
   image.src = commonsImage(ref.url, 1800) ?? ref.url;
-  const fit = ref.calibration ? ` · viewpoint fitted on ${ref.calibration.points} points, model within ${ref.calibration.rms}% of the photo's height` : ' · viewpoint from the photo\'s recorded position, not fitted';
-  box.querySelector('.photo-caption').replaceChildren(`${ref.view ?? 'Reference photo'} · `, link(ref.url, 'the photo'), fit);
+  const fit = ref.calibration ? say('photo.fitted', " · viewpoint fitted on {points} points, model within {rms}% of the photo's height", {points: ref.calibration.points, rms: num(ref.calibration.rms)}) : t('photo.notFitted', " · viewpoint from the photo's recorded position, not fitted");
+  box.querySelector('.photo-caption').replaceChildren(`${ref.view ?? t('photo.reference', 'Reference photo')} · `, link(ref.url, t('photo.thePhoto', 'the photo')), fit);
   box.style.setProperty('--split', '50%'); box.classList.remove('fade'); box.querySelector('.photo-fade').setAttribute('aria-pressed', 'false');
   box.hidden = false;
 }
@@ -479,7 +490,7 @@ function fallback(error) {
   const box = $('fallback'), title = document.createElement('b'), help = document.createElement('span');
   title.textContent = webgl2 ? t('viewer.failed', 'The 3D scene could not start.') : t('viewer.noWebgl', 'This browser has WebGL 2 turned off, and the 3D scene needs it.');
   help.textContent = webgl2 ? String(error?.message ?? error)
-    : 'In Chrome or Edge, turn on Settings › System › Use graphics acceleration, then restart the browser. In Firefox, webgl.disabled must be false in about:config. Privacy extensions that block WebGL do this too. Safari 15 and later support it.';
+    : t('viewer.webglHelp', 'In Chrome or Edge, turn on Settings › System › Use graphics acceleration, then restart the browser. In Firefox, webgl.disabled must be false in about:config. Privacy extensions that block WebGL do this too. Safari 15 and later support it.');
   box.replaceChildren(title, help);
   const id = decodeURIComponent(location.hash.slice(1));
   if (id) {

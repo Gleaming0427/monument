@@ -69,9 +69,6 @@
   "step.8": "<b>Comparer avec les photos.</b> Même point de vue, l'une après l'autre, au moins deux rondes de corrections.",
   "step.9": "<b>Rapporter honnêtement.</b> Ce qui est mesuré, documenté et interprété, et ce qui diffère encore.",
 
-  "h2.collection": "La collection",
-  "p.collection": "Les monuments les plus connus au monde, construits un par un, tous vivants. Ouvrez-en un : faites-le tourner, parcourez ses phases, lisez ses sources.",
-  "p.allCollection": "Toute la collection →",
 
   "h2.community": "Communauté",
   "p.community": "Des monuments construits par d'autres avec le skill, chacun avec la demande qui l'a fait naître. Pour ajouter le vôtre, demandez à votre agent dans la même session :",
@@ -171,5 +168,37 @@
   "viewer.source": "Source : {host}",
   "viewer.speedValue": "Vitesse de lecture {speed}×",
   "viewer.failed": "La scène 3D n'a pas pu démarrer.",
-  "viewer.noWebgl": "WebGL 2 est désactivé dans ce navigateur, et la scène 3D en a besoin."
+  "viewer.noWebgl": "WebGL 2 est désactivé dans ce navigateur, et la scène 3D en a besoin.",
+  "viewer.webglHelp": "Dans Chrome ou Edge, activez Paramètres › Système › Utiliser l'accélération graphique, puis redémarrez le navigateur. Dans Firefox, webgl.disabled doit valoir false dans about:config. Les extensions de confidentialité qui bloquent WebGL produisent le même effet. Safari 15 et suivants le prennent en charge.",
+
+  "proof.title": "D'où vient chaque pièce",
+  "proof.intro": "Chaque pièce du modèle prend la couleur de sa source. Cliquez sur une pièce pour voir quand elle a été construite et quelle page le dit.",
+  "proof.measured": "Mesuré",
+  "proof.measuredNote": "Placé sur le plan mesuré et les dimensions publiées",
+  "proof.documented": "Documenté",
+  "proof.documentedNote": "Lu dans les sources et les photos de référence",
+  "proof.interpreted": "Interprété",
+  "proof.interpretedNote": "Non documenté : une reconstitution raisonnée, présentée comme telle",
+  "proof.unstated": "Non précisé",
+  "proof.unstatedNote": "Aucune provenance donnée dans le fichier du monument",
+  "proof.plan": "Plan mesuré",
+  "proof.footprint": "Emprise tirée de",
+  "proof.fit": ". Les bords du modèle, vus du dessus, restent à moins de {p90} m de celle-ci sur 90 % de leur longueur (écart maximal : {max} m).",
+  "proof.draw": "La tracer au sol (en or)",
+  "proof.photos": "Photos de référence",
+  "proof.photosNote": "Chacune s'ouvre sur le modèle, vue de l'endroit où se tenait le photographe. Faites glisser le séparateur pour comparer.",
+  "proof.layPhoto": "Poser cette photo sur le modèle : {view}",
+  "proof.within": " · à moins de {rms} %",
+  "proof.carving": "Sculpture photographiée",
+  "proof.carvingNote": "Une sculpture trop fine pour être bâtie pièce à pièce est une photographie posée sur le modèle, redressée et dotée de son relief.",
+  "proof.carvingDefault": "sculpture",
+  "proof.photoBy": "photo de {author}",
+  "proof.pages": "Pages lues",
+  "proof.uncertain": "Interprété ou simplifié",
+  "proof.oneLine": "En une ligne",
+
+  "photo.reference": "Photo de référence",
+  "photo.thePhoto": "la photo",
+  "photo.fitted": " · point de vue calé sur {points} points, modèle à moins de {rms} % de la hauteur de la photo",
+  "photo.notFitted": " · point de vue tiré de la position enregistrée de la photo, non calé"
 }

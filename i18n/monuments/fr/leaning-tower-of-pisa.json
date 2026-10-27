@@ -1,5 +1,8 @@
 {
   "_read": "Translate every string into this language. Keep every number, date, measurement and name exactly as written. Dates in `when` and every `source` are not here: they never change.",
+  "name": "Tour penchée de Pise",
+  "place": "Piazza del Duomo · Pise · Italie",
+  "blurb": "Deux siècles de travaux sur un sol meuble : la tour commence à s'enfoncer en 1178, penche de 5,5° en 1990, puis est redressée à 3,97°.",
   "modelNote": "Dimensions, étages, colonnes et dates d'après les sources. L'inclinaison avant 1990 est schématique : seuls 5,5° (1990) et 3,97° (2001) sont documentés. La légère courbure des étages supérieurs n'est pas modélisée.",
   "live": [
     {
@@ -98,5 +101,21 @@
         }
       ]
     }
+  },
+  "evidence": {
+    "references": [
+      {
+        "view": "nord-est"
+      },
+      {
+        "view": "ouest"
+      },
+      {
+        "view": "ouest-sud-ouest"
+      },
+      {
+        "view": "sud"
+      }
+    ]
   }
 }

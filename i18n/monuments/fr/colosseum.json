@@ -1,5 +1,8 @@
 {
   "_read": "Translate every string into this language. Keep every number, date, measurement and name exactly as written. Dates in `when` and every `source` are not here: they never change.",
+  "name": "Colisée",
+  "place": "Rome · Italie",
+  "blurb": "Bâti en dix ans, inauguré en 80, brisé par le séisme de 1349 et exploité comme carrière pendant des siècles : la ruine que l'on voit aujourd'hui, posée sur son contour réel.",
   "modelNote": "Anneaux, hauteurs et arc encore debout du mur extérieur repris du contour 3D d’OpenStreetMap ; dimensions et dates issues des sources ; travées, ordres, corniches, attique et extrémités du mur dressé relevés sur quatre photographies de référence calées à moins de 0,6–0,7 % de leur hauteur. Gradins, galeries souterraines et usure sont schématiques.",
   "live": [
     {
@@ -23,6 +26,7 @@
   "phases": {
     "vespasian": {
       "title": "L’amphithéâtre de Vespasien",
+      "when": "v. 70–79",
       "text": "Vespasien entame l’amphithéâtre vers 70–72. À sa mort en 79, trois niveaux d’arcades ceignent l’arène et les gradins montent à l’intérieur.",
       "moments": [
         {
@@ -78,6 +82,7 @@
     },
     "quarry": {
       "title": "Une carrière pour Rome",
+      "when": "Après 1349",
       "text": "La pierre tombée est emportée en charrette pour des palais, des églises et des hôpitaux, et le marbre est calciné pour en tirer de la chaux. Les gradins disparaissent ; les voûtes qui les portaient restent.",
       "moments": [
         {
@@ -109,5 +114,21 @@
         }
       ]
     }
+  },
+  "evidence": {
+    "references": [
+      {
+        "view": "nord"
+      },
+      {
+        "view": "est"
+      },
+      {
+        "view": "sud"
+      },
+      {
+        "view": "ouest"
+      }
+    ]
   }
 }
