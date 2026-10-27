@@ -1,0 +1,104 @@
+{
+ "_read": "Translate every string into this language. Keep every number, date, measurement and name exactly as written. Dates in `when` and every `source` are not here: they never change.",
+ "modelNote": "Mesuré : le plan, d’après le contour cartographié du donjon et de ses quatre parties cartographiées. Relevé sur photographies : la base de 13,3 m, la hauteur des niveaux, la montée des toits et les pignons. Simplifié : les tigres, les poissons et les ornements dorés, les faces sculptées des pignons, les blocs de pierre un à un, l’intérieur ; les douves, l’enceinte et les autres bâtiments ne sont pas dessinés, pas plus que les donjons antérieurs, celui de Hideyoshi et celui des Tokugawa.",
+ "live": [
+  {
+   "label": "Hauteur"
+  }
+ ],
+ "facts": [
+  {
+   "value": "5 + 8",
+   "label": "niveaux à l’extérieur, étages à l’intérieur"
+  },
+  {
+   "value": "1931",
+   "label": "donjon actuel, en béton"
+  },
+  {
+   "value": "1583",
+   "label": "château commencé par Hideyoshi"
+  }
+ ],
+ "phases": {
+  "walls": {
+   "title": "Des murs sans mortier",
+   "text": "En 1620, Tokugawa Hidetada commence la reconstruction du château, et les clans de samouraïs reçoivent l’ordre d’en bâtir les nouveaux murs. Assemblés sans mortier, ces murs se dressent encore aujourd’hui.",
+   "moments": [
+    {
+     "tag": "Plan",
+     "title": "Des murs confiés aux clans",
+     "text": "Les clans de samouraïs reçoivent l’ordre de rebâtir les murs."
+    },
+    {
+     "tag": "Technique",
+     "title": "Pas de mortier",
+     "text": "Les pierres sont imbriquées et posées sans mortier ; Wikipédia en anglais les décrit comme des blocs de granit."
+    },
+    {
+     "tag": "Métier",
+     "title": "Des blasons sur les pierres",
+     "text": "Beaucoup de pierres viennent de carrières proches de la mer intérieure de Seto et portent les blasons gravés des familles qui les ont fournies."
+    }
+   ]
+  },
+  "lost": {
+   "title": "Le tenshu brûle",
+   "text": "En 1665, la foudre incendie le tenshu, qui n’est pas reconstruit. En 1868, de nombreux autres bâtiments du château sont incendiés ou détruits lors des combats de la restauration de Meiji.",
+   "moments": [
+    {
+     "tag": "Événement",
+     "title": "Frappé par la foudre",
+     "text": "Le tenshu brûle en 1665 après avoir été frappé par la foudre."
+    },
+    {
+     "tag": "Entretien",
+     "title": "Les réparations de 1843",
+     "text": "Après des décennies de négligence, de l’argent est collecté en 1843 pour des réparations ; selon Wikipédia en anglais, plusieurs tourelles sont reconstruites."
+    },
+    {
+     "tag": "Usage",
+     "title": "Un site militaire",
+     "text": "Sous le gouvernement de Meiji, le château sert la nouvelle armée (Wikipédia en anglais cite un arsenal, Wikipédia en français des baraquements)."
+    }
+   ]
+  },
+  "tower": {
+   "title": "Un donjon en béton",
+   "text": "En 1928, la ville d’Osaka lance la reconstruction du tenshu en béton armé. Le donjon en béton armé est bâti en 1931.",
+   "moments": [
+    {
+     "tag": "Technique",
+     "title": "Du béton armé",
+     "text": "Dans les années 1920, des bâtiments disparus de châteaux sont reconstruits vite et à peu de frais en béton armé ; la tour principale d’Osaka, reconstruite pour la première fois en 1928, est l’exemple que donne son article sur les châteaux japonais."
+    },
+    {
+     "tag": "Structure",
+     "title": "Cinq niveaux, huit étages",
+     "text": "Vu de l’extérieur, cinq niveaux ; à l’intérieur, huit étages."
+    },
+    {
+     "tag": "Date",
+     "title": "Bâti en 1931",
+     "text": "Le tenshu en béton armé est bâti en 1931 ; Wikipédia en français date le début de la reconstruction de 1928."
+    }
+   ]
+  },
+  "restoration": {
+   "title": "Raids, puis restauration",
+   "text": "Des raids aériens américains endommagent le château en 1945. En 1995, le gouvernement d’Osaka approuve une restauration du tenshu, achevée en 1997.",
+   "moments": [
+    {
+     "tag": "Guerre",
+     "title": "Les raids de 1945",
+     "text": "Des raids américains endommagent le château en 1945 ; selon Wikipédia en anglais, ils visaient l’arsenal et ont endommagé le donjon reconstruit."
+    },
+    {
+     "tag": "Restauration",
+     "title": "Un musée à l’intérieur",
+     "text": "Achevé en 1997, le donjon est une reproduction en béton dotée d’ascenseurs ; son intérieur est conçu comme un musée moderne en activité."
+    }
+   ]
+  }
+ }
+}

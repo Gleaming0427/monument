@@ -12,6 +12,7 @@ import {resolveVisualStyle, pbrOptions} from './visuals.js';
 import {adaptive, adaptiveContext, profiledGeometry, segmentsForChordError} from './geometry.js';
 import {masonry} from './masonry.js';
 import {renaissance} from './renaissance.js';
+import {japanese} from './japanese.js';
 export {CURVE_QUALITY, chordError, segmentsForChordError, profileAt, sampleProfile, profiledGeometry, adaptiveContext} from './geometry.js';
 export {Soup, Layers, moulding, stack, outline, sweep, plate, foil, frameOf, radiusOf as archRadius} from './masonry.js';
 
@@ -514,6 +515,8 @@ export const generators = {
       }
       y+=h;
     }
+    // A filled top: the earth platform the base retains, a flat slab level with the topmost course.
+    if(e.deck){const t=e.deck.thickness??.6;k.box('stone',[cx,height-t/2,cz],[tw-.3,t,td-.3],rot,k.tint(e.deck.color??'#8f8878',.03),P(e.phase),height*1e4);}
   },
 
   // Exposed timber skeleton, usable for multi-storey wooden structures.
@@ -1909,6 +1912,8 @@ export const generators = {
 };
 // The Renaissance château bricks (kit/renaissance.js) stand on the Gothic toolkit's walls, roofs and string courses.
 Object.assign(generators, renaissance(gothic));
+// The Japanese castle bricks (kit/japanese.js) are drawn with the engine's pieces alone.
+Object.assign(generators, japanese());
 
 // The order of the works. Within each phase, pieces are laid from the bottom up (by `order`, the height by
 // default), evenly from 3 % to 89 % of the phase; what a phase takes down goes between 10 % and 60 % of the

@@ -147,7 +147,7 @@ test('every monument is written in every language', async () => {
   const found = [];
   for (const id of (await readdir(join(root, 'examples')).catch(() => [])).filter(name => name.endsWith('.json'))) found.push([id.slice(0, -5), () => expanded('examples', id)]);
   for (const id of (await readdir(join(root, 'community')).catch(() => []))) if (await read(`community/${id}/monument.json`).catch(() => null)) found.push([id, () => expanded(`community/${id}`, 'monument.json')]);
-  assert.equal(found.length, 7, `expected seven monuments, found ${found.length}`);
+  assert.equal(found.length, 9, `expected nine monuments, found ${found.length}`);
   for (const code of LANGUAGES.filter(language => language !== SOURCE)) {
     for (const [id, load] of found) {
       const monument = await load(), file = join(root, 'i18n', 'monuments', code, `${id}.json`);
