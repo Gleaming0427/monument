@@ -90,6 +90,10 @@ export const t = (dictionary, key, fallback = key) => typeof dictionary?.[key] =
 // "c. 1526–1547") is a phrase, and the words are the language's to say.
 const hasWords = text => /[A-Za-zÀ-ÿ]/.test(String(text ?? ''));
 
+// The map a footprint was taken from is named by the object alone ("OpenStreetMap way 5013364"): an identifier that
+// stays as it is. When the source adds a remark ("(the lowest step of the krepis)"), the remark is words to translate.
+const planRemark = source => Boolean(source) && !/^OpenStreetMap (?:way|relation) \d+$/.test(String(source).trim());
+
 // The translation file a monument needs, with the English left in place to translate: every slot is already
 // where it belongs, so filling it in cannot move a title or lose a moment. `blurb` is the line under a card of the
 // collection, which lives in site/collection.json rather than in the monument.
@@ -112,7 +116,8 @@ export function translationSkeleton(monument, {blurb} = {}) {
       text: phase.text ?? '',
       ...(phase.moments?.length ? {moments: phase.moments.map(moment => ({tag: moment.tag, title: moment.title, text: moment.text}))} : {}),
     }])),
-    ...(views.length || evidence.sources?.length || evidence.uncertainties?.length ? {evidence: {
+    ...(views.length || evidence.sources?.length || evidence.uncertainties?.length || planRemark(evidence.plan?.source) ? {evidence: {
+      ...(planRemark(evidence.plan?.source) ? {plan: {source: evidence.plan.source}} : {}),
       ...(views.length ? {references: views} : {}),
       ...(evidence.sources?.length ? {sources: evidence.sources.map(source => ({read: source.read ?? ''}))} : {}),
       ...(evidence.uncertainties?.length ? {uncertainties: [...evidence.uncertainties]} : {}),
@@ -152,10 +157,11 @@ export function mergeMonument(monument, translation, language, id) {
     }
     return next;
   });
-  // The evidence panel: the label of each photo, the page each source gave, and what stayed simplified.
+  // The evidence panel: the footprint's source, the label of each photo, the page each source gave, and what stayed simplified.
   const evidence = monument.evidence, said = translation.evidence ?? {};
   if (evidence) {
     out.evidence = {...evidence};
+    if (planRemark(evidence.plan?.source)) out.evidence.plan = {...evidence.plan, source: text(said.plan?.source, 'evidence.plan.source')};
     if (evidence.references?.some(reference => reference.view)) out.evidence.references = evidence.references.map((reference, i) => reference.view ? {...reference, view: text(said.references?.[i]?.view, `evidence.references[${i}].view`)} : reference);
     if (evidence.sources?.length) out.evidence.sources = evidence.sources.map((source, i) => source.read ? {...source, read: text(said.sources?.[i]?.read, `evidence.sources[${i}].read`)} : source);
     if (evidence.uncertainties?.length) out.evidence.uncertainties = evidence.uncertainties.map((line, i) => text(said.uncertainties?.[i], `evidence.uncertainties[${i}]`));
@@ -215,6 +221,7 @@ export function checkTranslation(monument, translation, language, {blurb} = {}) 
     });
   });
   const evidence = monument.evidence ?? {}, said = translation.evidence ?? {};
+  if (planRemark(evidence.plan?.source)) walk(evidence.plan.source, said.plan?.source, 'evidence.plan.source');
   (evidence.references ?? []).forEach((reference, i) => walk(reference.view, said.references?.[i]?.view, `evidence.references[${i}].view`));
   (evidence.sources ?? []).forEach((source, i) => walk(source.read, said.sources?.[i]?.read, `evidence.sources[${i}].read`));
   (evidence.uncertainties ?? []).forEach((line, i) => walk(line, said.uncertainties?.[i], `evidence.uncertainties[${i}]`));

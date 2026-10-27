@@ -68,6 +68,23 @@ test('a rendered page carries no marker and no broken tag', async () => {
   }
 });
 
+// What a French reader takes for a page left in English: a line built from words that exist only in English. A
+// marker forgotten on one heading or one example prompt leaves no trace in the build, so the rendered text is read.
+const ENGLISH_ONLY = /\b(?:the|and|with|your|this|that|from|into|you|are|was|were|its|their|which|when|before|after)\b/gi;
+const visibleText = html => {
+  const attributes = [...html.matchAll(/\s(?:title|aria-label|alt|content)="([^"]*)"/g)].map(match => match[1]);
+  const body = html.replace(/<(script|style)\b[\s\S]*?<\/\1>/g, ' ').replace(/<!--[\s\S]*?-->/g, ' ').replace(/<[^>]+>/g, '\n');
+  return [...body.split('\n'), ...attributes].map(line => line.replace(/&[a-z]+;/g, ' ').replace(/\s+/g, ' ').trim()).filter(Boolean);
+};
+test('a translated page keeps no sentence in English', async () => {
+  for (const [code, dictionary] of Object.entries(dictionaries)) {
+    for (const page of SOURCE_PAGES) {
+      const left = visibleText(render(await read(page), dictionary, code)).filter(line => new Set((line.match(ENGLISH_ONLY) ?? []).map(word => word.toLowerCase())).size >= 2);
+      assert.deepEqual(left, [], `${code} ${page} still reads English: ${left.join(' | ')}`);
+    }
+  }
+});
+
 // The whole site, built and walked: a translated folder is one level deeper, so every relative link is a chance
 // to point at nothing. This is the only check that would have caught it.
 test('every built page links to something that exists', async () => {

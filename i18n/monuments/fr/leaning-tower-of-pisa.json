@@ -103,6 +103,9 @@
     }
   },
   "evidence": {
+    "plan": {
+      "source": "OpenStreetMap relation 12982355 (way extérieur 35667218)"
+    },
     "references": [
       {
         "view": "nord-est"

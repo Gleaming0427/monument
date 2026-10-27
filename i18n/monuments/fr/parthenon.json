@@ -234,6 +234,9 @@
     }
   },
   "evidence": {
+    "plan": {
+      "source": "OpenStreetMap way 910010406 (la marche la plus basse du crépis)"
+    },
     "references": [
       {
         "view": "est"

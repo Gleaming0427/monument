@@ -169,6 +169,9 @@
     }
   },
   "evidence": {
+    "plan": {
+      "source": "OpenStreetMap, tracée d'après l'imagerie aérienne : l'avant-toit du toit principal (way 403406104) et le Sōsei (ways 403098076, 403093737)"
+    },
     "references": [
       {
         "view": "sud-est, de l'autre côté de l'étang"

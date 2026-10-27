@@ -116,6 +116,9 @@
     }
   },
   "evidence": {
+    "plan": {
+      "source": "OpenStreetMap relation 1834818 (parties du bâtiment avec leurs hauteurs)"
+    },
     "references": [
       {
         "view": "nord"
