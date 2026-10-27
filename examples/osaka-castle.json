@@ -48,11 +48,11 @@
    "label": "present keep, in concrete"
   },
   {
-   "value": "1583",
-   "label": "castle begun by Hideyoshi"
+   "value": "54.8 m",
+   "label": "base and keep, to the gilded fish"
   }
  ],
- "modelNote": "Measured: the plan, from the mapped outline of the keep and its four mapped parts. Read on photographs: the 13.3 m base, the storey heights, the roof rises and the gables. Simplified: the gilt tigers, fish and fittings, the carved faces of the gables, the stone's individual boulders, the interior; the moats, the bailey and the other buildings are not drawn, nor are the earlier keeps, of Hideyoshi and of the Tokugawa.",
+ "modelNote": "Measured: the plan, from the mapped outline of the keep and its four mapped parts. Read on photographs: the 13.3 m base, the storey heights, the roof rises and the gables; the highest point, 55.3 m, is 0.5 m above the 54.8 m the sources give. Simplified: the gilt tigers, fish and fittings, the carved faces of the gables, the stone's individual boulders, the interior; the moats, the bailey and the other buildings are not drawn, nor are the earlier keeps, of Hideyoshi and of the Tokugawa.",
  "evidence": {
   "size": "building",
   "identity": "Osaka Castle main tower (tenshu), 1-1 Osakajo, Chūō-ku, Osaka, Japan (OSM way 34619038; Wikidata Q321242)",
@@ -144,11 +144,59 @@
   "sources": [
    {
     "url": "https://en.wikipedia.org/wiki/Osaka_Castle",
-    "read": "History: Hideyoshi begins the castle in 1583 on the site of Ishiyama Hongan-ji and its main tower is completed in 1585; construction is completed in 1597. After the siege of 1614–1615 the castle burns. In 1620 the old structures are dismantled and walls are built by samurai clans, interlocked granite boulders without mortar, many from quarries near the Seto Inland Sea with inscribed crests, still standing; a new tenshu, five stories outside and eight inside, is started in 1628 and completed two years later (the page also says the rebuilt castle was completed in 1628). Lightning burns the tenshu in 1665; buildings burn in the conflicts of the Meiji Restoration in 1868; the ferroconcrete tenshu is built in 1931; air raids damage it in 1945; a restoration is approved in 1995 and completed in 1997, a concrete reproduction with elevators whose interior is a museum. Layout: the keep is built atop a tall stone foundation."
+    "read": "History: Hideyoshi begins the castle in 1583 on the site of Ishiyama Hongan-ji and its main tower is completed in 1585; construction is completed in 1597. After the siege of 1614–1615 the castle burns. In 1620 the old structures are dismantled and walls are built by samurai clans, interlocked granite boulders without mortar, many from quarries near the Seto Inland Sea with inscribed crests, still standing; a new tenshu, five stories outside and eight inside, is started in 1628 and completed two years later (the page also says the rebuilt castle was completed in 1628). In 1660 lightning ignites the gunpowder warehouse; in 1665 lightning burns the tenshu; in 1843 money is collected to rebuild several turrets; buildings burn in the conflicts of the Meiji Restoration in 1868, after which the castle becomes part of the Osaka Army Arsenal; the ferroconcrete tenshu is built in 1931; air raids damage it in 1945; a restoration is approved in 1995 and completed in 1997, a concrete reproduction with elevators whose interior is a museum. Layout: the keep is built atop a tall stone foundation."
    },
    {
     "url": "https://fr.wikipedia.org/wiki/Ch%C3%A2teau_d%27%C5%8Csaka",
-    "read": "Histoire: Hideyoshi begins the castle in 1583; the main tower is completed in 1585 and the whole castle in 1598; in the summer of 1615 the Tokugawa lay siege to it on 4 July, the castle falls and the Toyotomi castle is destroyed by fire. In 1620 Tokugawa Hidetada begins the rebuilding, has the samurai clans rebuild the walls, juxtaposed blocks of stone without mortar, some over two metres in every dimension, which still exist; the tenshu is destroyed by fire in 1665 after lightning and is not rebuilt. In 1868 a large part of the buildings is destroyed in the fighting of the Meiji Restoration, and under the Meiji era the castle becomes barracks; in 1928 the city of Osaka launches the reconstruction of the tenshu in reinforced concrete; in 1945 air raids damage the castle; a restoration is approved in 1995 and ends in 1997. The tenshu has five outer levels and eight floors."
+    "read": "Histoire: Hideyoshi begins the castle in 1583; the main tower is completed in 1585 and the whole castle in 1598; in the summer of 1615 the Tokugawa lay siege to it on 4 July, the castle falls and the Toyotomi castle is destroyed by fire. In 1620 Tokugawa Hidetada begins the rebuilding, has the samurai clans rebuild the walls, juxtaposed blocks of stone without mortar, some over two metres in every dimension, which still exist; the tenshu is destroyed by fire in 1665 after lightning and is not rebuilt. In 1843 money is collected for repairs; in 1868 a large part of the buildings is destroyed in the fighting of the Meiji Restoration, and under the Meiji era the castle becomes barracks; in 1928 the city of Osaka launches the reconstruction of the tenshu in reinforced concrete; in 1945 air raids damage the castle; a restoration is approved in 1995 and ends in 1997. The tenshu has five outer levels and eight floors."
+   },
+   {
+    "url": "https://ja.wikipedia.org/wiki/%E5%A4%A7%E5%9D%82%E5%9F%8E",
+    "read": "Japanese Wikipedia, Osaka Castle (大坂城). The Tokugawa rebuild the castle from 1620 (the first campaign, 47 daimyo; the second from 1624, 58 daimyo, the main bailey; the third from 1628, 57 daimyo) and finish it in 1629; the stones are granite from quarries on Seto Inland Sea islands (Shōdoshima, Inujima, Kitagi-jima) and in the Rokkō hills, carved with marks that show ownership, the largest being the Octopus Stone. Keeps: the Toyotomi keep (completed 1585, burnt 1615, about 40 m); the Tokugawa keep (completed 1626, burnt after lightning struck the fish ornament on its north side on 2 January 1665, 58.3 m with its base and fish); the present keep (completed on 7 November 1931, 54.8 m with its base and fish), built of steel-framed reinforced concrete on a new foundation on the Tokugawa keep's base, five tiers and eight floors (the first floor is underground), its first four tiers white plaster in the Tokugawa manner and its fifth black in the Toyotomi manner with cranes in gold lacquer and gilded tiger reliefs. A lightning strike on the powder magazine in 1660 damages the keep; in 1868 the main bailey's palace and many turrets burn; the keep is damaged by the raid of 14 August 1945; the 1995–1997 restoration regilds the ornaments."
+   },
+   {
+    "url": "https://ja.wikipedia.org/wiki/%E5%A4%A7%E9%98%AA%E5%9F%8E%E5%A4%A9%E5%AE%88%E9%96%A3",
+    "read": "Japanese Wikipedia, Osaka Castle Museum (大阪城天守閣). Mayor Seki Hajime proposes rebuilding the keep with a park, as a commemoration of the Emperor's enthronement; the citizens' donations reach 1.5 million yen, 470,000 of it for the keep; the keep, planned at 11,000 t so as not to load the stone walls, is completed in October 1931 in steel-framed reinforced concrete with elevators, from the Osaka Summer Siege screen; Furukawa Shigeharu of the city's building section designs it, Amanuma Shun'ichi the ornament, Namie Teifu and Kataoka Yasushi the structure, and Obayashi builds it; it opens as a museum on 7 November. The tiger reliefs under the top balustrade follow a crouching tiger of Kanō Sanraku. On the eighth floor eight cranes in gold lacquer decorate the wall. On 14 August 1945 two 1-ton bombs fall near the south-west and north-east corners, chipping and shifting the base's stonework; the keep itself is spared but many tiles are damaged. The restoration of December 1995 to March 1997 reinforces the structure, repaints walls, replaces tiles and metalwork, regilds the fish, tigers and ornaments and adds an elevator; the keep is registered as a cultural property in September 1997."
+   },
+   {
+    "url": "https://osakacastle.net/",
+    "read": "Official site of the Osaka Castle Museum (大阪城天守閣). The stone walls, the moats and the old buildings seen today all date from the Tokugawa period or after; the keep is the third, after the Toyotomi and Tokugawa ones, reconstructed in Shōwa 6 (1931) with citizens' donations, registered as a national tangible cultural property in 1997 and designated by the City of Osaka in 2025."
+   },
+   {
+    "url": "https://osakacastle.net/toyotomi_stone_wall/",
+    "read": "Official site, Toyotomi Stone Wall Museum page: timeline 1583 (Hideyoshi begins the castle), 1598 (his death), 1615 (the Summer Siege, the castle falls), 1620 (the Tokugawa shogunate begins rebuilding it); the Tokugawa bury the Toyotomi castle under fill, and today's stone walls and moats are all from the rebuilding."
+   },
+   {
+    "url": "https://osakacastle.net/exhibition/",
+    "read": "Official site, exhibitions: the eighth floor of the keep is an observation deck, described as giving views from 50 m above ground (地上50m); the second floor shows full-size replicas of the present keep's gilded fish and tiger reliefs."
+   },
+   {
+    "url": "https://osakacastle.net/toyotomi_stone_wall/column/2401.html",
+    "read": "Official column, 'The heights of Osaka Castle': the Tokugawa keep, base and tower together, is 29 ken 3 shaku 9 sun, about 58.3 m (1 ken = 6.5 shaku = about 1.97 m); the present base's foot lies at about 31 m above sea level and the gilded fish of the present keep at 85.9 m, so the Tokugawa keep stood about 3 m higher; the Toyotomi keep reached about 40 m above the ground of its inner bailey."
+   },
+   {
+    "url": "https://osakacastle.net/toyotomi_stone_wall/column/2009.html",
+    "read": "Official column on the two kinds of fish ornament of the keep reconstructed in 1931: they were cast in metal by a caster of the city and donated; Furukawa Shigeharu was the city's consultant and played a central role in designing the keep until six months before completion; the ridge fish follow the city's design and the fish of the third tier differ from them."
+   },
+   {
+    "url": "https://osakacastle.net/toyotomi_stone_wall/column/1910.html",
+    "read": "Official column on the view from the Tamatsukuri gate: the present keep is the first 'reconstructed keep' of the Shōwa era; on the stone base of the Tokugawa-period keep stands a keep that imitates the Toyotomi-period design after the Osaka Summer Siege screens; the Toyotomi keep burnt after about 30 years, the Tokugawa after about 39, the present one has stood the longest; the floodlighting began in 1997 when the 'great Heisei renovation' ended. On the stonework of the Tamatsukuri gate, a run of five 'fundō' marks is the crest of the Horio family of Matsue."
+   },
+   {
+    "url": "https://osakacastle.net/toyotomi_stone_wall/column/1402.html",
+    "read": "Official column on roof tiles found in the dig: the Tokugawa keep was rebuilt in 1627 and burnt after lightning in Kanbun 5 (1665), and was never rebuilt; surviving drawings of its ridge ornaments were made to repair the keep damaged by the explosion of the powder magazine in 1660."
+   },
+   {
+    "url": "https://osakacastle.net/toyotomi_stone_wall/column/1908.html",
+    "read": "Official column on the view from the Nishinomaru garden: seen head-on from the west, the keep shows the symmetry of its form, its run of gables, and the crouching tigers and cranes on the outer wall of its top floor; lower tiers heavy and upper ones light in the manner of a tower-type keep."
+   },
+   {
+    "url": "https://osakacastle.net/toyotomi_stone_wall/column/1712.html",
+    "read": "Official column on the marked stones: the stones of the Tokugawa walls were cut at quarries from Kyūshū to the Bisan Seto islands, the Higashi-Rokkō hills and Ikoma; the Shōdoshima quarries were designated a national historic site in 1972, the Higashi-Rokkō quarry added in 2017."
+   },
+   {
+    "url": "https://osakacastle.net/toyotomi_stone_wall/column/1804.html",
+    "read": "Official column on a book published for the opening: the present keep was completed on 7 November Shōwa 6 (1931)."
    },
    {
     "url": "https://en.wikipedia.org/wiki/Japanese_castle",
@@ -173,6 +221,10 @@
     "source": "https://en.wikipedia.org/wiki/Osaka_Castle"
    },
    {
+    "text": "A keep standing on the stone base of the Tokugawa keep",
+    "source": "https://osakacastle.net/toyotomi_stone_wall/column/1910.html"
+   },
+   {
     "text": "Foundation walls of interlocked granite boulders laid without mortar",
     "source": "https://en.wikipedia.org/wiki/Osaka_Castle"
    },
@@ -189,23 +241,23 @@
     "source": "https://en.wikipedia.org/wiki/Tenshu"
    },
    {
-    "text": "A black upper tier with gilt tigers on its walls",
-    "source": "https://commons.wikimedia.org/wiki/File:Osaka_Castle,_Keep_tower,_South_view_20190415_1.jpg"
+    "text": "A black fifth tier, in the Toyotomi manner, with gilded tiger reliefs under its balustrade",
+    "source": "https://ja.wikipedia.org/wiki/%E5%A4%A7%E5%9D%82%E5%9F%8E"
    },
    {
-    "text": "A gallery with a balustrade round the black upper tier, under a glazed storey",
-    "source": "https://commons.wikimedia.org/wiki/File:Osaka_Castle,_Keep_tower,_South_view_20190415_1.jpg"
+    "text": "An eighth-floor gallery round the black tier, with cranes in gold lacquer on the wall behind glass",
+    "source": "https://ja.wikipedia.org/wiki/%E5%A4%A7%E9%98%AA%E5%9F%8E%E5%A4%A9%E5%AE%88%E9%96%A3"
    },
    {
-    "text": "White plastered walls with rows of small lattice windows",
-    "source": "https://commons.wikimedia.org/wiki/File:Tenshu_and_Inner_Moat_of_Osaka_Castle_2.JPG"
+    "text": "White plaster walls on the first four tiers",
+    "source": "https://ja.wikipedia.org/wiki/%E5%A4%A7%E5%9D%82%E5%9F%8E"
    },
    {
-    "text": "Gilt fittings on the roofs: hip-end ornaments, bargeboard bosses and plates",
-    "source": "https://commons.wikimedia.org/wiki/File:Osaka_Castle_Keep_Tower.JPG"
+    "text": "Gilded fish, tiger reliefs and ornamental metalwork on the roofs",
+    "source": "https://ja.wikipedia.org/wiki/%E5%A4%A7%E9%98%AA%E5%9F%8E%E5%A4%A9%E5%AE%88%E9%96%A3"
    }
   ],
-  "geometry": "The plan is the mapped outline (OpenStreetMap way 34619038 and its four building:part ways, © OpenStreetMap contributors, ODbL), turned onto the keep's own axes by rotate −5.3°: the stone base's foot, 37.4 × 41.5 m, fits the outline within 0.5 m for nine edges in ten, and the roof edges of the first three tiers and the plan of the black upper tier agree with the mapped parts within 0.3 m. Heights and the shape of the roofs are read on four photographs (south, south-west, north-west and north-east): the camera of each is fitted on points of the model with its lens set by the photograph's own 35 mm-equivalent focal length, and the fit holds with the base 13.3 m high and the highest point at 55.3 m. No surveyed height was read on a page that could be opened.",
+  "geometry": "The plan is the mapped outline (OpenStreetMap way 34619038 and its four building:part ways, © OpenStreetMap contributors, ODbL), turned onto the keep's own axes by rotate −5.3°: the stone base's foot, 37.4 × 41.5 m, fits the outline within 0.5 m for nine edges in ten, and the roof edges of the first three tiers and the plan of the black upper tier agree with the mapped parts within 0.3 m. Heights and the shape of the roofs are read on four photographs (south, south-west, north-west and north-east): the camera of each is fitted on points of the model with its lens set by the photograph's own 35 mm-equivalent focal length. The highest point, 55.3 m above the foot of the base, is checked against two sources that agree: 54.8 m for the base and keep up to the gilded fish on Japanese Wikipedia, and 54.9 m from the museum's column (the fish at 85.9 m above sea level, the foot of the base at about 31 m).",
   "comparisons": [
    {
     "pass": 1,
@@ -285,10 +337,10 @@
      "Foundation walls of interlocked granite boulders laid without mortar: the stones are regular coursed blocks, not irregular boulders, and still darker than in the photographs.",
      "Dormer gables on the roof faces, with a white face under a tiled slope: no gilt scrollwork and no carved lattice on the gable faces.",
      "A hip-and-gabled roof on top with gilded fish finials at the ridge ends: the fish are simplified to four stacked beams.",
-     "A black upper tier with gilt tigers on its walls: the tigers are flat plates, without relief or panels.",
-     "A gallery with a balustrade round the black upper tier, under a glazed storey: the storey is a dark pane, with no interior seen through clear glass.",
-     "White plastered walls with rows of small lattice windows: the windows were not matched one by one.",
-     "Gilt fittings on the roofs: hip-end ornaments, bargeboard bosses and plates: small gilt blocks, discs and plates instead of the real castings."
+     "A black fifth tier, in the Toyotomi manner, with gilded tiger reliefs under its balustrade: the tigers are flat plates, without relief or panels.",
+     "An eighth-floor gallery round the black tier, with cranes in gold lacquer on the wall behind glass: the storey is a dark pane, with no cranes and no interior seen through clear glass.",
+     "White plaster walls on the first four tiers: the windows were not matched one by one.",
+     "Gilded fish, tiger reliefs and ornamental metalwork on the roofs: small gilt blocks, discs and plates instead of the real castings."
     ]
    }
   ],
@@ -313,6 +365,16 @@
      "element": 0,
      "method": "geometry",
      "model": "A battered base 13.3 m high, 37.4 × 41.5 m at the foot and 30.4 × 34.4 m at the top, with a flared profile and a filled top 0.8 m thick",
+     "checked": true,
+     "result": "matched"
+    },
+    {
+     "feature": "A keep standing on the stone base of the Tokugawa keep",
+     "source": "https://osakacastle.net/toyotomi_stone_wall/column/1910.html",
+     "reference": 0,
+     "element": 0,
+     "method": "geometry",
+     "model": "The same base carries the keep from the first phase: its footprint is the mapped one, and the keep's first tier stands on its top",
      "checked": true,
      "result": "matched"
     },
@@ -357,8 +419,8 @@
      "result": "named simplification"
     },
     {
-     "feature": "A black upper tier with gilt tigers on its walls",
-     "source": "https://commons.wikimedia.org/wiki/File:Osaka_Castle,_Keep_tower,_South_view_20190415_1.jpg",
+     "feature": "A black fifth tier, in the Toyotomi manner, with gilded tiger reliefs under its balustrade",
+     "source": "https://ja.wikipedia.org/wiki/%E5%A4%A7%E5%9D%82%E5%9F%8E",
      "reference": 0,
      "element": 1,
      "method": "geometry",
@@ -367,18 +429,18 @@
      "result": "named simplification"
     },
     {
-     "feature": "A gallery with a balustrade round the black upper tier, under a glazed storey",
-     "source": "https://commons.wikimedia.org/wiki/File:Osaka_Castle,_Keep_tower,_South_view_20190415_1.jpg",
+     "feature": "An eighth-floor gallery round the black tier, with cranes in gold lacquer on the wall behind glass",
+     "source": "https://ja.wikipedia.org/wiki/%E5%A4%A7%E9%98%AA%E5%9F%8E%E5%A4%A9%E5%AE%88%E9%96%A3",
      "reference": 0,
      "element": 1,
      "method": "geometry",
-     "model": "A gallery ring with a floor beam, brackets, posts every 1.35 m with gilt knobs and two rails, and a storey of dark glass between black posts up to the eaves",
+     "model": "A gallery ring with a floor beam, brackets, posts every 1.35 m with gilt knobs and two rails, and a storey of dark glass between black posts up to the eaves; the cranes are not drawn",
      "checked": true,
      "result": "named simplification"
     },
     {
-     "feature": "White plastered walls with rows of small lattice windows",
-     "source": "https://commons.wikimedia.org/wiki/File:Tenshu_and_Inner_Moat_of_Osaka_Castle_2.JPG",
+     "feature": "White plaster walls on the first four tiers",
+     "source": "https://ja.wikipedia.org/wiki/%E5%A4%A7%E5%9D%82%E5%9F%8E",
      "reference": 2,
      "element": 1,
      "method": "geometry",
@@ -387,8 +449,8 @@
      "result": "named simplification"
     },
     {
-     "feature": "Gilt fittings on the roofs: hip-end ornaments, bargeboard bosses and plates",
-     "source": "https://commons.wikimedia.org/wiki/File:Osaka_Castle_Keep_Tower.JPG",
+     "feature": "Gilded fish, tiger reliefs and ornamental metalwork on the roofs",
+     "source": "https://ja.wikipedia.org/wiki/%E5%A4%A7%E9%98%AA%E5%9F%8E%E5%A4%A9%E5%AE%88%E9%96%A3",
      "reference": 1,
      "element": 1,
      "method": "geometry",
@@ -400,23 +462,23 @@
   },
   "uncertainties": [
    "A keep five tiers tall on the outside and eight floors on the inside: simplified; the five tiers are modelled from outside, the eight floors inside are not (the walls are a shell, with no floors, stairs or rooms).",
-   "Foundation walls of interlocked granite boulders laid without mortar: simplified; the stones are coursed blocks in three tones, not the irregular boulders of the real walls, and their crests and corner stones are not drawn. The granite, the quarries near the Seto Inland Sea and the crests are given by one page read only (English Wikipedia).",
+   "Foundation walls of interlocked granite boulders laid without mortar: simplified; the stones are coursed blocks in three tones, not the irregular boulders of the real walls, and their marks and corner stones are not drawn; the stone is lighter than the shaded side of the capture.",
    "Dormer gables on the roof faces, with a white face under a tiled slope: simplified; the gables are placed and sized on the photographs (tiers 1 and 3), their faces are battens, windows and a gilt plate, without the gilt scrollwork and the carved lattice of the real ones; a gable seen in one photograph only is placed from that photograph alone.",
-   "A hip-and-gabled roof on top with gilded fish finials at the ridge ends: simplified; each fish is four stacked beams, with none of the fins and scales.",
-   "A black upper tier with gilt tigers on its walls: simplified; the tigers are flat gilt plates about 2.5 m long, without relief or recessed panels, two to a face on all four faces as seen on the south face; the other faces were not checked.",
-   "A gallery with a balustrade round the black upper tier, under a glazed storey: simplified; the gallery is posts, two rails and gilt knobs and the storey a dark pane between black posts, without the interior seen through the clear glass of the real one.",
-   "White plastered walls with rows of small lattice windows: simplified; the windows are standard lattice groups on a regular pitch, and their counts, groupings and shapes were not matched one by one with the photographs.",
-   "Gilt fittings on the roofs: hip-end ornaments, bargeboard bosses and plates: simplified; the fittings are small gilt blocks, discs and plates at the photographed places, not the real castings.",
-   "Heights are read on four photographs fitted on points of the model (the base 13.3 m, the highest point 55.3 m); no surveyed height was read on a page that opened. The height tag of the OSM way, 58 m, is 2.7 m above the model's highest point, and the tag does not say what it is measured to.",
-   "French Wikipedia puts the view from the top of the tower at fifty metres; the model's gallery floor is at 44 m (the base 13.3 m plus 30.75 m), read on photographs.",
+   "A hip-and-gabled roof on top with gilded fish finials at the ridge ends: simplified; each fish is four stacked beams, with none of the fins and scales, and the smaller fish of the third tier's gables are plain gilt blocks.",
+   "A black fifth tier, in the Toyotomi manner, with gilded tiger reliefs under its balustrade: simplified; the tigers are flat gilt plates about 2.5 m long, without relief or recessed panels, two to a face on all four faces as seen on the south face; the other faces were not checked, and no page read gives their number.",
+   "An eighth-floor gallery round the black tier, with cranes in gold lacquer on the wall behind glass: simplified; the gallery is posts, two rails and gilt knobs and the storey a dark pane between black posts; the eight cranes of the wall and the interior seen through the clear glass are not modelled.",
+   "White plaster walls on the first four tiers: simplified in their openings; the windows are standard lattice groups on a regular pitch, and their counts, groupings and shapes were not matched one by one with the photographs.",
+   "Gilded fish, tiger reliefs and ornamental metalwork on the roofs: simplified; the fittings are small gilt blocks, discs and plates at the photographed places, not the real castings.",
+   "The model's highest point, 55.3 m above the foot of the base, is 0.5 m above the 54.8 m of Japanese Wikipedia and the 54.9 m of the museum's column, about 0.9 %: within the error of fits made on photographs. The 58 m of the OSM height tag is the Tokugawa keep's height (58.3 m in both of those sources), not the present keep's.",
+   "The museum's site describes the eighth-floor observation deck as 50 m above ground, French Wikipedia puts the view from the top of the tower at fifty metres, and the model's gallery floor is at 44 m (the base 13.3 m plus 30.75 m, read on photographs); no page read says what 'ground' means or where the deck's floor lies, so the difference stays open. The height of the base itself, 13.3 m, is read on photographs: no page read gives it.",
    "The cameras of the four references were fitted with their position at the place Commons records and the lens free: the fitted vertical fields of view (14.7°, 43.9°, 37.2°, 28.8°) are narrower than those the photographs' 35 mm-equivalent focal lengths give (15.3°, 48.2°, 42.9°, 35.9°), because the recorded positions of phone photographs are rough. With the position free as well (calibrate.mjs --move) the residual stays the same to 0.2 point (south-west 0.9%, north-west 2.1%).",
-   "That the stone base dates from the 1620s and carries the keep of 1931 is not stated by a page read: English Wikipedia says the walls built in the 1620s still stand and that the keep is built atop a tall stone foundation; the film shows the base standing from 1620, and its footprint is the mapped one.",
-   "The keeps of Hideyoshi (completed in 1585 and burnt in 1615) and of the Tokugawa (started in 1628 according to English Wikipedia) are not drawn: no plan or dimension of either was read on a page that opened.",
-   "Pages read disagree on dates the film does not use: the end of Hideyoshi's works (1597 on English Wikipedia and in the OSM description, 1598 on French Wikipedia), the day of the 1615 assault (4 June on the English page, 4 July on the French one), and the Tokugawa keep (started 1628 and finished two years later, while the same page says the castle was completed in 1628). The film gives only dates on which two pages agree: 1620, 1665, 1868, 1928 (start) and 1931 (built), 1945, 1995 and 1997.",
-   "Statements found on one page only: the granite, the quarries and the crests (English Wikipedia, used in the film), the turrets rebuilt in 1843 (English Wikipedia, used in the film), the elevators of the 1997 keep (English Wikipedia, used in the film), stones over two metres in every dimension (French Wikipedia, not used).",
-   "The restoration of 1995–1997 does not change the model: the pages read do not say what was altered, and the model is the keep as photographed between 2014 and 2026.",
+   "The base's date: the museum's site and Japanese Wikipedia say the present keep stands on the base of the Tokugawa keep, and that the walls seen today come from the Tokugawa rebuilding (campaigns from 1620 and from 1624, the second one the main bailey); the film shows the base from 1620, the first date, without saying in which campaign each course was laid.",
+   "The keeps of Hideyoshi (completed in 1585 and burnt in 1615) and of the Tokugawa (completed in 1626 on Japanese Wikipedia, rebuilt in 1627 in the museum's column, started in 1628 and finished two years later on English Wikipedia) are not drawn: no plan or dimension of either was read in a form that could be drawn, only their heights (about 40 m and 58.3 m).",
+   "Pages read disagree on dates the film does not use: the end of Hideyoshi's works (1597 on English Wikipedia and in the OSM description, 1598 on French Wikipedia), the day of the 1615 assault (4 June on the English page, 4 July on the French one), the end of the Tokugawa rebuilding (1628 on English Wikipedia, 1629 on Japanese Wikipedia), the completion of the Tokugawa keep (1626, 1627 or 1630, above), and the keep's end in 1931 (completed in October on the Japanese Wikipedia article of the museum, on 7 November on the other and in the museum's column). The film gives only dates on which two pages agree: 1620, 1660, 1665, 1868, 1928 (the proposal), 7 November 1931, 1945, 1995 and 1997.",
+   "Statements found on one source family only: the figures of the donations (1.5 million yen, 470,000 for the keep) and the 11,000 t of the keep (two articles of Japanese Wikipedia), the three campaigns of 47, 58 and 57 daimyo (Japanese Wikipedia; the museum's columns give the first two dates), the turrets rebuilt in 1843 (English Wikipedia, not used in the film), the 2 January date of the 1665 strike (Japanese Wikipedia, not in the film), stones over two metres in every dimension (French Wikipedia, not used). Japanese Wikipedia is read as one source, not as an independent check of itself.",
+   "The restoration of 1995–1997 does not change the model: Japanese Wikipedia and the museum's site say it repainted the walls, replaced tiles and regilded the ornaments, and the model is the keep as photographed between 2014 and 2026, after it.",
    "The worksite scenes show a few figures and, for the walls, stones, for scale; none of the pages read describes scaffolds, hoists or a workforce, so none is drawn.",
-   "Only the keep and its base are drawn: the inner bailey and its retaining walls, the moats, the gates and the other buildings of the castle are not."
+   "Only the keep and its base are drawn: the inner bailey and its retaining walls, the moats, the gates and the other buildings of the castle are not. The sources that could not be opened from the sandbox in which the model was made (the Agency for Cultural Affairs, the city and prefecture of Osaka, the Ministry of Land, Infrastructure, Transport and Tourism, Obayashi, Britannica, Wikidata) were not read."
   ]
  },
  "phases": [
@@ -450,14 +512,14 @@
     {
      "at": 0.2,
      "tag": "Plan",
-     "title": "Walls given to the clans",
+     "title": "The campaigns of the clans",
      "anchor": [
       -17.8,
       5,
       4
      ],
-     "source": "https://fr.wikipedia.org/wiki/Ch%C3%A2teau_d%27%C5%8Csaka",
-     "text": "The samurai clans are ordered to rebuild the walls."
+     "source": "https://ja.wikipedia.org/wiki/%E5%A4%A7%E5%9D%82%E5%9F%8E",
+     "text": "Clans of daimyo build the walls in campaigns, the first from 1620 and the second from 1624, which builds the main bailey where the keep stands."
     },
     {
      "at": 0.55,
@@ -470,19 +532,19 @@
      ],
      "distance": 16,
      "source": "https://en.wikipedia.org/wiki/Osaka_Castle",
-     "text": "The stones are interlocked and laid without mortar; English Wikipedia calls them granite boulders."
+     "text": "The stones are interlocked and laid without mortar, and they are granite, as English and Japanese Wikipedia both say."
     },
     {
      "at": 0.85,
      "tag": "Craft",
-     "title": "Crests on the stones",
+     "title": "Stones from the islands",
      "anchor": [
       17.5,
       4,
       -8
      ],
-     "source": "https://en.wikipedia.org/wiki/Osaka_Castle",
-     "text": "Many stones come from quarries near the Seto Inland Sea and bear the inscribed crests of the families that contributed them."
+     "source": "https://ja.wikipedia.org/wiki/%E5%A4%A7%E5%9D%82%E5%9F%8E",
+     "text": "Granite came from quarries on islands of the Seto Inland Sea such as Shōdoshima, and from the Rokkō hills; marks cut in the stones show whose they were."
     }
    ]
   },
@@ -496,28 +558,28 @@
     {
      "at": 0.2,
      "tag": "Event",
-     "title": "Struck by lightning",
+     "title": "The magazine of 1660",
      "anchor": [
       0,
       6,
       19.5
      ],
      "distance": 90,
-     "source": "https://fr.wikipedia.org/wiki/Ch%C3%A2teau_d%27%C5%8Csaka",
-     "text": "The tenshu burns in 1665 after being struck by lightning."
+     "source": "https://ja.wikipedia.org/wiki/%E5%A4%A7%E5%9D%82%E5%9F%8E",
+     "text": "In 1660 lightning strikes the powder magazine, and the explosion damages the keep, the palace and many other buildings."
     },
     {
      "at": 0.55,
-     "tag": "Upkeep",
-     "title": "Repairs of 1843",
+     "tag": "Event",
+     "title": "Struck by lightning",
      "anchor": [
       -18,
       6,
       2
      ],
      "distance": 90,
-     "source": "https://en.wikipedia.org/wiki/Osaka_Castle",
-     "text": "After decades of neglect, money is collected in 1843 for repairs; according to English Wikipedia, several turrets are rebuilt."
+     "source": "https://ja.wikipedia.org/wiki/%E5%A4%A7%E5%9D%82%E5%9F%8E",
+     "text": "In 1665 lightning strikes the fish ornament on the north side of the keep, which burns after about 39 years and is never rebuilt."
     },
     {
      "at": 0.85,
@@ -538,8 +600,8 @@
    "id": "tower",
    "when": "1928–1931",
    "title": "A concrete keep",
-   "source": "https://fr.wikipedia.org/wiki/Ch%C3%A2teau_d%27%C5%8Csaka",
-   "text": "In 1928 the city of Osaka launches the rebuilding of the tenshu in reinforced concrete. The ferroconcrete keep is built in 1931.",
+   "source": "https://ja.wikipedia.org/wiki/%E5%A4%A7%E5%9D%82%E5%9F%8E",
+   "text": "In 1928 Osaka's mayor proposes a park project that includes rebuilding the keep, paid for by donations from citizens. The keep is finished on 7 November 1931.",
    "scene": {
     "craft": "mixed",
     "at": [
@@ -563,15 +625,27 @@
    "moments": [
     {
      "at": 0.2,
-     "tag": "Technique",
-     "title": "Steel-reinforced concrete",
+     "tag": "Funding",
+     "title": "Citizens' money",
      "anchor": [
       0,
       18.5,
       16.1
      ],
-     "source": "https://en.wikipedia.org/wiki/Japanese_castle",
-     "text": "In the 1920s lost castle buildings are rebuilt quickly and cheaply in steel-reinforced concrete; Osaka's main tower, first rebuilt in 1928, is the example its article on Japanese castles gives."
+     "source": "https://ja.wikipedia.org/wiki/%E5%A4%A7%E9%98%AA%E5%9F%8E%E5%A4%A9%E5%AE%88%E9%96%A3",
+     "text": "The museum's site and Japanese Wikipedia agree that citizens' donations paid for the keep; the latter gives 1.5 million yen collected, 470,000 of it for the keep."
+    },
+    {
+     "at": 0.45,
+     "tag": "Technique",
+     "title": "A steel frame in concrete",
+     "anchor": [
+      0,
+      24,
+      14.5
+     ],
+     "source": "https://ja.wikipedia.org/wiki/%E5%A4%A7%E9%98%AA%E5%9F%8E%E5%A4%A9%E5%AE%88%E9%96%A3",
+     "text": "The keep is steel-framed reinforced concrete with elevators; its 11,000 t were planned so as not to load the old stone walls."
     },
     {
      "at": 0.6,
@@ -583,19 +657,19 @@
       8.6
      ],
      "source": "https://en.wikipedia.org/wiki/Osaka_Castle",
-     "text": "Seen from outside, five tiers; inside, eight floors."
+     "text": "Seen from outside, five tiers; inside, eight floors, the first of them underground in the base, as Japanese Wikipedia puts it."
     },
     {
-     "at": 0.88,
-     "tag": "Date",
-     "title": "Built in 1931",
+     "at": 0.85,
+     "tag": "Design",
+     "title": "Two eras in one keep",
      "anchor": [
       0,
-      50,
-      5
+      41,
+      5.8
      ],
-     "source": "https://en.wikipedia.org/wiki/Osaka_Castle",
-     "text": "The ferroconcrete tenshu is built in 1931; French Wikipedia dates the start of the rebuilding to 1928."
+     "source": "https://ja.wikipedia.org/wiki/%E5%A4%A7%E5%9D%82%E5%9F%8E",
+     "text": "The first four tiers are white plaster in the Tokugawa manner; the fifth is black in the Toyotomi manner, with gilded tiger reliefs and cranes in gold lacquer."
     }
    ]
   },
@@ -603,8 +677,8 @@
    "id": "restoration",
    "when": "1945–1997",
    "title": "Raids, then restoration",
-   "source": "https://en.wikipedia.org/wiki/Osaka_Castle",
-   "text": "American air raids damage the castle in 1945. In 1995 the government of Osaka approves a restoration of the tenshu, completed in 1997.",
+   "source": "https://ja.wikipedia.org/wiki/%E5%A4%A7%E9%98%AA%E5%9F%8E%E5%A4%A9%E5%AE%88%E9%96%A3",
+   "text": "American air raids damage the castle in 1945. From 1995 to 1997 a great restoration reinforces the keep, replaces damaged tiles and regilds its ornaments.",
    "scene": {
     "craft": "restoration",
     "at": [
@@ -631,15 +705,15 @@
      "tag": "War",
      "title": "Air raids of 1945",
      "anchor": [
-      0,
-      30,
-      16
+      -17.5,
+      6,
+      19
      ],
-     "source": "https://en.wikipedia.org/wiki/Osaka_Castle",
-     "text": "American raids in 1945 damage the castle; according to English Wikipedia they targeted the arsenal and damaged the reconstructed keep."
+     "source": "https://ja.wikipedia.org/wiki/%E5%A4%A7%E9%98%AA%E5%9F%8E%E5%A4%A9%E5%AE%88%E9%96%A3",
+     "text": "On 14 August 1945 two 1-ton bombs fall near the base, chipping the stonework at its south-west corner and shifting it at the north-east; the keep is spared, many tiles are damaged."
     },
     {
-     "at": 0.75,
+     "at": 0.5,
      "tag": "Restoration",
      "title": "A museum inside",
      "anchor": [
@@ -649,6 +723,18 @@
      ],
      "source": "https://en.wikipedia.org/wiki/Osaka_Castle",
      "text": "Completed in 1997, the keep is a concrete reproduction fitted with elevators; its interior is meant as a modern, functioning museum."
+    },
+    {
+     "at": 0.8,
+     "tag": "Craft",
+     "title": "Gold put back",
+     "anchor": [
+      0,
+      41,
+      5.8
+     ],
+     "source": "https://ja.wikipedia.org/wiki/%E5%A4%A7%E9%98%AA%E5%9F%8E%E5%A4%A9%E5%AE%88%E9%96%A3",
+     "text": "The restoration regilds the fish, the tiger reliefs and the ridge ornaments, repaints the walls and replaces damaged tiles."
     }
    ]
   }
