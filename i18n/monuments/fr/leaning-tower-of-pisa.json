@@ -116,6 +116,29 @@
       {
         "view": "sud"
       }
+    ],
+    "sources": [
+      {
+        "read": "Dimensions (55,86 m et 56,67 m de haut, 15,484 m de diamètre extérieur et 7,368 m de diamètre intérieur à la base, murs de 2,44 m), huit niveaux, chronologie (1173, 1178, 1272, 1278, 1319, 1372), l'inclinaison (5,5° en 1990, 3,97° après 2001), les travaux de 1990–2001 et les sept cloches."
+      },
+      {
+        "read": "Six galeries annelées de 30 colonnes chacune reposent sur la base, sous la loggia plus petite qui abrite sept cloches ; l'inclinaison a posé problème dès le début en 1173 et le chantier s'est poursuivi de façon asymétrique pour la corriger."
+      },
+      {
+        "read": "La tour comme multipolygone, de hauteur 56 et en pierre blanche ; son way extérieur 35667218 est le contour mesuré utilisé pour le plan (rayon d'environ 8,3–8,6 m avec la semelle)."
+      }
+    ],
+    "uncertainties": [
+      "Hauteurs des niveaux et taille de la chambre des cloches lues sur des photos.",
+      "15 arcades aveugles au rez-de-chaussée et 12 ouvertures dans la chambre des cloches comptées sur des photos.",
+      "L'inclinaison avant 1990 est schématique ; le changement progressif des corrections des maçons (la courbe des étages supérieurs) n'est pas modélisé.",
+      "Le partage des galeries hautes entre 1272–1278 et 1319 est déduit des dates des sources.",
+      "L'échafaudage annulaire et le treuil à roue montrent un déroulement de chantier maçonné conforme à l'époque ; leur disposition exacte et la progression de leur hauteur sont interprétatives.",
+      "Cathédrale et baptistère non montrés.",
+      "Pas de bandes grises ni de veines dans le marbre, dont les joints se lisent plus fort que sur la vraie tour, et pas de drapeau au sommet de la chambre des cloches ; dans les galeries à l'ombre, le mur du fond peut refléter le ciel sous un angle rasant.",
+      "Les garde-corps de fer autour des terrasses sont dessinés comme sur les photos actuelles ; leur date n'est pas dans les sources utilisées, ils apparaissent donc avec les travaux de 1999–2001.",
+      "Les deux marches du socle autour du pied suivent les photos ; le chemin creusé autour de la base en 1838 (le catino) n'est pas modélisé.",
+      "Les sept cloches sont dessinées comme des cloches de bronze de trois tailles suspendues dans des arcades en alternance ; leurs tailles et leurs emplacements réels ne sont pas modélisés."
     ]
   }
 }

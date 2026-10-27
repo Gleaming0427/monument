@@ -94,7 +94,10 @@ const hasWords = text => /[A-Za-zÀ-ÿ]/.test(String(text ?? ''));
 // where it belongs, so filling it in cannot move a title or lose a moment. `blurb` is the line under a card of the
 // collection, which lives in site/collection.json rather than in the monument.
 export function translationSkeleton(monument, {blurb} = {}) {
-  const views = (monument.evidence?.references ?? []).map(reference => ({view: reference.view ?? ''}));
+  const evidence = monument.evidence ?? {}, views = (evidence.references ?? []).map(reference => ({view: reference.view ?? ''}));
+  // What the evidence panel says (the page each source gave, what stayed simplified) and the note a piece shows when
+  // it is clicked. Sources and uncertainties go by position; notes by the index of their element.
+  const notes = Object.fromEntries(monument.elements.map((element, i) => [i, element.note]).filter(([, note]) => note));
   return {
     _read: 'Translate every string into this language. Keep every number, date, measurement and name exactly as written. Every `source` is not here: it never changes. A `when` is here only when it has words in it: translate the words, keep the numbers.',
     name: monument.name ?? '',
@@ -109,7 +112,12 @@ export function translationSkeleton(monument, {blurb} = {}) {
       text: phase.text ?? '',
       ...(phase.moments?.length ? {moments: phase.moments.map(moment => ({tag: moment.tag, title: moment.title, text: moment.text}))} : {}),
     }])),
-    ...(views.length ? {evidence: {references: views}} : {}),
+    ...(views.length || evidence.sources?.length || evidence.uncertainties?.length ? {evidence: {
+      ...(views.length ? {references: views} : {}),
+      ...(evidence.sources?.length ? {sources: evidence.sources.map(source => ({read: source.read ?? ''}))} : {}),
+      ...(evidence.uncertainties?.length ? {uncertainties: [...evidence.uncertainties]} : {}),
+    }} : {}),
+    ...(Object.keys(notes).length ? {notes} : {}),
   };
 }
 
@@ -144,8 +152,16 @@ export function mergeMonument(monument, translation, language, id) {
     }
     return next;
   });
-  if (translation.evidence?.references) out.evidence = {...monument.evidence, references: monument.evidence.references.map((reference, i) => reference.view ? {...reference, view: text(translation.evidence.references[i]?.view, `evidence.references[${i}].view`)} : reference)};
-  else if (monument.evidence?.references?.some(reference => reference.view)) missing.push(`${id}: evidence.references`);
+  // The evidence panel: the label of each photo, the page each source gave, and what stayed simplified.
+  const evidence = monument.evidence, said = translation.evidence ?? {};
+  if (evidence) {
+    out.evidence = {...evidence};
+    if (evidence.references?.some(reference => reference.view)) out.evidence.references = evidence.references.map((reference, i) => reference.view ? {...reference, view: text(said.references?.[i]?.view, `evidence.references[${i}].view`)} : reference);
+    if (evidence.sources?.length) out.evidence.sources = evidence.sources.map((source, i) => source.read ? {...source, read: text(said.sources?.[i]?.read, `evidence.sources[${i}].read`)} : source);
+    if (evidence.uncertainties?.length) out.evidence.uncertainties = evidence.uncertainties.map((line, i) => text(said.uncertainties?.[i], `evidence.uncertainties[${i}]`));
+  }
+  // The note a piece shows when it is clicked in evidence mode.
+  out.elements = monument.elements.map((element, i) => element.note ? {...element, note: text(translation.notes?.[i], `notes.${i}`)} : element);
   if (missing.length) throw new Error(`i18n: ${missing.length} untranslated slot(s) in ${language}/${id}\n  ${missing.join('\n  ')}`);
   return out;
 }
@@ -173,7 +189,9 @@ export function checkTranslation(monument, translation, language, {blurb} = {}) 
     if (!target.trim()) { problems.push(`${where}: empty`); return; }
     const from = figures(source).sort(), to = figures(target).sort();
     if (from.join(' ') !== to.join(' ')) problems.push(`${where}: figures ${from.join(' ') || '—'} became ${to.join(' ') || '—'}`);
-    for (const [pattern, complaint] of TYPOGRAPHY[language] ?? []) for (const hit of target.matchAll(pattern)) problems.push(`${where}: « ${hit[0]} » — ${complaint}`);
+    // A comma before three digits is an English thousands separator unless the source wrote the same number with a
+    // decimal point: 15.484 m is 15,484 m in French, and the three digits are decimals.
+    for (const [pattern, complaint] of TYPOGRAPHY[language] ?? []) for (const hit of target.matchAll(pattern)) if (!source.includes(hit[0].replace(',', '.'))) problems.push(`${where}: « ${hit[0]} » — ${complaint}`);
   };
   walk(monument.name, translation.name, 'name');
   walk(monument.place, translation.place, 'place');
@@ -196,6 +214,10 @@ export function checkTranslation(monument, translation, language, {blurb} = {}) 
       walk(moment.text, t$.moments?.[i]?.text, `phases.${phase.id}.moments[${i}].text`);
     });
   });
-  (monument.evidence?.references ?? []).forEach((reference, i) => walk(reference.view, translation.evidence?.references?.[i]?.view, `evidence.references[${i}].view`));
+  const evidence = monument.evidence ?? {}, said = translation.evidence ?? {};
+  (evidence.references ?? []).forEach((reference, i) => walk(reference.view, said.references?.[i]?.view, `evidence.references[${i}].view`));
+  (evidence.sources ?? []).forEach((source, i) => walk(source.read, said.sources?.[i]?.read, `evidence.sources[${i}].read`));
+  (evidence.uncertainties ?? []).forEach((line, i) => walk(line, said.uncertainties?.[i], `evidence.uncertainties[${i}]`));
+  monument.elements.forEach((element, i) => walk(element.note, translation.notes?.[i], `notes.${i}`));
   return problems;
 }
