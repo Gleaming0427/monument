@@ -8,6 +8,7 @@ import {OutputPass} from 'three/addons/postprocessing/OutputPass.js';
 import {GTAOPass} from 'three/addons/postprocessing/GTAOPass.js';
 import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
 import {clone as cloneSkinned} from 'three/addons/utils/SkeletonUtils.js';
+import {mergeVertices} from 'three/addons/utils/BufferGeometryUtils.js';
 import {resolveVisualStyle, pbrOptions} from './visuals.js';
 import {adaptive, adaptiveContext, profiledGeometry, segmentsForChordError} from './geometry.js';
 import {masonry} from './masonry.js';
@@ -248,8 +249,11 @@ export const SHAPES = {
   // A block with its arrises taken off. On a plain cube an arris is a jump of normals and it dies as a hard
   // black line: the stone reads as untextured plastic, and a monument of such blocks reads as unbuilt. The
   // chamfer gives that line something to catch the light on, and every piece of every monument gets it,
-  // because they all share this one geometry — still one draw call, 30 triangles more per block.
-  box: () => new RoundedBoxGeometry(1, 1, 1, 1, .018),
+  // because they all share this one geometry — still one draw call, 108 triangles instead of 12. Three.js builds
+  // that box as a soup of 324 vertices, three per triangle, and every block of every pass (colour, shadow,
+  // occlusion) runs the vertex shader on each one; welded, it is 56 vertices with the same triangles and the same
+  // normals. Its texture coordinates go first: no piece material reads them, and they would keep the faces apart.
+  box: () => { const box = new RoundedBoxGeometry(1, 1, 1, 1, .018); box.deleteAttribute('uv'); return mergeVertices(box); },
   drum: adaptive(context => new T.CylinderGeometry(.5, .5, 1, context.radialSegments), {multiple: 2}),
   shaft: adaptive(context => profiledGeometry({...context, profile: [[0, 1], [.25, 1], [.55, .97], [1, .88]]}), {multiple: 2}),
   profiledShaft: adaptive(context => profiledGeometry(context), {multiple: 2}),
@@ -2679,17 +2683,25 @@ export function createStage(host) {
       if (!groups.has(key)) groups.set(key, {kind: piece.kind, shape, shapeFactory, context: variant.context, list: []});
       groups.get(key).list.push(piece);
     }
+    // A piece's death and seed are drawn in the order the pieces were made, so that the film stays the same; each
+    // mesh then holds its pieces in the order they are laid, and setTime draws only those laid by then: a piece
+    // still to come is folded to a point, but it would cost its vertices in every pass all the same.
+    const seeds = new Map();
+    const inLayingOrder = list => {
+      for (const piece of list) { piece.death = piece.until === undefined ? 1e6 : death(piece.until); seeds.set(piece, k.rand() * 100); }
+      list.sort((a, b) => a.birth - b.birth);
+    };
     for (const {kind, shapeFactory, context, list} of groups.values()) {
+      inLayingOrder(list);
       const geometry = shapeFactory(context), life = new Float32Array(list.length * 2), seed = new Float32Array(list.length), lean = new Float32Array(list.length), proof = new Float32Array(list.length), shelter = new Float32Array(list.length);
-      geometry.setAttribute('uv1', geometry.attributes.uv);
       const mesh = new T.InstancedMesh(geometry, material(kind), list.length);
       list.forEach((piece, i) => {
         mesh.setMatrixAt(i, piece.matrix); mesh.setColorAt(i, piece.color);
-        life[i * 2] = piece.birth; life[i * 2 + 1] = piece.until === undefined ? 1e6 : death(piece.until); seed[i] = k.rand() * 100; lean[i] = piece.lean ?? 0; shelter[i] = piece.shelter ?? 0;
-        piece.death = life[i * 2 + 1]; proof[i] = provenanceOf(data.elements[piece.element]);
+        life[i * 2] = piece.birth; life[i * 2 + 1] = piece.death; seed[i] = seeds.get(piece); lean[i] = piece.lean ?? 0; shelter[i] = piece.shelter ?? 0;
+        proof[i] = provenanceOf(data.elements[piece.element]);
       });
       geometry.setAttribute('aProof', new T.InstancedBufferAttribute(proof, 1));
-      mesh.userData.pieces = list;
+      mesh.userData.pieces = list; mesh.userData.births = Float32Array.from(list, piece => piece.birth);
       geometry.setAttribute('aLife', new T.InstancedBufferAttribute(life, 2));
       geometry.setAttribute('aSeed', new T.InstancedBufferAttribute(seed, 1));
       geometry.setAttribute('aLean', new T.InstancedBufferAttribute(lean, 1));
@@ -2703,6 +2715,7 @@ export function createStage(host) {
     // Patches of real surface (kit/masonry.js): one mesh per material, every piece's triangles baked into the scene
     // and carrying its own birth, death and centre, so that it grows like a block does.
     for (const [kind, list] of patches) {
+      inLayingOrder(list);
       let vertices = 0, indices = 0;
       for (const piece of list) { vertices += piece.mesh.position.length / 3; indices += piece.mesh.index.length; }
       // What a vertex carries, in as few bytes as it can: normals in 16 bits, colours and flags in 8.
@@ -2712,8 +2725,8 @@ export function createStage(host) {
       const index = new Uint32Array(indices), starts = new Int32Array(list.length + 1), nm = new T.Matrix3(), v = new T.Vector3(), c = new T.Vector3();
       let vo = 0, io = 0;
       list.forEach((piece, n) => {
-        const {mesh} = piece, count = mesh.position.length / 3, died = piece.until === undefined ? 1e6 : death(piece.until), sd = k.rand() * 100, pv = provenanceOf(data.elements[piece.element]);
-        piece.death = died; starts[n] = io / 3;
+        const {mesh} = piece, count = mesh.position.length / 3, died = piece.death, sd = seeds.get(piece), pv = provenanceOf(data.elements[piece.element]);
+        starts[n] = io / 3;
         nm.getNormalMatrix(piece.matrix); c.setFromMatrixPosition(piece.matrix);
         for (let i = 0; i < count; i++) {
           const o = vo + i;
@@ -2733,7 +2746,7 @@ export function createStage(host) {
       for (const [name, array, size, normalized] of [['position', position, 3], ['normal', normal, 3, true], ['color', color, 3, true], ['aMason', mason, 3], ['aCenter', center, 3], ['aLife', life, 2], ['aSeed', seed, 1], ['aLean', lean, 1], ['aProof', proof, 1], ['aShelter', shelter, 1, true]]) geometry.setAttribute(name, new T.BufferAttribute(array, size, Boolean(normalized)));
       geometry.setIndex(new T.BufferAttribute(index, 1));
       const mesh = new T.Mesh(geometry, material(kind, true));
-      mesh.userData.pieces = list; mesh.userData.starts = starts;
+      mesh.userData.pieces = list; mesh.userData.starts = starts; mesh.userData.births = Float32Array.from(list, piece => piece.birth);
       mesh.frustumCulled = false;
       mesh.castShadow = mesh.receiveShadow = Boolean(visual.quality.shadows);
       mesh.customDepthMaterial = shadowMaterial();
@@ -2900,6 +2913,15 @@ export function createStage(host) {
     get ready() { return reliefsPending === 0 && charactersPending === 0; },
     setTime(t) {
       uniforms.uTime.value = t;
+      // Only the pieces laid by t are drawn, as the shader counts them: uTime and the births are 32-bit floats.
+      const now = Math.fround(t);
+      for (const mesh of meshes) {
+        const births = mesh.userData.births;
+        if (!births) continue;
+        let laid = 0, hi = births.length;
+        while (laid < hi) { const mid = (laid + hi) >> 1; if (births[mid] <= now) laid = mid + 1; else hi = mid; }
+        if (mesh.isInstancedMesh) mesh.count = laid; else mesh.geometry.setDrawRange(0, mesh.userData.starts[laid] * 3);
+      }
       if (leaning) uniforms.uLeanAngle.value = lerp(leaning.track, t) * Math.PI / 180;
       const phase = monument.phases[Math.min(total - 1, Math.floor(t))];
       const night = phase?.mood === 'night' ? Math.min(1, (t - Math.floor(t)) * 3 + (t >= total ? 1 : 0)) : 0;
