@@ -40,31 +40,47 @@ A monument with `"masonry": "mesh"` (Coutances, Notre-Dame) is no longer instanc
 ## What the GPU draws
 
 The table above counts the vertices of the distinct meshes. The GPU pays for something else: every instance runs
-the vertex shader on every vertex of its mesh, once per pass — the colour pass, and at `standard` and `cinematic`
-the sun's shadow map and the occlusion's normal pass too. Two things made that larger than it had to be, and both
-were fixed without changing the image:
+the vertex shader on every vertex of its mesh, in every pass that draws the monument, and every pass costs its
+pixels. What was larger than it had to be, and what was done:
 
-- three.js builds `RoundedBoxGeometry` as a soup, three vertices per triangle: the chamfered box every block shares
-  was **324 vertices** for its 108 triangles. Welded (`SHAPES.box`), it is **56**, with the same triangles and the
-  same normals.
-- A piece not laid yet is folded to a point by the shader, but its vertices were shaded in every pass all the same.
-  Each mesh now holds its pieces in the order they are laid, and `setTime` draws only those laid by then.
+- **The block.** three.js builds `RoundedBoxGeometry` as a soup, three vertices per triangle: the box every block
+  shares was 324 vertices for 108 triangles. `SHAPES.box` is now a chamfered cube cut with the vertices a cube has,
+  **24 for 44 triangles**: each vertex keeps its face's normal, so a chamfer's light still turns from one face to the
+  other as it did on the rounded arris. Close up, the two cannot be told apart.
+- **Pieces still to come.** A piece not laid yet is folded to a point by the shader, but its vertices were shaded
+  all the same. Each mesh holds its pieces in the order they are laid, and `setTime` draws only those laid by then.
+- **A third drawing of the monument.** The ambient occlusion drew the whole scene again to get its normals. It now
+  reads the depth the colour pass leaves (`depthTexture` on the composer's target) and finds the normals in it, at
+  half resolution, and only round the monument (`setSceneClipBox`, so that the paper floor far off does not grey
+  itself). The occlusion of arcades, portals and galleries is as it was; the finest dark joints between blocks at a
+  distance are softer.
+- **Pixels nobody asked for.** The composer kept the pixel ratio it was made with, so `visualStyle.quality` never
+  lowered it; it now follows the quality. The canvas no longer multisamples the one quad it receives.
+- **Frames that change nothing.** The viewer draws only when the picture would differ from the one on screen (the
+  camera, the size, the time, a setting, a worksite or a night's sparkle moving, something arriving): an idle viewer
+  costs the GPU nothing.
 
-Vertex shader invocations per pass, at each monument's own quality:
+Vertex shader invocations per pass, at each monument's own quality; there are two such passes now (colour and
+shadow) where there were three:
 
 | | before | finished | averaged over the film |
 |---|---|---|---|
-| Colosseum | 15.3 M | 3.5 M (4.4×) | 3.2 M (4.8×) |
-| Kinkaku-ji | 8.9 M | 1.5 M (5.7×) | 1.0 M (9.2×) |
-| Parthenon | 8.0 M | 2.5 M (3.1×) | 1.9 M (4.2×) |
-| Osaka Castle | 5.9 M | 1.0 M (5.7×) | 0.4 M (13.6×) |
-| Notre-Dame de Paris | 5.0 M | 2.5 M (2.0×) | 1.8 M (2.7×) |
-| Cathédrale de Coutances | 3.1 M | 2.3 M (1.3×) | 1.7 M (1.8×) |
+| Colosseum | 15.3 M | 2.1 M (7.3×) | 1.9 M (7.9×) |
+| Kinkaku-ji | 8.9 M | 0.7 M (13×) | 0.4 M (21×) |
+| Parthenon | 8.0 M | 1.9 M (4.2×) | 1.4 M (5.7×) |
+| Osaka Castle | 5.9 M | 0.4 M (13×) | 0.2 M (32×) |
+| Notre-Dame de Paris | 5.0 M | 2.2 M (2.3×) | 1.7 M (3.0×) |
+| Cathédrale de Coutances | 3.1 M | 2.2 M (1.4×) | 1.6 M (1.9×) |
 
-The triangles are unchanged (the Colosseum is still 6.4 million a pass). A level of detail by distance, a plain
-box for blocks a few pixels wide, would now save at most 56 − 24 vertices a box: it waits until a profile on a real
-GPU says the vertex stage still limits the frame rather than the pixels (4× multisampling, triplanar maps,
-occlusion).
+Time for one frame of the finished monument in the development container's software renderer (SwiftShader, 4
+cores, 1440 × 900 pixels; not a GPU, so read the ratios): the Eiffel Tower went from 3.3 s to 1.7 s and the
+Colosseum from 28.5 s to 16.8 s, the occlusion from 1.2 s to 0.5 s and from 3.1 s to 0.5 s. What remains is mostly
+the colour pass itself: 4× multisampling, triplanar maps and the shading of the pieces hidden behind others.
+
+Not done, and why: a level of detail by distance for the blocks would now save triangles only (a plain box has 24
+vertices too); a depth pre-pass would stop the hidden pieces being shaded but draws the monument once more; frustum
+culling needs the instances split by region, which multiplies the draw calls; a lower resolution while the camera
+moves would also lower it in the film and its recordings. Each waits for a profile on a real GPU.
 
 ## The gate
 

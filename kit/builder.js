@@ -1,6 +1,5 @@
 import * as T from 'three';
 import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
-import {RoundedBoxGeometry} from 'three/addons/geometries/RoundedBoxGeometry.js';
 import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
 import {RenderPass} from 'three/addons/postprocessing/RenderPass.js';
 import {UnrealBloomPass} from 'three/addons/postprocessing/UnrealBloomPass.js';
@@ -8,7 +7,6 @@ import {OutputPass} from 'three/addons/postprocessing/OutputPass.js';
 import {GTAOPass} from 'three/addons/postprocessing/GTAOPass.js';
 import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
 import {clone as cloneSkinned} from 'three/addons/utils/SkeletonUtils.js';
-import {mergeVertices} from 'three/addons/utils/BufferGeometryUtils.js';
 import {resolveVisualStyle, pbrOptions} from './visuals.js';
 import {adaptive, adaptiveContext, profiledGeometry, segmentsForChordError} from './geometry.js';
 import {masonry} from './masonry.js';
@@ -243,17 +241,47 @@ function kit(rand) {
     },
   };
 }
+// The block: a unit cube with its arrises cut at 45°, each face set back r from them. Each corner of the cube stands for three vertices,
+// one at the corner of the flat part of each face it touches, with that face's normal; a chamfer runs between the
+// vertices of two faces and its light turns from one face's to the other's, as on a rounded arris. 24 vertices
+// and 44 triangles, wound outwards.
+function chamferedBox(r) {
+  const inner = .5 - r, signs = [-1, 1], position = [], normal = [], index = [], id = new Map();
+  const corners = signs.flatMap(x => signs.flatMap(y => signs.map(z => [x, y, z])));
+  for (const s of corners) for (let axis = 0; axis < 3; axis++) {
+    id.set(`${s}|${axis}`, position.length / 3);
+    position.push(...s.map((sign, i) => sign * (i === axis ? .5 : inner))); normal.push(...s.map((sign, i) => i === axis ? sign : 0));
+  }
+  const vertex = (signed, face) => { const s = [0, 0, 0]; for (const [i, sign] of signed) s[i] = sign; return id.get(`${s}|${face}`); };
+  const at = i => position.slice(i * 3, i * 3 + 3);
+  const fan = ring => { for (let i = 1; i < ring.length - 1; i++) {
+    const [a, b, c] = [ring[0], ring[i], ring[i + 1]].map(at), u = b.map((x, n) => x - a[n]), v = c.map((x, n) => x - a[n]);
+    const out = (u[1] * v[2] - u[2] * v[1]) * (a[0] + b[0] + c[0]) + (u[2] * v[0] - u[0] * v[2]) * (a[1] + b[1] + c[1]) + (u[0] * v[1] - u[1] * v[0]) * (a[2] + b[2] + c[2]);
+    index.push(ring[0], ...(out > 0 ? [ring[i], ring[i + 1]] : [ring[i + 1], ring[i]]));
+  } };
+  for (let axis = 0; axis < 3; axis++) {
+    const a = (axis + 1) % 3, b = (axis + 2) % 3;
+    // The flat part of the two faces across this axis, then the chamfers along the four arrises parallel to it.
+    for (const side of signs) fan([[-1, -1], [-1, 1], [1, 1], [1, -1]].map(([u, v]) => vertex([[axis, side], [a, u], [b, v]], axis)));
+    for (const sa of signs) for (const sb of signs) fan([[-1, a], [1, a], [1, b], [-1, b]].map(([end, face]) => vertex([[axis, end], [a, sa], [b, sb]], face)));
+  }
+  for (const s of corners) fan([0, 1, 2].map(axis => id.get(`${s}|${axis}`)));
+  const geometry = new T.BufferGeometry();
+  geometry.setAttribute('position', new T.Float32BufferAttribute(position, 3));
+  geometry.setAttribute('normal', new T.Float32BufferAttribute(normal, 3));
+  geometry.setIndex(index);
+  return geometry;
+}
 // Turned pieces: one geometry per shape, in the box's unit cube (diameter 1, height 1, centred).
 const flat = geometry => { const g = geometry.toNonIndexed(); g.computeVertexNormals(); return g; };
 export const SHAPES = {
   // A block with its arrises taken off. On a plain cube an arris is a jump of normals and it dies as a hard
   // black line: the stone reads as untextured plastic, and a monument of such blocks reads as unbuilt. The
   // chamfer gives that line something to catch the light on, and every piece of every monument gets it,
-  // because they all share this one geometry — still one draw call, 108 triangles instead of 12. Three.js builds
-  // that box as a soup of 324 vertices, three per triangle, and every block of every pass (colour, shadow,
-  // occlusion) runs the vertex shader on each one; welded, it is 56 vertices with the same triangles and the same
-  // normals. Its texture coordinates go first: no piece material reads them, and they would keep the faces apart.
-  box: () => { const box = new RoundedBoxGeometry(1, 1, 1, 1, .018); box.deleteAttribute('uv'); return mergeVertices(box); },
+  // because they all share this one geometry — still one draw call. Every block of every pass (colour and shadow)
+  // runs the vertex shader on each of its vertices, so the chamfer is cut with as few as a cube has: 24, where
+  // three.js's rounded box, which cannot be told from it in the viewer, was a soup of 324.
+  box: () => chamferedBox(.018),
   drum: adaptive(context => new T.CylinderGeometry(.5, .5, 1, context.radialSegments), {multiple: 2}),
   shaft: adaptive(context => profiledGeometry({...context, profile: [[0, 1], [.25, 1], [.55, .97], [1, .88]]}), {multiple: 2}),
   profiledShaft: adaptive(context => profiledGeometry(context), {multiple: 2}),
@@ -1971,7 +1999,9 @@ export function buildPieces(data) {
 }
 
 export function createStage(host) {
-  const renderer = new T.WebGLRenderer({antialias: true, powerPreference: 'high-performance'});
+  // No multisampling on the canvas: the scene is drawn into the composer's multisampled target, and the canvas
+  // only receives the finished image, one quad that has no edge to smooth.
+  const renderer = new T.WebGLRenderer({antialias: false, powerPreference: 'high-performance'});
   renderer.setPixelRatio(PIXEL_RATIO);
   renderer.toneMapping = T.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1.05;
@@ -1983,22 +2013,25 @@ export function createStage(host) {
   // Until the user moves the camera, every resize reframes the monument.
   let moved = false;
   controls.addEventListener('start', () => { moved = true; });
-  const composer = new EffectComposer(renderer, new T.WebGLRenderTarget(1, 1, {type: T.HalfFloatType, samples: 4}));
+  // The colour pass keeps its depth in a texture, for the ambient occlusion to read.
+  const composer = new EffectComposer(renderer, new T.WebGLRenderTarget(1, 1, {type: T.HalfFloatType, samples: 4, depthTexture: new T.DepthTexture(1, 1)}));
   const renderPass = new RenderPass(scene, camera);
   composer.addPass(renderPass);
-  // Ambient occlusion: deep arcades, galleries and portals darken as they do in daylight. Its normal pass
-  // shares the pieces' growth shader, so a piece casts no occlusion before it is laid.
+  // Ambient occlusion: deep arcades, galleries and portals darken as they do in daylight. It reads the depth the
+  // colour pass leaves and finds the normals in it, so it sees exactly what is drawn (a piece not laid yet casts
+  // no occlusion) without drawing the monument a second time, and it is worked out at half the resolution,
+  // which an occlusion reaching metres does not show.
   const ao = new GTAOPass(scene, camera, 1, 1);
   ao.enabled = false;
-  ao.normalMaterial.customProgramCacheKey = () => 'piece:ao-normal';
-  ao.normalMaterial.onBeforeCompile = shader => { Object.assign(shader.uniforms, uniforms); growVertex(shader, null); };
+  ao.setGBuffer(composer.renderTarget1.depthTexture);
+  const aoSize = ao.setSize.bind(ao);
+  ao.setSize = (width, height) => aoSize(Math.max(1, Math.round(width / 2)), Math.max(1, Math.round(height / 2)));
   // Section: a vertical plane through the view's target, facing the camera, takes away the half of the
   // monument on the camera's side, so its inside shows (vaults, roof frames, furnishings). Every material
   // of the monument and its worksites shares the plane list.
   const sectionPlanes = [], sectionPlane = new T.Plane();
   let sectioning = false;
   renderer.localClippingEnabled = true;
-  ao.normalMaterial.clippingPlanes = sectionPlanes;
   composer.addPass(ao);
   const bloom = new UnrealBloomPass(new T.Vector2(1, 1), .55, .5, .82);
   composer.addPass(bloom);
@@ -2647,7 +2680,9 @@ export function createStage(host) {
     monument = data; moved = false; turnY = (data.rotate ?? 0) * Math.PI / 180;
     scanSpec = data.scan?.file && data.scan.matrix?.length === 16 ? {url: new URL(data.scan.file, base).href, matrix: data.scan.matrix} : null;
     visual = resolveVisualStyle(data.visualStyle ?? {quality: 'basic'});
-    renderer.setPixelRatio(Math.min(PIXEL_RATIO, visual.quality.pixelRatio));
+    // The composer, which does all the drawing, keeps the ratio it was made with unless it is given the new one.
+    const ratio = Math.min(PIXEL_RATIO, visual.quality.pixelRatio);
+    renderer.setPixelRatio(ratio); composer.setPixelRatio(ratio);
     renderer.shadowMap.enabled = Boolean(visual.quality.shadows); renderer.shadowMap.needsUpdate = true;
     ao.enabled = Boolean(visual.quality.ao);
     if (ao.enabled) {
@@ -2796,6 +2831,11 @@ export function createStage(host) {
     if (visual.quality.shadows) {
       const shadow = sun.shadow.camera; shadow.left = shadow.bottom = -radius * 1.45; shadow.right = shadow.top = radius * 1.45; shadow.near = 1; shadow.far = radius * 5; shadow.updateProjectionMatrix(); sun.shadow.bias = -.00015;
     }
+    // The occlusion is worked out round the monument only: read from the depth, the paper floor seen edge-on far off
+    // would otherwise grey itself. The margin keeps a leaning tower's top inside.
+    const extent = new T.Box3();
+    for (const mesh of meshes) if (mesh.userData.pieces) extent.expandByObject(mesh);
+    ao.setSceneClipBox(extent.isEmpty() ? null : extent.expandByScalar(extent.getSize(new T.Vector3()).length() * .1));
     // Gold leaf mirrors the studio.
     for (const mesh of meshes) if (mesh.material?.userData?.gilt) { mesh.material.envMap = studioEnvironment(); mesh.material.needsUpdate = true; }
     studioFloor.scale.setScalar(radius * 30);
@@ -2805,6 +2845,7 @@ export function createStage(host) {
       controls.target.set(...data.view.start.target);
       camera.position.copy(controls.target).addScaledVector(dir, data.view.start.distance);
     }
+    invalidate();
     return {pieces: k.pieces.length};
   }
 
@@ -2847,6 +2888,26 @@ export function createStage(host) {
   };
   new ResizeObserver(resize).observe(host);
   resize();
+
+  // A picture is drawn only when it would differ from the one on screen: when the camera, the size, the time or
+  // a setting changes, while a worksite or a night's sparkle moves on its own, and when something arrives that
+  // the scene was waiting for (a photo relief, a figure, a texture). An idle viewer costs the GPU nothing.
+  let version = 0, shown = [];
+  const invalidate = () => { version++; };
+  const arrived = T.DefaultLoadingManager.onProgress;
+  T.DefaultLoadingManager.onProgress = (...args) => { invalidate(); arrived?.(...args); };
+  renderer.domElement.addEventListener('webglcontextrestored', invalidate);
+  function unchanged() {
+    // Something moving on its own is drawn every frame, and the first still frame after it is drawn too.
+    if (capturing || uniforms.uSparkle.value > 0 || siteGroups.some(site => site.group.visible)) { shown = []; return false; }
+    const now = [version, reliefsPending, charactersPending, renderer.domElement.width, renderer.domElement.height, uniforms.uTime.value, uniforms.uProof.value,
+      sectioning, outlineGroup ? outlineGroup.visible : -1, ...camera.position.toArray(), ...camera.quaternion.toArray(), ...controls.target.toArray(), ...camera.projectionMatrix.elements];
+    // Measured against the picture last drawn, so that a camera easing into place by less than a millionth (a
+    // thousandth of a pixel) a frame is still, without ever drifting further than that from what is shown.
+    if (now.length === shown.length && now.every((value, i) => Math.abs(value - shown[i]) <= 1e-6 * Math.max(1, Math.abs(value)))) return true;
+    shown = now;
+    return false;
+  }
 
   const at = (track, t) => { let lo = 0, hi = track.length - 1, best = 0; while (lo <= hi) { const mid = (lo + hi) >> 1; if (track[mid][0] <= t) { best = track[mid][1]; lo = mid + 1; } else hi = mid - 1; } return best; };
 
@@ -2974,7 +3035,7 @@ export function createStage(host) {
       if (outlineGroup) { scene.remove(outlineGroup); outlineGroup.traverse(o => { o.geometry?.dispose(); o.material?.dispose(); }); outlineGroup = null; }
       if (!shapes) return;
       outlineGroup = new T.Group();
-      const material = new T.LineBasicMaterial({color: '#f1b867', transparent: true, opacity: .95, depthTest: false});
+      const material = new T.LineBasicMaterial({color: '#f1b867', transparent: true, opacity: .95, depthTest: false, depthWrite: false});
       for (const [points, closed] of shapes) {
         const geometry = new T.BufferGeometry().setFromPoints(points.map(([x, z]) => new T.Vector3(x, .25, z)));
         outlineGroup.add(closed ? new T.LineLoop(geometry, material) : new T.Line(geometry, material));
@@ -3012,6 +3073,7 @@ export function createStage(host) {
     render(clock) {
       if (lastClock === undefined) lastClock = clock;
       uniforms.uClock.value = clock;
+      controls.update();
       if (sectioning) {
         const n = controls.target.clone().sub(camera.position).setY(0);
         if (n.lengthSq() > 1e-6) sectionPlane.setFromNormalAndCoplanarPoint(n.normalize(), controls.target);
@@ -3050,7 +3112,10 @@ export function createStage(host) {
         });
         position.needsUpdate = true;
       }
-      controls.update(); composer.render();
+      if (unchanged()) return;
+      // The depth the colour pass is about to draw into: whichever of the composer's two targets is first.
+      ao.gtaoMaterial.uniforms.tDepth.value = ao.pdMaterial.uniforms.tDepth.value = composer.readBuffer.depthTexture;
+      composer.render();
     },
     onInteract(callback) { controls.addEventListener('start', callback); },
   };

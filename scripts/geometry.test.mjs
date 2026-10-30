@@ -74,23 +74,26 @@ test('drums cut from one curve agree at the joint they share', () => {
 });
 
 
-// Every block of every monument is this one box, drawn in the colour, shadow and occlusion passes: three.js makes its
-// rounded box a soup of three vertices per triangle, and the kit welds it. Welded, every corner must still lie on the
-// rounded box with the normal of the rounding there, and every face must still look out.
-test('the chamfered box is welded: 108 triangles on 56 vertices, on the rounded box', () => {
-  const box = engine.SHAPES.box(), {position, normal} = box.attributes, index = box.index, radius = .018, inner = .5 - radius;
+// Every block of every monument is this one box, drawn in the colour and shadow passes, so it is cut with as few
+// vertices as a cube has. Each must lie at a corner of its face's flat part, with that face's normal, and the box
+// must be closed and wound outwards.
+test('the chamfered box: 44 triangles on 24 vertices, closed and facing out', () => {
+  const box = engine.SHAPES.box(), {position, normal} = box.attributes, index = box.index, inner = .5 - .018;
   assert.ok(index, 'the box must be indexed');
-  assert.equal(position.count, 56);
-  assert.equal(index.count / 3, 108);
+  assert.equal(position.count, 24);
+  assert.equal(index.count / 3, 44);
   const at = (attribute, i) => [attribute.getX(i), attribute.getY(i), attribute.getZ(i)];
   for (let i = 0; i < position.count; i++) {
-    const p = at(position, i), d = p.map(x => x - Math.max(-inner, Math.min(inner, x))), length = Math.hypot(...d);
-    assert.ok(Math.abs(length - radius) < 1e-6, `vertex ${i} is ${length} from the inner box`);
-    at(normal, i).forEach((n, axis) => assert.ok(Math.abs(n - d[axis] / length) < 1e-6, `vertex ${i} has the wrong normal`));
+    const p = at(position, i), n = at(normal, i), axis = n.findIndex(x => x !== 0);
+    assert.equal(n.filter(x => x !== 0).length, 1, `vertex ${i} must carry its face's normal`);
+    p.forEach((x, k) => assert.ok(Math.abs(Math.abs(x) - (k === axis ? .5 : inner)) < 1e-6 && Math.sign(x) === Math.sign(k === axis ? n[k] : x), `vertex ${i} is off its face`));
   }
+  const edges = new Map();
   for (let i = 0; i < index.count; i += 3) {
-    const [a, b, c] = [0, 1, 2].map(k => at(position, index.getX(i + k))), u = b.map((x, n) => x - a[n]), v = c.map((x, n) => x - a[n]);
-    const face = [u[1] * v[2] - u[2] * v[1], u[2] * v[0] - u[0] * v[2], u[0] * v[1] - u[1] * v[0]];
-    assert.ok(face.reduce((sum, x, n) => sum + x * (a[n] + b[n] + c[n]), 0) > 0, `triangle ${i / 3} faces inwards`);
+    const [a, b, c] = [0, 1, 2].map(k => index.getX(i + k)), [pa, pb, pc] = [a, b, c].map(j => at(position, j));
+    const u = pb.map((x, n) => x - pa[n]), v = pc.map((x, n) => x - pa[n]), face = [u[1] * v[2] - u[2] * v[1], u[2] * v[0] - u[0] * v[2], u[0] * v[1] - u[1] * v[0]];
+    assert.ok(face.reduce((sum, x, n) => sum + x * (pa[n] + pb[n] + pc[n]), 0) > 0, `triangle ${i / 3} faces inwards`);
+    for (const [from, to] of [[a, b], [b, c], [c, a]]) edges.set(`${from},${to}`, (edges.get(`${from},${to}`) ?? 0) + 1);
   }
+  for (const [edge, count] of edges) assert.ok(count === 1 && edges.get(edge.split(',').reverse().join(',')) === 1, `edge ${edge} is not shared by exactly two triangles`);
 });
