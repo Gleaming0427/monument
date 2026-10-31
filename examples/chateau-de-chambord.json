@@ -53,7 +53,7 @@
    "label": "works ordered"
   }
  ],
- "modelNote": "Measured: the plan, from the mapped outline (towers 20 m across, 44.8 m between the keep's tower axes). Read on photographs: heights, roofs, windows. Simplified: carved ornament, dormers and chimney stacks, the lantern tower's crown, the halls' vaults.",
+ "modelNote": "Measured: the plan, from the mapped outline (towers 20 m across, 44.8 m between the keep's tower axes). Read on photographs: heights, roofs, windows. Simplified: carved ornament, dormers, where each chimney stack stands, the lantern tower's crown, the halls' vaults.",
  "evidence": {
   "size": "building",
   "identity": "Château de Chambord, Chambord, Loir-et-Cher, Centre-Val de Loire, France (OSM way 240990589; Wikidata Q205367)",
@@ -414,7 +414,7 @@
    "A plan in a Greek cross: four halls 9 m wide and 18 m long meeting at the central stair, with an apartment in each angle: simplified; the four halls are left as an open cross between the cantons' floors, without their coffered vaults, which the Domaine's own pages describe.",
    "A double-revolution staircase of two helical ramps round an open core, rising to the terraces: simplified; the radius of the stair, its number of treads and the openings of its core are interpreted, no measured survey having been read.",
    "The lantern tower over the stair, the highest point of the château at 56 m, crowned by a fleur-de-lis: simplified; the lantern tower is modelled as stacked drums, with none of the crown of arches, ribs and carved ornament of the real one.",
-   "Terraces, dormers, chimney stacks and turrets over the keep, a roofscape like a village in the sky: simplified; the dormers and chimney stacks are standard shapes at plausible places, and their counts, pediments and carved ornament were not matched one by one with the photographs.",
+   "Terraces, dormers, chimney stacks and turrets over the keep, a roofscape like a village in the sky: simplified; the chimney stacks are drawn in the two kinds the roof photographs show (a lattice of slate lozenges under a gabled crown, or great slate discs on moulded plates under an attic of pinnacles round a slate spire, both with a frieze of slate dots), but their places, heights and which kind stands where were not matched one by one with the photographs; the dormers are standard shapes at plausible places, without their carved ornament.",
    "The royal oratory, built outside the original block and dated 1540, which breaks the symmetry of the great façade: simplified; the oratory is a plain block of the plan's size, without its carved decoration.",
    "The windows are rectangular windows with a cross of mullion and transom throughout; the round-headed bays of the loggias and the arches of the wings' ground floor are not modelled.",
    "The front of the keep stands about 2 m lower, against the photographs, on its north-west side than the court: the model has one ground level, the one of the court.",
@@ -495,7 +495,7 @@
      "reference": 4,
      "element": 8,
      "method": "geometry",
-     "model": "Four hipped pavilions over the cantons with dormers and chimney stacks, a ring of dormers and stacks round each tower's cone, a paved terrace over the crossing",
+     "model": "Four hipped pavilions over the cantons with dormers and chimney stacks, a ring of dormers and stacks round each tower's cone, a paved terrace over the crossing; the stacks in the two kinds of the roof photographs, slate lozenges under a gable or slate discs under pinnacles",
      "checked": true,
      "result": "named simplification"
     },
@@ -1013,19 +1013,25 @@
       "a": 295,
       "r": 6,
       "base": 6,
-      "h": 7
+      "h": 7,
+      "kind": "lozenges",
+      "crown": "gable"
      },
      {
       "a": 155,
       "r": 6,
       "base": 6,
-      "h": 7
+      "h": 7,
+      "kind": "discs",
+      "crown": "pinnacles"
      },
      {
       "a": 405,
       "r": 5.2,
       "base": 5,
-      "h": 6
+      "h": 6,
+      "kind": "lozenges",
+      "crown": "gable"
      }
     ]
    },
@@ -1140,19 +1146,25 @@
       "a": 205,
       "r": 6,
       "base": 6,
-      "h": 7
+      "h": 7,
+      "kind": "lozenges",
+      "crown": "gable"
      },
      {
       "a": 65,
       "r": 6,
       "base": 6,
-      "h": 7
+      "h": 7,
+      "kind": "discs",
+      "crown": "pinnacles"
      },
      {
       "a": 315,
       "r": 5.2,
       "base": 5,
-      "h": 6
+      "h": 6,
+      "kind": "lozenges",
+      "crown": "gable"
      }
     ]
    },
@@ -1269,19 +1281,25 @@
       "a": 115,
       "r": 6,
       "base": 6,
-      "h": 7
+      "h": 7,
+      "kind": "lozenges",
+      "crown": "gable"
      },
      {
       "a": -25,
       "r": 6,
       "base": 6,
-      "h": 7
+      "h": 7,
+      "kind": "discs",
+      "crown": "pinnacles"
      },
      {
       "a": 225,
       "r": 5.2,
       "base": 5,
-      "h": 6
+      "h": 6,
+      "kind": "lozenges",
+      "crown": "gable"
      }
     ]
    },
@@ -1398,19 +1416,25 @@
       "a": 385,
       "r": 6,
       "base": 6,
-      "h": 7
+      "h": 7,
+      "kind": "lozenges",
+      "crown": "gable"
      },
      {
       "a": 245,
       "r": 6,
       "base": 6,
-      "h": 7
+      "h": 7,
+      "kind": "discs",
+      "crown": "pinnacles"
      },
      {
       "a": 495,
       "r": 5.2,
       "base": 5,
-      "h": 6
+      "h": 6,
+      "kind": "lozenges",
+      "crown": "gable"
      }
     ]
    },
@@ -1721,7 +1745,9 @@
       "w": 1.7,
       "d": 1.3,
       "h": 7.5,
-      "y": 30.972067039106143
+      "y": 30.972067039106143,
+      "kind": "lozenges",
+      "crown": "gable"
      },
      {
       "at": [
@@ -1731,7 +1757,9 @@
       "w": 1.7,
       "d": 1.3,
       "h": 7.5,
-      "y": 30.972067039106143
+      "y": 30.972067039106143,
+      "kind": "discs",
+      "crown": "pinnacles"
      },
      {
       "at": [
@@ -1741,7 +1769,9 @@
       "w": 1.7,
       "d": 1.3,
       "h": 7.5,
-      "y": 30.972067039106143
+      "y": 30.972067039106143,
+      "kind": "lozenges",
+      "crown": "gable"
      },
      {
       "at": [
@@ -1751,7 +1781,9 @@
       "w": 1.7,
       "d": 1.3,
       "h": 7.5,
-      "y": 30.972067039106143
+      "y": 30.972067039106143,
+      "kind": "discs",
+      "crown": "pinnacles"
      }
     ]
    }
@@ -1821,7 +1853,9 @@
       "w": 1.7,
       "d": 1.3,
       "h": 7.5,
-      "y": 30.972067039106143
+      "y": 30.972067039106143,
+      "kind": "lozenges",
+      "crown": "gable"
      },
      {
       "at": [
@@ -1831,7 +1865,9 @@
       "w": 1.7,
       "d": 1.3,
       "h": 7.5,
-      "y": 30.972067039106143
+      "y": 30.972067039106143,
+      "kind": "discs",
+      "crown": "pinnacles"
      },
      {
       "at": [
@@ -1841,7 +1877,9 @@
       "w": 1.7,
       "d": 1.3,
       "h": 7.5,
-      "y": 30.972067039106143
+      "y": 30.972067039106143,
+      "kind": "lozenges",
+      "crown": "gable"
      },
      {
       "at": [
@@ -1851,7 +1889,9 @@
       "w": 1.7,
       "d": 1.3,
       "h": 7.5,
-      "y": 30.972067039106143
+      "y": 30.972067039106143,
+      "kind": "discs",
+      "crown": "pinnacles"
      }
     ]
    }
@@ -1921,7 +1961,9 @@
       "w": 1.7,
       "d": 1.3,
       "h": 7.5,
-      "y": 30.972067039106143
+      "y": 30.972067039106143,
+      "kind": "lozenges",
+      "crown": "gable"
      },
      {
       "at": [
@@ -1931,7 +1973,9 @@
       "w": 1.7,
       "d": 1.3,
       "h": 7.5,
-      "y": 30.972067039106143
+      "y": 30.972067039106143,
+      "kind": "discs",
+      "crown": "pinnacles"
      },
      {
       "at": [
@@ -1941,7 +1985,9 @@
       "w": 1.7,
       "d": 1.3,
       "h": 7.5,
-      "y": 30.972067039106143
+      "y": 30.972067039106143,
+      "kind": "lozenges",
+      "crown": "gable"
      },
      {
       "at": [
@@ -1951,7 +1997,9 @@
       "w": 1.7,
       "d": 1.3,
       "h": 7.5,
-      "y": 30.972067039106143
+      "y": 30.972067039106143,
+      "kind": "discs",
+      "crown": "pinnacles"
      }
     ]
    }
@@ -2023,7 +2071,9 @@
       "w": 1.7,
       "d": 1.3,
       "h": 7.5,
-      "y": 30.972067039106143
+      "y": 30.972067039106143,
+      "kind": "lozenges",
+      "crown": "gable"
      },
      {
       "at": [
@@ -2033,7 +2083,9 @@
       "w": 1.7,
       "d": 1.3,
       "h": 7.5,
-      "y": 30.972067039106143
+      "y": 30.972067039106143,
+      "kind": "discs",
+      "crown": "pinnacles"
      },
      {
       "at": [
@@ -2043,7 +2095,9 @@
       "w": 1.7,
       "d": 1.3,
       "h": 7.5,
-      "y": 30.972067039106143
+      "y": 30.972067039106143,
+      "kind": "lozenges",
+      "crown": "gable"
      },
      {
       "at": [
@@ -2053,7 +2107,9 @@
       "w": 1.7,
       "d": 1.3,
       "h": 7.5,
-      "y": 30.972067039106143
+      "y": 30.972067039106143,
+      "kind": "discs",
+      "crown": "pinnacles"
      }
     ]
    }

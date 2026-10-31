@@ -3,7 +3,7 @@
   "name": "Château de Chambord",
   "place": "Chambord · Loir-et-Cher · France",
   "blurb": "Ordonné par François Ier en 1519, ses ailes et son enceinte couvertes sous Louis XIV, dépouillé de ses mansardes après 1930, ses toits sud brûlés en 1945 et ses six lanternons restaurés en 2021–2023 : le donjon et ses toitures sur le contour cartographié.",
-  "modelNote": "Mesuré : le plan, d’après le contour cartographié (tours de 20 m de large, 44,8 m entre les axes des tours du donjon). Relevé sur photographies : hauteurs, toits, fenêtres. Simplifié : décor sculpté, lucarnes et souches de cheminée, couronnement de la tour-lanterne, voûtes des salles.",
+  "modelNote": "Mesuré : le plan, d’après le contour cartographié (tours de 20 m de large, 44,8 m entre les axes des tours du donjon). Relevé sur photographies : hauteurs, toits, fenêtres. Simplifié : décor sculpté, lucarnes, emplacement de chaque souche de cheminée, couronnement de la tour-lanterne, voûtes des salles.",
   "live": [
     {
       "label": "Hauteur"
@@ -202,7 +202,7 @@
       "Un plan en croix grecque : quatre salles de 9 m de large et 18 m de long se rejoignant à l'escalier central, avec un appartement dans chaque angle : simplifié ; les quatre salles sont laissées en croix ouverte entre les étages des cantons, sans leurs voûtes à caissons, que décrivent les pages mêmes du Domaine.",
       "Un escalier à double révolution de deux rampes hélicoïdales autour d'un noyau ouvert, montant jusqu'aux terrasses : simplifié ; le rayon de l'escalier, son nombre de marches et les ouvertures de son noyau sont interprétés, aucun relevé mesuré n'ayant été lu.",
       "La tour-lanterne au-dessus de l'escalier, point culminant du château à 56 m, couronnée d'une fleur de lis : simplifié ; la tour-lanterne est modélisée en tambours superposés, sans la couronne d'arcs, de nervures et de décor sculpté de la vraie.",
-      "Terrasses, lucarnes, souches de cheminée et tourelles au-dessus du donjon, une toiture comme un village dans le ciel : simplifié ; les lucarnes et les souches de cheminée sont des formes standard placées à des endroits plausibles, et leur nombre, leurs frontons et leur décor sculpté n'ont pas été appariés un à un avec les photographies.",
+      "Terrasses, lucarnes, souches de cheminée et tourelles au-dessus du donjon, une toiture comme un village dans le ciel : simplifié ; les souches de cheminée sont dessinées selon les deux types que montrent les photographies des toits (un réseau de losanges d'ardoise sous un couronnement à fronton, ou de grands disques d'ardoise sur des plateaux moulurés sous un attique à pinacles autour d'une flèche d'ardoise, les deux avec une frise de pastilles d'ardoise), mais leurs emplacements, leurs hauteurs et le type de chacune n'ont pas été appariés un à un avec les photographies ; les lucarnes sont des formes standard placées à des endroits plausibles, sans leur décor sculpté.",
       "L'oratoire royal, bâti en dehors du bloc d'origine et daté de 1540, qui rompt la symétrie de la grande façade : simplifié ; l'oratoire est un bloc nu à la taille du plan, sans son décor sculpté.",
       "Les fenêtres sont partout des fenêtres rectangulaires à croisée de meneau et de traverse ; les baies en plein cintre des loggias et les arcs du rez-de-chaussée des ailes ne sont pas modélisés.",
       "Le devant du donjon se tient environ 2 m plus bas, d'après les photographies, sur son côté nord-ouest que la cour : le modèle n'a qu'un seul niveau de sol, celui de la cour.",
