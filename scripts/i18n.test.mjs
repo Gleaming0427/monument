@@ -205,8 +205,36 @@ test('every monument is written in every language', async () => {
         if (/[A-Za-zÀ-ÿ]/.test(said)) assert.deepEqual(figuresOf(phase.when), figuresOf(said), `${code}/${id}: ${phase.id} lost a figure of its date`);
         else assert.equal(phase.when, said, `${code}/${id}: ${phase.id} lost its date`);
         assert.equal(phase.source, monument.phases[i].source, `${code}/${id}: ${phase.id} lost its source`);
+        // The dates the pages disagree on keep their pages, and their figures through the words around them.
+        const disputes = [[monument.phases[i].disputed, phase.disputed], ...(monument.phases[i].moments ?? []).map((moment, j) => [moment.disputed, phase.moments[j].disputed])];
+        for (const [said, put] of disputes) (said ?? []).forEach((dispute, k) => dispute.claims.forEach((claim, c) => {
+          const kept = put[k].claims[c];
+          assert.equal(kept.source, claim.source, `${code}/${id}: ${phase.id} lost the page of a disputed date`);
+          assert.deepEqual(figuresOf(kept.when), figuresOf(claim.when), `${code}/${id}: ${phase.id} changed a disputed date`);
+          assert.ok(put[k].what && put[k].what !== dispute.what, `${code}/${id}: ${phase.id} left what a disputed date dates in English`);
+        }));
       });
       assert.equal(merged.elements.length, monument.elements.length, `${code}/${id}: the geometry changed`);
     }
   }
+});
+
+test('what a disputed date dates is translated; its pages and its numbers are not', () => {
+  const claims = [{when: '1650', source: 'https://a.example/'}, {when: '7 November 1660', source: 'https://b.example/'}];
+  const monument = {name: 'X', phases: [{id: 'p', when: '1650–1700', title: 'T', text: 'Text.', source: 'https://a.example/', disputed: [{what: 'the first stay', claims}],
+    moments: [{tag: 'Anecdote', title: 'M', text: 'Moment.', disputed: [{what: 'the last stay', claims}]}]}], elements: []};
+  const skeleton = translationSkeleton(monument);
+  assert.deepEqual(skeleton.phases.p.disputed, [{what: 'the first stay', claims: [{}, {when: '7 November 1660'}]}]);
+  assert.deepEqual(skeleton.phases.p.moments[0].disputed, [{what: 'the last stay', claims: [{}, {when: '7 November 1660'}]}]);
+  const translation = {name: 'X', phases: {p: {title: 'T', text: 'Texte.', disputed: [{what: 'le premier séjour', claims: [{}, {when: '7 novembre 1660'}]}],
+    moments: [{tag: 'Anecdote', title: 'M', text: 'Moment.', disputed: [{what: 'le dernier séjour', claims: [{}, {when: '7 novembre 1660'}]}]}]}}};
+  assert.deepEqual(checkTranslation(monument, translation, 'fr'), []);
+  const merged = mergeMonument(monument, translation, 'fr', 'x');
+  assert.deepEqual(merged.phases[0].disputed, [{what: 'le premier séjour', claims: [claims[0], {...claims[1], when: '7 novembre 1660'}]}]);
+  assert.equal(merged.phases[0].moments[0].disputed[0].what, 'le dernier séjour');
+  // A slot left out stops the merge, and a figure lost in a translated date is named.
+  const missing = structuredClone(translation); delete missing.phases.p.moments[0].disputed;
+  assert.throws(() => mergeMonument(monument, missing, 'fr', 'x'), /moments\[0\]\.disputed\[0\]\.what/);
+  const changed = structuredClone(translation); changed.phases.p.disputed[0].claims[1].when = '8 novembre 1660';
+  assert.match(checkTranslation(monument, changed, 'fr').join('\n'), /disputed\[0\]\.claims\[1\]\.when: figures/);
 });

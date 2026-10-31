@@ -79,7 +79,12 @@
         {
           "tag": "Anecdote",
           "title": "Une comédie pour la cour",
-          "text": "Louis XIV séjourne neuf fois à Chambord avec sa cour, la dernière en 1685. Le 14 octobre 1670, Molière et Lully y donnent la première représentation du Bourgeois gentilhomme devant le roi et sa cour."
+          "text": "Louis XIV séjourne neuf fois à Chambord avec sa cour, la dernière en 1685. Le 14 octobre 1670, Molière et Lully y donnent la première représentation du Bourgeois gentilhomme devant le roi et sa cour.",
+          "disputed": [
+            {
+              "what": "le premier séjour de Louis XIV"
+            }
+          ]
         },
         {
           "tag": "Technique",

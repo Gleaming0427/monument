@@ -28,6 +28,11 @@
    "title": "Des murs sans mortier",
    "when": "À partir de 1620",
    "text": "En 1620, Tokugawa Hidetada commence la reconstruction du château, et les clans de samouraïs reçoivent l’ordre d’en bâtir les nouveaux murs. Assemblés sans mortier, ces murs se dressent encore aujourd’hui.",
+   "disputed": [
+    {
+     "what": "la fin de la reconstruction des Tokugawa"
+    }
+   ],
    "moments": [
     {
      "tag": "Plan",
@@ -58,7 +63,12 @@
     {
      "tag": "Événement",
      "title": "Frappé par la foudre",
-     "text": "En 1665, la foudre frappe le poisson doré du côté nord du donjon, qui brûle après environ 39 ans et n’est jamais reconstruit."
+     "text": "En 1665, la foudre frappe le poisson doré du côté nord du donjon, qui brûle après environ 39 ans et n’est jamais reconstruit.",
+     "disputed": [
+      {
+       "what": "l'achèvement du donjon des Tokugawa"
+      }
+     ]
     },
     {
      "tag": "Usage",
@@ -70,6 +80,22 @@
   "tower": {
    "title": "Un donjon en béton",
    "text": "En 1928, le maire d’Osaka propose un projet de parc qui comprend la reconstruction du donjon, financée par les dons des habitants. Le donjon est achevé le 7 novembre 1931.",
+   "disputed": [
+    {
+     "what": "l'achèvement du donjon",
+     "claims": [
+      {
+       "when": "octobre 1931"
+      },
+      {
+       "when": "7 novembre 1931"
+      },
+      {
+       "when": "7 novembre 1931"
+      }
+     ]
+    }
+   ],
    "moments": [
     {
      "tag": "Financement",

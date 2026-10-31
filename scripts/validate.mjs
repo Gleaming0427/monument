@@ -89,6 +89,20 @@ async function commons(titles) {
   }
   return pages;
 }
+// A date the pages read disagree on is shown, not settled: what it is the date of, and each page's date. The film
+// follows one of them, the phase's or the moment's own; the others stand beside it on the card.
+function disputes(list, where) {
+  if (list === undefined) return;
+  check(Array.isArray(list) && list.length > 0, `${where}: "disputed" must be a list of {"what", "claims"}`);
+  for (const [i, dispute] of (Array.isArray(list) ? list : []).entries()) {
+    const claims = Array.isArray(dispute?.claims) ? dispute.claims : [], label = `${where}: disputed[${i}]`;
+    check(typeof dispute?.what === 'string' && dispute.what.trim().length > 2 && dispute.what.length <= 80, `${label} needs "what": what the dates are the date of, in a few words`);
+    check(claims.length >= 2 && claims.every(claim => typeof claim?.when === 'string' && claim.when.trim() && claim.when.length <= 28 && url(claim.source)), `${label} needs at least two "claims", each {"when": a date, "source": the page that gives it}`);
+    check(new Set(claims.map(claim => claim?.source)).size === claims.length, `${label}: each claim comes from a different page`);
+    check(new Set(claims.map(claim => String(claim?.when).trim())).size >= 2, `${label}: every claim gives the same date, so the pages do not disagree`);
+  }
+}
+
 // Photo reliefs: the image's size in pixels, read from its header (JPEG or PNG).
 async function imageSize(path) {
   const data = await readFile(path).catch(() => null);
@@ -212,6 +226,7 @@ for (const file of (await Promise.all(targets.map(files))).flat()) {
     check(p.title && p.text, `${at} phase ${p.id} needs a title and a text`);
     check(p.when || (!isNaN(Date.parse(p.from)) && !isNaN(Date.parse(p.to))), `${at} phase ${p.id} needs "when" or ISO "from" and "to"`);
     check(!p.when || p.when.length <= 28, `${at} phase ${p.id}: "when" is a date or period only ("${p.when}")`);
+    disputes(p.disputed, `${at} phase ${p.id}`);
     if (p.scene) {
       check(['masonry', 'timber', 'metal', 'earth', 'restoration', 'mixed'].includes(p.scene.craft), `${at} phase ${p.id}: scene.craft must name the work shown`);
       check(p.scene.at?.length === 2 && p.scene.at.every(Number.isFinite), `${at} phase ${p.id}: scene.at needs an [x, z] worksite centre`);
@@ -245,6 +260,7 @@ for (const file of (await Promise.all(targets.map(files))).flat()) {
       check(m.look === undefined || Array.isArray(m.look) && m.look.length >= 1 && m.look.length <= 2 && m.look.every(Number.isFinite), `${at} moment "${m.title}": look must be [azimuth, elevation] in degrees`);
       check(m.inside === undefined || typeof m.inside === 'boolean', `${at} moment "${m.title}": inside must be true or false`);
       check(url(m.source), `${at} moment "${m.title}" needs a source URL`);
+      disputes(m.disputed, `${at} moment "${m.title}"`);
     }
   }
   const refs = obj => { for (const [key, value] of Object.entries(obj)) {
@@ -295,6 +311,9 @@ async function evidence(d, text, file, id, at, strict) {
     check(read.has(p.source), `${at} phase ${p.id}: its source is not one of the pages in evidence.sources`);
     if (p.scene) check(read.has(p.scene.source), `${at} phase ${p.id}: its scene source is not one of the pages in evidence.sources`);
     for (const m of p.moments ?? []) check(read.has(m.source), `${at} moment "${m.title}": its source is not one of the pages in evidence.sources`);
+    for (const [where, list] of [[`phase ${p.id}`, p.disputed], ...(p.moments ?? []).map(m => [`moment "${m.title}"`, m.disputed])]) {
+      for (const claim of (Array.isArray(list) ? list : []).flatMap(dispute => dispute?.claims ?? [])) check(read.has(claim?.source), `${at} ${where}: the disputed date ${claim?.when} cites a page that is not in evidence.sources`);
+    }
   }
   // Step 4: the measured outline, and the model sitting on it.
   const plan = ev.plan ?? {};

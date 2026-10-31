@@ -94,6 +94,13 @@ const hasWords = text => /[A-Za-zÀ-ÿ]/.test(String(text ?? ''));
 // stays as it is. When the source adds a remark ("(the lowest step of the krepis)"), the remark is words to translate.
 const planRemark = source => Boolean(source) && !/^OpenStreetMap (?:way|relation) \d+$/.test(String(source).trim());
 
+// A date the pages disagree on: what it is the date of is words, and so is a claim's date when it has words in it;
+// the pages and the dates in numbers never change.
+const disputeSlots = list => list?.length ? {disputed: list.map(dispute => ({
+  what: dispute.what ?? '',
+  ...(dispute.claims?.some(claim => hasWords(claim.when)) ? {claims: dispute.claims.map(claim => hasWords(claim.when) ? {when: claim.when} : {})} : {}),
+}))} : {};
+
 // The translation file a monument needs, with the English left in place to translate: every slot is already
 // where it belongs, so filling it in cannot move a title or lose a moment. `blurb` is the line under a card of the
 // collection, which lives in site/collection.json rather than in the monument.
@@ -114,7 +121,8 @@ export function translationSkeleton(monument, {blurb} = {}) {
       title: phase.title ?? '',
       ...(hasWords(phase.when) ? {when: phase.when} : {}),
       text: phase.text ?? '',
-      ...(phase.moments?.length ? {moments: phase.moments.map(moment => ({tag: moment.tag, title: moment.title, text: moment.text}))} : {}),
+      ...disputeSlots(phase.disputed),
+      ...(phase.moments?.length ? {moments: phase.moments.map(moment => ({tag: moment.tag, title: moment.title, text: moment.text, ...disputeSlots(moment.disputed)}))} : {}),
     }])),
     ...(views.length || evidence.sources?.length || evidence.uncertainties?.length || planRemark(evidence.plan?.source) ? {evidence: {
       ...(planRemark(evidence.plan?.source) ? {plan: {source: evidence.plan.source}} : {}),
@@ -134,6 +142,10 @@ export function mergeMonument(monument, translation, language, id) {
     if (typeof value !== 'string' || !value.trim()) { missing.push(`${id}: ${where}`); return value; }
     return value;
   };
+  const disputed = (list, said, where) => list.map((dispute, i) => ({
+    ...dispute, what: text(said?.[i]?.what, `${where}.disputed[${i}].what`),
+    claims: dispute.claims.map((claim, j) => hasWords(claim.when) ? {...claim, when: text(said?.[i]?.claims?.[j]?.when, `${where}.disputed[${i}].claims[${j}].when`)} : claim),
+  }));
   const out = {...monument};
   if (translation.name !== undefined) out.name = text(translation.name, 'name');
   if (translation.place !== undefined) out.place = text(translation.place, 'place');
@@ -147,12 +159,14 @@ export function mergeMonument(monument, translation, language, id) {
     if (!t$) { missing.push(`${id}: phases.${phase.id}`); return phase; }
     const next = {...phase, title: text(t$.title, `phases.${phase.id}.title`), text: text(t$.text, `phases.${phase.id}.text`)};
     if (hasWords(phase.when)) next.when = text(t$.when, `phases.${phase.id}.when`);
+    if (phase.disputed?.length) next.disputed = disputed(phase.disputed, t$.disputed, `phases.${phase.id}`);
     if (phase.moments?.length) {
       if (!t$.moments) { missing.push(`${id}: phases.${phase.id}.moments`); return next; }
       next.moments = phase.moments.map((moment, i) => ({
         ...moment, tag: text(t$.moments[i]?.tag, `phases.${phase.id}.moments[${i}].tag`),
         title: text(t$.moments[i]?.title, `phases.${phase.id}.moments[${i}].title`),
         text: text(t$.moments[i]?.text, `phases.${phase.id}.moments[${i}].text`),
+        ...(moment.disputed?.length ? {disputed: disputed(moment.disputed, t$.moments[i]?.disputed, `phases.${phase.id}.moments[${i}]`)} : {}),
       }));
     }
     return next;
@@ -189,7 +203,10 @@ const TYPOGRAPHY = {
   fr: [[/\d,\d{3}/g, 'séparateur de milliers anglais : en français, 9 000 ou 9.000 — la virgule se lit comme un décimal']],
 };
 export function checkTranslation(monument, translation, language, {blurb} = {}) {
-  const problems = [], walk = (source, target, where) => {
+  const problems = [], disputes = (list, said, where) => list?.forEach((dispute, i) => {
+    walk(dispute.what, said?.[i]?.what, `${where}.disputed[${i}].what`);
+    dispute.claims?.forEach((claim, j) => { if (hasWords(claim.when)) walk(claim.when, said?.[i]?.claims?.[j]?.when, `${where}.disputed[${i}].claims[${j}].when`); });
+  }), walk = (source, target, where) => {
     if (typeof source !== 'string' || source === target) return;
     if (typeof target !== 'string') { problems.push(`${where}: not translated`); return; }
     if (!target.trim()) { problems.push(`${where}: empty`); return; }
@@ -214,10 +231,12 @@ export function checkTranslation(monument, translation, language, {blurb} = {}) 
     walk(phase.title, t$.title, `phases.${phase.id}.title`);
     if (hasWords(phase.when)) walk(phase.when, t$.when, `phases.${phase.id}.when`);
     walk(phase.text, t$.text, `phases.${phase.id}.text`);
+    disputes(phase.disputed, t$.disputed, `phases.${phase.id}`);
     phase.moments?.forEach((moment, i) => {
       walk(moment.tag, t$.moments?.[i]?.tag, `phases.${phase.id}.moments[${i}].tag`);
       walk(moment.title, t$.moments?.[i]?.title, `phases.${phase.id}.moments[${i}].title`);
       walk(moment.text, t$.moments?.[i]?.text, `phases.${phase.id}.moments[${i}].text`);
+      disputes(moment.disputed, t$.moments?.[i]?.disputed, `phases.${phase.id}.moments[${i}]`);
     });
   });
   const evidence = monument.evidence ?? {}, said = translation.evidence ?? {};

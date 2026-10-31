@@ -123,6 +123,26 @@ At least two construction phases in a standard build carry `scene`, unless the w
 - `inside: true` and `look` [azimuth, elevation] (degrees, as a reference viewpoint's): a moment inside the building. While it shows, the camera swings round to look from that side and the section view opens on the camera's side of the view's centre, unless the reader has set the section view or moved the camera themselves. The cut passes a little in front of the anchor (the camera eases most of the way to it), so put the anchor just in front of the object, on the camera's side.
 - Use at least one close construction moment: a joint, tool, temporary support or material operation. Its anchor should be where the viewer can see the corresponding geometry while reading it.
 
+## Dates the sources disagree on
+
+When the pages read give different dates for something the film shows, the film does not settle it quietly. The phase or the moment that states that date takes `disputed`, and the viewer shows each page's date on its card, hatches the phase's bar on the timeline and halves the moment's diamond:
+
+```json
+"disputed": [{"what": "Louis XIV's first stay", "claims": [
+  {"when": "1650", "source": "https://fr.wikipedia.org/wiki/Ch%C3%A2teau_de_Chambord"},
+  {"when": "1660", "source": "https://www.chambord.org/fr/histoire/le-chateau/les-personnages-marquants/"}]}]
+```
+
+The card reads: *Sources disagree on Louis XIV's first stay: 1650 (fr.wikipedia.org) or 1660 (chambord.org)*, each site linked to its page.
+
+- `what`: what the dates are the date of, in a few words that follow "Sources disagree on".
+- `claims`: one per page, at least two, and at least two different dates; two pages that give the same date are two claims, and the card puts them together. `when` is written like a phase's `when`; `source` is one of the pages in `evidence.sources`.
+- The film still has to place the work: the phase's own `when` (or `from` and `to`) follows one claim, or only what the claims agree on (Osaka Castle's walls are "From 1620" because the pages end the works in 1628 or 1629). Where the text can step round the disputed date, let it: Chambord's card gives the number of Louis XIV's stays and the last, on which the pages agree. Say in `evidence.uncertainties` which date the film follows and why.
+- Only for dates the film shows or a card states. A disagreement about something the film does not use stays in `evidence.uncertainties`.
+- `what`, and a `when` with words in it ("7 November 1931"), are translated with the rest of the card (`scripts/monument-i18n.mjs`); dates in numbers and the pages are not.
+
+`validate.mjs` refuses a dispute without `what`, with fewer than two claims, with two claims from one page or with a single date, and, from the standard build on, a claim whose page is not in `evidence.sources`.
+
 ## view
 
 - `target`, `distance`: the final framing. `width`: horizontal extent to frame. `start`: a close shot at the beginning; the camera pulls back to the final framing.

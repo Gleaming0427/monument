@@ -66,6 +66,7 @@ Use this only when the user asks for maximum documentation or wants to publish. 
 ## Rules
 
 - **Never invent.** No dates, foundations, architects, anecdotes or earlier states to fill a timeline. Phases follow the evidence, with no fixed number. Where the history of the works is thin, show the attested states and label any schematic construction as such.
+- **Disagreements are shown, not settled.** When the pages read give different dates for something the film shows, list each page's date in the phase's or moment's `disputed` ([references/format.md](references/format.md#dates-the-sources-disagree-on)); never pick one in silence.
 - **Explanation is not evidence.** A bottom-up animation does not prove the real order of works; say when a phase explains rather than documents.
 - **Unknown building**: explain what you searched and ask for an address, a link, a plan or a photo. Offer a hypothetical model only under that name.
 - **Keep what was reused.** Do not show a whole block demolished for a new storey: take the old roof off, raise the walls, put the new roof on.

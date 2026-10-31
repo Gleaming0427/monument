@@ -488,6 +488,21 @@
    "title": "Walls without mortar",
    "source": "https://en.wikipedia.org/wiki/Osaka_Castle",
    "text": "In 1620 Tokugawa Hidetada begins the rebuilding of the castle, and the samurai clans are ordered to build its new walls. Fitted without mortar, these walls still stand today.",
+   "disputed": [
+    {
+     "what": "the end of the Tokugawa rebuilding",
+     "claims": [
+      {
+       "when": "1628",
+       "source": "https://en.wikipedia.org/wiki/Osaka_Castle"
+      },
+      {
+       "when": "1629",
+       "source": "https://ja.wikipedia.org/wiki/%E5%A4%A7%E5%9D%82%E5%9F%8E"
+      }
+     ]
+    }
+   ],
    "scene": {
     "craft": "masonry",
     "at": [
@@ -579,7 +594,26 @@
      ],
      "distance": 90,
      "source": "https://ja.wikipedia.org/wiki/%E5%A4%A7%E5%9D%82%E5%9F%8E",
-     "text": "In 1665 lightning strikes the fish ornament on the north side of the keep, which burns after about 39 years and is never rebuilt."
+     "text": "In 1665 lightning strikes the fish ornament on the north side of the keep, which burns after about 39 years and is never rebuilt.",
+     "disputed": [
+      {
+       "what": "the completion of the Tokugawa keep",
+       "claims": [
+        {
+         "when": "1626",
+         "source": "https://ja.wikipedia.org/wiki/%E5%A4%A7%E5%9D%82%E5%9F%8E"
+        },
+        {
+         "when": "1627",
+         "source": "https://osakacastle.net/toyotomi_stone_wall/column/1402.html"
+        },
+        {
+         "when": "1630",
+         "source": "https://en.wikipedia.org/wiki/Osaka_Castle"
+        }
+       ]
+      }
+     ]
     },
     {
      "at": 0.85,
@@ -602,6 +636,25 @@
    "title": "A concrete keep",
    "source": "https://ja.wikipedia.org/wiki/%E5%A4%A7%E5%9D%82%E5%9F%8E",
    "text": "In 1928 Osaka's mayor proposes a park project that includes rebuilding the keep, paid for by donations from citizens. The keep is finished on 7 November 1931.",
+   "disputed": [
+    {
+     "what": "the keep's completion",
+     "claims": [
+      {
+       "when": "October 1931",
+       "source": "https://ja.wikipedia.org/wiki/%E5%A4%A7%E9%98%AA%E5%9F%8E%E5%A4%A9%E5%AE%88%E9%96%A3"
+      },
+      {
+       "when": "7 November 1931",
+       "source": "https://ja.wikipedia.org/wiki/%E5%A4%A7%E5%9D%82%E5%9F%8E"
+      },
+      {
+       "when": "7 November 1931",
+       "source": "https://osakacastle.net/toyotomi_stone_wall/column/1804.html"
+      }
+     ]
+    }
+   ],
    "scene": {
     "craft": "mixed",
     "at": [

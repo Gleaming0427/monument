@@ -641,7 +641,22 @@
       -2.45
      ],
      "source": "https://www.chambord.org/fr/histoire/le-chateau/les-personnages-marquants/",
-     "text": "Louis XIV stays nine times at Chambord with his court, the last in 1685. On 14 October 1670 Molière and Lully give the first performance of Le Bourgeois gentilhomme before the king and his court at Chambord."
+     "text": "Louis XIV stays nine times at Chambord with his court, the last in 1685. On 14 October 1670 Molière and Lully give the first performance of Le Bourgeois gentilhomme before the king and his court at Chambord.",
+     "disputed": [
+      {
+       "what": "Louis XIV's first stay",
+       "claims": [
+        {
+         "when": "1650",
+         "source": "https://fr.wikipedia.org/wiki/Ch%C3%A2teau_de_Chambord"
+        },
+        {
+         "when": "1660",
+         "source": "https://www.chambord.org/fr/histoire/le-chateau/les-personnages-marquants/"
+        }
+       ]
+      }
+     ]
     },
     {
      "at": 0.7,

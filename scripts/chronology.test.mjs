@@ -4,7 +4,11 @@
 // out of date order — fails with a message that names the phase, the moment and the numbers.
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import {dirname, resolve} from 'node:path';
+import {dirname, join, resolve} from 'node:path';
+import {mkdtemp, readFile, rm, writeFile} from 'node:fs/promises';
+import {execFile} from 'node:child_process';
+import {promisify} from 'node:util';
+import {tmpdir} from 'node:os';
 import {fileURLToPath} from 'node:url';
 import {loadEngine} from './lib/engine.mjs';
 import {readMonument} from './lib/compact.mjs';
@@ -77,4 +81,22 @@ test('years are read from the way each monument writes its dates', () => {
   for (const [when, year] of years) assert.equal(startYear({when}), year, when);
   assert.equal(startYear({from: '1887-01-26', to: '1887-06-30'}), 1887);
   assert.equal(startYear({when: 'Since forever'}), null);
+});
+
+test('a disputed date says what it dates and gives two pages and two dates, or it is refused', async () => {
+  const dir = await mkdtemp(join(tmpdir(), 'monument-disputed-')), id = 'chateau-de-chambord', data = JSON.parse(await readFile(resolve(root, `examples/${id}.json`), 'utf8'));
+  const a = 'https://fr.wikipedia.org/wiki/Ch%C3%A2teau_de_Chambord', b = 'https://www.chambord.org/fr/histoire/le-chateau/au-fil-de-lhistoire/';
+  const validate = async disputed => {
+    const copy = structuredClone(data); copy.phases[0].disputed = disputed;
+    await writeFile(join(dir, `${id}.json`), JSON.stringify(copy));
+    return promisify(execFile)(process.execPath, [resolve(root, 'scripts/validate.mjs'), join(dir, `${id}.json`)]).then(out => out.stdout + out.stderr, error => error.stdout + error.stderr);
+  };
+  try {
+    assert.match(await validate([{what: 'the first stone', claims: [{when: '1519', source: a}, {when: '1520', source: b}]}]), /All monuments are valid/);
+    assert.match(await validate([{claims: [{when: '1519', source: a}, {when: '1520', source: b}]}]), /disputed\[0\] needs "what"/);
+    assert.match(await validate([{what: 'the first stone', claims: [{when: '1519', source: a}]}]), /needs at least two "claims"/);
+    assert.match(await validate([{what: 'the first stone', claims: [{when: '1519', source: a}, {when: '1520', source: a}]}]), /each claim comes from a different page/);
+    assert.match(await validate([{what: 'the first stone', claims: [{when: '1519', source: a}, {when: '1519', source: b}]}]), /the pages do not disagree/);
+    assert.match(await validate({what: 'the first stone'}), /"disputed" must be a list/);
+  } finally { await rm(dir, {recursive: true, force: true}); }
 });
