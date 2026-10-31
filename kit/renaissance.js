@@ -211,8 +211,9 @@ export function renaissance(gothic) {
         S.flush(Ld, 'stone', t0.deckColor ?? '#d6cdb8', ph, extra);
       }
       const d = t0.dormers;
-      if (d) for (let i = 0; i < d.count; i++) {
-        const a = rad(d.arc[0]) + (i + .5) / d.count * (rad(d.arc[1]) - rad(d.arc[0])), r = d.r ?? 7.4;
+      // `angles` (degrees) sets each dormer's place when they are not evenly spread over `arc`.
+      if (d) for (let i = 0; i < (d.angles?.length ?? d.count); i++) {
+        const a = d.angles ? rad(d.angles[i]) : rad(d.arc[0]) + (i + .5) / d.count * (rad(d.arc[1]) - rad(d.arc[0])), r = d.r ?? 7.4;
         dormer(S, {at: [Math.cos(a) * r, Math.sin(a) * r], out: [Math.cos(a), Math.sin(a)], y: y1 + .05, w: d.w ?? 2.4, h: d.h ?? 4.2, pediment: d.pediment ?? 'triangle', slope: 1.6, stone, phase: ph, extra});
       }
       for (const c of t0.chimneys ?? []) {
