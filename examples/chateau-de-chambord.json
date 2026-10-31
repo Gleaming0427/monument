@@ -428,7 +428,7 @@
    "Dates of the roofs of the chapel tower and of the stair towers are interpreted from the chapel wing's: the Domaine's pages say the chapel wing was roofed under Louis XIV and give no date for the towers.",
    "The timber scaffold and the gin-pole of the 16th-century site are reconstructions: the sources read describe the stone, the foundations and the masons' pay, not the lifting gear.",
    "The mansard roofs of 1680–1686 are drawn as a typical broken roof of the period; their exact profile, and the position of their dormers, were not read in a source.",
-   "The windows of the keep, the towers and the wings: simplified; they are placed by rule, not read one by one: centred in regular bays, on one axis from storey to storey, and on a tower only where no other building hides its wall, all round the exposed wall at the 30° pitch the model already used (the arcades and the windows of the west range share one set of axes, spaced evenly about the middle of their wall: its arches moved by up to 1.9 m); the same frame, with its mullion and transom, in every period. The photograph of the west tower shows part of its wall plain where the model has windows; the round arches of the keep's courtyard loggias, the doors other than the portal in the middle of the east range, and the windows of each period are not modelled."
+   "The windows of the keep, the towers and the wings: simplified; they are placed by rule, not read one by one: centred in regular bays, on one axis from storey to storey, and on a tower only where no other building hides its wall (the six large towers, of the keep and of the west range, have windows all round their exposed wall at the 30° pitch the model already used; the two small towers keep their pair, at 40°, and the two unfinished south-east towers their three) (the arcades and the windows of the west range share one set of axes, spaced evenly about the middle of their wall: its arches moved by up to 1.9 m); the same frame, with its mullion and transom, in every period. The photograph of the west tower shows part of its wall plain where the model has windows; the round arches of the keep's courtyard loggias, the doors other than the portal in the middle of the east range, and the windows of each period are not modelled."
   ],
   "detailReview": {
    "version": 1,
@@ -926,12 +926,12 @@
     },
     "v-": {
      "from": 10,
-     "to": 34.9,
+     "to": 34.8,
      "bays": 5
     },
     "v+": {
      "from": 10,
-     "to": 34.9,
+     "to": 34.8,
      "bays": 5
     }
    }
@@ -3250,9 +3250,8 @@
    "windows": [
     {
      "angles": [
-      20,
-      60,
-      100
+      28,
+      68
      ],
      "w": 1.1,
      "sill": 1.5,
@@ -3260,9 +3259,8 @@
     },
     {
      "angles": [
-      20,
-      60,
-      100
+      28,
+      68
      ],
      "w": 1.1,
      "sill": 7.7,
@@ -3316,9 +3314,8 @@
    "windows": [
     {
      "angles": [
-      250,
-      290,
-      330
+      295,
+      335
      ],
      "w": 1.1,
      "sill": 1.5,
@@ -3326,9 +3323,8 @@
     },
     {
      "angles": [
-      250,
-      290,
-      330
+      295,
+      335
      ],
      "w": 1.1,
      "sill": 7.7,

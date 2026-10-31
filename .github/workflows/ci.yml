@@ -43,6 +43,8 @@ jobs:
         run: node scripts/roof.test.mjs
       - name: Check that no monument moves away from its reference photos
         run: node scripts/silhouette.test.mjs
+      - name: Check that windows, arches, doors and dormers stand on the axes of their bays
+        run: node scripts/openings.test.mjs
       - name: Check phone, tablet and desktop layouts
         run: node scripts/measure.mjs --label responsive-ci --out .artifacts/metrics.jsonl -- node scripts/responsive.test.mjs
       - name: Keep P0 measurements and responsive captures
