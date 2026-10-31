@@ -3063,6 +3063,32 @@ export function createStage(host) {
       }
       return null;
     },
+    // The outline of what stands, for holding the model against a photograph (scripts/silhouette.mjs): 1 where the
+    // monument covers a pixel of the drawing buffer, rows from the top. The floor, the worksites and the haze go, and
+    // the scene is drawn on white and then on black: what is the same on both is the monument, an edge counting
+    // where it covers half the pixel or more. Nothing is recompiled, and the next frame is drawn as before.
+    silhouette() {
+      const hide = [studioFloor, outlineGroup, ...siteGroups.map(site => site.group)].filter(o => o?.visible), density = scene.fog.density, paper = scene.background.clone(), effects = [ao.enabled, bloom.enabled];
+      for (const o of hide) o.visible = false;
+      scene.fog.density = 0; ao.enabled = bloom.enabled = false;
+      const gl = renderer.getContext(), {x: width, y: height} = renderer.getDrawingBufferSize(new T.Vector2()), shots = [];
+      for (const color of ['#ffffff', '#000000']) {
+        scene.background.set(color);
+        ao.gtaoMaterial.uniforms.tDepth.value = ao.pdMaterial.uniforms.tDepth.value = composer.readBuffer.depthTexture;
+        composer.render();
+        const pixels = new Uint8Array(width * height * 4);
+        gl.readPixels(0, 0, width, height, gl.RGBA, gl.UNSIGNED_BYTE, pixels);
+        shots.push(pixels);
+      }
+      for (const o of hide) o.visible = true;
+      scene.fog.density = density; scene.background.copy(paper); [ao.enabled, bloom.enabled] = effects; shown = [];
+      const [light, dark] = shots, data = new Uint8Array(width * height);
+      for (let y = 0; y < height; y++) for (let x = 0; x < width; x++) {
+        const i = ((height - 1 - y) * width + x) * 4;
+        data[y * width + x] = Math.max(Math.abs(light[i] - dark[i]), Math.abs(light[i + 1] - dark[i + 1]), Math.abs(light[i + 2] - dark[i + 2])) < 96 ? 1 : 0;
+      }
+      return {width, height, data};
+    },
     // Share of the standing pieces by provenance at the end of the timeline.
     provenance() {
       const counts = [0, 0, 0, 0];

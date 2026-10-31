@@ -6,3 +6,6 @@ node_modules/
 *.png
 !site/**/*.png
 !kit/assets/materials/**/*.png
+!examples/*.evidence/silhouette/*.png
+!community/*/*.evidence/silhouette/*.png
+**/silhouette/review-*.jpg

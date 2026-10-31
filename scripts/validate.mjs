@@ -139,6 +139,22 @@ async function relief(e, i, file, id, at, strict) {
 // can carry, the 4 × 4 matrix that places it in the monument's frame, and, for the gallery, a credit and the fit that
 // says how far the model stands from it.
 const SCAN_FILE_LIMIT = 50e6;
+// The cut of a reference photo for the outline test (scripts/silhouette.mjs): how it was cut, in pixels of the
+// 960 × 600 frame, and the mask it left beside the monument once its share in common was recorded.
+async function silhouettes(d, file, id, at) {
+  for (const [i, r] of (d.evidence?.references ?? []).entries()) {
+    const cut = r?.silhouette, where = `${at} reference ${i}: silhouette`;
+    if (cut === undefined) continue;
+    check(cut && typeof cut === 'object' && !Array.isArray(cut), `${where} must be an object`);
+    if (!cut || typeof cut !== 'object') continue;
+    check(cut.iou === undefined || Number.isFinite(cut.iou) && cut.iou >= 0 && cut.iou <= 1, `${where}.iou is a share, from 0 to 1`);
+    check(cut.ground === undefined || Number.isFinite(cut.ground) && cut.ground >= 0 && cut.ground <= 600, `${where}.ground is a row of the 960 × 600 frame`);
+    for (const key of ['trees', 'holes']) check(cut[key] === undefined || typeof cut[key] === 'boolean', `${where}.${key} must be true or false`);
+    check(cut.ignore === undefined || Array.isArray(cut.ignore) && cut.ignore.every(poly => Array.isArray(poly) && poly.length >= 3 && poly.every(p => Array.isArray(p) && p.length === 2 && p.every(Number.isFinite))), `${where}.ignore is a list of polygons, each at least three [x, y] points of the frame`);
+    if (Number.isFinite(cut.iou)) check(await stat(join(dirname(file), `${id}.evidence`, 'silhouette', `ref-${i}.png`)).then(() => true, () => false), `${where}: ${id}.evidence/silhouette/ref-${i}.png not found (run scripts/silhouette.mjs)`);
+  }
+}
+
 async function scanLayer(d, file, id, at, strict) {
   const scan = d.scan, where = `${at} scan`;
   if (scan === undefined) return;
@@ -285,6 +301,7 @@ for (const file of (await Promise.all(targets.map(files))).flat()) {
   }
   for (const [i, e] of d.elements.entries()) if (e.type === 'relief') await relief(e, i, file, id, at, strict);
   await scanLayer(d, file, id, at, strict);
+  await silhouettes(d, file, id, at);
   if (standard) await evidence(d, text, file, id, at, strict);
   console.log(`${id}: ${d.phases.length} phases, ${d.elements.length} elements${standard ? `, ${strict ? 'publication' : 'standard'} evidence checked` : ''}`);
 }

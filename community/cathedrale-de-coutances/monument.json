@@ -191,6 +191,9 @@
         "calibration": {
           "points": 7,
           "rms": 1.1
+        },
+        "silhouette": {
+          "iou": 0.939
         }
       }
     ],

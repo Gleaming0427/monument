@@ -124,6 +124,11 @@
     "calibration": {
      "points": 7,
      "rms": 0.3
+    },
+    "silhouette": {
+     "ground": 360,
+     "trees": true,
+     "iou": 0.835
     }
    },
    {
@@ -143,6 +148,10 @@
     "calibration": {
      "points": 5,
      "rms": 0.4
+    },
+    "silhouette": {
+     "ground": 400,
+     "iou": 0.862
     }
    },
    {
@@ -162,6 +171,11 @@
     "calibration": {
      "points": 7,
      "rms": 1.4
+    },
+    "silhouette": {
+     "ground": 445,
+     "trees": true,
+     "iou": 0.825
     }
    },
    {
@@ -181,6 +195,56 @@
     "calibration": {
      "points": 6,
      "rms": 0.5
+    },
+    "silhouette": {
+     "trees": true,
+     "ignore": [
+      [
+       [
+        0,
+        330
+       ],
+       [
+        45,
+        330
+       ],
+       [
+        45,
+        600
+       ],
+       [
+        0,
+        600
+       ]
+      ],
+      [
+       [
+        655,
+        0
+       ],
+       [
+        960,
+        0
+       ],
+       [
+        960,
+        600
+       ],
+       [
+        700,
+        600
+       ],
+       [
+        700,
+        360
+       ],
+       [
+        650,
+        250
+       ]
+      ]
+     ],
+     "iou": 0.715
     }
    },
    {
@@ -200,6 +264,9 @@
     "calibration": {
      "points": 5,
      "rms": 0.8
+    },
+    "silhouette": {
+     "iou": 0.729
     }
    }
   ],

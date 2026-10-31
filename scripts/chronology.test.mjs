@@ -87,7 +87,8 @@ test('a disputed date says what it dates and gives two pages and two dates, or i
   const dir = await mkdtemp(join(tmpdir(), 'monument-disputed-')), id = 'chateau-de-chambord', data = JSON.parse(await readFile(resolve(root, `examples/${id}.json`), 'utf8'));
   const a = 'https://fr.wikipedia.org/wiki/Ch%C3%A2teau_de_Chambord', b = 'https://www.chambord.org/fr/histoire/le-chateau/au-fil-de-lhistoire/';
   const validate = async disputed => {
-    const copy = structuredClone(data); copy.phases[0].disputed = disputed;
+    // The copy travels without its evidence folder, so without the masks its photos' cuts point to.
+    const copy = structuredClone(data); copy.phases[0].disputed = disputed; for (const r of copy.evidence.references) delete r.silhouette;
     await writeFile(join(dir, `${id}.json`), JSON.stringify(copy));
     return promisify(execFile)(process.execPath, [resolve(root, 'scripts/validate.mjs'), join(dir, `${id}.json`)]).then(out => out.stdout + out.stderr, error => error.stdout + error.stderr);
   };
