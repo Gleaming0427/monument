@@ -99,13 +99,16 @@ async function open(id) {
     seg.className = 'seg'; label.className = 'seg-label'; bar.className = 'seg-bar';
     label.innerHTML = '<span class="seg-date"></span><span class="seg-title"></span>';
     label.firstChild.textContent = short(phase); label.lastChild.textContent = phase.title;
-    label.title = `${short(phase)} · ${phase.title}`;
+    label.title = `${short(phase)} · ${phase.title}${phase.disputed?.length ? ` · ${t('viewer.disputedMark', 'the sources disagree on a date')}` : ''}`;
+    seg.classList.toggle('disputed', Boolean(phase.disputed?.length));
     label.onclick = () => { time = i + .001; play(true); };
     bar.innerHTML = '<i class="seg-fill"></i>';
     for (const m of phase.moments ?? []) {
       const tick = document.createElement('button');
       tick.className = 'tick'; tick.style.left = `${m.at * 100}%`;
-      tick.title = m.title; tick.setAttribute('aria-label', say('viewer.moment', 'Moment: {title}', {title: m.title})); tick.dataset.at = i + m.at;
+      const mark = m.disputed?.length ? ` · ${t('viewer.disputedMark', 'the sources disagree on a date')}` : '';
+      tick.title = m.title + mark; tick.setAttribute('aria-label', say('viewer.moment', 'Moment: {title}', {title: m.title}) + mark); tick.dataset.at = i + m.at;
+      tick.classList.toggle('disputed', Boolean(m.disputed?.length));
       tick.onclick = () => { time = i + m.at + .001; play(true); };
       bar.append(tick);
     }
@@ -156,6 +159,7 @@ function update() {
     shown = key;
     $('title').textContent = phase.title;
     $('text').textContent = phase.text;
+    $('disputed').replaceChildren(...disputes(phase.disputed)); $('disputed').hidden = !phase.disputed?.length;
     $('source').href = phase.source;
     $('source').textContent = say('viewer.source', 'Source: {host}', {host: new URL(phase.source).hostname.replace(/^www\./, '')});
     [...$('phases').children].forEach((seg, i) => {
@@ -173,6 +177,7 @@ function update() {
     $('moment').hidden = !moment;
     if (moment) {
       $('m-tag').textContent = moment.tag; $('m-title').textContent = moment.title; $('m-text').textContent = moment.text;
+      $('m-disputed').replaceChildren(...disputes(moment.disputed)); $('m-disputed').hidden = !moment.disputed?.length;
       $('m-source').href = moment.source; $('m-source').textContent = say('viewer.source', 'Source: {host}', {host: new URL(moment.source).hostname.replace(/^www\./, '')});
       $('moment').style.animation = 'none'; void $('moment').offsetWidth; $('moment').style.animation = '';
     }
@@ -359,6 +364,19 @@ const host = url => { try { return new URL(url).hostname.replace(/^www\./, ''); 
 const commonsImage = (url, width) => { const m = /commons\.wikimedia\.org\/wiki\/(File:[^?#]+)/.exec(url ?? ''); return m ? `https://commons.wikimedia.org/wiki/Special:FilePath/${m[1].slice(5)}?width=${width}` : null; };
 const el = (tag, props = {}, ...children) => { const node = Object.assign(document.createElement(tag), props); node.append(...children); return node; };
 const link = (href, text) => el('a', {href, textContent: text, target: '_blank', rel: 'noreferrer'});
+// A date the pages read disagree on: what it is the date of, then each page's date linked to the page, the one the
+// film follows among them. Pages that give the same date share it; two pages of one site go by their own names.
+function disputes(list) {
+  return (list ?? []).map(dispute => {
+    const dates = new Map(), hosts = dispute.claims.map(claim => host(claim.source));
+    for (const claim of dispute.claims) dates.set(claim.when, [...dates.get(claim.when) ?? [], claim.source]);
+    const name = url => hosts.filter(h => h === host(url)).length > 1 ? `${host(url)} › ${decodeURIComponent(new URL(url).pathname.split('/').filter(Boolean).at(-1) ?? '').replace(/_/g, ' ')}` : host(url);
+    const groups = [...dates].map(([when, sources]) => [`${when} (`, ...sources.flatMap((source, i) => [...(i ? [', '] : []), link(source, name(source))]), ')']);
+    const line = el('p', {}, say('viewer.disputed', 'Sources disagree on {what}: ', {what: dispute.what}));
+    for (const part of new Intl.ListFormat(LOCALE, {type: 'disjunction'}).formatToParts(groups.map((_, i) => String(i)))) line.append(...(part.type === 'element' ? groups[Number(part.value)] : [part.value]));
+    return line;
+  });
+}
 
 function buildProof() {
   const panel = $('proof'), ev = data.evidence ?? {};
@@ -440,6 +458,7 @@ $('stage').addEventListener('pointerup', event => {
   pick.replaceChildren(el('b', {textContent: `${short(phase)} · ${phase.title}`}), el('span', {className: 'prov', textContent: PROOF_LABELS[key][0]}));
   pick.lastChild.dataset.p = key;
   if (element.note) pick.append(el('p', {textContent: element.note}));
+  pick.append(...disputes(phase.disputed));
   pick.append(el('br'), link(phase.source, say('viewer.source', 'Source: {host}', {host: host(phase.source)})));
   pick.hidden = false;
   pick.style.left = `${Math.min(innerWidth - pick.offsetWidth - 12, event.clientX + 14)}px`;
@@ -539,6 +558,14 @@ window.monument = {
   get eye() { return stage?.eye ?? []; },
   get insets() { return stage?.insets ?? {left: 0, right: 0, top: 0, bottom: 0}; },
   project(point) { return stage?.project(point) ?? {x: 0, y: 0, visible: false}; },
+  // The monument's outline from a reference photo's viewpoint, in the state the photo shows (scripts/silhouette.mjs):
+  // `cam` is [azimuth, elevation, distance, x, y, z], as ?cam takes it. The page stays still afterwards.
+  silhouette({t = stage.duration, cam, fov = 38, shift = 0}) {
+    stepping = true; touched = true;
+    time = Math.max(0, Math.min(stage.duration, t)); play(false); update();
+    stage.autoRotate(false); stage.look(...cam); stage.fov(fov); stage.shift(shift);
+    return stage.silhouette();
+  },
 };
 
 // Direct links can change only the fragment without reloading the document.

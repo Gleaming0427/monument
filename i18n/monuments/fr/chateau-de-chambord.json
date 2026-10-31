@@ -3,7 +3,7 @@
   "name": "Château de Chambord",
   "place": "Chambord · Loir-et-Cher · France",
   "blurb": "Ordonné par François Ier en 1519, ses ailes et son enceinte couvertes sous Louis XIV, dépouillé de ses mansardes après 1930, ses toits sud brûlés en 1945 et ses six lanternons restaurés en 2021–2023 : le donjon et ses toitures sur le contour cartographié.",
-  "modelNote": "Mesuré : le plan, d’après le contour cartographié (tours de 20 m de large, 44,8 m entre les axes des tours du donjon). Relevé sur photographies : hauteurs, toits, fenêtres. Simplifié : décor sculpté, lucarnes et souches de cheminée, couronnement de la tour-lanterne, voûtes des salles.",
+  "modelNote": "Mesuré : le plan, d’après le contour cartographié (tours de 20 m de large, 44,8 m entre les axes des tours du donjon) ; l’emplacement et le sommet de 25 des 28 souches de cheminée, d’après le nuage de points LiDAR HD de l’IGN. Relevé sur photographies : hauteurs, toits, fenêtres. Simplifié : décor sculpté, lucarnes, les 3 souches auxquelles aucun bloc scanné n’a été apparié, le type de chaque souche, la largeur des souches et le départ de leur fût, couronnement de la tour-lanterne, voûtes des salles.",
   "live": [
     {
       "label": "Hauteur"
@@ -79,7 +79,12 @@
         {
           "tag": "Anecdote",
           "title": "Une comédie pour la cour",
-          "text": "Louis XIV séjourne neuf fois à Chambord avec sa cour, la dernière en 1685. Le 14 octobre 1670, Molière et Lully y donnent la première représentation du Bourgeois gentilhomme devant le roi et sa cour."
+          "text": "Louis XIV séjourne neuf fois à Chambord avec sa cour, la dernière en 1685. Le 14 octobre 1670, Molière et Lully y donnent la première représentation du Bourgeois gentilhomme devant le roi et sa cour.",
+          "disputed": [
+            {
+              "what": "le premier séjour de Louis XIV"
+            }
+          ]
         },
         {
           "tag": "Technique",
@@ -191,13 +196,16 @@
       },
       {
         "read": "Donjon à quatre tours bastionnées aux angles, partie du mur de façade d'un ensemble plus vaste avec deux tours plus grandes ; les bases de deux autres tours à l'arrière n'ont jamais été élevées au-dessus du mur. Travaux ordonnés le 6 septembre 1519, murs à peine sortis de terre en 1524, repris en septembre 1526 avec 1 800 ouvriers ; escalier ouvert à double spirale ; la toiture est comparée à la silhouette d'une ville."
+      },
+      {
+        "read": "Le nuage de points classé LiDAR HD de l’IGN (dalles 0588_6725 et 0588_6726, Lambert-93 et altitudes IGN69, mission 23LHD4JH, Leica CityMapper-2, survol du 11 janvier 2024, édition du 20 décembre 2024 ; 36,5 et 34,0 millions de points par dalle), diffusé en données ouvertes (Licence Ouverte 2.0). Au-dessus du donjon, son point le plus haut, à 54,7 m au-dessus du modèle de terrain, se trouve sur l’axe de la tour-lanterne, à 0,3 m de celui du modèle ; les lanternons des tours et les souches des terrasses et des cônes y apparaissent comme des blocs compacts, dont l’emplacement et le sommet ont été lus."
       }
     ],
     "uncertainties": [
       "Un plan en croix grecque : quatre salles de 9 m de large et 18 m de long se rejoignant à l'escalier central, avec un appartement dans chaque angle : simplifié ; les quatre salles sont laissées en croix ouverte entre les étages des cantons, sans leurs voûtes à caissons, que décrivent les pages mêmes du Domaine.",
       "Un escalier à double révolution de deux rampes hélicoïdales autour d'un noyau ouvert, montant jusqu'aux terrasses : simplifié ; le rayon de l'escalier, son nombre de marches et les ouvertures de son noyau sont interprétés, aucun relevé mesuré n'ayant été lu.",
       "La tour-lanterne au-dessus de l'escalier, point culminant du château à 56 m, couronnée d'une fleur de lis : simplifié ; la tour-lanterne est modélisée en tambours superposés, sans la couronne d'arcs, de nervures et de décor sculpté de la vraie.",
-      "Terrasses, lucarnes, souches de cheminée et tourelles au-dessus du donjon, une toiture comme un village dans le ciel : simplifié ; les lucarnes et les souches de cheminée sont des formes standard placées à des endroits plausibles, et leur nombre, leurs frontons et leur décor sculpté n'ont pas été appariés un à un avec les photographies.",
+      "Terrasses, lucarnes, souches de cheminée et tourelles au-dessus du donjon, une toiture comme un village dans le ciel : simplifié ; 25 des 28 souches de cheminée se dressent à l’emplacement et montent au sommet d’un bloc compact du nuage de points LiDAR HD de l’IGN (les plus grands blocs de chaque tour ou pavillon, répartis entre ses souches de façon qu’elles bougent le moins possible ; le relevé est calé sur le modèle par les quatre tours du donjon, à 0,5 m près environ, si bien qu’un emplacement est juste à 1 m près environ et un sommet à 1 m près environ), mais ces blocs ont été pris pour des souches d’après leur forme et aucun n’a été apparié à une photographie : quelques-uns peuvent être des tourelles ou des pinacles, et la vraie toiture en compte davantage que le modèle n’en dessine ; les 3 autres souches restent à des endroits plausibles ; les souches sont dessinées selon les deux types que montrent les photographies des toits (un réseau de losanges d’ardoise sous un couronnement à fronton, ou de grands disques d’ardoise sur des plateaux moulurés sous un attique à pinacles autour d’une flèche d’ardoise, les deux avec une frise de pastilles d’ardoise), mais le type de chacune, leur largeur et le départ de leur fût n’ont pas été relevés ; les lucarnes sont des formes standard placées à des endroits plausibles, sans leur décor sculpté : 13 ont été déplacées et 10 supprimées là où se dresse une souche mesurée.",
       "L'oratoire royal, bâti en dehors du bloc d'origine et daté de 1540, qui rompt la symétrie de la grande façade : simplifié ; l'oratoire est un bloc nu à la taille du plan, sans son décor sculpté.",
       "Les fenêtres sont partout des fenêtres rectangulaires à croisée de meneau et de traverse ; les baies en plein cintre des loggias et les arcs du rez-de-chaussée des ailes ne sont pas modélisés.",
       "Le devant du donjon se tient environ 2 m plus bas, d'après les photographies, sur son côté nord-ouest que la cour : le modèle n'a qu'un seul niveau de sol, celui de la cour.",

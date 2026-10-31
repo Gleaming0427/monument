@@ -53,7 +53,7 @@
    "label": "works ordered"
   }
  ],
- "modelNote": "Measured: the plan, from the mapped outline (towers 20 m across, 44.8 m between the keep's tower axes). Read on photographs: heights, roofs, windows. Simplified: carved ornament, dormers and chimney stacks, the lantern tower's crown, the halls' vaults.",
+ "modelNote": "Measured: the plan, from the mapped outline (towers 20 m across, 44.8 m between the keep's tower axes); the place and top of 25 of the 28 chimney stacks, from the IGN's LiDAR HD point cloud. Read on photographs: heights, roofs, windows. Simplified: carved ornament, dormers, the 3 stacks no scanned block was matched to, which kind of stack stands where, the stacks' widths and where their shafts start, the lantern tower's crown, the halls' vaults.",
  "evidence": {
   "size": "building",
   "identity": "Château de Chambord, Chambord, Loir-et-Cher, Centre-Val de Loire, France (OSM way 240990589; Wikidata Q205367)",
@@ -93,6 +93,10 @@
    {
     "url": "https://en.wikipedia.org/wiki/Ch%C3%A2teau_de_Chambord",
     "read": "Keep with four bastion towers at the corners, part of the front wall of a larger compound with two larger towers; bases for two more towers at the rear were never raised above the wall. Works ordered 6 September 1519, walls barely above ground in 1524, resumed September 1526 with 1,800 workers; open double-spiral staircase; the roofscape is likened to the skyline of a town."
+   },
+   {
+    "url": "https://data.geopf.fr/telechargement/download/LiDARHD-NUALID/NUALHD_1-0__LAZ_LAMB93_JH_2024-12-20/LHD_FXX_0588_6726_PTS_LAMB93_IGN69.copc.laz",
+    "read": "The IGN's LiDAR HD classified point cloud (tiles 0588_6725 and 0588_6726, Lambert-93 and IGN69 heights, mission 23LHD4JH, Leica CityMapper-2, flown on 11 January 2024, edition of 20 December 2024; 36.5 and 34.0 million points to the tile), published as open data (Licence Ouverte 2.0). Over the keep its highest point, 54.7 m above the terrain model, stands on the axis of the lantern tower, within 0.3 m of the model's; the towers' lanternons and the stacks of the terraces and cones show in it as compact blocks, whose place and top were read from it."
    }
   ],
   "plan": {
@@ -124,6 +128,11 @@
     "calibration": {
      "points": 7,
      "rms": 0.3
+    },
+    "silhouette": {
+     "ground": 360,
+     "trees": true,
+     "iou": 0.856
     }
    },
    {
@@ -143,6 +152,10 @@
     "calibration": {
      "points": 5,
      "rms": 0.4
+    },
+    "silhouette": {
+     "ground": 400,
+     "iou": 0.883
     }
    },
    {
@@ -162,6 +175,11 @@
     "calibration": {
      "points": 7,
      "rms": 1.4
+    },
+    "silhouette": {
+     "ground": 445,
+     "trees": true,
+     "iou": 0.825
     }
    },
    {
@@ -181,6 +199,56 @@
     "calibration": {
      "points": 6,
      "rms": 0.5
+    },
+    "silhouette": {
+     "trees": true,
+     "ignore": [
+      [
+       [
+        0,
+        330
+       ],
+       [
+        45,
+        330
+       ],
+       [
+        45,
+        600
+       ],
+       [
+        0,
+        600
+       ]
+      ],
+      [
+       [
+        655,
+        0
+       ],
+       [
+        960,
+        0
+       ],
+       [
+        960,
+        600
+       ],
+       [
+        700,
+        600
+       ],
+       [
+        700,
+        360
+       ],
+       [
+        650,
+        250
+       ]
+      ]
+     ],
+     "iou": 0.741
     }
    },
    {
@@ -200,6 +268,9 @@
     "calibration": {
      "points": 5,
      "rms": 0.8
+    },
+    "silhouette": {
+     "iou": 0.822
     }
    }
   ],
@@ -347,7 +418,7 @@
    "A plan in a Greek cross: four halls 9 m wide and 18 m long meeting at the central stair, with an apartment in each angle: simplified; the four halls are left as an open cross between the cantons' floors, without their coffered vaults, which the Domaine's own pages describe.",
    "A double-revolution staircase of two helical ramps round an open core, rising to the terraces: simplified; the radius of the stair, its number of treads and the openings of its core are interpreted, no measured survey having been read.",
    "The lantern tower over the stair, the highest point of the château at 56 m, crowned by a fleur-de-lis: simplified; the lantern tower is modelled as stacked drums, with none of the crown of arches, ribs and carved ornament of the real one.",
-   "Terraces, dormers, chimney stacks and turrets over the keep, a roofscape like a village in the sky: simplified; the dormers and chimney stacks are standard shapes at plausible places, and their counts, pediments and carved ornament were not matched one by one with the photographs.",
+   "Terraces, dormers, chimney stacks and turrets over the keep, a roofscape like a village in the sky: simplified; 25 of the 28 chimney stacks stand at the place and rise to the top of a compact block of the IGN's LiDAR HD point cloud (the largest blocks of each tower or pavilion, shared among its stacks so that they move least; the scan is laid on the model by the keep's four towers, to about 0.5 m, so a place is good to about 1 m and a top to about 1 m), but those blocks were taken for stacks from their shape and none was matched to a photograph, so a few may be turrets or pinnacles, and the real roofscape holds more of them than the model draws; the other 3 stacks stay at plausible places; the stacks are drawn in the two kinds the roof photographs show (a lattice of slate lozenges under a gabled crown, or great slate discs on moulded plates under an attic of pinnacles round a slate spire, both with a frieze of slate dots), but which kind stands where, their widths and where their shafts start were not read; the dormers are standard shapes at plausible places, without their carved ornament: 13 were moved and 10 left out where a measured stack stands.",
    "The royal oratory, built outside the original block and dated 1540, which breaks the symmetry of the great façade: simplified; the oratory is a plain block of the plan's size, without its carved decoration.",
    "The windows are rectangular windows with a cross of mullion and transom throughout; the round-headed bays of the loggias and the arches of the wings' ground floor are not modelled.",
    "The front of the keep stands about 2 m lower, against the photographs, on its north-west side than the court: the model has one ground level, the one of the court.",
@@ -428,7 +499,7 @@
      "reference": 4,
      "element": 8,
      "method": "geometry",
-     "model": "Four hipped pavilions over the cantons with dormers and chimney stacks, a ring of dormers and stacks round each tower's cone, a paved terrace over the crossing",
+     "model": "Four hipped pavilions over the cantons with dormers and chimney stacks, a ring of dormers and stacks round each tower's cone, a paved terrace over the crossing; 25 of the 28 stacks at the place and top of a block of the LiDAR HD scan, in the two kinds of the roof photographs, slate lozenges under a gable or slate discs under pinnacles",
      "checked": true,
      "result": "named simplification"
     },
@@ -641,7 +712,22 @@
       -2.45
      ],
      "source": "https://www.chambord.org/fr/histoire/le-chateau/les-personnages-marquants/",
-     "text": "Louis XIV stays nine times at Chambord with his court, the last in 1685. On 14 October 1670 Molière and Lully give the first performance of Le Bourgeois gentilhomme before the king and his court at Chambord."
+     "text": "Louis XIV stays nine times at Chambord with his court, the last in 1685. On 14 October 1670 Molière and Lully give the first performance of Le Bourgeois gentilhomme before the king and his court at Chambord.",
+     "disputed": [
+      {
+       "what": "Louis XIV's first stay",
+       "claims": [
+        {
+         "when": "1650",
+         "source": "https://fr.wikipedia.org/wiki/Ch%C3%A2teau_de_Chambord"
+        },
+        {
+         "when": "1660",
+         "source": "https://www.chambord.org/fr/histoire/le-chateau/les-personnages-marquants/"
+        }
+       ]
+      }
+     ]
     },
     {
      "at": 0.7,
@@ -917,10 +1003,17 @@
    "top": {
     "deck": 6.9,
     "dormers": {
-     "count": 6,
+     "count": 5,
      "arc": [
       120,
       330
+     ],
+     "angles": [
+      131.5,
+      178.5,
+      207.5,
+      242.5,
+      312.5
      ],
      "r": 7.7,
      "h": 4.4,
@@ -928,22 +1021,34 @@
     },
     "chimneys": [
      {
-      "a": 295,
-      "r": 6,
-      "base": 6,
-      "h": 7
+      "a": 275.2,
+      "r": 7.28,
+      "base": 0.05,
+      "h": 15.2,
+      "w": 2.2,
+      "d": 1.5,
+      "kind": "lozenges",
+      "crown": "gable"
      },
      {
-      "a": 155,
-      "r": 6,
-      "base": 6,
-      "h": 7
+      "a": 154.8,
+      "r": 6.82,
+      "base": 1.81,
+      "h": 16.8,
+      "w": 2.6,
+      "d": 2,
+      "kind": "discs",
+      "crown": "pinnacles"
      },
      {
-      "a": 405,
-      "r": 5.2,
-      "base": 5,
-      "h": 6
+      "a": 103.3,
+      "r": 6.83,
+      "base": 1.79,
+      "h": 12.9,
+      "w": 2.2,
+      "d": 1.8,
+      "kind": "lozenges",
+      "crown": "gable"
      }
     ]
    },
@@ -1044,10 +1149,17 @@
    "top": {
     "deck": 6.9,
     "dormers": {
-     "count": 6,
+     "count": 5,
      "arc": [
       30,
       240
+     ],
+     "angles": [
+      47.5,
+      117.5,
+      152.5,
+      179.5,
+      224.5
      ],
      "r": 7.7,
      "h": 4.4,
@@ -1055,22 +1167,34 @@
     },
     "chimneys": [
      {
-      "a": 205,
-      "r": 6,
-      "base": 6,
-      "h": 7
+      "a": 202,
+      "r": 6.59,
+      "base": 2.65,
+      "h": 15.4,
+      "w": 2.6,
+      "d": 2,
+      "kind": "lozenges",
+      "crown": "gable"
      },
      {
-      "a": 65,
-      "r": 6,
-      "base": 6,
-      "h": 7
+      "a": 84.5,
+      "r": 7.03,
+      "base": 0.88,
+      "h": 12.7,
+      "w": 2.6,
+      "d": 2,
+      "kind": "discs",
+      "crown": "pinnacles"
      },
      {
-      "a": 315,
-      "r": 5.2,
-      "base": 5,
-      "h": 6
+      "a": 258.2,
+      "r": 7.56,
+      "base": 0.05,
+      "h": 15,
+      "w": 2.6,
+      "d": 2,
+      "kind": "lozenges",
+      "crown": "gable"
      }
     ]
    },
@@ -1178,28 +1302,46 @@
       -60,
       150
      ],
+     "angles": [
+      -42.5,
+      -7.5,
+      27.5,
+      62.5,
+      83.5,
+      132.5
+     ],
      "r": 7.7,
      "h": 4.4,
      "w": 2.4
     },
     "chimneys": [
      {
-      "a": 115,
-      "r": 6,
-      "base": 6,
-      "h": 7
+      "a": 106.4,
+      "r": 6.42,
+      "base": 3.27,
+      "h": 13.6,
+      "w": 2.6,
+      "d": 2,
+      "kind": "lozenges",
+      "crown": "gable"
      },
      {
-      "a": -25,
-      "r": 6,
-      "base": 6,
-      "h": 7
+      "a": 287.7,
+      "r": 6.05,
+      "base": 4.61,
+      "h": 11.3,
+      "w": 1.7,
+      "d": 1.4,
+      "kind": "discs",
+      "crown": "pinnacles"
      },
      {
       "a": 225,
       "r": 5.2,
       "base": 5,
-      "h": 6
+      "h": 6,
+      "kind": "lozenges",
+      "crown": "gable"
      }
     ]
    },
@@ -1302,10 +1444,17 @@
    "top": {
     "deck": 6.9,
     "dormers": {
-     "count": 6,
+     "count": 5,
      "arc": [
       210,
       420
+     ],
+     "angles": [
+      227.5,
+      250.5,
+      297.5,
+      332.5,
+      359.5
      ],
      "r": 7.7,
      "h": 4.4,
@@ -1313,22 +1462,34 @@
     },
     "chimneys": [
      {
-      "a": 385,
-      "r": 6,
-      "base": 6,
-      "h": 7
+      "a": 23,
+      "r": 7.37,
+      "base": 0.05,
+      "h": 20,
+      "w": 2.4,
+      "d": 2,
+      "kind": "lozenges",
+      "crown": "gable"
      },
      {
-      "a": 245,
-      "r": 6,
-      "base": 6,
-      "h": 7
+      "a": 272.4,
+      "r": 6.47,
+      "base": 3.07,
+      "h": 11,
+      "w": 2.4,
+      "d": 2,
+      "kind": "discs",
+      "crown": "pinnacles"
      },
      {
-      "a": 495,
-      "r": 5.2,
-      "base": 5,
-      "h": 6
+      "a": 65.5,
+      "r": 7.5,
+      "base": 0.05,
+      "h": 13.7,
+      "w": 2.1,
+      "d": 2,
+      "kind": "lozenges",
+      "crown": "gable"
      }
     ]
    },
@@ -1619,13 +1780,21 @@
     "dormers": [
      {
       "side": "u-",
-      "count": 3,
+      "count": 2,
+      "at": [
+       8.45,
+       14.08
+      ],
       "w": 2.6,
       "h": 3.8
      },
      {
       "side": "v-",
-      "count": 3,
+      "count": 2,
+      "at": [
+       7.65,
+       14.08
+      ],
       "w": 2.6,
       "h": 3.8
      }
@@ -1633,13 +1802,15 @@
     "chimneys": [
      {
       "at": [
-       -5,
-       -5
+       1.79,
+       -5.32
       ],
-      "w": 1.7,
-      "d": 1.3,
-      "h": 7.5,
-      "y": 30.972067039106143
+      "w": 2.1,
+      "d": 2,
+      "h": 5.6,
+      "y": 30.85,
+      "kind": "lozenges",
+      "crown": "gable"
      },
      {
       "at": [
@@ -1649,27 +1820,33 @@
       "w": 1.7,
       "d": 1.3,
       "h": 7.5,
-      "y": 30.972067039106143
+      "y": 30.972067039106143,
+      "kind": "discs",
+      "crown": "pinnacles"
      },
      {
       "at": [
-       5,
-       -5
+       8.12,
+       -3.03
       ],
-      "w": 1.7,
-      "d": 1.3,
-      "h": 7.5,
-      "y": 30.972067039106143
+      "w": 2.1,
+      "d": 2,
+      "h": 11.5,
+      "y": 28.04,
+      "kind": "lozenges",
+      "crown": "gable"
      },
      {
       "at": [
-       5,
-       5
+       4.84,
+       7.53
       ],
-      "w": 1.7,
-      "d": 1.3,
-      "h": 7.5,
-      "y": 30.972067039106143
+      "w": 2.6,
+      "d": 1.7,
+      "h": 7.2,
+      "y": 28.63,
+      "kind": "discs",
+      "crown": "pinnacles"
      }
     ]
    }
@@ -1725,7 +1902,11 @@
      },
      {
       "side": "v+",
-      "count": 3,
+      "count": 2,
+      "at": [
+       2.82,
+       9.65
+      ],
       "w": 2.6,
       "h": 3.8
      }
@@ -1733,43 +1914,51 @@
     "chimneys": [
      {
       "at": [
-       -5,
-       -5
+       -2.73,
+       -7.53
       ],
-      "w": 1.7,
-      "d": 1.3,
-      "h": 7.5,
-      "y": 30.972067039106143
+      "w": 2.6,
+      "d": 2,
+      "h": 12.4,
+      "y": 28.63,
+      "kind": "lozenges",
+      "crown": "gable"
      },
      {
       "at": [
-       -5,
-       5
+       1.9,
+       5.33
       ],
-      "w": 1.7,
-      "d": 1.3,
-      "h": 7.5,
-      "y": 30.972067039106143
+      "w": 2.6,
+      "d": 2,
+      "h": 4.5,
+      "y": 30.84,
+      "kind": "discs",
+      "crown": "pinnacles"
      },
      {
       "at": [
-       5,
-       -5
+       8.33,
+       -4.1
       ],
-      "w": 1.7,
-      "d": 1.3,
-      "h": 7.5,
-      "y": 30.972067039106143
+      "w": 2.6,
+      "d": 2,
+      "h": 9.8,
+      "y": 27.82,
+      "kind": "lozenges",
+      "crown": "gable"
      },
      {
       "at": [
-       5,
-       5
+       8.47,
+       0.97
       ],
       "w": 1.7,
-      "d": 1.3,
-      "h": 7.5,
-      "y": 30.972067039106143
+      "d": 1.7,
+      "h": 5,
+      "y": 27.69,
+      "kind": "discs",
+      "crown": "pinnacles"
      }
     ]
    }
@@ -1819,13 +2008,21 @@
     "dormers": [
      {
       "side": "u+",
-      "count": 3,
+      "count": 2,
+      "at": [
+       8.45,
+       13.68
+      ],
       "w": 2.6,
       "h": 3.8
      },
      {
       "side": "v-",
-      "count": 3,
+      "count": 2,
+      "at": [
+       2.82,
+       10.45
+      ],
       "w": 2.6,
       "h": 3.8
      }
@@ -1833,43 +2030,51 @@
     "chimneys": [
      {
       "at": [
-       -5,
+       -0.71,
+       -5.54
+      ],
+      "w": 2.4,
+      "d": 2,
+      "h": 6.8,
+      "y": 30.63,
+      "kind": "lozenges",
+      "crown": "gable"
+     },
+     {
+      "at": [
+       -6.97,
+       3.83
+      ],
+      "w": 2.6,
+      "d": 2,
+      "h": 7.5,
+      "y": 29.19,
+      "kind": "discs",
+      "crown": "pinnacles"
+     },
+     {
+      "at": [
+       5,
        -5
       ],
       "w": 1.7,
       "d": 1.3,
       "h": 7.5,
-      "y": 30.972067039106143
+      "y": 30.972067039106143,
+      "kind": "lozenges",
+      "crown": "gable"
      },
      {
       "at": [
-       -5,
-       5
+       3.44,
+       7.81
       ],
-      "w": 1.7,
-      "d": 1.3,
-      "h": 7.5,
-      "y": 30.972067039106143
-     },
-     {
-      "at": [
-       5,
-       -5
-      ],
-      "w": 1.7,
-      "d": 1.3,
-      "h": 7.5,
-      "y": 30.972067039106143
-     },
-     {
-      "at": [
-       5,
-       5
-      ],
-      "w": 1.7,
-      "d": 1.3,
-      "h": 7.5,
-      "y": 30.972067039106143
+      "w": 2.2,
+      "d": 2,
+      "h": 12.2,
+      "y": 28.35,
+      "kind": "discs",
+      "crown": "pinnacles"
      }
     ]
    }
@@ -1921,13 +2126,21 @@
     "dormers": [
      {
       "side": "u+",
-      "count": 3,
+      "count": 2,
+      "at": [
+       4.02,
+       9.65
+      ],
       "w": 2.6,
       "h": 3.8
      },
      {
       "side": "v+",
-      "count": 3,
+      "count": 2,
+      "at": [
+       8.45,
+       14.08
+      ],
       "w": 2.6,
       "h": 3.8
      }
@@ -1935,43 +2148,51 @@
     "chimneys": [
      {
       "at": [
-       -5,
-       -5
+       1.89,
+       -7.24
       ],
       "w": 1.7,
-      "d": 1.3,
-      "h": 7.5,
-      "y": 30.972067039106143
+      "d": 1.7,
+      "h": 5.6,
+      "y": 28.92,
+      "kind": "lozenges",
+      "crown": "gable"
      },
      {
       "at": [
-       -5,
-       5
+       -7.11,
+       2.5
       ],
-      "w": 1.7,
-      "d": 1.3,
-      "h": 7.5,
-      "y": 30.972067039106143
+      "w": 2.6,
+      "d": 2,
+      "h": 9.8,
+      "y": 29.05,
+      "kind": "discs",
+      "crown": "pinnacles"
      },
      {
       "at": [
-       5,
-       -5
+       4.29,
+       -6.85
       ],
-      "w": 1.7,
-      "d": 1.3,
-      "h": 7.5,
-      "y": 30.972067039106143
+      "w": 2,
+      "d": 1.8,
+      "h": 4.9,
+      "y": 29.31,
+      "kind": "lozenges",
+      "crown": "gable"
      },
      {
       "at": [
-       5,
-       5
+       5.66,
+       -1.51
       ],
-      "w": 1.7,
-      "d": 1.3,
-      "h": 7.5,
-      "y": 30.972067039106143
+      "w": 2.4,
+      "d": 2,
+      "h": 5,
+      "y": 30.51,
+      "kind": "discs",
+      "crown": "pinnacles"
      }
     ]
    }

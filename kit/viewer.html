@@ -22,12 +22,13 @@ for(const key of ["embed","clean","caption"])if(new URLSearchParams(location.sea
  <code>/monument &lt;building, city, country&gt;</code>
 </section>
 <div id="labels" aria-hidden="true"></div><div id="pin" hidden></div><i id="leader" hidden></i>
-<aside id="moment" hidden aria-live="polite"><span id="m-tag"></span><b id="m-title"></b><p id="m-text"></p><a id="m-source" target="_blank" rel="noreferrer"></a></aside>
+<aside id="moment" hidden aria-live="polite"><span id="m-tag"></span><b id="m-title"></b><p id="m-text"></p><div id="m-disputed" hidden></div><a id="m-source" target="_blank" rel="noreferrer"></a></aside>
 <aside class="live" aria-live="polite"><div id="live"></div><ul id="facts"></ul></aside>
 <section class="story" aria-live="polite">
  <span id="when"></span>
  <h1 id="title"></h1>
  <p id="text"></p>
+ <div id="disputed" hidden></div>
  <a id="source" target="_blank" rel="noreferrer"></a>
  <p id="model-note" hidden></p>
 </section>

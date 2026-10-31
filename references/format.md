@@ -123,6 +123,26 @@ At least two construction phases in a standard build carry `scene`, unless the w
 - `inside: true` and `look` [azimuth, elevation] (degrees, as a reference viewpoint's): a moment inside the building. While it shows, the camera swings round to look from that side and the section view opens on the camera's side of the view's centre, unless the reader has set the section view or moved the camera themselves. The cut passes a little in front of the anchor (the camera eases most of the way to it), so put the anchor just in front of the object, on the camera's side.
 - Use at least one close construction moment: a joint, tool, temporary support or material operation. Its anchor should be where the viewer can see the corresponding geometry while reading it.
 
+## Dates the sources disagree on
+
+When the pages read give different dates for something the film shows, the film does not settle it quietly. The phase or the moment that states that date takes `disputed`, and the viewer shows each page's date on its card, hatches the phase's bar on the timeline and halves the moment's diamond:
+
+```json
+"disputed": [{"what": "Louis XIV's first stay", "claims": [
+  {"when": "1650", "source": "https://fr.wikipedia.org/wiki/Ch%C3%A2teau_de_Chambord"},
+  {"when": "1660", "source": "https://www.chambord.org/fr/histoire/le-chateau/les-personnages-marquants/"}]}]
+```
+
+The card reads: *Sources disagree on Louis XIV's first stay: 1650 (fr.wikipedia.org) or 1660 (chambord.org)*, each site linked to its page.
+
+- `what`: what the dates are the date of, in a few words that follow "Sources disagree on".
+- `claims`: one per page, at least two, and at least two different dates; two pages that give the same date are two claims, and the card puts them together. `when` is written like a phase's `when`; `source` is one of the pages in `evidence.sources`.
+- The film still has to place the work: the phase's own `when` (or `from` and `to`) follows one claim, or only what the claims agree on (Osaka Castle's walls are "From 1620" because the pages end the works in 1628 or 1629). Where the text can step round the disputed date, let it: Chambord's card gives the number of Louis XIV's stays and the last, on which the pages agree. Say in `evidence.uncertainties` which date the film follows and why.
+- Only for dates the film shows or a card states. A disagreement about something the film does not use stays in `evidence.uncertainties`.
+- `what`, and a `when` with words in it ("7 November 1931"), are translated with the rest of the card (`scripts/monument-i18n.mjs`); dates in numbers and the pages are not.
+
+`validate.mjs` refuses a dispute without `what`, with fewer than two claims, with two claims from one page or with a single date, and, from the standard build on, a claim whose page is not in `evidence.sources`.
+
 ## view
 
 - `target`, `distance`: the final framing. `width`: horizontal extent to frame. `start`: a close shot at the beginning; the camera pulls back to the final framing.
@@ -163,7 +183,7 @@ Everything a reader needs to trust the model. `validate.mjs --standard` checks t
 - `size`: building, ensemble or site (step 1).
 - `sources`: pages that were opened and read, with what each says. Every phase and moment `source` must be one of them. Search results are not sources.
 - `plan.outline`: the measured outline as `{"source", "url", "origin": [lat, lon], "polygons": [[[x, z], …]], "lines": [[[x, z], …]]}` (closed polygons, and open lines for rings split into several ways) in local metres around `origin` (x east, z south, same origin as the model). `scripts/plan.mjs` fills both the outline and the model seen from above to their outer envelope (gaps under 3 m closed, as an aerial trace would) and measures the distance between their edges both ways; it draws `<id>.evidence/plan.svg` with the edges further apart than the tolerance in red. It records the result in `plan.fit` (`p90`, `max`, `coverage`, `overflow`), which the viewer shows and validation checks against a fresh measurement. The tolerance is 3 m at the 90th percentile; `plan.tolerance` may raise it to 5 m at most, with the reason in `plan.toleranceReason`. The model must also cover 85% of the outline and add no more than 20% outside it.
-- `references`: standard mode uses at least three photos from two sides; publication uses four from three sides. `azimuth` is the direction of the photographer seen from the building, in degrees from north; `elevation` (negative looks up) and `distance` place the camera, `target` is the point it looks at, and `fov` (optional, degrees) matches a wide-angle lens: put the camera where the photographer stood rather than moving it back. `phase` (optional) names the state the photo shows, for an old photo or a state since changed; by default the model is captured at the end of the last daylight phase. `calibration` (`points`, `rms`) is written by `scripts/calibrate.mjs`: the viewpoint fitted on points recognised in the photo, and the remaining gap in percent of the photo's height.
+- `references`: standard mode uses at least three photos from two sides; publication uses four from three sides. `azimuth` is the direction of the photographer seen from the building, in degrees from north; `elevation` (negative looks up) and `distance` place the camera, `target` is the point it looks at, and `fov` (optional, degrees) matches a wide-angle lens: put the camera where the photographer stood rather than moving it back. `phase` (optional) names the state the photo shows, for an old photo or a state since changed; by default the model is captured at the end of the last daylight phase. `calibration` (`points`, `rms`) is written by `scripts/calibrate.mjs`: the viewpoint fitted on points recognised in the photo, and the remaining gap in percent of the photo's height. `silhouette` (`ground`, `ignore`, `trees`, `holes`, and the `iou` that `scripts/silhouette.mjs --write` records) says how the photo is cut for the outline test, which holds the model to it ([fidelity.md](fidelity.md#compare-fix-repeat)); its mask is `<id>.evidence/silhouette/ref-<n>.png`.
 - `features`: what makes the building recognisable, each with the page that says so.
 - `comparisons`: written by `scripts/compare.mjs` (captures, overlays of each photo on its capture, phase captures) and by you (gaps, fixed, remaining).
 

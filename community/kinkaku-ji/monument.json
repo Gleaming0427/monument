@@ -143,6 +143,76 @@
         "calibration": {
           "points": 14,
           "rms": 0.4
+        },
+        "silhouette": {
+          "ground": 450,
+          "ignore": [
+            [
+              [
+                38,
+                135
+              ],
+              [
+                355,
+                105
+              ],
+              [
+                355,
+                175
+              ],
+              [
+                280,
+                240
+              ],
+              [
+                300,
+                300
+              ],
+              [
+                300,
+                450
+              ],
+              [
+                38,
+                450
+              ]
+            ],
+            [
+              [
+                728,
+                105
+              ],
+              [
+                922,
+                90
+              ],
+              [
+                922,
+                450
+              ],
+              [
+                750,
+                450
+              ],
+              [
+                750,
+                300
+              ],
+              [
+                818,
+                290
+              ],
+              [
+                818,
+                250
+              ],
+              [
+                728,
+                180
+              ]
+            ]
+          ],
+          "iou": 0.748
         }
       },
       {
@@ -162,6 +232,48 @@
         "calibration": {
           "points": 17,
           "rms": 0.8
+        },
+        "silhouette": {
+          "ground": 495,
+          "ignore": [
+            [
+              [
+                760,
+                250
+              ],
+              [
+                929,
+                170
+              ],
+              [
+                929,
+                495
+              ],
+              [
+                760,
+                495
+              ]
+            ],
+            [
+              [
+                31,
+                300
+              ],
+              [
+                150,
+                300
+              ],
+              [
+                150,
+                495
+              ],
+              [
+                31,
+                495
+              ]
+            ]
+          ],
+          "iou": 0.851
         }
       },
       {
@@ -181,6 +293,66 @@
         "calibration": {
           "points": 16,
           "rms": 1.3
+        },
+        "silhouette": {
+          "ground": 445,
+          "ignore": [
+            [
+              [
+                41,
+                280
+              ],
+              [
+                235,
+                300
+              ],
+              [
+                235,
+                445
+              ],
+              [
+                41,
+                445
+              ]
+            ],
+            [
+              [
+                760,
+                285
+              ],
+              [
+                919,
+                285
+              ],
+              [
+                919,
+                445
+              ],
+              [
+                760,
+                445
+              ]
+            ],
+            [
+              [
+                41,
+                0
+              ],
+              [
+                110,
+                0
+              ],
+              [
+                110,
+                110
+              ],
+              [
+                41,
+                110
+              ]
+            ]
+          ],
+          "iou": 0.899
         }
       },
       {
@@ -201,7 +373,83 @@
           "points": 18,
           "rms": 0.8
         },
-        "positionReason": "The photograph shows the east face at about 30 degrees and the south face at about 60 degrees, so it was taken from the south-east bank of the pond, some 23 m east of the position Commons records; the fit moves the camera there."
+        "positionReason": "The photograph shows the east face at about 30 degrees and the south face at about 60 degrees, so it was taken from the south-east bank of the pond, some 23 m east of the position Commons records; the fit moves the camera there.",
+        "silhouette": {
+          "ground": 315,
+          "ignore": [
+            [
+              [
+                0,
+                40
+              ],
+              [
+                330,
+                40
+              ],
+              [
+                330,
+                120
+              ],
+              [
+                246,
+                200
+              ],
+              [
+                246,
+                315
+              ],
+              [
+                0,
+                315
+              ]
+            ],
+            [
+              [
+                560,
+                40
+              ],
+              [
+                960,
+                40
+              ],
+              [
+                960,
+                315
+              ],
+              [
+                628,
+                315
+              ],
+              [
+                628,
+                190
+              ],
+              [
+                560,
+                130
+              ]
+            ],
+            [
+              [
+                560,
+                0
+              ],
+              [
+                960,
+                0
+              ],
+              [
+                960,
+                40
+              ],
+              [
+                560,
+                40
+              ]
+            ]
+          ],
+          "iou": 0.729
+        }
       }
     ],
     "features": [

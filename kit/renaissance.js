@@ -211,13 +211,14 @@ export function renaissance(gothic) {
         S.flush(Ld, 'stone', t0.deckColor ?? '#d6cdb8', ph, extra);
       }
       const d = t0.dormers;
-      if (d) for (let i = 0; i < d.count; i++) {
-        const a = rad(d.arc[0]) + (i + .5) / d.count * (rad(d.arc[1]) - rad(d.arc[0])), r = d.r ?? 7.4;
+      // `angles` (degrees) sets each dormer's place when they are not evenly spread over `arc`.
+      if (d) for (let i = 0; i < (d.angles?.length ?? d.count); i++) {
+        const a = d.angles ? rad(d.angles[i]) : rad(d.arc[0]) + (i + .5) / d.count * (rad(d.arc[1]) - rad(d.arc[0])), r = d.r ?? 7.4;
         dormer(S, {at: [Math.cos(a) * r, Math.sin(a) * r], out: [Math.cos(a), Math.sin(a)], y: y1 + .05, w: d.w ?? 2.4, h: d.h ?? 4.2, pediment: d.pediment ?? 'triangle', slope: 1.6, stone, phase: ph, extra});
       }
       for (const c of t0.chimneys ?? []) {
         const a = rad(c.a), r = c.r ?? 6.5;
-        chimney(S, {at: [Math.cos(a) * r, Math.sin(a) * r], y: y1 + .05 + (c.base ?? 5), w: c.w ?? 1.5, d: c.d ?? 1.1, h: c.h ?? 6, rot: -a, stone, phase: ph, extra});
+        chimney(S, {at: [Math.cos(a) * r, Math.sin(a) * r], y: y1 + .05 + (c.base ?? 5), w: c.w ?? 1.5, d: c.d ?? 1.1, h: c.h ?? 6, rot: -a, kind: c.kind, crown: c.crown, stone, phase: ph, extra});
       }
     });
     // A balustrade round the head of a low tower: plinth and coping turned, balusters between posts.
@@ -280,28 +281,91 @@ export function renaissance(gothic) {
     }
   }
 
-  // A chimney stack: a shaft whose faces carry panels of slate in diamonds, a moulded cap, a smaller pot above.
-  function chimney(S, {at, y, w = 1.6, d = 1.1, h = 5, rot = 0, stone, slate = '#4b525c', phase, extra = {}, panels = 2}) {
-    const {G} = S, dir = [Math.cos(rot), -Math.sin(rot)], perp = [Math.sin(rot), Math.cos(rot)], tint = c => G.tint(c, .03);
-    G.box('stone', at, y + h / 2, [w, h, d], dir, tint(stone), phase, extra);
-    G.box('stone', at, y + .3, [w + .3, .6, d + .3], dir, tint(stone), phase, extra);
-    G.box('stone', at, y + h + .15, [w + .35, .3, d + .35], dir, tint(stone), phase, extra);
-    G.box('stone', at, y + h + .45, [w + .15, .3, d + .15], dir, tint(stone), phase, extra);
-    G.box('stone', at, y + h + .85, [w * .62, .5, d * .62], dir, tint(stone), phase, extra);
-    // The marquetry: a lozenge of slate, flat on the face, in each panel of the two long faces.
-    const L = S.layers(2);
-    for (const side of [-1, 1]) for (let i = 0; i < panels; i++) {
-      const yy = y + 1.2 + (h - 2.2) * (i + .5) / panels, size = Math.min(w * .5, (h - 2.2) / panels * .6);
-      lozenge(L, [at[0] + perp[0] * side * (d / 2 + .015), at[1] + perp[1] * side * (d / 2 + .015)], dir, [perp[0] * side, 0, perp[1] * side], yy, size * .5, size * .75);
+  // A chimney stack as the roofs of Chambord show it: a shaft of white stone on a moulded plinth, its four faces inlaid
+  // with slate, a frieze of slate dots under a moulded cornice, and a crown. `kind` is what the faces carry: 'lozenges',
+  // a lattice of tall diamonds with half-diamonds against the arrises; or 'discs', great discs (two side by side on a
+  // wide face) and a half-disc hanging under the frieze. `crown`: 'gable', a pediment over each long face under a
+  // small roof of slate; 'pinnacles', an attic with a pinnacle at each corner round a spire of slate; 'cap', a moulded
+  // cap and a pot.
+  function chimney(S, {at, y, w = 1.6, d = 1.1, h = 5, rot = 0, stone, slate = '#4b525c', phase, extra = {}, kind = 'lozenges', crown = 'gable'}) {
+    const {G, k} = S, dir = [Math.cos(rot), -Math.sin(rot)], perp = [Math.sin(rot), Math.cos(rot)], tint = c => G.tint(c, .03);
+    const box = (y0, [l, hh, t]) => G.box('stone', at, y0 + hh / 2, [l, hh, t], dir, tint(stone), phase, extra);
+    const frieze = y + h - .55, top = y + h + .55;
+    box(y, [w + .3, .6, d + .3]); box(y, [w, h, d]); box(frieze, [w + .1, .55, d + .1]);
+    box(y + h, [w + .35, .3, d + .35]); box(y + h + .3, [w + .15, .25, d + .15]);
+    // The slate, face by face: outlines [across the face, height] laid flat on it.
+    const L = S.layers(2), y0 = y + .9, y1 = frieze - .15;
+    for (const side of [-1, 1]) for (const [n, half, width] of [[perp.map(x => x * side), d / 2, w], [dir.map(x => x * side), w / 2, d]]) {
+      const c = [at[0] + n[0] * (half + .015), at[1] + n[1] * (half + .015)], across = [n[1], -n[0]];
+      const shape = points => inlay(L, c, across, [n[0], 0, n[1]], points);
+      // The frieze: a row of dots.
+      const dots = Math.max(2, Math.round(width / .34));
+      for (let i = 0; i < dots; i++) shape(round((i + .5 - dots / 2) * width / dots, frieze + .27, .07, 8));
+      if (kind === 'discs') {
+        // Each disc set on a round plate of stone standing proud of the face, whose edge frames it and catches the light.
+        const cols = width >= 2.2 ? 2 : 1, r = Math.min(width / cols * .32, .55), xs = cols === 2 ? [-width / 4, width / 4] : [0];
+        const span = y1 - y0 - r * 1.6, rows = Math.min(2, Math.max(1, Math.floor(span / (r * 4.5))));
+        const axis = G.V(c[0] + n[0], 0, c[1] + n[1]).sub(G.V(c[0], 0, c[1])), plate = [c[0] + n[0] * .06, c[1] + n[1] * .06];
+        for (let i = 0; i < rows; i++) for (const x of xs) {
+          const yc = y0 + span * (i + .5) / rows;
+          inlay(L, plate, across, [n[0], 0, n[1]], round(x, yc, r, 16));
+          k.lying('drum', 'stone', G.V(c[0] + across[0] * x + n[0] * .005, yc, c[1] + across[1] * x + n[1] * .005), axis, [2 * r + .16, .1], tint(stone), phase, yc, extra);
+        }
+        for (const x of xs) shape(round(x, y1, r * .9, 16, Math.PI));
+      } else {
+        // Between the slate, bands of stone cross in an X from arris to arris.
+        const rows = Math.max(1, Math.round((y1 - y0) / (width * 1.9))), ph = (y1 - y0) / rows, rx = width * .22, ry = ph * .36, edge = width / 2 - .1;
+        for (let i = 0; i < rows; i++) { const yc = y0 + (i + .5) * ph; shape([[-rx, yc], [0, yc - ry], [rx, yc], [0, yc + ry]]); }
+        for (let i = 0; i <= rows; i++) for (const s of [-1, 1]) {
+          const yb = y0 + i * ph;
+          shape([[s * edge, yb - (i > 0 ? ry : 0)], [s * (edge - rx * .9), yb], [s * edge, yb + (i < rows ? ry : 0)]]);
+        }
+      }
     }
     S.flush(L, 'slate', slate, phase, extra);
+    const P = (du, yy, dv) => G.V(at[0] + dir[0] * du + perp[0] * dv, yy, at[1] + dir[1] * du + perp[1] * dv).toArray();
+    if (crown === 'gable') {
+      // An attic, a pediment over each long face, and the small roof of slate between them, its ridge across.
+      box(top, [w * .92, .45, d * .92]);
+      const base = top + .45, run = w * .46 + .08, rise = w * .36, n = 5;
+      for (let i = 0; i < n; i++) box(base + rise * i / n, [2 * run * (1 - (i + .5) / n), rise / n * 1.05, d * .92]);
+      const R = S.layers(2), deep = d * .46 + .08;
+      for (const s of [-1, 1]) {
+        const len = Math.hypot(run, rise), nn = [dir[0] * s * rise / len, run / len, dir[1] * s * rise / len], q = (du, yy, dv) => ({p: [at[0] + dir[0] * du + perp[0] * dv, yy, at[1] + dir[1] * du + perp[1] * dv], n: nn, m: [0, 0, 0]});
+        R.fan([q(s * run, base + .02, -deep), q(s * run, base + .02, deep), q(0, base + rise + .06, deep), q(0, base + rise + .06, -deep)]);
+      }
+      S.flush(R, 'slate', slate, phase, extra);
+      k.turned('ball', 'stone', P(0, base + rise + .28, 0), [.3, .4, .3], 0, tint(stone), phase, base + rise, extra);
+    } else if (crown === 'pinnacles') {
+      // An attic with a pinnacle at each corner (a drum, a bulb, a spike) round a spire of slate and its finial.
+      box(top, [w * .9, .7, d * .9]);
+      const base = top + .7;
+      for (const su of [-1, 1]) for (const sv of [-1, 1]) {
+        const du = su * (w * .45 - .1), dv = sv * (d * .45 - .1);
+        k.turned('drum', 'stone', P(du, base + .15, dv), [.26, .3, .26], 0, tint(stone), phase, base, extra);
+        k.turned('ball', 'stone', P(du, base + .42, dv), [.24, .26, .24], 0, tint(stone), phase, base + .3, extra);
+        k.turned('spike', 'stone', P(du, base + .95, dv), [.16, .85, .16], 0, tint(stone), phase, base + .55, extra);
+      }
+      const spire = Math.max(1.2, w * .9);
+      k.turned('spike', 'slate', P(0, base + spire / 2, 0), [w * .62, spire, d * .62], rot, tint(slate), phase, base, extra);
+      k.turned('ball', 'gilt', P(0, base + spire + .12, 0), [.16, .2, .16], 0, tint('#c9a94a'), phase, base + spire, extra);
+    } else {
+      box(top, [w * .62, .5, d * .62]);
+    }
   }
+
+  // An outline laid flat on a face: `c` its middle on the face [u, v], `across` the face's direction across, `n` its
+  // outward normal; `points` [across, height] in order round it.
+  function inlay(L, c, across, n, points) {
+    L.fan(points.map(([du, y]) => ({p: [c[0] + across[0] * du, y, c[1] + across[1] * du], n, m: [0, 0, 0]})));
+  }
+  // A disc (or, from `from`, the half of it below its diameter), as an outline of `sides` points.
+  const round = (x, y, r, sides, from = 0) => Array.from({length: from ? sides / 2 + 1 : sides}, (_, i) => { const a = from + i / sides * TAU; return [x + Math.cos(a) * r, y + Math.sin(a) * r]; });
 
   // A diamond laid flat on a face: `c` the middle of it on the face [u, v], `dir` the face's direction along the wall,
   // `n` the face's outward normal, `y` its height, `rx` and `ry` its half-width and half-height.
   function lozenge(L, c, dir, n, y, rx, ry) {
-    const v = (du, dy) => ({p: [c[0] + dir[0] * du, y + dy, c[1] + dir[1] * du], n, m: [0, 0, 0]});
-    L.fan([v(-rx, 0), v(0, -ry), v(rx, 0), v(0, ry)]);
+    inlay(L, c, dir, n, [[-rx, y], [0, y - ry], [rx, y], [0, y + ry]]);
   }
 
   // A dormer on a wall line: two cheeks, a window under a lintel, an entablature and a pediment (a triangle, or a segment).
@@ -508,7 +572,7 @@ export function renaissance(gothic) {
         dormer(S, {at: p, out: side.out, y: top, w: d.w ?? 2.4, h: d.h ?? 3.4, pediment: d.pediment ?? 'triangle', slope: rise / ((r.axis === 'v' ? L : D) / 2), stone, phase: ph, extra});
       }
     });
-    for (const c of r.chimneys ?? []) G.life(c.phase ? c : r, (ph, extra) => chimney(S, {at: c.at, y: c.y ?? top + rise * .3, w: c.w ?? 1.6, d: c.d ?? 1.1, h: c.h ?? 5, rot: c.rot ?? 0, stone, phase: ph, extra}));
+    for (const c of r.chimneys ?? []) G.life(c.phase ? c : r, (ph, extra) => chimney(S, {at: c.at, y: c.y ?? top + rise * .3, w: c.w ?? 1.6, d: c.d ?? 1.1, h: c.h ?? 5, rot: c.rot ?? 0, kind: c.kind, crown: c.crown, stone, phase: ph, extra}));
   }
 
   // A lantern standing on a roof or a tower: a lead (or slate) foot, a ring of columns, a dome and a gilded vane.

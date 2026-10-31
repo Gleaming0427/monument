@@ -89,6 +89,20 @@ async function commons(titles) {
   }
   return pages;
 }
+// A date the pages read disagree on is shown, not settled: what it is the date of, and each page's date. The film
+// follows one of them, the phase's or the moment's own; the others stand beside it on the card.
+function disputes(list, where) {
+  if (list === undefined) return;
+  check(Array.isArray(list) && list.length > 0, `${where}: "disputed" must be a list of {"what", "claims"}`);
+  for (const [i, dispute] of (Array.isArray(list) ? list : []).entries()) {
+    const claims = Array.isArray(dispute?.claims) ? dispute.claims : [], label = `${where}: disputed[${i}]`;
+    check(typeof dispute?.what === 'string' && dispute.what.trim().length > 2 && dispute.what.length <= 80, `${label} needs "what": what the dates are the date of, in a few words`);
+    check(claims.length >= 2 && claims.every(claim => typeof claim?.when === 'string' && claim.when.trim() && claim.when.length <= 28 && url(claim.source)), `${label} needs at least two "claims", each {"when": a date, "source": the page that gives it}`);
+    check(new Set(claims.map(claim => claim?.source)).size === claims.length, `${label}: each claim comes from a different page`);
+    check(new Set(claims.map(claim => String(claim?.when).trim())).size >= 2, `${label}: every claim gives the same date, so the pages do not disagree`);
+  }
+}
+
 // Photo reliefs: the image's size in pixels, read from its header (JPEG or PNG).
 async function imageSize(path) {
   const data = await readFile(path).catch(() => null);
@@ -125,6 +139,22 @@ async function relief(e, i, file, id, at, strict) {
 // can carry, the 4 × 4 matrix that places it in the monument's frame, and, for the gallery, a credit and the fit that
 // says how far the model stands from it.
 const SCAN_FILE_LIMIT = 50e6;
+// The cut of a reference photo for the outline test (scripts/silhouette.mjs): how it was cut, in pixels of the
+// 960 × 600 frame, and the mask it left beside the monument once its share in common was recorded.
+async function silhouettes(d, file, id, at) {
+  for (const [i, r] of (d.evidence?.references ?? []).entries()) {
+    const cut = r?.silhouette, where = `${at} reference ${i}: silhouette`;
+    if (cut === undefined) continue;
+    check(cut && typeof cut === 'object' && !Array.isArray(cut), `${where} must be an object`);
+    if (!cut || typeof cut !== 'object') continue;
+    check(cut.iou === undefined || Number.isFinite(cut.iou) && cut.iou >= 0 && cut.iou <= 1, `${where}.iou is a share, from 0 to 1`);
+    check(cut.ground === undefined || Number.isFinite(cut.ground) && cut.ground >= 0 && cut.ground <= 600, `${where}.ground is a row of the 960 × 600 frame`);
+    for (const key of ['trees', 'holes']) check(cut[key] === undefined || typeof cut[key] === 'boolean', `${where}.${key} must be true or false`);
+    check(cut.ignore === undefined || Array.isArray(cut.ignore) && cut.ignore.every(poly => Array.isArray(poly) && poly.length >= 3 && poly.every(p => Array.isArray(p) && p.length === 2 && p.every(Number.isFinite))), `${where}.ignore is a list of polygons, each at least three [x, y] points of the frame`);
+    if (Number.isFinite(cut.iou)) check(await stat(join(dirname(file), `${id}.evidence`, 'silhouette', `ref-${i}.png`)).then(() => true, () => false), `${where}: ${id}.evidence/silhouette/ref-${i}.png not found (run scripts/silhouette.mjs)`);
+  }
+}
+
 async function scanLayer(d, file, id, at, strict) {
   const scan = d.scan, where = `${at} scan`;
   if (scan === undefined) return;
@@ -212,6 +242,7 @@ for (const file of (await Promise.all(targets.map(files))).flat()) {
     check(p.title && p.text, `${at} phase ${p.id} needs a title and a text`);
     check(p.when || (!isNaN(Date.parse(p.from)) && !isNaN(Date.parse(p.to))), `${at} phase ${p.id} needs "when" or ISO "from" and "to"`);
     check(!p.when || p.when.length <= 28, `${at} phase ${p.id}: "when" is a date or period only ("${p.when}")`);
+    disputes(p.disputed, `${at} phase ${p.id}`);
     if (p.scene) {
       check(['masonry', 'timber', 'metal', 'earth', 'restoration', 'mixed'].includes(p.scene.craft), `${at} phase ${p.id}: scene.craft must name the work shown`);
       check(p.scene.at?.length === 2 && p.scene.at.every(Number.isFinite), `${at} phase ${p.id}: scene.at needs an [x, z] worksite centre`);
@@ -245,6 +276,7 @@ for (const file of (await Promise.all(targets.map(files))).flat()) {
       check(m.look === undefined || Array.isArray(m.look) && m.look.length >= 1 && m.look.length <= 2 && m.look.every(Number.isFinite), `${at} moment "${m.title}": look must be [azimuth, elevation] in degrees`);
       check(m.inside === undefined || typeof m.inside === 'boolean', `${at} moment "${m.title}": inside must be true or false`);
       check(url(m.source), `${at} moment "${m.title}" needs a source URL`);
+      disputes(m.disputed, `${at} moment "${m.title}"`);
     }
   }
   const refs = obj => { for (const [key, value] of Object.entries(obj)) {
@@ -269,6 +301,7 @@ for (const file of (await Promise.all(targets.map(files))).flat()) {
   }
   for (const [i, e] of d.elements.entries()) if (e.type === 'relief') await relief(e, i, file, id, at, strict);
   await scanLayer(d, file, id, at, strict);
+  await silhouettes(d, file, id, at);
   if (standard) await evidence(d, text, file, id, at, strict);
   console.log(`${id}: ${d.phases.length} phases, ${d.elements.length} elements${standard ? `, ${strict ? 'publication' : 'standard'} evidence checked` : ''}`);
 }
@@ -295,6 +328,9 @@ async function evidence(d, text, file, id, at, strict) {
     check(read.has(p.source), `${at} phase ${p.id}: its source is not one of the pages in evidence.sources`);
     if (p.scene) check(read.has(p.scene.source), `${at} phase ${p.id}: its scene source is not one of the pages in evidence.sources`);
     for (const m of p.moments ?? []) check(read.has(m.source), `${at} moment "${m.title}": its source is not one of the pages in evidence.sources`);
+    for (const [where, list] of [[`phase ${p.id}`, p.disputed], ...(p.moments ?? []).map(m => [`moment "${m.title}"`, m.disputed])]) {
+      for (const claim of (Array.isArray(list) ? list : []).flatMap(dispute => dispute?.claims ?? [])) check(read.has(claim?.source), `${at} ${where}: the disputed date ${claim?.when} cites a page that is not in evidence.sources`);
+    }
   }
   // Step 4: the measured outline, and the model sitting on it.
   const plan = ev.plan ?? {};

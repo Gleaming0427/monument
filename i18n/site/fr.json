@@ -174,6 +174,8 @@
   "viewer.modelNote": "Modèle 3D simplifié · dates et chiffres sourcés.",
   "viewer.moment": "Moment : {title}",
   "viewer.source": "Source : {host}",
+  "viewer.disputed": "Les sources divergent sur {what} : ",
+  "viewer.disputedMark": "les sources divergent sur une date",
   "viewer.speedValue": "Vitesse de lecture {speed}×",
   "viewer.failed": "La scène 3D n'a pas pu démarrer.",
   "viewer.noWebgl": "WebGL 2 est désactivé dans ce navigateur, et la scène 3D en a besoin.",

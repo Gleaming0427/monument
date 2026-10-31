@@ -34,7 +34,7 @@ body.embed :is(.top,.story,.live){display:none!important}
 /* ?clean&caption: the scene with only the phase date and title, for recordings. `top:auto`: from 721 to 1100 px the
    tablet rule pins the card at the top, and with a bottom as well it stretched into a tall empty panel over the scene. */
 body.clean.caption .story{display:block!important;left:16px;top:auto;bottom:16px;width:auto;max-width:70%;max-height:none;padding:10px 14px}
-body.caption :is(#text,#source,#model-note){display:none!important}
+body.caption :is(#text,#source,#model-note,#disputed){display:none!important}
 body.caption #title{font-size:20px;margin:2px 0 0}
 body.clean :is(.top,.timeline,.live,#moment,#pin,#leader,#labels){display:none!important}
 body.clean:not(.caption) .story{display:none!important}
@@ -51,6 +51,14 @@ body.clean:not(.caption) .story{display:none!important}
 #text{margin:0;color:#3d3a42;font-size:14px}
 #source{display:inline-block;margin-top:10px;font-size:11px;color:var(--muted)}
 #source:hover{color:var(--ink)}
+/* A date the sources disagree on: each page's date on the card, the phase's bar hatched, the moment's diamond halved. */
+#disputed,#m-disputed{margin-top:8px;font-size:12px;line-height:1.4;color:#5a5348}
+#disputed p,#m-disputed p{margin:0}
+#disputed a,#m-disputed a{color:inherit;text-decoration:underline;text-decoration-color:rgba(176,124,44,.5);text-underline-offset:2px}
+#disputed a:hover,#m-disputed a:hover{color:var(--ink)}
+.seg.disputed .seg-bar{background:repeating-linear-gradient(135deg,rgba(40,34,26,.24) 0 2px,rgba(40,34,26,.07) 2px 5px)}
+.tick.disputed{background:linear-gradient(90deg,rgba(176,124,44,.55) 50%,#fffdf8 50%)}
+.tick.disputed.seen{background:linear-gradient(90deg,var(--gold) 50%,rgba(176,124,44,.4) 50%)}
 
 .timeline{position:fixed;left:20px;right:20px;bottom:20px;display:flex;align-items:flex-end;gap:16px;padding:12px 18px 14px;border-radius:16px;background:var(--glass);border:1px solid var(--line);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
 /* Timeline: one segment per phase (date, title, progress bar), moments as diamonds, white playhead */
@@ -151,7 +159,7 @@ body.clean:not(.caption) .story{display:none!important}
  #text{-webkit-line-clamp:2}
  #m-text{-webkit-line-clamp:3}
  #m-title{font-size:14px;margin:2px 0}
- #source,#m-source,#model-note{display:none}
+ #source,#m-source,#model-note,#disputed,#m-disputed{display:none}
  .timeline{left:8px;right:8px;bottom:max(8px,env(safe-area-inset-bottom));gap:10px;padding:8px 10px;align-items:center;border-radius:12px}
  #play{width:34px;height:34px;margin-bottom:0}
  #speed{height:24px;min-width:40px;margin:0 -2px 0 -4px;padding:0 7px}

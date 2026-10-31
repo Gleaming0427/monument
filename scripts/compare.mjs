@@ -10,6 +10,7 @@ import {readFile, writeFile, mkdir, access} from 'node:fs/promises';
 import {dirname, join, basename, resolve, relative} from 'node:path';
 import {startViewer, openBrowser} from './lib/browser.mjs';
 import {expand} from './lib/compact.mjs';
+import {commonsPhoto, referenceView} from './lib/silhouette.mjs';
 
 const args = process.argv.slice(2), flag = name => { const i = args.indexOf(`--${name}`); return i >= 0 ? args[i + 1] : undefined; };
 const file = args.find(arg => arg.endsWith('.json')), pass = Number(flag('pass'));
@@ -24,14 +25,10 @@ for (const [i, r] of refs.entries()) if (![r.azimuth, r.elevation, r.distance].e
 const folder = join(dir, `${id}.evidence`, 'compare', `pass-${pass}`);
 await mkdir(folder, {recursive: true});
 const viewer = await startViewer(dir, Number(flag('port') ?? 4196)), browser = await openBrowser({width: 960, height: 600});
-const cam = r => [r.azimuth, r.elevation, r.distance, ...(r.target ?? d.view.target)].join(',');
-// A photo shows one state of the building: the end of its "phase", or by default the last daylight phase
-// (a night-lighting finale is not what a daytime photo shows).
-const daylight = d.phases.findLastIndex(p => p.mood !== 'night');
-const state = r => { const i = r.phase ? d.phases.findIndex(p => p.id === r.phase) : daylight; return i < 0 ? 99 : i + .97; };
+// A photo shows one state of the building, from one viewpoint: referenceView says which, for the outline test too.
 const captures = [], overlays = [], phases = [];
 // A Commons photo at a given width (null for a photo hosted elsewhere).
-const photo = (url, width = 900) => { const m = /commons\.wikimedia\.org\/wiki\/(File:.+)$/.exec(url); return m ? `https://commons.wikimedia.org/wiki/Special:FilePath/${m[1].slice(5)}?width=${width}` : null; };
+const photo = (url, width = 900) => commonsPhoto(url, width);
 try {
   for (const [i, r] of refs.entries()) {
     const out = join(folder, `ref-${i}.jpg`);
@@ -42,7 +39,8 @@ try {
       console.log(`ref ${i} · reused ${out}`);
       continue;
     }
-    await browser.open(`${viewer.base}?t=${state(r)}&cam=${cam(r)}${r.fov ? `&fov=${r.fov}` : ''}${r.shift ? `&shift=${r.shift}` : ''}&clean#${id}`);
+    const view = referenceView(d, r);
+    await browser.open(`${viewer.base}?t=${view.t}&cam=${view.cam.join(',')}${r.fov ? `&fov=${r.fov}` : ''}${r.shift ? `&shift=${r.shift}` : ''}&clean#${id}`);
     await writeFile(out, await browser.shot('jpeg'));
     captures.push(relative(dir, out));
     console.log(`ref ${i} · ${r.view ?? ''} ${r.azimuth}° · photo ${r.url}\n        model ${out}`);
