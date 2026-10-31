@@ -428,7 +428,7 @@
    "Dates of the roofs of the chapel tower and of the stair towers are interpreted from the chapel wing's: the Domaine's pages say the chapel wing was roofed under Louis XIV and give no date for the towers.",
    "The timber scaffold and the gin-pole of the 16th-century site are reconstructions: the sources read describe the stone, the foundations and the masons' pay, not the lifting gear.",
    "The mansard roofs of 1680–1686 are drawn as a typical broken roof of the period; their exact profile, and the position of their dormers, were not read in a source.",
-   "The windows of the keep, the towers and the wings: simplified; they are placed by rule, not read one by one: centred in regular bays, on one axis from storey to storey, and on a tower only where no other building hides its wall (the six large towers, of the keep and of the west range, have windows all round their exposed wall at the 30° pitch the model already used; the two small towers keep their pair, at 40°, and the two unfinished south-east towers their three) (the arcades and the windows of the west range share one set of axes, spaced evenly about the middle of their wall: its arches moved by up to 1.9 m); the same frame, with its mullion and transom, in every period. The photograph of the west tower shows part of its wall plain where the model has windows; the round arches of the keep's courtyard loggias, the doors other than the portal in the middle of the east range, and the windows of each period are not modelled."
+   "The windows of the keep, the towers and the wings: simplified; they are placed by rule, not read one by one: centred in regular bays, on one axis from storey to storey, and on a tower only where no other building hides its wall (the six large towers, of the keep and of the west range, have windows all round their exposed wall at the 30° pitch the model already used; the two small towers keep their pair, at 40°, and the two unfinished south-east towers their three) (the arcades and the windows of the west range share one set of axes, spaced evenly about the middle of their wall: its arches moved by up to 1.9 m); the same frame, with its mullion and transom, in every period. The portal in the middle of the east range has no windows of its own (the photograph shows none within its pediment) and a dark round-headed door; its neighbours' windows stand about twice as far from the door in the photograph as in the model. The photograph of the west tower shows part of its wall plain where the model has windows; the round arches of the keep's courtyard loggias, the doors other than the portal in the middle of the east range, and the windows of each period are not modelled."
   ],
   "detailReview": {
    "version": 1,
@@ -3144,15 +3144,13 @@
        "w": 2.8,
        "sill": 0,
        "spring": 3.8,
-       "glass": false,
-       "shafts": false
+       "shafts": false,
+       "door": "#1a130d",
+       "doorHeight": 5.2
       }
      ],
-     "skip": [
-      [
-       0,
-       1
-      ]
+     "windows": [
+      false
      ]
     },
     "u-": {

@@ -463,7 +463,8 @@ export function renaissance(gothic) {
         for (const arch of spec?.arches ?? []) {
           const dir = [(b[0] - a[0]) / len, (b[1] - a[1]) / len], mid = [a[0] + dir[0] * arch.s + side.out[0] * (t / 2 + .02), a[1] + dir[1] * arch.s + side.out[1] * (t / 2 + .02)];
           G.arch(F, arch.s, arch.w, arch.spring, t / 2 + .03, .34, ph, extra, 'round');
-          G.box('stone', mid, (arch.sill ?? y0) + arch.spring / 2 + .05, [arch.w - .5, arch.spring + .1, .06], dir, G.tint('#cfc5ac', .03), ph, extra);
+          // A window standing in the bay keeps its glass: the pane is laid only where nothing opens under the ring.
+          if (!holes.some(h => h.kind === 'rect' && Math.abs(h.s - arch.s) < arch.w / 2 && h.sill < arch.spring)) G.box('stone', mid, (arch.sill ?? y0) + arch.spring / 2 + .05, [arch.w - .5, arch.spring + .1, .06], dir, G.tint('#cfc5ac', .03), ph, extra);
         }
         // The string courses at every floor, and the cornice at the head.
         for (const y of floors.slice(0, -1)) course(S, a, b, y, t, side.out, ph, extra, e.band ?? BAND);

@@ -362,8 +362,9 @@ function gothic(k, e, P) {
       return;
     }
     if (o.door) {
-      const p = F(o.s, 0, t / 2 - .4);
-      box('wood', [p[0], p[2]], (o.spring ?? 4) / 2, [W, o.spring ?? 4, .25], dir, tint(o.door, .05), ph, extra);
+      // The leaf stands to the springing of the arch, or to `doorHeight` (the crown, to fill a round head).
+      const p = F(o.s, 0, t / 2 - .4), dh = o.doorHeight ?? o.spring ?? 4;
+      box('wood', [p[0], p[2]], dh / 2, [W, dh, .25], dir, tint(o.door, .05), ph, extra);
     } else if (o.louvres) {
       for (let y = y0 + .4; y < y1 - .3; y += .75) {
         const hw = Math.max(.2, span(o, y + .1)), p = F(o.s, 0, 0);
