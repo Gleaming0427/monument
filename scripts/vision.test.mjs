@@ -36,7 +36,14 @@ for (const [id, file] of files) {
 const turn = (d, u, v) => { const t = (d.rotate ?? 0) * Math.PI / 180; return [u * Math.cos(t) + v * Math.sin(t), -u * Math.sin(t) + v * Math.cos(t)]; };
 const CORNER = {'v-': ([L, D]) => [[-L / 2, -D / 2], [1, 0]], 'u+': ([L, D]) => [[L / 2, -D / 2], [0, 1]], 'v+': ([L, D]) => [[L / 2, D / 2], [-1, 0]], 'u-': ([L, D]) => [[-L / 2, D / 2], [0, -1]]};
 
-const results = [];
+const results = [], SEGMENT = 40;
+// The camera is a pinhole on the wall's outward normal, level with its middle and `dist` from the point it looks at, so that a
+// point's place in the picture follows from its offset to the camera: sideways and up over the depth, times the focal length.
+const pinhole = (az, dist, target, fov) => {
+  const a = az * Math.PI / 180, n = [Math.sin(a), -Math.cos(a)], f = [-n[0], -n[1]], right = [-f[1], f[0]], focal = FRAME[1] / 2 / Math.tan(fov * Math.PI / 360);
+  const eye = [target[0] + n[0] * dist, target[2] + n[1] * dist];
+  return ([x, y, z]) => { const dx = x - eye[0], dz = z - eye[1], depth = dx * f[0] + dz * f[1]; return {x: FRAME[0] / 2 + focal * (dx * right[0] + dz * right[1]) / depth, y: FRAME[1] / 2 - focal * (y - target[1]) / depth}; };
+};
 if (monuments.length) {
   const viewer = await startViewer(join(root, 'examples'), 4233), browser = await openBrowser({width: FRAME[0], height: FRAME[1]});
   after(async () => { await browser.close(); viewer.stop(); });
@@ -45,31 +52,31 @@ if (monuments.length) {
     for (const [e, i] of ranges) for (const wall of wallOpenings(e)) {
       const [start, dir] = CORNER[wall.side]([e.length, e.depth]), [nu, nv] = wall.normal;
       const face = s => [e.center[0] + start[0] + dir[0] * s, e.center[1] + start[1] + dir[1] * s];
-      const mid = face(wall.length / 2), H = wall.top - wall.y0, W = wall.length;
-      const fov = 18, t = Math.tan(fov * Math.PI / 360), dist = Math.max(W * 1.12 / (2 * 1.6 * t), H * 1.25 / (2 * t)) + 2;
-      const [wx, wz] = turn(d, ...mid), [nx, nz] = turn(d, nu, nv), az = (Math.atan2(nx, -nz) * 180 / Math.PI + 360) % 360, level = wall.y0 + H / 2;
-      const camera = [mid[0] + nu * dist, mid[1] + nv * dist];
-      await browser.run(`monument.silhouette({t: 99, cam: [${az}, 0, ${dist}, ${wx}, ${level}, ${wz}], fov: ${fov}}), true`);
-      await browser.settle();
-      const shot = await browser.shot('png'), img = decodePng(shot);
-      if (DIR) { await mkdir(DIR, {recursive: true}); await writeFile(join(DIR, `${id}-${i}${wall.side}.png`), shot); }
-      // Project the corners of each opening into the picture, and measure what the picture shows there.
-      const rectOf = async (s, y0, y1, w) => {
-        const [x0, z0] = turn(d, ...face(s - w / 2)), [x1, z1] = turn(d, ...face(s + w / 2));
-        const q = await browser.run(`JSON.stringify([[${x0}, ${y0}, ${z0}], [${x1}, ${y0}, ${z1}], [${x0}, ${y1}, ${z0}], [${x1}, ${y1}, ${z1}]].map(p => monument.project(p)))`).then(JSON.parse);
-        const xs = q.map(p => p.x), ys = q.map(p => p.y);
-        return {x0: Math.min(...xs), x1: Math.max(...xs), y0: Math.min(...ys), y1: Math.max(...ys), shown: q.every(p => p.visible !== false)};
-      };
-      const hidden = (s, y) => hiddenBy(d.elements, i, camera, face(s), y);
-      for (const o of wall.windows) {
-        const r = await rectOf(o.s, o.sill, o.head, o.w), cx = (r.x0 + r.x1) / 2, pxm = (r.x1 - r.x0) / o.w, ix = (r.x1 - r.x0) * .2, iy = (r.y1 - r.y0) * .12;
-        const inner = darkness(img, [r.x0 + ix, r.y0 + iy, r.x1 - ix, r.y1 - iy]), around = darkness(img, [r.x0 - .6 * pxm, r.y0, r.x1 + .6 * pxm, r.y1]);
-        results.push({id, wall: `${i}${wall.side}`, kind: 'window', level: o.level, s: o.s, hidden: hidden(o.s, (o.sill + o.head) / 2) !== null || !r.shown || r.x0 < 4 || r.x1 > FRAME[0] - 4, share: inner.share, offset: (around.cx - cx) / pxm, px: r.x1 - r.x0});
-      }
-      for (const o of wall.doors) {
-        const r = await rectOf(o.s, o.sill, o.head, o.w), cx = (r.x0 + r.x1) / 2, pxm = (r.x1 - r.x0) / o.w, ix = (r.x1 - r.x0) * .3;
-        const inner = darkness(img, [r.x0 + ix, r.y0 + (r.y1 - r.y0) * .25, r.x1 - ix, r.y1 - .3 * pxm]), around = darkness(img, [r.x0, r.y0, r.x1, r.y1]);
-        results.push({id, wall: `${i}${wall.side}`, kind: 'door', s: o.s, hidden: hidden(o.s, (o.sill + o.head) / 2) !== null || !r.shown, share: inner.share, offset: (around.cx - cx) / pxm, px: r.x1 - r.x0, centred: Math.abs(o.s - wall.length / 2) <= .1 || wall.windows.some(win => Math.abs(win.s - o.s) <= .1)});
+      const H = wall.top - wall.y0, level = wall.y0 + H / 2, [nx, nz] = turn(d, nu, nv), az = (Math.atan2(nx, -nz) * 180 / Math.PI + 360) % 360;
+      // A long wall is looked at in stretches, so that a window is always a few pixels wide at least.
+      const stretches = Math.max(1, Math.ceil(wall.length / SEGMENT)), width = wall.length / stretches;
+      for (let k = 0; k < stretches; k++) {
+        const centre = (k + .5) * width, mid = face(centre), fov = 18, t = Math.tan(fov * Math.PI / 360), dist = Math.max(width * 1.12 / (2 * 1.6 * t), H * 1.25 / (2 * t)) + 2;
+        const [wx, wz] = turn(d, ...mid), camera = [mid[0] + nu * dist, mid[1] + nv * dist], look = pinhole(az, dist, [wx, level, wz], fov);
+        await browser.run(`monument.silhouette({t: 99, cam: [${az}, 0, ${dist}, ${wx}, ${level}, ${wz}], fov: ${fov}}), true`);
+        await browser.settle(); await browser.sleep(400);
+        const shot = await browser.shot('png'), img = decodePng(shot);
+        if (DIR) { await mkdir(DIR, {recursive: true}); await writeFile(join(DIR, `${id}-${i}${wall.side}-${k}.png`), shot); }
+        const rectOf = (s, y0, y1, w) => {
+          const q = [[s - w / 2, y0], [s + w / 2, y0], [s - w / 2, y1], [s + w / 2, y1]].map(([u, y]) => { const [x, z] = turn(d, ...face(u)); return look([x, y, z]); }), xs = q.map(p => p.x), ys = q.map(p => p.y);
+          return {x0: Math.min(...xs), x1: Math.max(...xs), y0: Math.min(...ys), y1: Math.max(...ys)};
+        };
+        const mine = o => Math.abs(o.s - centre) <= width / 2 - 1.2, hidden = (s, y) => hiddenBy(d.elements, i, camera, face(s), y) !== null;
+        for (const o of wall.windows.filter(mine)) {
+          const r = rectOf(o.s, o.sill, o.head, o.w), cx = (r.x0 + r.x1) / 2, pxm = (r.x1 - r.x0) / o.w, ix = (r.x1 - r.x0) * .2, iy = (r.y1 - r.y0) * .12;
+          const inner = darkness(img, [r.x0 + ix, r.y0 + iy, r.x1 - ix, r.y1 - iy]), around = darkness(img, [r.x0 - .15 * (r.x1 - r.x0), r.y0, r.x1 + .15 * (r.x1 - r.x0), r.y1]);
+          results.push({id, wall: `${i}${wall.side}`, kind: 'window', level: o.level, s: o.s, hidden: hidden(o.s, (o.sill + o.head) / 2) || r.x0 < 4 || r.x1 > FRAME[0] - 4 || r.y0 < 4 || r.y1 > FRAME[1] - 4, share: inner.share, offset: (around.cx - cx) / pxm, px: r.x1 - r.x0});
+        }
+        for (const o of wall.doors.filter(mine)) {
+          const r = rectOf(o.s, o.sill, o.head, o.w), cx = (r.x0 + r.x1) / 2, pxm = (r.x1 - r.x0) / o.w, ix = (r.x1 - r.x0) * .3;
+          const inner = darkness(img, [r.x0 + ix, r.y0 + (r.y1 - r.y0) * .25, r.x1 - ix, r.y1 - .3 * pxm]), around = darkness(img, [r.x0, r.y0, r.x1, r.y1]);
+          results.push({id, wall: `${i}${wall.side}`, kind: 'door', s: o.s, hidden: hidden(o.s, (o.sill + o.head) / 2), share: inner.share, offset: (around.cx - cx) / pxm, px: r.x1 - r.x0, centred: Math.abs(o.s - wall.length / 2) <= .1 || wall.windows.some(win => Math.abs(win.s - o.s) <= .1)});
+        }
       }
     }
   }
@@ -83,7 +90,7 @@ for (const {id} of monuments) {
     for (const r of seen('window')) assert.ok(r.share >= MIN_GLASS, `${id} wall ${r.wall}: the window at ${r.s.toFixed(2)} (storey ${r.level}) shows dark glass over ${Math.round(r.share * 100)}% of its pane, under ${MIN_GLASS * 100}%: a panel laid over it, or a wall standing behind its hole`);
   });
   test(`${id}: the windows stand in the picture where the numbers put them`, () => {
-    for (const r of seen('window')) assert.ok(Math.abs(r.offset) <= WITHIN, `${id} wall ${r.wall}: the window at ${r.s.toFixed(2)} (storey ${r.level}) is ${r.offset.toFixed(2)} m from its place in the picture`);
+    for (const r of seen('window').filter(r => r.share >= MIN_GLASS)) assert.ok(Math.abs(r.offset) <= WITHIN, `${id} wall ${r.wall}: the window at ${r.s.toFixed(2)} (storey ${r.level}) is ${r.offset.toFixed(2)} m from its place in the picture`);
   });
   test(`${id}: a door reads as an opening, in the middle of its bay`, () => {
     for (const r of seen('door')) {
