@@ -6,13 +6,13 @@
 // relief without hiding it), so that a relief buried in its own wall is still hidden by the stone. It is looked at twice: with
 // the photo reliefs and without them. Then:
 //   - the relief is seen: laying it changes the picture by more than CHANGE grey levels over MIN_SEEN of its panel at least
-//     (over the 57 reliefs of the collection and the gallery: 44 to 98% for those that show, 0 to 8% for the six found buried
+//     (over the 57 reliefs of the collection and the gallery: 45 to 97% for those that show, 0 to 8% for the six found buried
 //     in stone or behind a member standing proud of the face, before they were brought out);
 //   - what is seen is its photograph: the picture's luminance, read cell by cell over the panel, correlates with the photograph
-//     rectified through the relief's corners and cut to its shape and outline (1 is the photo itself; 0.34 to 0.98 for those
+//     rectified through the relief's corners and cut to its shape and outline (1 is the photo itself; 0.36 to 0.96 for those
 //     that show, weathered low-contrast photos lowest; -0.16 to 0.30 for the buried ones);
 //   - it lies on the building and faces out of it: on a band round the panel, the picture is the model, not the backdrop
-//     (60 to 100% for those laid right; a relief turned to face into the building, on an outer wall, sees the void round it).
+//     (63 to 100% for those laid right; a relief turned to face into the building, on an outer wall, sees the void round it).
 // A relief buried in its wall (stone in front of the photo), turned to face into the building, or whose image did not load,
 // fails here. Whether its corners are the right ones on the photo is relief.mjs --check's question, not this test's.
 // $RELIEF_DIR keeps the picture of every relief; $RELIEF_REPORT=1 prints every measure.
