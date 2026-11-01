@@ -1,0 +1,688 @@
+{
+  "id": "taj-mahal",
+  "name": "Taj Mahal",
+  "place": "Agra, Uttar Pradesh, India",
+  "seed": 1632,
+  "rotate": 0,
+  "bricks": "taj-mahal.bricks.js",
+  "masonry": "mesh",
+  "view": {
+    "target": [
+      0,
+      30,
+      0
+    ],
+    "distance": 190,
+    "width": 100,
+    "radius": 60,
+    "height": 74,
+    "drop": 6,
+    "direction": [
+      0.42,
+      0.22,
+      0.88
+    ],
+    "start": {
+      "target": [
+        0,
+        4,
+        0
+      ],
+      "distance": 120
+    }
+  },
+  "visualStyle": {
+    "quality": "standard",
+    "materialPreset": "marble-italian"
+  },
+  "live": [
+    {
+      "label": "Height",
+      "kind": "height",
+      "unit": "m"
+    }
+  ],
+  "facts": [
+    {
+      "value": "73 m",
+      "label": "high, to the top of the finial"
+    },
+    {
+      "value": "95.5 m",
+      "label": "square, the marble plinth"
+    },
+    {
+      "value": "20,000",
+      "label": "artisans and labourers, by the usual estimate"
+    }
+  ],
+  "modelNote": "Plan from OpenStreetMap's 3D outlines; heights from the dimensions of Koch and Barraud and of Wikipedia; the façades' proportions interpreted from the descriptions, not yet fitted on photographs.",
+  "phases": [
+    {
+      "id": "tomb",
+      "when": "1632–1639",
+      "title": "The plinth and the tomb",
+      "source": "https://en.wikipedia.org/wiki/Taj_Mahal",
+      "text": "Shah Jahan commissions the tomb in 1631 for Mumtaz Mahal, who died on 17 June that year; work begins in 1632. The ground is dug out, filled and levelled, piles of lime and stone carry the footings, and walls of brick and lime mortar faced with white marble from Makrana rise on a square plinth.",
+      "scene": {
+        "craft": "masonry",
+        "at": [
+          0,
+          0
+        ],
+        "focus": [
+          0,
+          16,
+          30
+        ],
+        "distance": 95,
+        "radius": 30,
+        "height": 33,
+        "workers": 14,
+        "materials": true,
+        "scaffold": {
+          "kind": "ring",
+          "radius": 32,
+          "material": "timber"
+        },
+        "hoist": {
+          "kind": "gin-pole",
+          "height": 14,
+          "from": 6,
+          "to": 31
+        },
+        "dust": 0.3,
+        "source": "https://en.wikipedia.org/wiki/Origins_and_architecture_of_the_Taj_Mahal"
+      },
+      "moments": [
+        {
+          "at": 0.3,
+          "tag": "Material",
+          "title": "Brick inside, marble outside",
+          "text": "The tomb is built of brick and lime mortar; its outer face is veneered with white marble from Makrana, in Rajasthan. The other buildings of the complex are lined with red sandstone from Fatehpur Sikri.",
+          "anchor": [
+            0,
+            3,
+            47.8
+          ],
+          "distance": 40,
+          "source": "https://en.wikipedia.org/wiki/Taj_Mahal"
+        },
+        {
+          "at": 0.62,
+          "tag": "Site",
+          "title": "A scaffold of brick, or of bamboo?",
+          "text": "The main article says the workmen raised a colossal brick scaffold that mirrored the tomb. The article on its architecture reports Tavernier's account of scaffolding and centering built entirely of brick, and that modern scholars think scaffolds of bamboo and timber ramps far more likely.",
+          "anchor": [
+            0,
+            14,
+            28.6
+          ],
+          "distance": 45,
+          "source": "https://en.wikipedia.org/wiki/Origins_and_architecture_of_the_Taj_Mahal"
+        },
+        {
+          "at": 0.9,
+          "tag": "Calligraphy",
+          "title": "Amanat Khan's signature",
+          "text": "The calligrapher Amanat Khan signs the frame of the south arch of the domed hall; his signature dates it to 1638/39, when the hall was nearing completion.",
+          "anchor": [
+            0,
+            24,
+            28.8
+          ],
+          "distance": 35,
+          "source": "https://en.wikipedia.org/wiki/Origins_and_architecture_of_the_Taj_Mahal"
+        }
+      ]
+    },
+    {
+      "id": "dome",
+      "when": "1639–1643",
+      "title": "Dome, chhatris and minarets",
+      "source": "https://en.wikipedia.org/wiki/Origins_and_architecture_of_the_Taj_Mahal",
+      "text": "The onion dome rises on its drum over the roof, with four chhatris at its corners, and the four minarets go up at the corners of the plinth. On 6 February 1643, the twelfth anniversary of Mumtaz Mahal's death, Shah Jahan holds the first ceremony at the tomb; that year the official sources describe a substantially completed complex.",
+      "disputed": [
+        {
+          "what": "the completion of the tomb",
+          "claims": [
+            {
+              "when": "1643",
+              "source": "https://en.wikipedia.org/wiki/Origins_and_architecture_of_the_Taj_Mahal"
+            },
+            {
+              "when": "1648",
+              "source": "https://en.wikipedia.org/wiki/Taj_Mahal"
+            },
+            {
+              "when": "1643–1644",
+              "source": "https://fr.wikipedia.org/wiki/Taj_Mahal"
+            }
+          ]
+        }
+      ],
+      "scene": {
+        "craft": "masonry",
+        "at": [
+          0,
+          0
+        ],
+        "focus": [
+          0,
+          48,
+          0
+        ],
+        "distance": 110,
+        "radius": 16,
+        "height": 36,
+        "workers": 10,
+        "materials": true,
+        "scaffold": {
+          "kind": "ring",
+          "radius": 16,
+          "reach": 17,
+          "base": 29.4,
+          "material": "timber"
+        },
+        "dust": 0.25,
+        "source": "https://en.wikipedia.org/wiki/Taj_Mahal"
+      },
+      "moments": [
+        {
+          "at": 0.45,
+          "tag": "Form",
+          "title": "An onion dome on a drum",
+          "text": "The dome, 23 m high, stands on a cylindrical drum 12 m high whose inner diameter is 18.4 m; a twisted rope moulding marks where the drum ends and the dome begins. The four chhatris at its corners repeat its onion shape.",
+          "anchor": [
+            0,
+            38,
+            11.7
+          ],
+          "distance": 45,
+          "source": "https://en.wikipedia.org/wiki/Taj_Mahal"
+        },
+        {
+          "at": 0.8,
+          "tag": "Structure",
+          "title": "Minarets that lean out",
+          "text": "Each minaret, more than 40 m high, is divided into three almost equal parts by balconies, under a chhatri. They were built leaning slightly outwards, so that in a collapse they would fall away from the tomb; the model draws them upright.",
+          "anchor": [
+            47.6,
+            22,
+            47.6
+          ],
+          "distance": 50,
+          "source": "https://en.wikipedia.org/wiki/Taj_Mahal"
+        },
+        {
+          "at": 0.97,
+          "tag": "Ceremony",
+          "title": "The twelfth anniversary",
+          "text": "On 6 February 1643, the twelfth anniversary of Mumtaz Mahal's death, Shah Jahan holds the first ceremony at the tomb.",
+          "anchor": [
+            0,
+            10,
+            28.6
+          ],
+          "distance": 60,
+          "source": "https://en.wikipedia.org/wiki/Taj_Mahal"
+        }
+      ]
+    },
+    {
+      "id": "finial",
+      "when": "early 19th century",
+      "title": "A gilded bronze finial",
+      "source": "https://en.wikipedia.org/wiki/Taj_Mahal",
+      "text": "In the 18th century the Jat rulers of Bharatpur plunder the tomb, and the Mughal historian Kanbo says they took the gold shield that covered its finial. In the early 19th century the gold finial is replaced by a copy in gilded bronze.",
+      "moments": [
+        {
+          "at": 0.5,
+          "tag": "Finial",
+          "title": "A crescent on top",
+          "text": "The finial is topped by a moon, a typical Islamic motif, whose horns point heavenward.",
+          "anchor": [
+            0,
+            71,
+            0
+          ],
+          "distance": 20,
+          "source": "https://en.wikipedia.org/wiki/Taj_Mahal"
+        }
+      ]
+    },
+    {
+      "id": "camouflage",
+      "when": "1942–1971",
+      "title": "Hidden in wartime",
+      "source": "https://en.wikipedia.org/wiki/Taj_Mahal",
+      "text": "In 1942, fearing air attacks, the government puts up scaffolding to disguise the building; during the wars with Pakistan of 1965 and 1971 scaffolding is put up again to mislead bomber pilots.",
+      "scene": {
+        "craft": "masonry",
+        "at": [
+          0,
+          0
+        ],
+        "focus": [
+          0,
+          50,
+          0
+        ],
+        "distance": 120,
+        "radius": 16,
+        "height": 36,
+        "workers": 6,
+        "materials": false,
+        "scaffold": {
+          "kind": "ring",
+          "radius": 16,
+          "reach": 17,
+          "base": 29.4,
+          "height": 36,
+          "material": "timber",
+          "rise": "first"
+        },
+        "source": "https://en.wikipedia.org/wiki/Taj_Mahal"
+      },
+      "moments": [
+        {
+          "at": 0.4,
+          "tag": "War",
+          "title": "A scaffold over the dome",
+          "text": "Scaffolding is put up in 1942 to disguise the building against air attacks, and again during the wars of 1965 and 1971 to mislead bomber pilots.",
+          "anchor": [
+            0,
+            50,
+            15
+          ],
+          "distance": 70,
+          "source": "https://en.wikipedia.org/wiki/Taj_Mahal"
+        }
+      ]
+    },
+    {
+      "id": "today",
+      "when": "1983–2020s",
+      "title": "Heritage and restoration",
+      "source": "https://en.wikipedia.org/wiki/Taj_Mahal",
+      "text": "In 1983 the Taj Mahal is designated a UNESCO World Heritage Site. Pollution turns its marble yellow-brown; after directives of the Supreme Court in 1997, the Taj Trapezium Zone, 10,400 km² round the monument, holds emissions to strict standards. In the 2020s mud packs are laid to restore the marble's white colour, and broken marble is replaced.",
+      "moments": [
+        {
+          "at": 0.6,
+          "tag": "Restoration",
+          "title": "Mud packs",
+          "text": "Since the late 20th century pollution has turned the marble yellow-brown; in the 2020s the Government of India lays mud packs to restore its white colour and replaces broken marble.",
+          "anchor": [
+            0,
+            50,
+            14
+          ],
+          "distance": 70,
+          "source": "https://en.wikipedia.org/wiki/Taj_Mahal"
+        }
+      ]
+    }
+  ],
+  "elements": [
+    {
+      "type": "mughalPlinth",
+      "name": "Plinth",
+      "provenance": "documented",
+      "phase": "tomb",
+      "color": "#efe9de",
+      "paving": "#e6dfd2",
+      "center": [
+        0,
+        0
+      ],
+      "side": 95.5,
+      "height": 6,
+      "bastions": {
+        "radius": 4.6,
+        "inset": 0.15
+      },
+      "jointCourse": 0,
+      "tone": 0.02,
+      "stair": {
+        "width": 18.7,
+        "depth": 3
+      }
+    },
+    {
+      "type": "mughalTomb",
+      "name": "Tomb",
+      "provenance": "interpreted",
+      "phase": "tomb",
+      "color": "#f3efe7",
+      "glass": "#3a434c",
+      "center": [
+        0,
+        0
+      ],
+      "y0": 6,
+      "width": 56.9,
+      "chamfer": 7,
+      "parapet": 25,
+      "roof": 23.37,
+      "pishtaq": {
+        "width": 21.5,
+        "top": 33,
+        "iwan": {
+          "w": 13,
+          "spring": 19.5,
+          "rise": 7.5,
+          "depth": 6
+        },
+        "door": {
+          "w": 4.6,
+          "spring": 7.2,
+          "rise": 2.6
+        },
+        "balcony": {
+          "w": 4.6,
+          "sill": 12,
+          "spring": 17.4,
+          "rise": 2.4
+        },
+        "band": 0.9
+      },
+      "bays": {
+        "w": 6.6,
+        "lower": {
+          "sill": 0.6,
+          "spring": 8.8,
+          "rise": 2.8
+        },
+        "upper": {
+          "sill": 12.6,
+          "spring": 20,
+          "rise": 2.8
+        },
+        "depth": 1.8,
+        "window": {
+          "w": 2.8,
+          "sill": 1.4,
+          "spring": 6,
+          "rise": 1.3
+        }
+      },
+      "chamfers": {
+        "w": 5.6,
+        "window": 2.4
+      },
+      "guldastas": {
+        "d": 1.2,
+        "rise": 3.6,
+        "pishtaqRise": 4.2
+      },
+      "jointCourse": 0,
+      "inlay": "#2f2b28",
+      "tone": 0.02,
+      "note": "The chamfered square (56.9 m, Koch and Barraud) on OpenStreetMap's outline; the pishtaqs (33 m, Wikipedia), iwans and balconies drawn from the descriptions read, their proportions not yet fitted on photographs."
+    },
+    {
+      "type": "onionDome",
+      "name": "Drum, dome and finial",
+      "provenance": "documented",
+      "phase": "dome",
+      "color": "#f4f0e8",
+      "center": [
+        0,
+        0
+      ],
+      "y0": 29.37,
+      "drum": {
+        "height": 12,
+        "d": 23.2
+      },
+      "dome": {
+        "height": 23,
+        "foot": 23.6,
+        "wide": 29.8,
+        "lotus": 24
+      },
+      "finial": {
+        "height": 9.6,
+        "until": "finial"
+      },
+      "jointCourse": 0,
+      "tone": 0.02,
+      "note": "Dome 23 m high on a drum 12 m high with an inner diameter of 18.4 m (Wikipedia); its widest diameter, 29.8 m, from OpenStreetMap's outline; its profile interpreted."
+    },
+    {
+      "use": "chhatri",
+      "center": [
+        16.75,
+        16.75
+      ]
+    },
+    {
+      "use": "chhatri",
+      "center": [
+        -16.75,
+        16.75
+      ]
+    },
+    {
+      "use": "chhatri",
+      "center": [
+        -16.75,
+        -16.75
+      ]
+    },
+    {
+      "use": "chhatri",
+      "center": [
+        16.75,
+        -16.75
+      ]
+    },
+    {
+      "use": "minaret",
+      "center": [
+        47.6,
+        47.6
+      ]
+    },
+    {
+      "use": "minaret",
+      "center": [
+        -47.6,
+        47.6
+      ]
+    },
+    {
+      "use": "minaret",
+      "center": [
+        -47.6,
+        -47.6
+      ]
+    },
+    {
+      "use": "minaret",
+      "center": [
+        47.6,
+        -47.6
+      ]
+    },
+    {
+      "type": "finial",
+      "name": "Finial (gilded bronze copy)",
+      "provenance": "documented",
+      "phase": "finial",
+      "at": [
+        0,
+        64.27,
+        0
+      ],
+      "height": 9.6
+    }
+  ],
+  "catalogue": {
+    "chhatri": {
+      "type": "chhatri",
+      "name": "Chhatri",
+      "provenance": "interpreted",
+      "phase": "dome",
+      "color": "#f3efe7",
+      "y0": 29.37,
+      "base": {
+        "d": 12.3,
+        "height": 1.6
+      },
+      "columns": 8,
+      "columnD": 1,
+      "ring": 9.8,
+      "columnHeight": 3.6,
+      "eaves": {
+        "d": 12.2
+      },
+      "dome": {
+        "drum": 0.8,
+        "height": 6.4,
+        "foot": 9.4,
+        "wide": 10.8
+      },
+      "finial": {
+        "height": 2.6
+      },
+      "jointCourse": 0,
+      "tone": 0.02,
+      "note": "The four chhatris on the roof: their platforms, eight columns and eaves follow OpenStreetMap's 3D parts (relations 5699257–5699260); their domes and finials are interpreted."
+    },
+    "minaret": {
+      "type": "minaret",
+      "name": "Minaret",
+      "provenance": "documented",
+      "phase": "dome",
+      "color": "#f3efe7",
+      "y0": 6,
+      "pedestal": {
+        "d": 7.2,
+        "height": 1.2
+      },
+      "d": 5.65,
+      "dTop": 4.6,
+      "balconies": [
+        11.6,
+        22.2,
+        32.6
+      ],
+      "out": 1,
+      "chhatri": {
+        "base": {
+          "d": 5.4,
+          "height": 0.3
+        },
+        "columns": 8,
+        "columnD": 0.45,
+        "ring": 4.2,
+        "columnHeight": 3.2,
+        "eaves": {
+          "d": 5.8
+        },
+        "dome": {
+          "drum": 0.3,
+          "height": 3.9,
+          "foot": 4.4,
+          "wide": 5.7
+        },
+        "finial": {
+          "height": 2.2
+        }
+      },
+      "jointCourse": 0,
+      "tone": 0.02,
+      "note": "Diameter (5.65 m) and height (43.02 m) from Koch and Barraud; the balconies, the taper and the chhatri interpreted after OpenStreetMap's parts; drawn upright."
+    }
+  },
+  "evidence": {
+    "size": "building",
+    "identity": "Taj Mahal, the tomb of Mumtaz Mahal and Shah Jahan, on the right bank of the Yamuna, Agra, Uttar Pradesh, India (OpenStreetMap way 375257537, Wikidata Q9141): the white marble tomb on its plinth, with its four minarets",
+    "sources": [
+      {
+        "url": "https://en.wikipedia.org/wiki/Taj_Mahal",
+        "read": "English Wikipedia, Taj Mahal (revision 1382536237): height 73 m; commissioned by Shah Jahan in 1631 for Mumtaz Mahal (died 17 June 1631); construction from 1632; first ceremony on 6 February 1643; the mausoleum completed in 1648, the complex about 1653. The tomb stands on a square plinth 6 m high with sides of 95.5 m; a multi-chambered cube with chamfered corners, about 57.3 m on each of its four long sides; on each side a pishtaq 33 m high frames an iwan, with two arched balconies stacked on either side, the motif repeated smaller on the chamfers. The onion dome is 23 m high on a cylindrical drum 12 m high with an inner diameter of 18.4 m, a twisted rope moulding between them, a lotus design at the top and a gilded finial 9.6 m high, originally of gold and replaced by a copy in gilded bronze in the early 19th century, topped by a moon whose horns point heavenward; four chhatris at the dome's corners, guldastas on the edges of the walls. Four minarets more than 40 m tall at the corners of the plinth, in three almost equal parts with balconies, under chhatris, built slightly oriented outwards. Brick and lime mortar faced with Makrana marble; more than 20,000 workers; a colossal brick scaffold that mirrored the tomb; a 15 km earthen ramp with oxen and elephants; a post-and-beam pulley system. The Jat despoliation in the 18th century (the gold shield of the finial taken, according to Kanbo); Lord Curzon's restoration completed in 1908; scaffolding to disguise the building in 1942, and again in 1965 and 1971; dark or black inlays on the white marble."
+      },
+      {
+        "url": "https://en.wikipedia.org/wiki/Origins_and_architecture_of_the_Taj_Mahal",
+        "read": "English Wikipedia, Origins and architecture of the Taj Mahal (revision 1379215363): a table of dimensions from Koch (2006, pp. 258–259), after Richard André Barraud's survey: the mausoleum 56.9 × 56.9 m and 67.97 m high; a minaret 5.65 m across and 43.02 m high. The mausoleum is cubic with chamfered edges; on the long sides a massive pishtaq frames an arched doorway with a similar arched balcony above, the main arches rising above the roof as an integrated facade, smaller pishtaqs stacked on either side and on the chamfers. The calligrapher Amanat Khan signed the frame of the south arch of the domed hall in 1638/39; the official sources of 1643 describe a substantially completed complex; decoration went on until 1648, when he dated the north arch of the great gate. Walls of brick and rubble faced with marble or sandstone, held by iron dowels and clamps; over 1,000 elephants; Tavernier's account of scaffolding and centering entirely of brick, which modern scholars dispute, scaffolds of bamboo and timber ramps being thought more likely. The calligraphy is mostly of jasper or black marble inlaid in white marble panels."
+      },
+      {
+        "url": "https://fr.wikipedia.org/wiki/Taj_Mahal",
+        "read": "French Wikipedia, Taj Mahal (revision 240695883): work begun in 1632; its end uncertain: the end of 1643 or early 1644 according to Abdul Hamid Lahori, 1648 according to an inscription at the main entrance, 1654 according to the state of Uttar Pradesh. A marble platform 95.16 m square and 7 m high; the tomb about 60 m wide; four free-standing minarets 42 m high leaning outwards, in three storeys marked by small round balconies, under a chhatri; on each of the four identical façades a great central iwan between smaller iwans on two storeys, the same on the corners; the central dome 74 m high, slightly bulbous on a drum, under a bronze pinnacle with a crescent; four chhatris round it. Scaffolding put up in 1942, and again in 1965 and 1971."
+      },
+      {
+        "url": "https://www.openstreetmap.org/way/695684926",
+        "read": "OpenStreetMap, the Taj Mahal's 3D building parts, traced from aerial imagery: the plinth (way 695684926, height 5 m), the tomb's chamfered square (way 375377794, 56.4 × 56.5 m, its long sides 41–43 m and its chamfers 9.4–10.4 m), the dome (way 383059882, 29.8 m across) on a drum, four chhatris (relations 5699257–5699260: eight columns 1 m thick on a circle about 9.8 m across, on an octagonal platform about 12.3 m across), and the four minarets (relations 5585052–5586851: a shaft about 6.5 m across, balconies, eight columns under a domed chhatri), their axes on a square about 95 m wide."
+      }
+    ],
+    "plan": {
+      "source": "OpenStreetMap way 695684926: the plinth's outline, traced from aerial imagery, with the round bastions at its corners and the stair at the middle of its south side",
+      "url": "https://www.openstreetmap.org/way/695684926",
+      "outline": "taj-mahal.evidence/outline.json",
+      "tolerance": 3,
+      "fit": {
+        "p90": 1.5,
+        "max": 2.12,
+        "coverage": 0.98,
+        "overflow": 0.02
+      }
+    },
+    "references": [],
+    "features": [
+      {
+        "text": "A square marble plinth, 95.5 m wide and 6 m high, with a round bastion at each corner under a minaret.",
+        "source": "https://en.wikipedia.org/wiki/Taj_Mahal"
+      },
+      {
+        "text": "The tomb: a square with chamfered corners, about 57 m wide, the same on its four sides.",
+        "source": "https://en.wikipedia.org/wiki/Origins_and_architecture_of_the_Taj_Mahal"
+      },
+      {
+        "text": "On each long side a pishtaq 33 m high, rising above the roof as an integrated facade, framing a deep iwan with an arched door and an arched balcony above it.",
+        "source": "https://en.wikipedia.org/wiki/Origins_and_architecture_of_the_Taj_Mahal"
+      },
+      {
+        "text": "Two storeys of arched balconies on either side of each pishtaq, and the same, smaller, on each chamfer.",
+        "source": "https://en.wikipedia.org/wiki/Taj_Mahal"
+      },
+      {
+        "text": "The onion dome, 23 m high, on a cylindrical drum 12 m high, a twisted rope moulding between them.",
+        "source": "https://en.wikipedia.org/wiki/Taj_Mahal"
+      },
+      {
+        "text": "A lotus design at the top of the dome, under a gilded finial 9.6 m high topped by a crescent whose horns point up.",
+        "source": "https://en.wikipedia.org/wiki/Taj_Mahal"
+      },
+      {
+        "text": "Four chhatris at the corners of the dome, repeating its onion shape on columns.",
+        "source": "https://en.wikipedia.org/wiki/Taj_Mahal"
+      },
+      {
+        "text": "Guldastas, tall decorative spires, on the edges of the walls.",
+        "source": "https://en.wikipedia.org/wiki/Taj_Mahal"
+      },
+      {
+        "text": "Four minarets at the corners of the plinth, more than 40 m high, in three almost equal parts divided by balconies, under a chhatri.",
+        "source": "https://en.wikipedia.org/wiki/Taj_Mahal"
+      },
+      {
+        "text": "Calligraphy of jasper or black marble inlaid in white marble panels round the arches; dark inlays on the white marble.",
+        "source": "https://en.wikipedia.org/wiki/Origins_and_architecture_of_the_Taj_Mahal"
+      }
+    ],
+    "geometry": "Measured: the plan and its orientation, on OpenStreetMap's 3D building parts traced from aerial imagery (the plinth, the tomb's chamfered square, the drum and dome, the chhatris and the minarets, within about 2 m of the model). Documented: the plinth's 95.5 × 6 m (English Wikipedia; 95.16 × 7 m on the French), the tomb's 56.9 m and 67.97 m and the minarets' 5.65 m and 43.02 m (Koch and Barraud, through Wikipedia), the pishtaq's 33 m, the dome's 23 m on a 12 m drum and the finial's 9.6 m. Interpreted: the widths of the pishtaqs, the iwans and the balconies, the heights of their arches and of the parapet, the chhatris' heights and domes, the minarets' taper and balcony heights, read on no photograph yet.",
+    "uncertainties": [
+      "The proportions of the façades are interpreted: the width of each pishtaq (21.5 m) and of its iwan (13 m), the arches' heights, the balconies' widths and heights, the parapet's height (25 m above the plinth, from OpenStreetMap) and the iwans' depth (6 m) are drawn from the descriptions read, not fitted on photographs: the reference photographs could not be loaded when the model was made (Wikimedia Commons answered 429, too many requests).",
+      "The heights follow the dimensions of Koch and Barraud and of English Wikipedia: the tomb 67.97 m above its plinth, the dome 23 m on a drum of 12 m, the finial 9.6 m, which put the drum's foot 23.4 m above the plinth. OpenStreetMap's 3D parts are lower by about 7 % (the finial at 68 m above the ground), and the article on the architecture gives a dome of about 35 m on a drum of about 7 m, in a section asking for citations.",
+      "The plinth is drawn 95.5 m wide and 6 m high (English Wikipedia); the French article gives 95.16 m and 7 m, OpenStreetMap 5 m. Its facing is drawn plain, with a base and a cornice. Its stair, in the middle of the south side, is a plain block on OpenStreetMap's outline (18.7 × 3 m): the two partly covered flights it houses are not drawn.",
+      "The minarets are drawn upright: the pages read say they lean slightly outwards, but give no angle. Their balconies, their taper from 5.65 m to 4.6 m and their chhatris are interpreted after OpenStreetMap's parts.",
+      "The chhatris' platforms, columns and eaves follow OpenStreetMap's parts; their domes and finials are interpreted.",
+      "The marble is drawn as smooth surfaces, without the joints of its veneer, and the inlay as plain dark bands round the arches: the calligraphy, the pietra dura and the carved dados are not modelled. The jalis are dark glazed openings.",
+      "The worksites are interpreted: the pages read disagree on the scaffold (of brick according to Tavernier and the main article, of bamboo according to modern scholars); the model draws timber scaffolds, the closest the viewer has, and a gin pole for the post-and-beam pulley system.",
+      "The completion of the tomb is dated 1643 (the official sources of that year, through the article on the architecture), 1648 (the main article, and an inscription according to the French one), the end of 1643 or early 1644 (Lahori) or 1654 (Uttar Pradesh); the film ends the dome's phase in 1643, with the first ceremony.",
+      "Only the tomb, its plinth and its minarets are drawn: the riverfront terrace, the mosque, the jawab, the great gate and the garden are not. The interior (the octagonal hall, its false dome, the cenotaphs and their screen) is not modelled."
+    ]
+  }
+}

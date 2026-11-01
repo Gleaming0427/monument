@@ -312,7 +312,8 @@ function gothic(k, e, P) {
   const [cx, cz] = e.center ?? [0, 0], rot = e.rot ?? 0, co = Math.cos(rot), si = Math.sin(rot);
   const stone = e.color ?? '#d6c8a8', lead = e.lead ?? '#8e979f', glass = e.glass ?? '#34404f', phase = P(e.phase);
   const V = (u, y, v) => new T.Vector3(cx + u * co + v * si, y, cz - u * si + v * co);
-  const tint = (hex, j = .06) => k.tint(hex, j);
+  // Each block's tone varies by `tone` (6 % by default; less for polished marble).
+  const tint = (hex, j = e.tone ?? .06) => k.tint(hex, j);
   // A box at [u, v] and height y (its centre), its length along the frame direction [du, dv].
   const box = (kind, [u, v], y, [l, h, t], [du, dv], color, ph = phase, extra = {}) => {
     const p = V(u, y, v);
@@ -409,9 +410,10 @@ function gothic(k, e, P) {
       }
       return;
     }
-    // The arch frame on the face, its jambs, and the tracery: a mullion, two lancets and an oculus.
-    arch(F, o.s, W + .35, o.spring, face, .45, ph, own, o.kind);
-    if (o.spring - y0 > .1) for (const side of [-1, 1]) beam('stone', F(o.s + side * (W / 2 + .1), y0, face), F(o.s + side * (W / 2 + .1), o.spring, face), .4, tint(stone), ph, own);
+    // The arch frame on the face, its jambs, and the tracery: a mullion, two lancets and an oculus. An opening with
+    // `surround: false` has none of the frame and jambs: a plain arch cut in the face (a Mughal niche framed by inlay).
+    if (o.surround !== false) arch(F, o.s, W + .35, o.spring, face, .45, ph, own, o.kind);
+    if (o.surround !== false && o.spring - y0 > .1) for (const side of [-1, 1]) beam('stone', F(o.s + side * (W / 2 + .1), y0, face), F(o.s + side * (W / 2 + .1), o.spring, face), .4, tint(stone), ph, own);
     if (o.twin && W > 1.6) {
       beam('stone', F(o.s, y0, 0), F(o.s, o.spring + W * .18, 0), .3, tint(stone), ph, own);
       for (const side of [-1, 1]) arch(F, o.s + side * W / 4, W / 2 - .12, o.spring, 0, .24, ph, own, 'pointed', 3);

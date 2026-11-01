@@ -1,0 +1,151 @@
+{
+ "_read": "Translate every string into this language. Keep every number, date, measurement and name exactly as written. Every `source` is not here: it never changes. A `when` is here only when it has words in it: translate the words, keep the numbers.",
+ "name": "Taj Mahal",
+ "place": "Agra, Uttar Pradesh, Inde",
+ "modelNote": "Plan d’après les contours 3D d’OpenStreetMap ; hauteurs d’après les dimensions de Koch et Barraud et de Wikipédia ; proportions des façades interprétées d’après les descriptions, pas encore ajustées sur des photographies.",
+ "live": [
+  {
+   "label": "Hauteur"
+  }
+ ],
+ "facts": [
+  {
+   "value": "73 m",
+   "label": "de haut, jusqu’au sommet de l’épi"
+  },
+  {
+   "value": "95,5 m",
+   "label": "de côté, le socle de marbre"
+  },
+  {
+   "value": "20 000",
+   "label": "artisans et ouvriers, selon l’estimation habituelle"
+  }
+ ],
+ "phases": {
+  "tomb": {
+   "title": "Le socle et le tombeau",
+   "text": "Shah Jahan commande le tombeau en 1631 pour Mumtaz Mahal, morte le 17 juin de cette année ; les travaux commencent en 1632. Le sol est creusé, remblayé et nivelé, des pieux de chaux et de pierre portent les fondations, et des murs de brique et de mortier de chaux parés de marbre blanc de Makrana s’élèvent sur un socle carré.",
+   "moments": [
+    {
+     "tag": "Matériau",
+     "title": "Brique dedans, marbre dehors",
+     "text": "Le tombeau est bâti en brique et mortier de chaux ; sa face extérieure est plaquée de marbre blanc de Makrana, au Rajasthan. Les autres bâtiments de l’ensemble sont revêtus de grès rouge de Fatehpur Sikri."
+    },
+    {
+     "tag": "Chantier",
+     "title": "Un échafaudage de brique, ou de bambou ?",
+     "text": "L’article principal dit que les ouvriers élevèrent un colossal échafaudage de brique qui reproduisait le tombeau. L’article sur son architecture rapporte le récit de Tavernier, selon lequel échafaudages et cintres étaient entièrement en brique, et indique que les chercheurs modernes jugent bien plus probables des échafaudages de bambou et des rampes de bois."
+    },
+    {
+     "tag": "Calligraphie",
+     "title": "La signature d’Amanat Khan",
+     "text": "Le calligraphe Amanat Khan signe le cadre de l’arc sud de la salle à coupole ; sa signature le date de 1638/39, quand la salle approchait de son achèvement."
+    }
+   ]
+  },
+  "dome": {
+   "title": "Coupole, chhatris et minarets",
+   "text": "La coupole en bulbe s’élève sur son tambour au-dessus du toit, avec quatre chhatris à ses angles, et les quatre minarets montent aux angles du socle. Le 6 février 1643, douzième anniversaire de la mort de Mumtaz Mahal, Shah Jahan tient la première cérémonie au tombeau ; cette année-là, les sources officielles décrivent un ensemble pour l’essentiel achevé.",
+   "disputed": [
+    {
+     "what": "l’achèvement du tombeau"
+    }
+   ],
+   "moments": [
+    {
+     "tag": "Forme",
+     "title": "Un bulbe sur un tambour",
+     "text": "La coupole, haute de 23 m, se dresse sur un tambour cylindrique haut de 12 m, dont le diamètre intérieur est de 18,4 m ; une moulure en corde torsadée marque la fin du tambour et le début de la coupole. Les quatre chhatris de ses angles reprennent sa forme de bulbe."
+    },
+    {
+     "tag": "Structure",
+     "title": "Des minarets qui penchent vers l’extérieur",
+     "text": "Chaque minaret, haut de plus de 40 m, est divisé en trois parties presque égales par des balcons, sous un chhatri. Ils ont été bâtis légèrement penchés vers l’extérieur, pour qu’en s’effondrant ils tombent loin du tombeau ; le modèle les dessine droits."
+    },
+    {
+     "tag": "Cérémonie",
+     "title": "Le douzième anniversaire",
+     "text": "Le 6 février 1643, douzième anniversaire de la mort de Mumtaz Mahal, Shah Jahan tient la première cérémonie au tombeau."
+    }
+   ]
+  },
+  "finial": {
+   "title": "Un épi de bronze doré",
+   "when": "début du 19e siècle",
+   "text": "Au 18e siècle, les souverains jats de Bharatpur pillent le tombeau, et l’historien moghol Kanbo dit qu’ils emportèrent le revêtement d’or qui couvrait son épi. Au début du 19e siècle, l’épi d’or est remplacé par une copie en bronze doré.",
+   "moments": [
+    {
+     "tag": "Épi",
+     "title": "Un croissant au sommet",
+     "text": "L’épi est surmonté d’une lune, motif islamique typique, dont les cornes pointent vers le ciel."
+    }
+   ]
+  },
+  "camouflage": {
+   "title": "Caché en temps de guerre",
+   "text": "En 1942, craignant des attaques aériennes, le gouvernement fait dresser des échafaudages pour déguiser le bâtiment ; pendant les guerres contre le Pakistan de 1965 et de 1971, des échafaudages sont de nouveau dressés pour tromper les pilotes de bombardiers.",
+   "moments": [
+    {
+     "tag": "Guerre",
+     "title": "Un échafaudage sur la coupole",
+     "text": "Des échafaudages sont dressés en 1942 pour déguiser le bâtiment contre les attaques aériennes, puis de nouveau pendant les guerres de 1965 et de 1971 pour tromper les pilotes de bombardiers."
+    }
+   ]
+  },
+  "today": {
+   "title": "Patrimoine et restauration",
+   "when": "1983–années 2020",
+   "text": "En 1983, le Taj Mahal est inscrit au patrimoine mondial de l’UNESCO. La pollution jaunit et brunit son marbre ; après des directives de la Cour suprême en 1997, la zone du trapèze du Taj, 10 400 km² autour du monument, soumet les émissions à des normes strictes. Dans les années 2020, des cataplasmes d’argile sont posés pour rendre au marbre sa blancheur, et le marbre brisé est remplacé.",
+   "moments": [
+    {
+     "tag": "Restauration",
+     "title": "Des cataplasmes d’argile",
+     "text": "Depuis la fin du 20e siècle, la pollution jaunit et brunit le marbre ; dans les années 2020, le gouvernement indien pose des cataplasmes d’argile pour lui rendre sa blancheur et remplace le marbre brisé."
+    }
+   ]
+  }
+ },
+ "evidence": {
+  "plan": {
+   "source": "Voie OpenStreetMap 695684926 : le contour du socle, relevé sur des images aériennes, avec les bastions ronds à ses angles et l’escalier au milieu de son côté sud"
+  },
+  "sources": [
+   {
+    "read": "Wikipédia en anglais, Taj Mahal (révision 1382536237) : hauteur 73 m ; commandé par Shah Jahan en 1631 pour Mumtaz Mahal (morte le 17 juin 1631) ; construction à partir de 1632 ; première cérémonie le 6 février 1643 ; le mausolée achevé en 1648, l’ensemble vers 1653. Le tombeau se dresse sur un socle carré haut de 6 m et de 95,5 m de côté ; un cube à plusieurs salles aux angles coupés, d’environ 57,3 m sur chacun de ses quatre grands côtés ; sur chaque côté un pishtaq haut de 33 m encadre un iwan, avec deux balcons en arc superposés de part et d’autre, le motif répété en plus petit sur les pans coupés. La coupole en bulbe est haute de 23 m sur un tambour cylindrique haut de 12 m au diamètre intérieur de 18,4 m, une moulure en corde torsadée entre eux, un motif de lotus au sommet et un épi doré haut de 9,6 m, d’abord en or et remplacé par une copie en bronze doré au début du 19e siècle, surmonté d’une lune dont les cornes pointent vers le ciel ; quatre chhatris aux angles de la coupole, des guldastas sur les arêtes des murs. Quatre minarets hauts de plus de 40 m aux angles du socle, en trois parties presque égales avec des balcons, sous des chhatris, bâtis légèrement orientés vers l’extérieur. Brique et mortier de chaux parés de marbre de Makrana ; plus de 20 000 ouvriers ; un colossal échafaudage de brique qui reproduisait le tombeau ; une rampe de terre de 15 km avec des bœufs et des éléphants ; un système de poulies sur poteaux et poutres. Le pillage jat au 18e siècle (le revêtement d’or de l’épi emporté, selon Kanbo) ; la restauration de Lord Curzon achevée en 1908 ; des échafaudages pour déguiser le bâtiment en 1942, puis en 1965 et en 1971 ; des incrustations sombres ou noires sur le marbre blanc."
+   },
+   {
+    "read": "Wikipédia en anglais, Origins and architecture of the Taj Mahal (révision 1379215363) : un tableau de dimensions tiré de Koch (2006, p. 258–259), d’après le relevé de Richard André Barraud : le mausolée 56,9 × 56,9 m et haut de 67,97 m ; un minaret de 5,65 m de diamètre et haut de 43,02 m. Le mausolée est cubique aux arêtes coupées ; sur les grands côtés un pishtaq massif encadre une porte en arc surmontée d’un balcon en arc semblable, les grands arcs s’élevant au-dessus du toit en façade intégrée, de plus petits pishtaqs superposés de part et d’autre et sur les pans coupés. Le calligraphe Amanat Khan signa le cadre de l’arc sud de la salle à coupole en 1638/39 ; les sources officielles de 1643 décrivent un ensemble pour l’essentiel achevé ; le décor se poursuivit jusqu’en 1648, quand il data l’arc nord de la grande porte. Des murs de brique et de blocage parés de marbre ou de grès, tenus par des goujons et des agrafes de fer ; plus de 1 000 éléphants ; le récit de Tavernier d’échafaudages et de cintres entièrement en brique, contesté par les chercheurs modernes, qui jugent plus probables des échafaudages de bambou et des rampes de bois. La calligraphie est surtout en jaspe ou en marbre noir incrusté dans des panneaux de marbre blanc."
+   },
+   {
+    "read": "Wikipédia en français, Taj Mahal (révision 240695883) : travaux commencés en 1632 ; leur fin incertaine : fin 1643 ou début 1644 selon Abdul Hamid Lahori, 1648 selon une inscription de l’entrée principale, 1654 selon l’État de l’Uttar Pradesh. Une plate-forme de marbre de 95,16 m de côté et de 7 m de haut ; le tombeau d’environ 60 m de côté ; quatre minarets autonomes de 42 m de haut penchés vers l’extérieur, en trois étages marqués par de petits balcons circulaires, sous un chhatri ; sur chacune des quatre façades identiques un grand iwan central entre des iwans plus petits sur deux étages, de même aux angles ; le dôme central haut de 74 m, légèrement bulbeux sur un tambour, sous un pinacle de bronze à croissant ; quatre chhatris autour de lui. Des échafaudages dressés en 1942, puis en 1965 et en 1971."
+   },
+   {
+    "read": "OpenStreetMap, les parties 3D du Taj Mahal, relevées sur des images aériennes : le socle (voie 695684926, hauteur 5 m), le carré aux angles coupés du tombeau (voie 375377794, 56,4 × 56,5 m, ses grands côtés de 41–43 m et ses pans coupés de 9,4–10,4 m), la coupole (voie 383059882, 29,8 m de diamètre) sur un tambour, quatre chhatris (relations 5699257–5699260 : huit colonnes de 1 m d’épaisseur sur un cercle d’environ 9,8 m de diamètre, sur une plate-forme octogonale d’environ 12,3 m), et les quatre minarets (relations 5585052–5586851 : un fût d’environ 6,5 m de diamètre, des balcons, huit colonnes sous un chhatri à coupole), leurs axes sur un carré d’environ 95 m de côté."
+   }
+  ],
+  "uncertainties": [
+   "Les proportions des façades sont interprétées : la largeur de chaque pishtaq (21,5 m) et de son iwan (13 m), la hauteur des arcs, la largeur et la hauteur des balcons, la hauteur du parapet (25 m au-dessus du socle, d’après OpenStreetMap) et la profondeur des iwans (6 m) sont tirées des descriptions lues, sans ajustement sur des photographies : les photographies de référence n’ont pas pu être chargées quand le modèle a été fait (Wikimedia Commons répondait 429, trop de requêtes).",
+   "Les hauteurs suivent les dimensions de Koch et Barraud et de Wikipédia en anglais : le tombeau 67,97 m au-dessus de son socle, la coupole 23 m sur un tambour de 12 m, l’épi 9,6 m, ce qui place le pied du tambour à 23,4 m au-dessus du socle. Les parties 3D d’OpenStreetMap sont plus basses d’environ 7 % (l’épi à 68 m au-dessus du sol), et l’article sur l’architecture donne une coupole d’environ 35 m sur un tambour d’environ 7 m, dans une section qui demande des sources.",
+   "Le socle est dessiné large de 95,5 m et haut de 6 m (Wikipédia en anglais) ; l’article en français donne 95,16 m et 7 m, OpenStreetMap 5 m. Son parement est dessiné uni, avec une base et une corniche. Son escalier, au milieu du côté sud, est un bloc simple sur le contour d’OpenStreetMap (18,7 × 3 m) : les deux volées en partie couvertes qu’il abrite ne sont pas dessinées.",
+   "Les minarets sont dessinés droits : les pages lues disent qu’ils penchent légèrement vers l’extérieur, sans donner d’angle. Leurs balcons, leur fruit de 5,65 m à 4,6 m et leurs chhatris sont interprétés d’après les parties d’OpenStreetMap.",
+   "Les plates-formes, colonnes et avant-toits des chhatris suivent les parties d’OpenStreetMap ; leurs coupoles et leurs épis sont interprétés.",
+   "Le marbre est dessiné en surfaces lisses, sans les joints de son placage, et les incrustations en simples bandes sombres autour des arcs : la calligraphie, la pietra dura et les lambris sculptés ne sont pas modélisés. Les jalis sont des ouvertures vitrées sombres.",
+   "Les chantiers sont interprétés : les pages lues divergent sur l’échafaudage (de brique selon Tavernier et l’article principal, de bambou selon les chercheurs modernes) ; le modèle dessine des échafaudages de bois, le plus proche dont dispose la visionneuse, et une chèvre pour le système de poulies sur poteaux et poutres.",
+   "L’achèvement du tombeau est daté de 1643 (les sources officielles de cette année, via l’article sur l’architecture), de 1648 (l’article principal, et une inscription selon l’article en français), de fin 1643 ou début 1644 (Lahori) ou de 1654 (l’Uttar Pradesh) ; le film clôt la phase de la coupole en 1643, avec la première cérémonie.",
+   "Seuls le tombeau, son socle et ses minarets sont dessinés : la terrasse sur le fleuve, la mosquée, le jawab, la grande porte et le jardin ne le sont pas. L’intérieur (la salle octogonale, sa fausse coupole, les cénotaphes et leur clôture) n’est pas modélisé."
+  ]
+ },
+ "notes": {
+  "1": "Le carré aux angles coupés (56,9 m, Koch et Barraud) sur le contour d’OpenStreetMap ; les pishtaqs (33 m, Wikipédia), les iwans et les balcons dessinés d’après les descriptions lues, leurs proportions pas encore ajustées sur des photographies.",
+  "2": "Coupole haute de 23 m sur un tambour haut de 12 m au diamètre intérieur de 18,4 m (Wikipédia) ; son plus grand diamètre, 29,8 m, d’après le contour d’OpenStreetMap ; son profil interprété.",
+  "3": "Les quatre chhatris du toit : leurs plates-formes, leurs huit colonnes et leurs avant-toits suivent les parties 3D d’OpenStreetMap (relations 5699257–5699260) ; leurs coupoles et leurs épis sont interprétés.",
+  "4": "Les quatre chhatris du toit : leurs plates-formes, leurs huit colonnes et leurs avant-toits suivent les parties 3D d’OpenStreetMap (relations 5699257–5699260) ; leurs coupoles et leurs épis sont interprétés.",
+  "5": "Les quatre chhatris du toit : leurs plates-formes, leurs huit colonnes et leurs avant-toits suivent les parties 3D d’OpenStreetMap (relations 5699257–5699260) ; leurs coupoles et leurs épis sont interprétés.",
+  "6": "Les quatre chhatris du toit : leurs plates-formes, leurs huit colonnes et leurs avant-toits suivent les parties 3D d’OpenStreetMap (relations 5699257–5699260) ; leurs coupoles et leurs épis sont interprétés.",
+  "7": "Diamètre (5,65 m) et hauteur (43,02 m) d’après Koch et Barraud ; les balcons, le fruit et le chhatri interprétés d’après les parties d’OpenStreetMap ; dessinés droits.",
+  "8": "Diamètre (5,65 m) et hauteur (43,02 m) d’après Koch et Barraud ; les balcons, le fruit et le chhatri interprétés d’après les parties d’OpenStreetMap ; dessinés droits.",
+  "9": "Diamètre (5,65 m) et hauteur (43,02 m) d’après Koch et Barraud ; les balcons, le fruit et le chhatri interprétés d’après les parties d’OpenStreetMap ; dessinés droits.",
+  "10": "Diamètre (5,65 m) et hauteur (43,02 m) d’après Koch et Barraud ; les balcons, le fruit et le chhatri interprétés d’après les parties d’OpenStreetMap ; dessinés droits."
+ }
+}

@@ -468,13 +468,16 @@ export function masonry(env) {
         env.box('wood', [p[0], p[2]], y, [2 * hw, .12, t * .5], dir, tint(o.louvres, .06), ph, {...pane, reveal: face});
       }
     } else if (o.glass !== false) glaze(light, glassOff, o.panes ?? .46);
-    // The orders round the light, running down its jambs to the sill, standing out of the face.
-    const layers = layersFor(1.2), orders = o.orders ?? (W > 4 ? 4 : W > 2.4 ? 3 : 2);
-    sweep(layers, lay, light, surroundSection(orders, k), {base: face, closed: circle, caps: true});
-    flush(layers, 'stone', tint(stone), ph, own);
+    // The orders round the light, running down its jambs to the sill, standing out of the face; none with `surround:
+    // false` (a plain arch cut in the face, as a Mughal niche framed by inlay).
+    if (o.surround !== false) {
+      const layers = layersFor(1.2), orders = o.orders ?? (W > 4 ? 4 : W > 2.4 ? 3 : 2);
+      sweep(layers, lay, light, surroundSection(orders, k), {base: face, closed: circle, caps: true});
+      flush(layers, 'stone', tint(stone), ph, own);
+    }
     if (circle) { rose(lay, o, t, ph, own, face, glassOff, k); return; }
     // Slim colonnettes up the jambs, each capped by a ring at the springing, as the lancets of the photographed fronts have.
-    if (o.shafts !== false && o.kind !== 'rect' && o.glass !== false && !o.door && !o.louvres && o.spring - y0 > 1.4 && W >= 1.1) {
+    if (o.shafts !== false && o.surround !== false && o.kind !== 'rect' && o.glass !== false && !o.door && !o.louvres && o.spring - y0 > 1.4 && W >= 1.1) {
       for (const side of [-1, 1]) {
         const p = F(o.s + side * (W / 2 + .1 * k), 0, face + .08), ys = [y0]; for (let y = y0 + 2.4; y < o.spring - .05; y += 2.4) ys.push(y); ys.push(o.spring);
         loft([p[0], p[2]], ys, () => .055, ph, own, {sides: 8, smooth: true, step: 2.4});

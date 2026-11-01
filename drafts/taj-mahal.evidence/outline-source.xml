@@ -1,0 +1,100 @@
+<?xml version='1.0' encoding='utf-8'?>
+<osm version="0.6" generator="extract of api.openstreetmap.org/api/0.6/map, bbox 78.0405,27.1735,78.0440,27.1765"><node id="11026007048" visible="true" version="1" changeset="138115843" timestamp="2023-07-04T16:53:57Z" user="muzirian" uid="2024553" lat="27.1753787" lon="78.0416219" />
+ <node id="11757086265" visible="true" version="1" changeset="149073693" timestamp="2024-03-24T03:09:39Z" user="Matti Schneider" uid="520233" lat="27.1752760" lon="78.0420888" />
+ <node id="11757096110" visible="true" version="1" changeset="149073693" timestamp="2024-03-24T03:09:39Z" user="Matti Schneider" uid="520233" lat="27.1745502" lon="78.0422040" />
+ <node id="11757096122" visible="true" version="1" changeset="149073693" timestamp="2024-03-24T03:09:39Z" user="Matti Schneider" uid="520233" lat="27.1745533" lon="78.0420149" />
+ <node id="3786464389" visible="true" version="4" changeset="85620153" timestamp="2020-05-22T15:29:09Z" user="ramya_K" uid="10626025" lat="27.1745699" lon="78.0415602" />
+ <node id="3786464435" visible="true" version="4" changeset="85620153" timestamp="2020-05-22T15:29:09Z" user="ramya_K" uid="10626025" lat="27.1746033" lon="78.0426212" />
+ <node id="3786464757" visible="true" version="4" changeset="85620153" timestamp="2020-05-22T15:29:09Z" user="ramya_K" uid="10626025" lat="27.1745491" lon="78.0425780" />
+ <node id="3786464758" visible="true" version="4" changeset="85620153" timestamp="2020-05-22T15:29:09Z" user="ramya_K" uid="10626025" lat="27.1745358" lon="78.0416354" />
+ <node id="3786464759" visible="true" version="4" changeset="85620153" timestamp="2020-05-22T15:29:09Z" user="ramya_K" uid="10626025" lat="27.1745362" lon="78.0415855" />
+ <node id="3786464802" visible="true" version="4" changeset="85620153" timestamp="2020-05-22T15:29:09Z" user="ramya_K" uid="10626025" lat="27.1745643" lon="78.0426182" />
+ <node id="3786464826" visible="true" version="4" changeset="85620153" timestamp="2020-05-22T15:29:09Z" user="ramya_K" uid="10626025" lat="27.1745709" lon="78.0425292" />
+ <node id="3786464852" visible="true" version="4" changeset="85620153" timestamp="2020-05-22T15:29:09Z" user="ramya_K" uid="10626025" lat="27.1745659" lon="78.0416599" />
+ <node id="3786464912" visible="true" version="4" changeset="85620153" timestamp="2020-05-22T15:29:09Z" user="ramya_K" uid="10626025" lat="27.1746100" lon="78.0415793" />
+ <node id="3786464913" visible="true" version="4" changeset="85620153" timestamp="2020-05-22T15:29:09Z" user="ramya_K" uid="10626025" lat="27.1746363" lon="78.0425861" />
+ <node id="3786464914" visible="true" version="6" changeset="85620153" timestamp="2020-05-22T15:29:09Z" user="ramya_K" uid="10626025" lat="27.1746193" lon="78.0416208" />
+ <node id="3786464916" visible="true" version="5" changeset="85620153" timestamp="2020-05-22T15:29:09Z" user="ramya_K" uid="10626025" lat="27.1753883" lon="78.0416047" />
+ <node id="3786464917" visible="true" version="4" changeset="85620153" timestamp="2020-05-22T15:29:09Z" user="ramya_K" uid="10626025" lat="27.1753960" lon="78.0425760" />
+ <node id="3786464945" visible="true" version="4" changeset="85620153" timestamp="2020-05-22T15:29:09Z" user="ramya_K" uid="10626025" lat="27.1754144" lon="78.0415612" />
+ <node id="3786464992" visible="true" version="4" changeset="85620153" timestamp="2020-05-22T15:29:09Z" user="ramya_K" uid="10626025" lat="27.1754195" lon="78.0426116" />
+ <node id="3786465054" visible="true" version="4" changeset="85620153" timestamp="2020-05-22T15:29:09Z" user="ramya_K" uid="10626025" lat="27.1754500" lon="78.0416651" />
+ <node id="3786465064" visible="true" version="4" changeset="85620153" timestamp="2020-05-22T15:29:09Z" user="ramya_K" uid="10626025" lat="27.1754535" lon="78.0415593" />
+ <node id="3786465088" visible="true" version="4" changeset="85620153" timestamp="2020-05-22T15:29:09Z" user="ramya_K" uid="10626025" lat="27.1754547" lon="78.0425098" />
+ <node id="3786465105" visible="true" version="4" changeset="85620153" timestamp="2020-05-22T15:29:09Z" user="ramya_K" uid="10626025" lat="27.1754591" lon="78.0426121" />
+ <node id="3786465148" visible="true" version="4" changeset="85620153" timestamp="2020-05-22T15:29:09Z" user="ramya_K" uid="10626025" lat="27.1754808" lon="78.0415830" />
+ <node id="3786465149" visible="true" version="4" changeset="85620153" timestamp="2020-05-22T15:29:09Z" user="ramya_K" uid="10626025" lat="27.1754808" lon="78.0416344" />
+ <node id="3786465150" visible="true" version="4" changeset="85620153" timestamp="2020-05-22T15:29:09Z" user="ramya_K" uid="10626025" lat="27.1754815" lon="78.0425425" />
+ <node id="3786465151" visible="true" version="4" changeset="85620153" timestamp="2020-05-22T15:29:09Z" user="ramya_K" uid="10626025" lat="27.1754823" lon="78.0425877" />
+ <node id="3787490672" visible="true" version="5" changeset="85620153" timestamp="2020-05-22T15:29:09Z" user="ramya_K" uid="10626025" lat="27.1747697" lon="78.0418782" />
+ <node id="3787490675" visible="true" version="5" changeset="85620153" timestamp="2020-05-22T15:29:09Z" user="ramya_K" uid="10626025" lat="27.1747709" lon="78.0423075" />
+ <node id="3787490676" visible="true" version="5" changeset="85620153" timestamp="2020-05-22T15:29:09Z" user="ramya_K" uid="10626025" lat="27.1748379" lon="78.0418066" />
+ <node id="3787490679" visible="true" version="5" changeset="85620153" timestamp="2020-05-22T15:29:09Z" user="ramya_K" uid="10626025" lat="27.1748310" lon="78.0423737" />
+ <node id="3787490690" visible="true" version="5" changeset="85620153" timestamp="2020-05-22T15:29:09Z" user="ramya_K" uid="10626025" lat="27.1752075" lon="78.0418039" />
+ <node id="3787490691" visible="true" version="4" changeset="85620153" timestamp="2020-05-22T15:29:09Z" user="ramya_K" uid="10626025" lat="27.1752165" lon="78.0423675" />
+ <node id="3787490692" visible="true" version="4" changeset="85620153" timestamp="2020-05-22T15:29:09Z" user="ramya_K" uid="10626025" lat="27.1752739" lon="78.0418749" />
+ <node id="3787490695" visible="true" version="4" changeset="85620153" timestamp="2020-05-22T15:29:09Z" user="ramya_K" uid="10626025" lat="27.1752780" lon="78.0423013" />
+ <node id="8761746806" visible="true" version="1" changeset="105238853" timestamp="2021-05-24T16:14:37Z" user="Антін Сартенченко" uid="571410" lat="27.1745398" lon="78.0420150" />
+ <node id="8761746807" visible="true" version="1" changeset="105238853" timestamp="2021-05-24T16:14:37Z" user="Антін Сартенченко" uid="571410" lat="27.1745409" lon="78.0422041" />
+ <node id="8761746808" visible="true" version="1" changeset="105238853" timestamp="2021-05-24T16:14:37Z" user="Антін Сартенченко" uid="571410" lat="27.1745690" lon="78.0422039" />
+ <node id="8761746809" visible="true" version="1" changeset="105238853" timestamp="2021-05-24T16:14:37Z" user="Антін Сартенченко" uid="571410" lat="27.1745679" lon="78.0420148" />
+ <way id="695684926" visible="true" version="17" changeset="162430505" timestamp="2025-02-12T13:34:04Z" user="arkarjun" uid="1049949">
+  <nd ref="3786464917" />
+  <nd ref="3786464913" />
+  <nd ref="3786464435" />
+  <nd ref="3786464802" />
+  <nd ref="3786464757" />
+  <nd ref="3786464826" />
+  <nd ref="8761746808" />
+  <nd ref="11757096110" />
+  <nd ref="8761746807" />
+  <nd ref="8761746806" />
+  <nd ref="11757096122" />
+  <nd ref="8761746809" />
+  <nd ref="3786464852" />
+  <nd ref="3786464758" />
+  <nd ref="3786464759" />
+  <nd ref="3786464389" />
+  <nd ref="3786464912" />
+  <nd ref="3786464914" />
+  <nd ref="11026007048" />
+  <nd ref="3786464916" />
+  <nd ref="3786464945" />
+  <nd ref="3786465064" />
+  <nd ref="3786465148" />
+  <nd ref="3786465149" />
+  <nd ref="3786465054" />
+  <nd ref="3786465088" />
+  <nd ref="3786465150" />
+  <nd ref="3786465151" />
+  <nd ref="3786465105" />
+  <nd ref="3786464992" />
+  <nd ref="3786464917" />
+  <tag k="building:colour" v="white" />
+  <tag k="building:material" v="marble" />
+  <tag k="building:part" v="yes" />
+  <tag k="height" v="5" />
+  <tag k="layer" v="1" />
+  <tag k="name" v="floor" />
+  <tag k="roof:colour" v="white" />
+  <tag k="roof:material" v="marble" />
+ </way>
+ <way id="375377794" visible="true" version="9" changeset="149073693" timestamp="2024-03-24T03:09:39Z" user="Matti Schneider" uid="520233">
+  <nd ref="3787490672" />
+  <nd ref="3787490676" />
+  <nd ref="3787490690" />
+  <nd ref="3787490692" />
+  <nd ref="11757086265" />
+  <nd ref="3787490695" />
+  <nd ref="3787490691" />
+  <nd ref="3787490679" />
+  <nd ref="3787490675" />
+  <nd ref="3787490672" />
+  <tag k="building:colour" v="white" />
+  <tag k="building:material" v="marble" />
+  <tag k="building:part" v="yes" />
+  <tag k="height" v="30" />
+  <tag k="roof:colour" v="white" />
+  <tag k="roof:material" v="marble" />
+ </way>
+ </osm>
