@@ -12,7 +12,8 @@
 //     rectified through the relief's corners and cut to its shape and outline (1 is the photo itself; 0.36 to 0.96 for those
 //     that show, weathered low-contrast photos lowest; -0.16 to 0.30 for the buried ones);
 //   - it lies on the building and faces out of it: behind the panel, the picture without the reliefs is the model, not the
-//     backdrop (a relief turned to face into the building, on an outer wall, has the outside behind it).
+//     backdrop (99 to 100% for those laid right; a relief turned to face into the building, on an outer wall, has the outside
+//     behind it: 27% when tried at Chambord).
 // A relief buried in its wall (stone in front of the photo), turned to face into the building, or whose image did not load,
 // fails here. Whether its corners are the right ones on the photo is relief.mjs --check's question, not this test's.
 // $RELIEF_DIR keeps the picture of every relief; $RELIEF_REPORT=1 prints every measure.
