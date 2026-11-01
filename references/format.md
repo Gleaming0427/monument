@@ -66,7 +66,7 @@ Every element says where it comes from, so the viewer's evidence mode can colour
 
 ## Photo reliefs
 
-A `relief` element lays a photograph of carving on the model (see [bricks.md](bricks.md)). Its `image` lives in `<id>.evidence/reliefs/` next to the file and travels with it; its `credit` names the photo's page, author and licence, which validation checks against Wikimedia Commons, and the viewer's evidence mode lists. Its `provenance` is `documented` (the carving is photographed), and its `note` says what it shows. A relief has a phase like any element, `until` to take it down and `rebuild` to set it back.
+A `relief` element lays a photograph of carving on the model (see [bricks.md](bricks.md)). Its `image` lives in `<id>.evidence/reliefs/` next to the file and travels with it; its `credit` names the photo's page, author and licence, which validation checks against Wikimedia Commons, and the viewer's evidence mode lists. Its `provenance` is `documented` (the carving is photographed), and its `note` says what it shows. A relief has a phase like any element, `until` to take it down and `rebuild` to set it back. A relief without `at` is a photograph the bricks lay themselves on every detail that names it (`"relief": "<its name>"` on a dormer): it then takes the phase and the `until` of each detail it is laid on, validation refuses one that no brick names and a brick that names one that does not exist, and the evidence mode credits it once.
 
 ## The scan
 

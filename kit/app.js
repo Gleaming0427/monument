@@ -557,9 +557,19 @@ window.monument = {
   get ready() { return Boolean(data) && stage.ready; },
   get eye() { return stage?.eye ?? []; },
   get insets() { return stage?.insets ?? {left: 0, right: 0, top: 0, bottom: 0}; },
+  get reliefs() { return stage?.reliefs ?? []; },
   project(point) { return stage?.project(point) ?? {x: 0, y: 0, visible: false}; },
   // The monument's outline from a reference photo's viewpoint, in the state the photo shows (scripts/silhouette.mjs):
   // `cam` is [azimuth, elevation, distance, x, y, z], as ?cam takes it. The page stays still afterwards.
+  // The monument at time `t` from `cam`, drawn once on a plain backdrop, the section plane following the camera when the
+  // section view is on, with or without its photo reliefs (scripts/relief.test.mjs). The page stays still afterwards.
+  photograph({t = stage.duration, cam, fov = 38, backdrop = '#000000', reliefs = true}) {
+    stepping = true; touched = true;
+    time = Math.max(0, Math.min(stage.duration, t)); play(false); update();
+    stage.autoRotate(false); stage.look(...cam); stage.fov(fov); stage.shift(0);
+    stage.photograph(backdrop, {reliefs});
+    return true;
+  },
   silhouette({t = stage.duration, cam, fov = 38, shift = 0}) {
     stepping = true; touched = true;
     time = Math.max(0, Math.min(stage.duration, t)); play(false); update();
