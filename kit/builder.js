@@ -3130,17 +3130,19 @@ export function createStage(host) {
     // where it covers half the pixel or more. Nothing is recompiled, and the next frame is drawn as before.
     // One picture of the model as it stands, on a plain `backdrop` (no haze, no floor, no ambient occlusion or bloom), the
     // section plane following the camera: what a test looks at when it must know the backdrop to the pixel; `reliefs: false`
-    // leaves the photo reliefs out of it. One frame is drawn and left on the canvas; the scene is set back as it was.
-    photograph(backdrop = '#000000', {reliefs = true} = {}) {
+    // leaves the photo reliefs out of it, `shadows: false` the cast shadows. One frame is drawn and left on the canvas; the scene is set back as it was.
+    photograph(backdrop = '#000000', {reliefs = true, shadows = true} = {}) {
       const hide = [studioFloor, outlineGroup, ...siteGroups.map(site => site.group), ...(reliefs ? [] : meshes.filter(m => m.userData.relief))].filter(o => o?.visible), density = scene.fog.density, paper = scene.background.clone(), effects = [ao.enabled, bloom.enabled];
       for (const o of hide) o.visible = false;
       scene.fog.density = 0; ao.enabled = bloom.enabled = false; scene.background.set(backdrop);
       // The light and the section plane follow this camera, not the last one drawn: the picture depends on the view alone.
+      // `shadows: false` leaves the cast shadows out, so that what a surface shows is not split by the shade of another.
+      const casting = sun.castShadow; sun.castShadow = casting && shadows;
       controls.update(); followSection(); followLight(); sun.updateMatrixWorld(); sun.target.updateMatrixWorld(); renderer.shadowMap.needsUpdate = true;
       ao.gtaoMaterial.uniforms.tDepth.value = ao.pdMaterial.uniforms.tDepth.value = composer.readBuffer.depthTexture;
       composer.render();
       for (const o of hide) o.visible = true;
-      scene.fog.density = density; scene.background.copy(paper); [ao.enabled, bloom.enabled] = effects; shown = [];
+      scene.fog.density = density; scene.background.copy(paper); [ao.enabled, bloom.enabled] = effects; sun.castShadow = casting; shown = [];
     },
     silhouette() {
       const hide = [studioFloor, outlineGroup, ...siteGroups.map(site => site.group)].filter(o => o?.visible), density = scene.fog.density, paper = scene.background.clone(), effects = [ao.enabled, bloom.enabled];

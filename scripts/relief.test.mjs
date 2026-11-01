@@ -137,9 +137,10 @@ if (monuments.length) {
       const [w, h] = r.size, dist = Math.max(h / .6, w / (.6 * FRAME[0] / FRAME[1])) / (2 * Math.tan(FOV * Math.PI / 360));
       // The view's centre, which the section plane passes through, stands SECTION metres in front of the panel.
       const target = [r.middle[0] + nx / n * SECTION, r.middle[1], r.middle[2] + nz / n * SECTION];
-      // One picture, on a black backdrop and without haze, so that the backdrop is known to the pixel.
+      // One picture, on a black backdrop and without haze, so that the backdrop is known to the pixel, and without cast shadows,
+      // so that a cornice's shade does not split the carving it falls on (the relief keeps its own light and shade).
       const picture = async reliefs => {
-        await browser.run(`monument.photograph({t: ${t}, cam: [${az}, 0, ${dist}, ${target.join(', ')}], fov: ${FOV}, reliefs: ${reliefs}})`);
+        await browser.run(`monument.photograph({t: ${t}, cam: [${az}, 0, ${dist}, ${target.join(', ')}], fov: ${FOV}, reliefs: ${reliefs}, shadows: false})`);
         await browser.settle(); await browser.sleep(150);
         return browser.shot('png');
       };

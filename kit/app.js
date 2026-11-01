@@ -563,11 +563,11 @@ window.monument = {
   // `cam` is [azimuth, elevation, distance, x, y, z], as ?cam takes it. The page stays still afterwards.
   // The monument at time `t` from `cam`, drawn once on a plain backdrop, the section plane following the camera when the
   // section view is on, with or without its photo reliefs (scripts/relief.test.mjs). The page stays still afterwards.
-  photograph({t = stage.duration, cam, fov = 38, backdrop = '#000000', reliefs = true}) {
+  photograph({t = stage.duration, cam, fov = 38, backdrop = '#000000', reliefs = true, shadows = true}) {
     stepping = true; touched = true;
     time = Math.max(0, Math.min(stage.duration, t)); play(false); update();
     stage.autoRotate(false); stage.look(...cam); stage.fov(fov); stage.shift(0);
-    stage.photograph(backdrop, {reliefs});
+    stage.photograph(backdrop, {reliefs, shadows});
     return true;
   },
   silhouette({t = stage.duration, cam, fov = 38, shift = 0}) {
