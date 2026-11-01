@@ -40,14 +40,16 @@ for (const [id, dir, stem] of sources) {
   const d = expand(raw, id);
   if (d.elements.some(e => e.type === 'relief')) monuments.push({id, d});
 }
-// How many panels the bricks should lay for each relief without `at`: one a dormer that names it.
+// How many panels the bricks should lay for each relief without `at`: one a dormer that names it, twice over where the part that
+// carries it (a tower's head, a roof) is taken down and laid again (`rebuild`).
 const expected = d => {
   const count = new Map();
-  const walk = value => {
-    if (Array.isArray(value)) return value.forEach(walk);
+  const walk = (value, lives = 1) => {
+    if (Array.isArray(value)) return value.forEach(item => walk(item, lives));
     if (!value || typeof value !== 'object') return;
-    if (typeof value.relief === 'string') count.set(value.relief, (count.get(value.relief) ?? 0) + (value.at?.length ?? value.angles?.length ?? value.count ?? 1) * (value.rebuild ? 2 : 1));
-    for (const [key, item] of Object.entries(value)) if (key !== 'relief') walk(item);
+    if (value.rebuild) lives *= 2;
+    if (typeof value.relief === 'string') count.set(value.relief, (count.get(value.relief) ?? 0) + (value.at?.length ?? value.angles?.length ?? value.count ?? 1) * lives);
+    for (const [key, item] of Object.entries(value)) if (key !== 'relief') walk(item, lives);
   };
   walk(d.elements.filter(e => e.type !== 'relief'));
   return count;
