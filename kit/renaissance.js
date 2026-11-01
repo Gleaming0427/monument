@@ -593,8 +593,9 @@ export function renaissance(gothic) {
     G.life(e, (ph, extra) => {
       // The shaft.
       const rA = A.radius ?? 3.5, hA = A.height ?? 9.5, sides = A.sides ?? 8, ys = []; for (let y = y0; y < y0 + hA - .05; y += 1.5) ys.push(y); ys.push(y0 + hA);
-      M.loft(c, ys, () => rA, ph, extra, {sides, turn: Math.PI / sides, course: .32, color: stone, step: 1.5});
-      // Round-headed bays on the four faces, dark behind a stone surround.
+      // The loft sets its corners half a side off `turn`: with none, a face is centred on each axis, and its bay with it.
+      M.loft(c, ys, () => rA, ph, extra, {sides, turn: 0, course: .32, color: stone, step: 1.5});
+      // Round-headed bays in the middle of the four faces on the axes, dark behind a stone surround.
       for (let i = 0; i < 4; i++) {
         const a = i * Math.PI / 2, d = rA * Math.cos(Math.PI / sides) + .08, p = [Math.cos(a) * d, Math.sin(a) * d], dir = [-Math.sin(a), Math.cos(a)];
         const own = {...extra, opening: S.k.nextOpening = (S.k.nextOpening ?? 0) + 1, role: 'window'};

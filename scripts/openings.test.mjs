@@ -3,6 +3,8 @@
 // hold, so that nothing stands off the axis of the bays it belongs to. For the bricks that carry their openings as
 // numbers (`lodgingRange` and `drumTower`, and the doors of a `doricTemple`'s walls):
 //   - a wall's windows stand in regular bays, and their span is centred on the wall;
+//   - a window's glass ends under the string course or the cornice above it;
+//   - no window or dormer of a range stands where another building stands (its walls, its roof, a tower and its cone);
 //   - arches stand on window axes, one arch to a bay;
 //   - dormers stand over window axes;
 //   - a door stands in the middle of its wall, or on the axis of a bay;
@@ -54,6 +56,37 @@ const hidden = (elements, i, angle) => {
     || (o.type === 'drumTower' && Math.hypot(x - o.center[0], z - o.center[1]) < o.radius)));
 };
 
+// Does another building stand at [x, y, z] (the monument's frame): a range's walls (or its terrace's balustrade, or under
+// the slopes of its roof), a tower's drum and cornice, or under its roof's profile? A roof gone by the end (`until`) is
+// not counted.
+const topOf = e => (e.y0 ?? 0) + (e.levels ?? [6.5, 6.5, 6]).reduce((a, b) => a + b, 0);
+const along = (profile, dy) => { for (let i = 1; i < profile.length; i++) if (dy <= profile[i][1]) { const [r0, y0] = profile[i - 1], [r1, y1] = profile[i]; return r0 + (r1 - r0) * (dy - y0) / (y1 - y0); } return -1; };
+const standsAt = (o, [x, y, z]) => {
+  if (y < (o.y0 ?? 0)) return false;
+  if (o.type === 'drumTower') {
+    const r = Math.hypot(x - o.center[0], z - o.center[1]), top = (o.y0 ?? 0) + (o.height ?? 0);
+    if (y <= top) return r < o.radius + (y > top - (o.cornice?.height ?? 0) ? o.cornice?.out ?? 0 : 0);
+    return Boolean(o.roof?.profile) && r < along(o.roof.profile, y - top);
+  }
+  if (o.type !== 'lodgingRange') return false;
+  const u = Math.abs(x - o.center[0]), v = Math.abs(z - o.center[1]), L = o.length, D = o.depth, top = topOf(o);
+  if (y <= top) return u < L / 2 && v < D / 2;
+  return (o.roofs ?? (o.roof ? [o.roof] : [])).some(r => {
+    if (r.until) return false;
+    if (r.kind === 'terrace') return y <= top + 1.1 && u < L / 2 && v < D / 2;
+    const f = (y - top) / (r.rise ?? 9), over = r.overhang ?? .45, hu = L / 2 + over, hv = D / 2 + over, axis = r.axis ?? (L >= D ? 'u' : 'v');
+    if (f > 1) return false;
+    if (r.kind === 'hip') return u < hu * (1 - f) + (axis === 'u' ? Math.max(0, (L - D) / 2) * f : 0) && v < hv * (1 - f) + (axis === 'v' ? Math.max(0, (D - L) / 2) * f : 0);
+    return axis === 'u' ? u < hu && v < hv * (1 - f) : v < hv && u < hu * (1 - f);
+  });
+};
+// A point `s` metres along a side of a range, `ahead` metres out of its face, in the monument's frame.
+const SIDES = {'v-': [[-1, -1], [1, -1], [0, -1]], 'u+': [[1, -1], [1, 1], [1, 0]], 'v+': [[1, 1], [-1, 1], [0, 1]], 'u-': [[-1, 1], [-1, -1], [-1, 0]]};
+const onSide = (e, side, s, ahead) => {
+  const [a, b, out] = SIDES[side], ax = e.center[0] + a[0] * e.length / 2, az = e.center[1] + a[1] * e.depth / 2, bx = e.center[0] + b[0] * e.length / 2, bz = e.center[1] + b[1] * e.depth / 2, len = Math.hypot(bx - ax, bz - az);
+  return [ax + (bx - ax) / len * s + out[0] * ahead, az + (bz - az) / len * s + out[1] * ahead];
+};
+
 for (const {id, elements} of monuments) {
   const ranges = elements.map((e, i) => [e, i]).filter(([e]) => e.type === 'lodgingRange'), towers = elements.map((e, i) => [e, i]).filter(([e]) => e.type === 'drumTower');
   const temples = elements.map((e, i) => [e, i]).filter(([e]) => e.type === 'doricTemple' && e.walls);
@@ -64,6 +97,51 @@ for (const {id, elements} of monuments) {
       if (!hasWindows(spec)) continue;
       const L = sideLength(e, side), from = spec.from ?? 0, to = spec.to ?? L;
       assert.ok(Math.abs(from - (L - to)) <= TOL, `element ${i}, side ${side}: its windows span ${from}..${to} on a ${L} m wall, ${from.toFixed(2)} m from one end and ${(L - to).toFixed(2)} m from the other: centre them`);
+    }
+  });
+
+  // renaissance.js lays a string course 0.5 m high at every floor, and the cornice `corniceHeight` (1.3 m) under the top of
+  // the wall: a window's glass ends under them, or the stone runs across its head.
+  test(`${id}: a window's glass ends under the string course or the cornice above it`, () => {
+    for (const [e, i] of ranges) {
+      const levels = e.levels ?? [6.5, 6.5, 6], y0 = e.y0 ?? 0, floors = levels.reduce((acc, h) => (acc.push((acc.at(-1) ?? y0) + h), acc), []);
+      for (const [side, spec] of Object.entries(e.sides ?? {})) {
+        if (spec === false) continue;
+        const grid = spec?.windows ?? e.windows ?? [{head: 4.7}, {head: 4.7}, {head: 4.3}];
+        levels.forEach((h, level) => {
+          const g = grid[Math.min(level, grid.length - 1)];
+          if (!g) return;
+          const head = (level ? floors[level - 1] : y0) + g.head, last = level === levels.length - 1, stone = last ? floors[level] - (e.corniceHeight ?? 1.3) : floors[level];
+          assert.ok(head <= stone + TOL, `element ${i}, side ${side}, storey ${level}: its windows' glass rises to ${head.toFixed(2)} m, into the ${last ? 'cornice' : 'string course'} from ${stone.toFixed(2)} m`);
+        });
+      }
+    }
+  });
+
+  // A window that another building stands in front of, or a dormer in another building's roof, opens onto a wall: the
+  // bay is skipped (`skip`), the dormer left out. Its foot, middle and head, at its middle and 15 cm inside either edge,
+  // are held 0.6 m out of its wall.
+  test(`${id}: no window or dormer of a range stands where another building stands`, () => {
+    for (const [e, i] of ranges) {
+      const levels = e.levels ?? [6.5, 6.5, 6], y0 = e.y0 ?? 0, floors = levels.reduce((acc, h) => (acc.push((acc.at(-1) ?? y0) + h), acc), []);
+      const blocked = (side, s, w, ys) => elements.findIndex((o, j) => j !== i && [s - w / 2 + .15, s, s + w / 2 - .15].some(at => ys.some(y => { const [x, z] = onSide(e, side, at, .6); return standsAt(o, [x, y, z]); })));
+      for (const [side, spec] of Object.entries(e.sides ?? {})) {
+        if (spec === false) continue;
+        const grid = spec?.windows ?? e.windows ?? [{sill: 1.5, head: 4.7}, {sill: 1.5, head: 4.7}, {sill: 1.5, head: 4.3}];
+        levels.forEach((h, level) => {
+          const g = grid[Math.min(level, grid.length - 1)], base = level ? floors[level - 1] : y0;
+          if (!g) return;
+          axes(e, side).forEach((s, bay) => {
+            if ((spec?.skip ?? []).some(([l, b]) => l === level && b === bay)) return;
+            const j = blocked(side, s, g.w ?? 1.5, [base + g.sill + .3, base + (g.sill + g.head) / 2, base + g.head - .3]);
+            assert.ok(j < 0, `element ${i}, side ${side}, storey ${level}, bay ${bay} (${s.toFixed(2)} m along): element ${j} stands in front of the window`);
+          });
+        });
+      }
+      for (const r of e.roofs ?? (e.roof ? [e.roof] : [])) for (const d of r.dormers ?? []) for (const s of dormersOn(e, d)) {
+        const j = blocked(d.side, s, d.w ?? 2.4, [floors.at(-1) + (d.h ?? 3.4) / 2]);
+        assert.ok(j < 0, `element ${i}: the dormer ${s} m along side ${d.side} stands in element ${j}`);
+      }
     }
   });
 
