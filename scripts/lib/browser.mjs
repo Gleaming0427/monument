@@ -39,7 +39,13 @@ export async function openBrowser({width, height}) {
     chrome.stderr.on('data', chunk => { const m = String(chunk).match(/ws:\/\/127\.0\.0\.1:(\d+)\//); if (m) done(m[1]); });
     chrome.on('exit', () => fail(new Error('Chrome stopped.')));
   });
-  const target = (await (await fetch(`http://127.0.0.1:${port}/json/list`)).json()).find(t => t.type === 'page');
+  // Chrome may answer before it has opened its first page: ask again until the page is listed.
+  let target;
+  for (let i = 0; i < 100 && !target; i++) {
+    target = (await (await fetch(`http://127.0.0.1:${port}/json/list`)).json()).find(t => t.type === 'page');
+    if (!target) await sleep(100);
+  }
+  if (!target) throw new Error('Chrome opened no page.');
   const socket = new WebSocket(target.webSocketDebuggerUrl);
   await new Promise(done => socket.addEventListener('open', done, {once: true}));
   let next = 0; const waiting = new Map();

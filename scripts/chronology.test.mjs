@@ -5,7 +5,7 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import {dirname, join, resolve} from 'node:path';
-import {mkdtemp, readFile, rm, writeFile} from 'node:fs/promises';
+import {cp, mkdtemp, readFile, rm, writeFile} from 'node:fs/promises';
 import {execFile} from 'node:child_process';
 import {promisify} from 'node:util';
 import {tmpdir} from 'node:os';
@@ -86,8 +86,10 @@ test('years are read from the way each monument writes its dates', () => {
 test('a disputed date says what it dates and gives two pages and two dates, or it is refused', async () => {
   const dir = await mkdtemp(join(tmpdir(), 'monument-disputed-')), id = 'chateau-de-chambord', data = JSON.parse(await readFile(resolve(root, `examples/${id}.json`), 'utf8'));
   const a = 'https://fr.wikipedia.org/wiki/Ch%C3%A2teau_de_Chambord', b = 'https://www.chambord.org/fr/histoire/le-chateau/au-fil-de-lhistoire/';
+  // The copy travels with the photos its reliefs lay, and without the rest of its evidence folder, so without the masks its
+  // photos' cuts point to.
+  await cp(resolve(root, `examples/${id}.evidence/reliefs`), join(dir, `${id}.evidence`, 'reliefs'), {recursive: true});
   const validate = async disputed => {
-    // The copy travels without its evidence folder, so without the masks its photos' cuts point to.
     const copy = structuredClone(data); copy.phases[0].disputed = disputed; for (const r of copy.evidence.references) delete r.silhouette;
     await writeFile(join(dir, `${id}.json`), JSON.stringify(copy));
     return promisify(execFile)(process.execPath, [resolve(root, 'scripts/validate.mjs'), join(dir, `${id}.json`)]).then(out => out.stdout + out.stderr, error => error.stdout + error.stderr);

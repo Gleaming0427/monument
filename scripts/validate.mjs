@@ -118,14 +118,23 @@ async function imageSize(path) {
 }
 // Licences a published model may reuse a photo under (and must credit it): see scripts/relief.mjs.
 const FREE = /^(CC0|Public domain|PD|CC BY(-SA)? \d(\.\d)?( [A-Za-z-]+)?|CC-BY(-SA)?-\d(\.\d)?|Licence Ouverte|Etalab)/i;
-async function relief(e, i, file, id, at, strict) {
+// The names of the photo reliefs the bricks lay themselves (a dormer's `relief`), anywhere in an element.
+const laidReliefs = (value, found = new Set()) => {
+  if (Array.isArray(value)) for (const item of value) laidReliefs(item, found);
+  else if (value && typeof value === 'object') for (const [key, item] of Object.entries(value)) { if (key === 'relief' && typeof item === 'string') found.add(item); else laidReliefs(item, found); }
+  return found;
+};
+async function relief(e, i, file, id, at, strict, laid) {
   const where = `${at} relief ${i}`;
   check(new RegExp(`^${id}\\.evidence/reliefs/[a-z0-9-]+\\.(jpg|jpeg|png)$`).test(e.image ?? ''), `${where}: "image" must be a file in ${id}.evidence/reliefs/ (scripts/relief.mjs puts it there)`);
   const size = typeof e.image === 'string' ? await imageSize(join(dirname(file), e.image)) : null;
   check(size, `${where}: image ${e.image} not found or not a JPEG/PNG`);
   check(Array.isArray(e.corners) && e.corners.length === 4 && e.corners.every(c => c?.length === 2 && c.every(Number.isFinite) && (!size || c[0] >= 0 && c[1] >= 0 && c[0] <= size[0] && c[1] <= size[1])), `${where}: "corners" needs four [x, y] points inside the image (top left, top right, bottom right, bottom left)`);
   check(e.size?.length === 2 && e.size.every(v => Number.isFinite(v) && v > 0), `${where}: "size" needs [width, height] in metres`);
-  check(e.at?.length === 3 && e.at.every(Number.isFinite), `${where}: "at" needs [u, y, v], the panel's centre`);
+  // A relief with no `at` is laid by the bricks that name it (a dormer's `relief`): it needs that name, and a brick that uses it.
+  if (e.at === undefined) check(typeof e.name === 'string' && laid.has(e.name), `${where}: a relief without "at" is laid by the bricks that name it ("relief": its "name"), and no brick names ${e.name ? `"${e.name}"` : 'it'}`);
+  else check(e.at?.length === 3 && e.at.every(Number.isFinite), `${where}: "at" needs [u, y, v], the panel's centre`);
+  check(e.outline === undefined || Array.isArray(e.outline) && e.outline.length >= 3 && e.outline.every(c => c?.length === 2 && c.every(Number.isFinite) && (!size || c[0] >= 0 && c[1] >= 0 && c[0] <= size[0] && c[1] <= size[1])), `${where}: "outline" needs at least three [x, y] points inside the image (the carving's edge, in its pixels)`);
   check(e.facing === undefined || e.facing?.length === 2 && e.facing.every(Number.isFinite) && Math.hypot(...e.facing) > 0, `${where}: "facing" must be an outward [u, v] direction`);
   check(e.shape === undefined || ['rect', 'round', 'pointed', 'circle'].includes(e.shape.kind) && (e.shape.spring === undefined || e.shape.spring >= 0 && e.shape.spring < e.size?.[1]) && (e.shape.rise === undefined || e.shape.rise > 0 && e.shape.rise <= e.size?.[1] - (e.shape.spring ?? 0) + .01), `${where}: "shape" must be {"kind": "rect" | "round" | "pointed" | "circle", "spring": metres above the foot, "rise": the arch's height above it}`);
   const recess = e.recess;
@@ -299,7 +308,9 @@ for (const file of (await Promise.all(targets.map(files))).flat()) {
       check(e.rendering?.lod === undefined || e.rendering.lod === 'adaptive', `${label} rendering.lod must be "adaptive"`);
     }
   }
-  for (const [i, e] of d.elements.entries()) if (e.type === 'relief') await relief(e, i, file, id, at, strict);
+  const laid = laidReliefs(d.elements.filter(e => e.type !== 'relief')), templates = new Set(d.elements.filter(e => e.type === 'relief' && e.at === undefined).map(e => e.name));
+  for (const name of laid) check(templates.has(name), `${at}: a brick lays the photo relief "${name}", and no relief without "at" has that name`);
+  for (const [i, e] of d.elements.entries()) if (e.type === 'relief') await relief(e, i, file, id, at, strict, laid);
   await scanLayer(d, file, id, at, strict);
   await silhouettes(d, file, id, at);
   if (standard) await evidence(d, text, file, id, at, strict);

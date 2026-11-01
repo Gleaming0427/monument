@@ -214,7 +214,7 @@ export function renaissance(gothic) {
       // `angles` (degrees) sets each dormer's place when they are not evenly spread over `arc`.
       if (d) for (let i = 0; i < (d.angles?.length ?? d.count); i++) {
         const a = d.angles ? rad(d.angles[i]) : rad(d.arc[0]) + (i + .5) / d.count * (rad(d.arc[1]) - rad(d.arc[0])), r = d.r ?? 7.4;
-        dormer(S, {at: [Math.cos(a) * r, Math.sin(a) * r], out: [Math.cos(a), Math.sin(a)], y: y1 + .05, w: d.w ?? 2.4, h: d.h ?? 4.2, pediment: d.pediment ?? 'triangle', slope: 1.6, stone, phase: ph, extra});
+        dormer(S, {at: [Math.cos(a) * r, Math.sin(a) * r], out: [Math.cos(a), Math.sin(a)], y: y1 + .05, w: d.w ?? 2.4, h: d.h ?? 4.2, pediment: d.pediment ?? 'triangle', slope: 1.6, stone, phase: ph, extra, relief: d.relief});
       }
       for (const c of t0.chimneys ?? []) {
         const a = rad(c.a), r = c.r ?? 6.5;
@@ -370,17 +370,23 @@ export function renaissance(gothic) {
 
   // A dormer on a wall line: two cheeks, a window under a lintel, an entablature and a pediment (a triangle, or a segment).
   // `at` is the middle of its foot on the wall's face, `out` the wall's outward normal, `slope` the roof's rise for a metre
-  // of run, so that its cheeks run back to meet the roof.
-  function dormer(S, {at, out, y, w = 2.4, h = 3.2, pediment = 'triangle', slope = 1.6, stone, slate = '#4b525c', phase, extra = {}, window = {}}) {
+  // of run, so that its cheeks run back to meet the roof. With `relief`, the name of a photo relief without `at`, its front is
+  // that photograph, laid foot to foot on the front of the dormer and cut to its outline: the cheeks, the solid under the
+  // window, the glass and the entablature stay as the depth behind it, and the photo carries the pediment and its crest.
+  function dormer(S, {at, out, y, w = 2.4, h = 3.2, pediment = 'triangle', slope = 1.6, stone, slate = '#4b525c', phase, extra = {}, window = {}, relief}) {
     const {G, k} = S, dir = [-out[1], out[0]], tint = c => G.tint(c, .04), off = d => [at[0] + out[0] * d, at[1] + out[1] * d];
     const cheek = Math.max(.5, w * .24), depth = Math.max(1.4, h / slope + .6), top = y + h;
+    const front = off(.66), normal = S.frame.vector([out[0], 0, out[1]]);
+    const photo = relief && k.lay(relief, G.V(front[0], y, front[1]).toArray(), [normal[0], normal[2]], phase, extra.until);
+    // Under a photo the cheeks come forward to it, so that its edges stand on stone seen from the side.
+    const reach = photo ? .66 : .15, length = depth + reach - .15;
     for (const side of [-1, 1]) {
-      const c = off(.15 - depth / 2).map((x, i) => x + dir[i] * side * (w / 2 - cheek / 2));
-      G.box('stone', c, y + h / 2, [cheek, h, depth], dir, tint(stone), phase, extra);
+      const c = off(reach - length / 2).map((x, i) => x + dir[i] * side * (w / 2 - cheek / 2));
+      G.box('stone', c, y + h / 2, [cheek, h, length], dir, tint(stone), phase, extra);
     }
     // Under the window, a solid; the window itself, glazed behind its cross; the entablature above.
     G.box('stone', off(.25), y + .55, [w - cheek, 1.1, .7], dir, tint(stone), phase, extra);
-    { // The slate lozenges the dormers of Chambord carry in their stonework: under the window and on each cheek.
+    if (!photo) { // The slate lozenges the dormers of Chambord carry in their stonework: under the window and on each cheek.
       const L = S.layers(2), face = (d, side) => [at[0] + out[0] * d + dir[0] * side, at[1] + out[1] * d + dir[1] * side], n = [out[0], 0, out[1]];
       lozenge(L, face(.61, 0), dir, n, y + .55, Math.min(.42, w * .16), .42);
       for (const side of [-1, 1]) lozenge(L, face(.165, side * (w / 2 - cheek / 2)), dir, n, y + h * .55, Math.min(.2, cheek * .3), Math.min(.5, h * .14));
@@ -391,6 +397,7 @@ export function renaissance(gothic) {
     G.box('wood', off(.0), (sill + head) / 2, [.1, head - sill, .1], dir, tint('#cfc7b4'), phase, extra);
     G.box('wood', off(.0), sill + (head - sill) * .62, [ww, .1, .1], dir, tint('#cfc7b4'), phase, extra);
     G.box('stone', off(.2), top - .2, [w + .3, .4, .9], dir, tint(stone), phase, extra);
+    if (photo) return;
     // The pediment: a gable of stone, framed by a moulding that follows its rake.
     const run = w / 2 + .15, rise = pediment === 'triangle' ? w * .32 : w * .18, n = 6;
     for (let i = 0; i < n; i++) {
@@ -570,7 +577,7 @@ export function renaissance(gothic) {
       const side = sides[d.side], len = Math.hypot(side.b[0] - side.a[0], side.b[1] - side.a[1]), dir = [(side.b[0] - side.a[0]) / len, (side.b[1] - side.a[1]) / len];
       for (const s of d.at ?? Array.from({length: d.count}, (_, i) => (i + .5) * len / d.count)) {
         const p = [side.a[0] + dir[0] * s, side.a[1] + dir[1] * s];
-        dormer(S, {at: p, out: side.out, y: top, w: d.w ?? 2.4, h: d.h ?? 3.4, pediment: d.pediment ?? 'triangle', slope: rise / ((r.axis === 'v' ? L : D) / 2), stone, phase: ph, extra});
+        dormer(S, {at: p, out: side.out, y: top, w: d.w ?? 2.4, h: d.h ?? 3.4, pediment: d.pediment ?? 'triangle', slope: rise / ((r.axis === 'v' ? L : D) / 2), stone, phase: ph, extra, relief: d.relief});
       }
     });
     for (const c of r.chimneys ?? []) G.life(c.phase ? c : r, (ph, extra) => chimney(S, {at: c.at, y: c.y ?? top + rise * .3, w: c.w ?? 1.6, d: c.d ?? 1.1, h: c.h ?? 5, rot: c.rot ?? 0, kind: c.kind, crown: c.crown, stone, phase: ph, extra}));

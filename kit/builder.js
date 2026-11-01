@@ -132,7 +132,17 @@ function kit(rand) {
   // A flat or empty piece (a zero size) has no normals to light it, and its NaN would spread through the bloom.
   const add = (kind, color, phase, order, top, extra) => { if (Math.abs(m.determinant()) > 1e-9) pieces.push({kind, matrix: m.clone(), color, phase, order, top, ...extra}); };
   return {
-    pieces, rand, tint, flats: [],
+    pieces, rand, tint, flats: [], reliefs: new Map(),
+    // A photo relief laid by a brick (a dormer's carved front): `name` is a `relief` element without `at`, the brick
+    // gives the foot of the panel's middle [x, y, z] in the scene and its outward normal [x, z]. Returns false when the
+    // monument has no relief of that name, so the brick builds its own geometry instead.
+    lay(name, [x, y, z], [nx, nz], phase, until) {
+      const template = this.reliefs.get(name);
+      if (!template) return false;
+      const spec = template.spec, length = Math.hypot(nx, nz) || 1, position = new T.Vector3(x, y + spec.size[1] / 2, z).addScaledVector(new T.Vector3(nx / length, 0, nz / length), spec.offset ?? .04);
+      this.flats.push({phase, until, position, yaw: Math.atan2(nx, nz), spec, element: template.index});
+      return true;
+    },
     box(kind, [x, y, z], [sx, sy, sz], rotY, color, phase, order = y, extra = {}) {
       m.compose(p.set(x, y, z), q.setFromEuler(e.set(0, rotY, 0)), s.set(sx, sy, sz));
       add(kind, color, phase, order, y + sy / 2, extra);
@@ -1048,7 +1058,11 @@ export const generators = {
   // `rot`, then `at` [u, y, v] (the panel's centre), `size` [width, height] and `facing` [u, v] (outwards).
   // `image` is a path next to the monument file; `credit` names the photo's file page, author and licence.
   // It has a phase like any piece, and `until`/`rebuild` like a Gothic part.
+  // Without `at`, it is a photo that bricks lay themselves, wherever they build the detail it shows: a dormer whose
+  // `relief` names it carries it on its front, foot to foot (see `k.lay`). `outline` (image pixels, a polygon) cuts the
+  // panel to the carving's own edge, so that a crest of ornaments stands against what is behind it, not on a rectangle.
   relief(k, e, P) {
+    if (!e.at) return;
     const [cx, cz] = e.center ?? [0, 0], rot = e.rot ?? 0, co = Math.cos(rot), si = Math.sin(rot), [u, y, v] = e.at, [fu, fv] = e.facing ?? [-1, 0];
     const position = new T.Vector3(cx + u * co + v * si, y, cz - u * si + v * co), normal = new T.Vector3(fu * co + fv * si, 0, -fu * si + fv * co).normalize();
     const record = phase => ({phase, position: position.clone().addScaledVector(normal, e.offset ?? .04), yaw: Math.atan2(normal.x, normal.z), spec: e});
@@ -1973,12 +1987,14 @@ export function buildPieces(data) {
   k.masonry = data.masonry ?? 'blocks';
   // Chord error of the curves of continuous masonry, in metres: what the monument's visual quality asks of its meshes.
   k.tolerance = {basic: .01, standard: .005, cinematic: .0025}[data.visualStyle?.quality] ?? .005;
+  // The photo reliefs that bricks lay themselves (no `at`), by name.
+  for (const [index, spec] of data.elements.entries()) if (spec.type === 'relief' && !spec.at && spec.name) k.reliefs.set(spec.name, {spec, index});
   for (const [elementIndex, element] of data.elements.entries()) {
     const before = k.pieces.length, flatsBefore = k.flats.length;
     if(!generators[element.type])throw new Error(`Unknown brick: ${element.type}. Add a generator before loading this monument.`);
     generators[element.type](k, element, P);
     for (const piece of k.pieces.slice(before)) piece.element = elementIndex;
-    for (const flat of k.flats.slice(flatsBefore)) flat.element = elementIndex;
+    for (const flat of k.flats.slice(flatsBefore)) flat.element ??= elementIndex;
     if(element.type === "timberFrame")for(const piece of k.pieces.slice(before))piece.structural=true;
     // An element's `until` takes down what it built, but not what it rebuilds afterwards (`rebuild`).
     if(element.until)for(const piece of k.pieces.slice(before))if(!piece.rebuilt)piece.until=P(element.until);
@@ -2032,6 +2048,20 @@ export function createStage(host) {
   // of the monument and its worksites shares the plane list.
   const sectionPlanes = [], sectionPlane = new T.Plane();
   let sectioning = false;
+  // The section plane stands across the view, through its centre: what lies between the camera and it is cut away.
+  // The key light turns with the camera: always from the front left, high, as a photographer would set it, so every view
+  // shows the forms modelled by light and shade. (Defined before the monument it reads, called once one is built.)
+  const followLight = () => {
+    if (!monument) return;
+    const d = camera.position.clone().sub(controls.target), az = Math.atan2(d.x, d.z) - .85, el = .82, R = monument.view.radius * 2.5;
+    sun.target.position.copy(controls.target).setY(0);
+    sun.position.set(controls.target.x + Math.sin(az) * Math.cos(el) * R, Math.sin(el) * R, controls.target.z + Math.cos(az) * Math.cos(el) * R);
+  };
+  const followSection = () => {
+    if (!sectioning) return;
+    const n = controls.target.clone().sub(camera.position).setY(0);
+    if (n.lengthSq() > 1e-6) sectionPlane.setFromNormalAndCoplanarPoint(n.normalize(), controls.target);
+  };
   renderer.localClippingEnabled = true;
   composer.addPass(ao);
   const bloom = new UnrealBloomPass(new T.Vector2(1, 1), .55, .5, .82);
@@ -2493,6 +2523,24 @@ export function createStage(host) {
   // that its mean colour is the stone's around it. It grows, falls and is rebuilt like the pieces.
   const reliefLoader = new T.TextureLoader();
   let reliefsPending = 0, reliefGeneration = 0;
+  // One texture a photo, however many panels are cut from it (a dormer's front repeated along a roof).
+  const photos = new Map();
+  const loadPhoto = url => {
+    if (!photos.has(url)) photos.set(url, new Promise((done, fail) => reliefLoader.load(url, texture => {
+      texture.colorSpace = T.SRGBColorSpace; texture.anisotropy = renderer.capabilities.getMaxAnisotropy(); done(texture);
+    }, undefined, fail)));
+    return photos.get(url);
+  };
+  // Is the photo's pixel (x, y) inside the relief's `outline` (a polygon in image pixels)?
+  const insidePolygon = (points, x, y) => { let c = false; for (let i = 0, j = points.length - 1; i < points.length; j = i++) { const [xi, yi] = points[i], [xj, yj] = points[j]; if ((yi > y) !== (yj > y) && x < (xj - xi) * (y - yi) / (yj - yi) + xi) c = !c; } return c; };
+  // The outline as a mask over the photo, white inside: the panel shows the photo only where the mask is.
+  function outlineMask(points, width, height) {
+    const k = 512 / Math.max(width, height), canvas = document.createElement('canvas'); canvas.width = Math.max(2, Math.round(width * k)); canvas.height = Math.max(2, Math.round(height * k));
+    const c = canvas.getContext('2d'); c.fillStyle = '#000'; c.fillRect(0, 0, canvas.width, canvas.height); c.fillStyle = '#fff';
+    c.beginPath(); points.forEach(([x, y], i) => c[i ? 'lineTo' : 'moveTo'](x * k, y * k)); c.closePath(); c.fill();
+    return new T.CanvasTexture(canvas);
+  }
+  const noMask = new T.DataTexture(new Uint8Array([255, 255, 255, 255]), 1, 1); noMask.needsUpdate = true;
   // Unit square (u right, v up) to the photo's texture coordinates, through its four corners (Heckbert).
   function homography(corners, width, height) {
     const [tl, tr, br, bl] = corners.map(([x, y]) => [x / width, 1 - y / height]), [[x0, y0], [x1, y1], [x2, y2], [x3, y3]] = [bl, br, tr, tl];
@@ -2567,7 +2615,8 @@ export function createStage(host) {
     geometry.setAttribute('aProof', new T.BufferAttribute(new Float32Array(count).fill(provenanceOf(spec)), 1));
     geometry.setAttribute('aReliefUv', geometry.attributes.uv.clone());
     const local = {uPhoto: {value: null}, uHomography: {value: new T.Matrix3()}, uSize: {value: new T.Vector2(w, h)}, uPixels: {value: new T.Vector2(512, 512)},
-      uShape: {value: new T.Vector3(SHAPES2D[outline.kind] ?? 0, outline.spring ?? 0, outline.rise ?? 0)}, uTone: {value: new T.Color(1, 1, 1)}, uDepth: {value: spec.depth ?? (recess ? .12 : .25)}};
+      uShape: {value: new T.Vector3(SHAPES2D[outline.kind] ?? 0, outline.spring ?? 0, outline.rise ?? 0)}, uTone: {value: new T.Color(1, 1, 1)}, uDepth: {value: spec.depth ?? (recess ? .12 : .25)},
+      uMask: {value: noMask}};
     const material = new T.MeshStandardMaterial({color: '#ffffff', roughness: .92, metalness: 0, clippingPlanes: sectionPlanes});
     material.customProgramCacheKey = () => 'relief';
     material.onBeforeCompile = shader => {
@@ -2583,7 +2632,7 @@ export function createStage(host) {
           vReliefT=normalize((modelViewMatrix*vec4(1.,0.,0.,0.)).xyz); vReliefB=normalize((modelViewMatrix*vec4(0.,1.,0.,0.)).xyz);`);
       shader.fragmentShader = shader.fragmentShader
         .replace('#include <common>', `#include <common>
-          uniform sampler2D uPhoto; uniform mat3 uHomography; uniform vec2 uSize,uPixels; uniform vec3 uShape,uTone; uniform float uDepth,uProof;
+          uniform sampler2D uPhoto,uMask; uniform mat3 uHomography; uniform vec2 uSize,uPixels; uniform vec3 uShape,uTone; uniform float uDepth,uProof;
           varying vec2 vReliefUv; varying vec3 vReliefView,vReliefT,vReliefB; varying float vProof;
           vec2 photoAt(vec2 p){vec3 q=uHomography*vec3(p,1.);return q.xy/q.z;}
           float heightAt(vec2 p){return dot(texture2D(uPhoto,photoAt(p)).rgb,vec3(.2126,.7152,.0722));}
@@ -2597,7 +2646,7 @@ export function createStage(host) {
         .replace('#include <map_fragment>', `vec3 reliefView=normalize(vReliefView);
           vec2 rp=vReliefUv;
           rp+=reliefView.xy/max(reliefView.z,.35)*(heightAt(rp)-.5)*uDepth/uSize;
-          if(!insidePanel(rp))discard;
+          if(!insidePanel(rp)||texture2D(uMask,photoAt(rp)).r<.5)discard;
           diffuseColor.rgb*=texture2D(uPhoto,photoAt(rp)).rgb*uTone;`)
         .replace('#include <color_fragment>', `#include <color_fragment>
           if(uProof>0.){vec3 proof=vProof<.5?vec3(.2,.78,.62):vProof<1.5?vec3(.38,.53,1.):vProof<2.5?vec3(1.,.66,.25):vec3(.5,.5,.52);
@@ -2610,21 +2659,24 @@ export function createStage(host) {
     const mesh = new T.Mesh(geometry, material);
     mesh.position.copy(flat.position); mesh.rotation.y = flat.yaw; mesh.visible = false; mesh.frustumCulled = false;
     mesh.receiveShadow = Boolean(visual.quality.shadows);
-    mesh.userData.relief = {element: flat.element, phase: flat.phase, birth, death};
+    mesh.userData.relief = {element: flat.element, phase: flat.phase, birth, death}; mesh.userData.spec = spec; mesh.userData.url = new URL(spec.image, base).href;
     reliefsPending++;
     const generation = reliefGeneration;
-    reliefLoader.load(new URL(spec.image, base).href, async texture => {
-      texture.colorSpace = T.SRGBColorSpace; texture.anisotropy = renderer.capabilities.getMaxAnisotropy();
+    loadPhoto(new URL(spec.image, base).href).then(async texture => {
+      if (generation !== reliefGeneration) return texture.dispose();
       const {width, height} = texture.image, H = homography(spec.corners, width, height), [tl, tr, br, bl] = spec.corners;
       local.uPhoto.value = texture; local.uHomography.value = H;
       local.uPixels.value.set(Math.max(64, (Math.hypot(tr[0] - tl[0], tr[1] - tl[1]) + Math.hypot(br[0] - bl[0], br[1] - bl[1])) / 2), Math.max(64, (Math.hypot(bl[0] - tl[0], bl[1] - tl[1]) + Math.hypot(br[0] - tr[0], br[1] - tr[1])) / 2));
-      if (generation !== reliefGeneration) return texture.dispose();
       material.userData.photo = texture;
-      const mean = meanColour(texture.image, H, (u, v) => insideOutline(outline, (u - .5) * w, v * h)), tone = new T.Color(spec.tone ?? spec.color ?? '#cfc3a6').multiply(await albedoGain());
+      const cut = spec.outline?.length >= 3 ? spec.outline : null;
+      if (cut) local.uMask.value = material.userData.mask = outlineMask(cut, width, height);
+      // The tone is read on what the panel shows: inside its shape and inside its outline.
+      const pixel = (u, v) => { const q = new T.Vector3(u, v, 1).applyMatrix3(H); return [q.x / q.z * width, (1 - q.y / q.z) * height]; };
+      const mean = meanColour(texture.image, H, (u, v) => insideOutline(outline, (u - .5) * w, v * h) && (!cut || insidePolygon(cut, ...pixel(u, v)))), tone = new T.Color(spec.tone ?? spec.color ?? '#cfc3a6').multiply(await albedoGain());
       if (generation !== reliefGeneration) return;
       local.uTone.value.setRGB(tone.r / Math.max(.02, mean.r), tone.g / Math.max(.02, mean.g), tone.b / Math.max(.02, mean.b));
       mesh.visible = true; reliefsPending--;
-    }, undefined, () => { if (generation !== reliefGeneration) return; console.warn(`Relief image not found: ${spec.image}`); reliefsPending--; });
+    }, () => { if (generation !== reliefGeneration) return; console.warn(`Relief image not found: ${spec.image}`); reliefsPending--; });
     scene.add(mesh); meshes.push(mesh);
   }
 
@@ -2654,8 +2706,8 @@ export function createStage(host) {
   }
 
   function clear() {
-    for (const mesh of meshes) { scene.remove(mesh); mesh.geometry.dispose(); mesh.material.dispose(); mesh.customDepthMaterial?.dispose(); mesh.material.userData?.photo?.dispose(); }
-    meshes.length = 0; reliefsPending = 0; reliefGeneration++; disposeCapture();
+    for (const mesh of meshes) { scene.remove(mesh); mesh.geometry.dispose(); mesh.material.dispose(); mesh.customDepthMaterial?.dispose(); mesh.material.userData?.photo?.dispose(); mesh.material.userData?.mask?.dispose(); }
+    meshes.length = 0; reliefsPending = 0; reliefGeneration++; photos.clear(); disposeCapture();
     if (outlineGroup) { scene.remove(outlineGroup); outlineGroup.traverse(o => { o.geometry?.dispose(); o.material?.dispose(); }); outlineGroup = null; }
     for (const {group, scaffoldSets} of siteGroups) { scene.remove(group); for (const set of scaffoldSets) set.mesh.dispose(); }
     siteGroups.length = 0; siteActors.length = 0; siteDust.length = 0; siteRigs.length = 0; siteGeneration++;
@@ -2973,6 +3025,14 @@ export function createStage(host) {
     get sectioning() { return sectioning; },
     // True once every photo relief has its image (or has given up on it).
     get ready() { return reliefsPending === 0 && charactersPending === 0; },
+    // Every photo relief as laid, for the tests that look at them (scripts/relief.test.mjs): its element, image, corners
+    // and outline, the middle of the panel in the scene, its outward normal, its size and its life in phases.
+    get reliefs() {
+      return meshes.filter(m => m.userData.relief).map(m => {
+        const {element, birth, death} = m.userData.relief, spec = m.userData.spec, normal = new T.Vector3(0, 0, 1).applyEuler(m.rotation);
+        return {element, image: spec.image, url: m.userData.url, corners: spec.corners, outline: spec.outline ?? null, size: spec.size, shape: spec.shape ?? null, middle: m.position.toArray(), normal: [normal.x, normal.z], birth, death, shown: m.visible};
+      });
+    },
     setTime(t) {
       uniforms.uTime.value = t;
       // Only the pieces laid by t are drawn, as the shader counts them: uTime and the births are 32-bit floats.
@@ -3068,6 +3128,22 @@ export function createStage(host) {
     // monument covers a pixel of the drawing buffer, rows from the top. The floor, the worksites and the haze go, and
     // the scene is drawn on white and then on black: what is the same on both is the monument, an edge counting
     // where it covers half the pixel or more. Nothing is recompiled, and the next frame is drawn as before.
+    // One picture of the model as it stands, on a plain `backdrop` (no haze, no floor, no ambient occlusion or bloom), the
+    // section plane following the camera: what a test looks at when it must know the backdrop to the pixel; `reliefs: false`
+    // leaves the photo reliefs out of it, `shadows: false` the cast shadows. One frame is drawn and left on the canvas; the scene is set back as it was.
+    photograph(backdrop = '#000000', {reliefs = true, shadows = true} = {}) {
+      const hide = [studioFloor, outlineGroup, ...siteGroups.map(site => site.group), ...(reliefs ? [] : meshes.filter(m => m.userData.relief))].filter(o => o?.visible), density = scene.fog.density, paper = scene.background.clone(), effects = [ao.enabled, bloom.enabled];
+      for (const o of hide) o.visible = false;
+      scene.fog.density = 0; ao.enabled = bloom.enabled = false; scene.background.set(backdrop);
+      // The light and the section plane follow this camera, not the last one drawn: the picture depends on the view alone.
+      // `shadows: false` leaves the cast shadows out, so that what a surface shows is not split by the shade of another.
+      const casting = sun.castShadow; sun.castShadow = casting && shadows;
+      controls.update(); followSection(); followLight(); sun.updateMatrixWorld(); sun.target.updateMatrixWorld(); renderer.shadowMap.needsUpdate = true;
+      ao.gtaoMaterial.uniforms.tDepth.value = ao.pdMaterial.uniforms.tDepth.value = composer.readBuffer.depthTexture;
+      composer.render();
+      for (const o of hide) o.visible = true;
+      scene.fog.density = density; scene.background.copy(paper); [ao.enabled, bloom.enabled] = effects; sun.castShadow = casting; shown = [];
+    },
     silhouette() {
       const hide = [studioFloor, outlineGroup, ...siteGroups.map(site => site.group)].filter(o => o?.visible), density = scene.fog.density, paper = scene.background.clone(), effects = [ao.enabled, bloom.enabled];
       for (const o of hide) o.visible = false;
@@ -3101,17 +3177,7 @@ export function createStage(host) {
       if (lastClock === undefined) lastClock = clock;
       uniforms.uClock.value = clock;
       controls.update();
-      if (sectioning) {
-        const n = controls.target.clone().sub(camera.position).setY(0);
-        if (n.lengthSq() > 1e-6) sectionPlane.setFromNormalAndCoplanarPoint(n.normalize(), controls.target);
-      }
-      // The key light turns with the camera: always from the front left, high, as a photographer would
-      // set it, so every view shows the forms modelled by light and shade.
-      if (monument) {
-        const d = camera.position.clone().sub(controls.target), az = Math.atan2(d.x, d.z) - .85, el = .82, R = monument.view.radius * 2.5;
-        sun.target.position.copy(controls.target).setY(0);
-        sun.position.set(controls.target.x + Math.sin(az) * Math.cos(el) * R, Math.sin(el) * R, controls.target.z + Math.cos(az) * Math.cos(el) * R);
-      }
+      followSection(); followLight();
       const dt = Math.min(.1, Math.max(0, clock - lastClock)); lastClock = clock;
       for (const actor of siteActors) if (actor.parent?.visible) {
         const u = actor.userData;

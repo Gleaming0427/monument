@@ -17,7 +17,8 @@
 //     Rectifies the relief element's image through its four corners at the element's own proportions, draws
 //     its outline (and its recess) in red, and writes the picture to a working folder: what the viewer will lay
 //     on the model. Straight lines that should be straight (the panel's edges, the bands of a frieze) and the
-//     carving sitting inside the red outline show whether the corners and the shape are right.
+//     carving sitting inside the red outline show whether the corners and the shape are right. What lies outside the
+//     relief's `outline` (a polygon in image pixels: the carving's own edge) is dimmed, as the viewer leaves it out.
 import {readFile, writeFile, mkdir, mkdtemp, rm} from 'node:fs/promises';
 import {createServer} from 'node:http';
 import {dirname, join, resolve, basename} from 'node:path';
@@ -85,7 +86,7 @@ async function source() {
     const original = await readFile(resolve(flag('image')));
     const size = await withCanvas({'original.jpg': original}, {size: 1}, async (browser, base) => inPage(browser, `(async () => { const image = new Image(); image.src = '${base}original.jpg'; await image.decode(); await fetch('${base}size', {method: 'POST', body: JSON.stringify([image.width, image.height])}); return true; })()`));
     const [width, height] = JSON.parse(size.size);
-    return {original, width, height, credit: {file: flag('url') ?? basename(flag('image')), author, license: licence}};
+    return {original, width, height, scale: 1, credit: {file: flag('url') ?? basename(flag('image')), author, license: licence}};
   }
   const title = flag('file').startsWith('File:') ? flag('file') : `File:${flag('file')}`;
   const api = `https://commons.wikimedia.org/w/api.php?action=query&format=json&titles=${encodeURIComponent(title)}&prop=imageinfo&iiprop=url|size|extmetadata&iiextmetadatafilter=LicenseShortName|Artist|Credit|LicenseUrl`;
@@ -94,15 +95,29 @@ async function source() {
   const info = page.imageinfo[0], meta = info.extmetadata ?? {}, licence = meta.LicenseShortName?.value ?? '', author = (meta.Artist?.value ?? '').replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim();
   if (!FREE.test(licence)) { console.error(`${title}: licence "${licence}" is not one a published model may reuse (CC0, public domain, CC BY, CC BY-SA, Licence Ouverte).`); process.exit(1); }
   console.log(`${title}: ${info.width}×${info.height}, ${licence}, ${author}`);
-  const original = Buffer.from(await (await fetch(info.url, {headers: UA, signal: AbortSignal.timeout(300000)})).arrayBuffer());
-  return {original, width: info.width, height: info.height, credit: {file: `https://commons.wikimedia.org/wiki/${title.replaceAll(' ', '_')}`, author, license: licence}};
+  const credit = {file: `https://commons.wikimedia.org/wiki/${title.replaceAll(' ', '_')}`, author, license: licence};
+  const response = await fetch(info.url, {headers: UA, signal: AbortSignal.timeout(300000)});
+  if (response.ok) return {original: Buffer.from(await response.arrayBuffer()), width: info.width, height: info.height, scale: 1, credit};
+  // Commons may refuse a script the original file (429, its robot policy) while it serves the thumbnails of its standard
+  // widths: the largest of those no wider than the original stands in for it, and --crop, in pixels of the original, is
+  // scaled to it.
+  for (const width of [1920, 1280, 960].filter(w => w < info.width)) {
+    const thumb = Object.values((await (await fetch(`https://commons.wikimedia.org/w/api.php?action=query&format=json&titles=${encodeURIComponent(title)}&prop=imageinfo&iiprop=url&iiurlwidth=${width}`, {headers: UA, signal: AbortSignal.timeout(30000)})).json()).query.pages)[0]?.imageinfo?.[0];
+    const url = thumb?.thumburl?.split('?')[0].replace('https://thumb.wikimedia.org/', 'https://upload.wikimedia.org/');
+    const reply = url && await fetch(url, {headers: UA, signal: AbortSignal.timeout(300000)});
+    if (!reply?.ok) continue;
+    console.log(`The original answered ${response.status}: the ${thumb.thumbwidth}×${thumb.thumbheight} thumbnail stands in for it.`);
+    return {original: Buffer.from(await reply.arrayBuffer()), width: thumb.thumbwidth, height: thumb.thumbheight, scale: thumb.thumbwidth / info.width, credit};
+  }
+  console.error(`${title}: Commons answered ${response.status} for the file and for its thumbnails.`); process.exit(1);
 }
 
 if (flag('file') || flag('image')) {
   const slug = flag('name');
   if (!/^[a-z0-9-]+$/.test(slug ?? '')) { console.error('--name: a slug of lowercase letters, digits and hyphens.'); process.exit(1); }
-  const {original, width, height, credit} = await source();
-  const [x0, y0, x1, y1] = (flag('crop') ?? `0,0,${width},${height}`).split(',').map(Number), max = Number(flag('max') ?? 4096);
+  const {original, width, height, scale: shrink, credit} = await source();
+  // --crop is in pixels of the original file; a thumbnail standing in for it is smaller by `shrink`.
+  const [x0, y0, x1, y1] = flag('crop') ? flag('crop').split(',').map(n => Math.round(Number(n) * shrink)) : [0, 0, width, height], max = Number(flag('max') ?? 4096);
   const scale = Math.min(1, max / Math.max(x1 - x0, y1 - y0)), W = Math.round((x1 - x0) * scale), H = Math.round((y1 - y0) * scale);
   const {jpeg, grid} = await withCanvas({'original.jpg': original}, {jpeg: 1, grid: 1}, async (browser, base) => inPage(browser, `(async () => {
     const image = new Image(); image.src = '${base}original.jpg'; await image.decode();
@@ -124,7 +139,7 @@ if (flag('file') || flag('image')) {
   await writeFile(join(folder, `${slug}.jpg`), jpeg);
   await writeFile(join(work, `${slug}.grid.png`), grid);
   console.log(`Wrote ${id}.evidence/reliefs/${slug}.jpg (${W}×${H}); the grid to read corners from: ${join(work, `${slug}.grid.png`)}`);
-  console.log(JSON.stringify({image: `${id}.evidence/reliefs/${slug}.jpg`, credit: {...credit, ...(flag('crop') ? {crop: [x0, y0, x1, y1]} : {})}}, null, 1));
+  console.log(JSON.stringify({image: `${id}.evidence/reliefs/${slug}.jpg`, credit: {...credit, ...(flag('crop') ? {crop: flag('crop').split(',').map(Number)} : {})}}, null, 1));
 }
 
 if (flag('check')) {
@@ -138,14 +153,17 @@ if (flag('check')) {
     const from = src.getContext('2d').getImageData(0, 0, image.width, image.height).data;
     const out = document.createElement('canvas'); out.width = ${W}; out.height = ${H}; const c = out.getContext('2d'), pixels = c.createImageData(${W}, ${H});
     // Square to quad (top left, top right, bottom right, bottom left), as the viewer does it.
-    const [[ax, ay], [bx, by], [cx, cy], [dx, dy]] = ${JSON.stringify(e.corners)};
+    const [[ax, ay], [bx, by], [cx, cy], [dx, dy]] = ${JSON.stringify(e.corners)}, cut = ${JSON.stringify(e.outline ?? null)};
+    const inPolygon = (pts, x, y) => { let c = false; for (let i = 0, j = pts.length - 1; i < pts.length; j = i++) { const [xi, yi] = pts[i], [xj, yj] = pts[j]; if ((yi > y) !== (yj > y) && x < (xj - xi) * (y - yi) / (yj - yi) + xi) c = !c; } return c; };
     const sx = ax - bx + cx - dx, sy = ay - by + cy - dy, dx1 = bx - cx, dx2 = dx - cx, dy1 = by - cy, dy2 = dy - cy, den = dx1 * dy2 - dx2 * dy1;
     const g = (sx * dy2 - dx2 * sy) / den, hh = (dx1 * sy - sx * dy1) / den;
     const A = bx - ax + g * bx, B = dx - ax + hh * dx, D = by - ay + g * by, E = dy - ay + hh * dy;
     for (let j = 0; j < ${H}; j++) for (let i = 0; i < ${W}; i++) {
       const u = (i + .5) / ${W}, v = (j + .5) / ${H}, z = g * u + hh * v + 1, x = Math.floor((A * u + B * v + ax) / z), y = Math.floor((D * u + E * v + ay) / z), o = (j * ${W} + i) * 4;
       if (x < 0 || y < 0 || x >= image.width || y >= image.height) { pixels.data[o + 3] = 255; continue; }
-      const q = (y * image.width + x) * 4; pixels.data[o] = from[q]; pixels.data[o + 1] = from[q + 1]; pixels.data[o + 2] = from[q + 2]; pixels.data[o + 3] = 255;
+      // What lies outside the carving's outline is not drawn by the viewer: here it is dimmed.
+      const q = (y * image.width + x) * 4, kept = !cut || inPolygon(cut, x, y) ? 1 : .25;
+      pixels.data[o] = from[q] * kept; pixels.data[o + 1] = from[q + 1] * kept; pixels.data[o + 2] = from[q + 2] * kept; pixels.data[o + 3] = 255;
     }
     // The outline (and the recess's inner outline) in red, as the viewer cuts and folds the panel.
     const inside = ${insideSource}, shapes = ${JSON.stringify([outline, recess].filter(Boolean))};

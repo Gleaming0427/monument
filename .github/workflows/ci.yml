@@ -47,6 +47,8 @@ jobs:
         run: node scripts/openings.test.mjs
       - name: Check, head on, that the windows read as glass and the doors as openings, where the numbers put them
         run: node scripts/vision.test.mjs
+      - name: Check, head on, that every photo relief shows its photograph, on the building and facing out
+        run: node scripts/relief.test.mjs
       - name: Check phone, tablet and desktop layouts
         run: node scripts/measure.mjs --label responsive-ci --out .artifacts/metrics.jsonl -- node scripts/responsive.test.mjs
       - name: Keep P0 measurements and responsive captures
