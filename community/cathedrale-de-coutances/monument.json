@@ -2989,7 +2989,7 @@
         "spring": 1.16,
         "rise": 4.44
       },
-      "offset": 0.35
+      "offset": 0.94
     },
     {
       "use": "relief",
@@ -3043,7 +3043,7 @@
         "spring": 0.93,
         "rise": 3.57
       },
-      "offset": 0.35
+      "offset": 0.94
     },
     {
       "use": "relief",

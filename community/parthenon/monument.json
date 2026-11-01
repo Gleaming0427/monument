@@ -2493,7 +2493,8 @@
       ],
       "depth": 0.12,
       "phase": "temple",
-      "note": "The 1st metope from the north on the west front, as photographed in October 2025 (the carving of today, copies or weathered originals)."
+      "note": "The 1st metope from the north on the west front, as photographed in October 2025 (the carving of today, copies or weathered originals).",
+      "offset": 0.1
     },
     {
       "use": "relief#2",
@@ -2974,7 +2975,8 @@
       ],
       "depth": 0.12,
       "phase": "temple",
-      "note": "The 14th metope from the north on the west front, as photographed in October 2025 (the carving of today, copies or weathered originals)."
+      "note": "The 14th metope from the north on the west front, as photographed in October 2025 (the carving of today, copies or weathered originals).",
+      "offset": 0.1
     },
     {
       "use": "relief#2",
@@ -3048,7 +3050,8 @@
       ],
       "depth": 0.12,
       "phase": "temple",
-      "note": "The 1st metope from the south on the east front, as photographed in October 2025 (the carving of today, copies or weathered originals), its lower part in the sun."
+      "note": "The 1st metope from the south on the east front, as photographed in October 2025 (the carving of today, copies or weathered originals), its lower part in the sun.",
+      "offset": 0.1
     },
     {
       "use": "relief#credit+image",
@@ -3529,7 +3532,8 @@
       ],
       "depth": 0.12,
       "phase": "temple",
-      "note": "The 14th metope from the south on the east front, as photographed in October 2025 (the carving of today, copies or weathered originals), its lower part in the sun."
+      "note": "The 14th metope from the south on the east front, as photographed in October 2025 (the carving of today, copies or weathered originals), its lower part in the sun.",
+      "offset": 0.1
     },
     {
       "use": "relief#credit+image",
