@@ -2049,6 +2049,14 @@ export function createStage(host) {
   const sectionPlanes = [], sectionPlane = new T.Plane();
   let sectioning = false;
   // The section plane stands across the view, through its centre: what lies between the camera and it is cut away.
+  // The key light turns with the camera: always from the front left, high, as a photographer would set it, so every view
+  // shows the forms modelled by light and shade. (Defined before the monument it reads, called once one is built.)
+  const followLight = () => {
+    if (!monument) return;
+    const d = camera.position.clone().sub(controls.target), az = Math.atan2(d.x, d.z) - .85, el = .82, R = monument.view.radius * 2.5;
+    sun.target.position.copy(controls.target).setY(0);
+    sun.position.set(controls.target.x + Math.sin(az) * Math.cos(el) * R, Math.sin(el) * R, controls.target.z + Math.cos(az) * Math.cos(el) * R);
+  };
   const followSection = () => {
     if (!sectioning) return;
     const n = controls.target.clone().sub(camera.position).setY(0);
@@ -3127,7 +3135,8 @@ export function createStage(host) {
       const hide = [studioFloor, outlineGroup, ...siteGroups.map(site => site.group), ...(reliefs ? [] : meshes.filter(m => m.userData.relief))].filter(o => o?.visible), density = scene.fog.density, paper = scene.background.clone(), effects = [ao.enabled, bloom.enabled];
       for (const o of hide) o.visible = false;
       scene.fog.density = 0; ao.enabled = bloom.enabled = false; scene.background.set(backdrop);
-      controls.update(); followSection();
+      // The light and the section plane follow this camera, not the last one drawn: the picture depends on the view alone.
+      controls.update(); followSection(); followLight(); sun.updateMatrixWorld(); sun.target.updateMatrixWorld(); renderer.shadowMap.needsUpdate = true;
       ao.gtaoMaterial.uniforms.tDepth.value = ao.pdMaterial.uniforms.tDepth.value = composer.readBuffer.depthTexture;
       composer.render();
       for (const o of hide) o.visible = true;
@@ -3166,14 +3175,7 @@ export function createStage(host) {
       if (lastClock === undefined) lastClock = clock;
       uniforms.uClock.value = clock;
       controls.update();
-      followSection();
-      // The key light turns with the camera: always from the front left, high, as a photographer would
-      // set it, so every view shows the forms modelled by light and shade.
-      if (monument) {
-        const d = camera.position.clone().sub(controls.target), az = Math.atan2(d.x, d.z) - .85, el = .82, R = monument.view.radius * 2.5;
-        sun.target.position.copy(controls.target).setY(0);
-        sun.position.set(controls.target.x + Math.sin(az) * Math.cos(el) * R, Math.sin(el) * R, controls.target.z + Math.cos(az) * Math.cos(el) * R);
-      }
+      followSection(); followLight();
       const dt = Math.min(.1, Math.max(0, clock - lastClock)); lastClock = clock;
       for (const actor of siteActors) if (actor.parent?.visible) {
         const u = actor.userData;
