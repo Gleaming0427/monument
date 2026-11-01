@@ -53,7 +53,7 @@
    "label": "works ordered"
   }
  ],
- "modelNote": "Measured: the plan, from the mapped outline (towers 20 m across, 44.8 m between the keep's tower axes); the place and top of 25 of the 28 chimney stacks, from the IGN's LiDAR HD point cloud. Read on photographs: heights, roofs, windows. Simplified: carved ornament, dormers, the 3 stacks no scanned block was matched to, which kind of stack stands where, the stacks' widths and where their shafts start, the lantern tower's crown, the halls' vaults.",
+ "modelNote": "Measured: the plan, from the mapped outline (towers 20 m across, 44.8 m between the keep's tower axes); the place and top of 25 of the 28 chimney stacks, from the IGN's LiDAR HD point cloud. Read on photographs: heights, roofs, the size and the storeys of the windows. Placed by rule, not read one by one: where the windows stand (centred in their bays, on one axis from storey to storey, none on a wall another building hides) and the dormers (over the window axes, left out where a stack stands). Simplified: carved ornament, the 3 stacks no scanned block was matched to, which kind of stack stands where, the stacks' widths and where their shafts start, the lantern tower's crown, the halls' vaults.",
  "evidence": {
   "size": "building",
   "identity": "Château de Chambord, Chambord, Loir-et-Cher, Centre-Val de Loire, France (OSM way 240990589; Wikidata Q205367)",
@@ -418,7 +418,7 @@
    "A plan in a Greek cross: four halls 9 m wide and 18 m long meeting at the central stair, with an apartment in each angle: simplified; the four halls are left as an open cross between the cantons' floors, without their coffered vaults, which the Domaine's own pages describe.",
    "A double-revolution staircase of two helical ramps round an open core, rising to the terraces: simplified; the radius of the stair, its number of treads and the openings of its core are interpreted, no measured survey having been read.",
    "The lantern tower over the stair, the highest point of the château at 56 m, crowned by a fleur-de-lis: simplified; the lantern tower is modelled as stacked drums, with none of the crown of arches, ribs and carved ornament of the real one.",
-   "Terraces, dormers, chimney stacks and turrets over the keep, a roofscape like a village in the sky: simplified; 25 of the 28 chimney stacks stand at the place and rise to the top of a compact block of the IGN's LiDAR HD point cloud (the largest blocks of each tower or pavilion, shared among its stacks so that they move least; the scan is laid on the model by the keep's four towers, to about 0.5 m, so a place is good to about 1 m and a top to about 1 m), but those blocks were taken for stacks from their shape and none was matched to a photograph, so a few may be turrets or pinnacles, and the real roofscape holds more of them than the model draws; the other 3 stacks stay at plausible places; the stacks are drawn in the two kinds the roof photographs show (a lattice of slate lozenges under a gabled crown, or great slate discs on moulded plates under an attic of pinnacles round a slate spire, both with a frieze of slate dots), but which kind stands where, their widths and where their shafts start were not read; the dormers are standard shapes at plausible places, without their carved ornament: 13 were moved and 10 left out where a measured stack stands.",
+   "Terraces, dormers, chimney stacks and turrets over the keep, a roofscape like a village in the sky: simplified; 25 of the 28 chimney stacks stand at the place and rise to the top of a compact block of the IGN's LiDAR HD point cloud (the largest blocks of each tower or pavilion, shared among its stacks so that they move least; the scan is laid on the model by the keep's four towers, to about 0.5 m, so a place is good to about 1 m and a top to about 1 m), but those blocks were taken for stacks from their shape and none was matched to a photograph, so a few may be turrets or pinnacles, and the real roofscape holds more of them than the model draws; the other 3 stacks stay at plausible places; the stacks are drawn in the two kinds the roof photographs show (a lattice of slate lozenges under a gabled crown, or great slate discs on moulded plates under an attic of pinnacles round a slate spire, both with a frieze of slate dots), but which kind stands where, their widths and where their shafts start were not read; the dormers are standard shapes without their carved ornament, set over the window axes of their wall and left out where a measured stack stands: 4 of the 21 round the towers and 4 of the 17 on the pavilions.",
    "The royal oratory, built outside the original block and dated 1540, which breaks the symmetry of the great façade: simplified; the oratory is a plain block of the plan's size, without its carved decoration.",
    "The windows are rectangular windows with a cross of mullion and transom throughout; the round-headed bays of the loggias and the arches of the wings' ground floor are not modelled.",
    "The front of the keep stands about 2 m lower, against the photographs, on its north-west side than the court: the model has one ground level, the one of the court.",
@@ -427,7 +427,8 @@
    "The sources differ on the first of Louis XIV's nine stays (1660 on the Domaine's page, 1650 on the French Wikipedia): the film gives the number and the last one, 1685, on which they agree.",
    "Dates of the roofs of the chapel tower and of the stair towers are interpreted from the chapel wing's: the Domaine's pages say the chapel wing was roofed under Louis XIV and give no date for the towers.",
    "The timber scaffold and the gin-pole of the 16th-century site are reconstructions: the sources read describe the stone, the foundations and the masons' pay, not the lifting gear.",
-   "The mansard roofs of 1680–1686 are drawn as a typical broken roof of the period; their exact profile, and the position of their dormers, were not read in a source."
+   "The mansard roofs of 1680–1686 are drawn as a typical broken roof of the period; their exact profile, and the position of their dormers, were not read in a source.",
+   "The windows of the keep, the towers and the wings: simplified; they are placed by rule, not read one by one: centred in regular bays, on one axis from storey to storey, and on a tower only where no other building hides its wall (the six large towers, of the keep and of the west range, have windows all round their exposed wall at the 30° pitch the model already used; the two small towers keep their pair, at 40°, and the two unfinished south-east towers their three) (the arcades and the windows of the west range share one set of axes, spaced evenly about the middle of their wall: its arches moved by up to 1.9 m); the same frame, with its mullion and transom, in every period. The portal in the middle of the east range stands on the axis of the range (it stood 0.8 m off it, over three of the range's windows, which are left out with the one on each side that its corners cut), has no windows of its own (the photograph shows none within its pediment) and a dark round-headed door; the windows nearest the door stand 13.9 m from it in the model and about 11 to 12 m in the photograph, which is read to a metre or two. The photograph of the west tower shows part of its wall plain where the model has windows; the round arches of the keep's courtyard loggias, the doors other than the portal in the middle of the east range, and the windows of each period are not modelled."
   ],
   "detailReview": {
    "version": 1,
@@ -925,12 +926,12 @@
     },
     "v-": {
      "from": 10,
-     "to": 34.9,
+     "to": 34.8,
      "bays": 5
     },
     "v+": {
      "from": 10,
-     "to": 34.9,
+     "to": 34.8,
      "bays": 5
     }
    }
@@ -961,11 +962,12 @@
    "windows": [
     {
      "angles": [
-      165,
-      195,
-      225,
-      255,
-      285
+      121,
+      151,
+      181,
+      211,
+      241,
+      330
      ],
      "w": 1.6,
      "sill": 1.5,
@@ -973,11 +975,12 @@
     },
     {
      "angles": [
-      165,
-      195,
-      225,
-      255,
-      285
+      121,
+      151,
+      181,
+      211,
+      241,
+      330
      ],
      "w": 1.6,
      "sill": 7.800000000000001,
@@ -985,11 +988,12 @@
     },
     {
      "angles": [
-      165,
-      195,
-      225,
-      255,
-      285
+      121,
+      151,
+      181,
+      211,
+      241,
+      330
      ],
      "w": 1.6,
      "sill": 13.9,
@@ -1003,17 +1007,16 @@
    "top": {
     "deck": 6.9,
     "dormers": {
-     "count": 5,
+     "count": 4,
      "arc": [
       120,
       330
      ],
      "angles": [
-      131.5,
-      178.5,
-      207.5,
-      242.5,
-      312.5
+      181,
+      211,
+      241,
+      330
      ],
      "r": 7.7,
      "h": 4.4,
@@ -1107,11 +1110,13 @@
    "windows": [
     {
      "angles": [
-      75,
-      105,
-      135,
-      165,
-      195
+      19.5,
+      49.5,
+      121,
+      151,
+      181,
+      211,
+      241
      ],
      "w": 1.6,
      "sill": 1.5,
@@ -1119,11 +1124,13 @@
     },
     {
      "angles": [
-      75,
-      105,
-      135,
-      165,
-      195
+      19.5,
+      49.5,
+      121,
+      151,
+      181,
+      211,
+      241
      ],
      "w": 1.6,
      "sill": 7.800000000000001,
@@ -1131,11 +1138,13 @@
     },
     {
      "angles": [
-      75,
-      105,
-      135,
-      165,
-      195
+      19.5,
+      49.5,
+      121,
+      151,
+      181,
+      211,
+      241
      ],
      "w": 1.6,
      "sill": 13.9,
@@ -1149,17 +1158,16 @@
    "top": {
     "deck": 6.9,
     "dormers": {
-     "count": 5,
+     "count": 4,
      "arc": [
       30,
       240
      ],
      "angles": [
-      47.5,
-      117.5,
-      152.5,
-      179.5,
-      224.5
+      19.5,
+      49.5,
+      121,
+      151
      ],
      "r": 7.7,
      "h": 4.4,
@@ -1253,11 +1261,13 @@
    "windows": [
     {
      "angles": [
-      -15,
       15,
       45,
       75,
-      105
+      105,
+      135,
+      315,
+      345
      ],
      "w": 1.6,
      "sill": 1.5,
@@ -1265,11 +1275,13 @@
     },
     {
      "angles": [
-      -15,
       15,
       45,
       75,
-      105
+      105,
+      135,
+      315,
+      345
      ],
      "w": 1.6,
      "sill": 7.800000000000001,
@@ -1277,11 +1289,13 @@
     },
     {
      "angles": [
-      -15,
       15,
       45,
       75,
-      105
+      105,
+      135,
+      315,
+      345
      ],
      "w": 1.6,
      "sill": 13.9,
@@ -1303,12 +1317,12 @@
       150
      ],
      "angles": [
-      -42.5,
-      -7.5,
-      27.5,
-      62.5,
-      83.5,
-      132.5
+      15,
+      45,
+      75,
+      135,
+      315,
+      345
      ],
      "r": 7.7,
      "h": 4.4,
@@ -1402,11 +1416,15 @@
    "windows": [
     {
      "angles": [
+      15,
+      45,
+      75,
+      195,
+      225,
       255,
       285,
       315,
-      345,
-      375
+      345
      ],
      "w": 1.6,
      "sill": 1.5,
@@ -1414,11 +1432,15 @@
     },
     {
      "angles": [
+      15,
+      45,
+      75,
+      195,
+      225,
       255,
       285,
       315,
-      345,
-      375
+      345
      ],
      "w": 1.6,
      "sill": 7.800000000000001,
@@ -1426,11 +1448,15 @@
     },
     {
      "angles": [
+      15,
+      45,
+      75,
+      195,
+      225,
       255,
       285,
       315,
-      345,
-      375
+      345
      ],
      "w": 1.6,
      "sill": 13.9,
@@ -1444,17 +1470,15 @@
    "top": {
     "deck": 6.9,
     "dormers": {
-     "count": 5,
+     "count": 3,
      "arc": [
       210,
       420
      ],
      "angles": [
-      227.5,
-      250.5,
-      297.5,
-      332.5,
-      359.5
+      225,
+      315,
+      345
      ],
      "r": 7.7,
      "h": 4.4,
@@ -1792,7 +1816,7 @@
       "side": "v-",
       "count": 2,
       "at": [
-       7.65,
+       2.82,
        14.08
       ],
       "w": 2.6,
@@ -1898,14 +1922,19 @@
       "side": "u-",
       "count": 3,
       "w": 2.6,
-      "h": 3.8
+      "h": 3.8,
+      "at": [
+       2.82,
+       8.45,
+       14.08
+      ]
      },
      {
       "side": "v+",
       "count": 2,
       "at": [
        2.82,
-       9.65
+       14.08
       ],
       "w": 2.6,
       "h": 3.8
@@ -2008,20 +2037,18 @@
     "dormers": [
      {
       "side": "u+",
-      "count": 2,
+      "count": 1,
       "at": [
-       8.45,
-       13.68
+       8.45
       ],
       "w": 2.6,
       "h": 3.8
      },
      {
       "side": "v-",
-      "count": 2,
+      "count": 1,
       "at": [
-       2.82,
-       10.45
+       2.82
       ],
       "w": 2.6,
       "h": 3.8
@@ -2124,16 +2151,6 @@
     "rise": 9,
     "overhang": 0.5,
     "dormers": [
-     {
-      "side": "u+",
-      "count": 2,
-      "at": [
-       4.02,
-       9.65
-      ],
-      "w": 2.6,
-      "h": 3.8
-     },
      {
       "side": "v+",
       "count": 2,
@@ -2272,12 +2289,12 @@
    ],
    "sides": {
     "u-": {
-     "bays": 4,
-     "from": 1.5,
-     "to": 17.5,
+     "bays": 3,
+     "from": 0.725,
+     "to": 18.575,
      "arches": [
       {
-       "s": 3.5,
+       "s": 3.7,
        "w": 4.1,
        "spring": 3.7
       },
@@ -2287,16 +2304,16 @@
        "spring": 3.7
       },
       {
-       "s": 15.4,
+       "s": 15.6,
        "w": 4.1,
        "spring": 3.7
       }
      ]
     },
     "u+": {
-     "bays": 4,
-     "from": 1.5,
-     "to": 17.5
+     "bays": 3,
+     "from": 0.725,
+     "to": 18.575
     },
     "v-": {
      "windows": [
@@ -2319,13 +2336,23 @@
       "side": "u-",
       "count": 3,
       "w": 2.4,
-      "h": 3.4
+      "h": 3.4,
+      "at": [
+       3.7,
+       9.65,
+       15.6
+      ]
      },
      {
       "side": "u+",
       "count": 3,
       "w": 2.4,
-      "h": 3.4
+      "h": 3.4,
+      "at": [
+       3.7,
+       9.65,
+       15.6
+      ]
      }
     ]
    }
@@ -2365,36 +2392,36 @@
    ],
    "sides": {
     "u-": {
-     "bays": 5,
-     "from": 1.5,
-     "to": 26,
+     "bays": 4,
+     "from": 0.8,
+     "to": 27.2,
      "arches": [
       {
-       "s": 25.8,
+       "s": 4.1,
        "w": 4.8,
        "spring": 3.7
       },
       {
-       "s": 18.8,
+       "s": 10.7,
        "w": 4.8,
        "spring": 3.7
       },
       {
-       "s": 12.2,
+       "s": 17.3,
        "w": 4.8,
        "spring": 3.7
       },
       {
-       "s": 6,
+       "s": 23.9,
        "w": 4.8,
        "spring": 3.7
       }
      ]
     },
     "u+": {
-     "bays": 5,
-     "from": 1.5,
-     "to": 26
+     "bays": 4,
+     "from": 0.8,
+     "to": 27.2
     },
     "v-": {
      "windows": [
@@ -2418,13 +2445,25 @@
       "side": "u-",
       "count": 4,
       "w": 2.4,
-      "h": 3.4
+      "h": 3.4,
+      "at": [
+       4.1,
+       10.7,
+       17.3,
+       23.9
+      ]
      },
      {
       "side": "u+",
       "count": 4,
       "w": 2.4,
-      "h": 3.4
+      "h": 3.4,
+      "at": [
+       4.1,
+       10.7,
+       17.3,
+       23.9
+      ]
      }
     ]
    }
@@ -2492,13 +2531,25 @@
       "side": "v-",
       "count": 4,
       "w": 2.4,
-      "h": 3.4
+      "h": 3.4,
+      "at": [
+       3.58,
+       8.73,
+       13.88,
+       19.03
+      ]
      },
      {
       "side": "v+",
       "count": 4,
       "w": 2.4,
-      "h": 3.4
+      "h": 3.4,
+      "at": [
+       3.58,
+       8.73,
+       13.88,
+       19.03
+      ]
      }
     ]
    }
@@ -2567,13 +2618,25 @@
       "side": "v-",
       "count": 4,
       "w": 2.4,
-      "h": 3.4
+      "h": 3.4,
+      "at": [
+       3.45,
+       8.35,
+       13.25,
+       18.15
+      ]
      },
      {
       "side": "v+",
       "count": 4,
       "w": 2.4,
-      "h": 3.4
+      "h": 3.4,
+      "at": [
+       3.45,
+       8.35,
+       13.25,
+       18.15
+      ]
      }
     ]
    }
@@ -2726,7 +2789,25 @@
     "u+": {
      "bays": 18,
      "from": 6,
-     "to": 106
+     "to": 106,
+     "skip": [
+      [
+       0,
+       7
+      ],
+      [
+       0,
+       8
+      ],
+      [
+       0,
+       9
+      ],
+      [
+       0,
+       10
+      ]
+     ]
     },
     "u-": {
      "bays": 18,
@@ -2787,11 +2868,15 @@
    "windows": [
     {
      "angles": [
-      165,
-      195,
-      225,
-      255,
-      285
+      47,
+      77,
+      159.5,
+      189.5,
+      219.5,
+      249.5,
+      279.5,
+      309.5,
+      339.5
      ],
      "w": 1.5,
      "sill": 1.5,
@@ -2799,11 +2884,15 @@
     },
     {
      "angles": [
-      165,
-      195,
-      225,
-      255,
-      285
+      47,
+      77,
+      159.5,
+      189.5,
+      219.5,
+      249.5,
+      279.5,
+      309.5,
+      339.5
      ],
      "w": 1.5,
      "sill": 7.7,
@@ -2811,11 +2900,15 @@
     },
     {
      "angles": [
-      165,
-      195,
-      225,
-      255,
-      285
+      47,
+      77,
+      159.5,
+      189.5,
+      219.5,
+      249.5,
+      279.5,
+      309.5,
+      339.5
      ],
      "w": 1.5,
      "sill": 13.8,
@@ -2881,11 +2974,16 @@
    "windows": [
     {
      "angles": [
-      75,
-      105,
-      135,
-      165,
-      195
+      8.5,
+      38.5,
+      68.5,
+      98.5,
+      128.5,
+      158.5,
+      188.5,
+      218.5,
+      248.5,
+      314.5
      ],
      "w": 1.5,
      "sill": 1.5,
@@ -2893,11 +2991,16 @@
     },
     {
      "angles": [
-      75,
-      105,
-      135,
-      165,
-      195
+      8.5,
+      38.5,
+      68.5,
+      98.5,
+      128.5,
+      158.5,
+      188.5,
+      218.5,
+      248.5,
+      314.5
      ],
      "w": 1.5,
      "sill": 7.7,
@@ -2905,11 +3008,16 @@
     },
     {
      "angles": [
-      75,
-      105,
-      135,
-      165,
-      195
+      8.5,
+      38.5,
+      68.5,
+      98.5,
+      128.5,
+      158.5,
+      188.5,
+      218.5,
+      248.5,
+      314.5
      ],
      "w": 1.5,
      "sill": 13.8,
@@ -3028,7 +3136,7 @@
    "provenance": "measured",
    "center": [
     37.25,
-    -0.9
+    -0.1
    ],
    "length": 13.1,
    "depth": 16,
@@ -3054,19 +3162,19 @@
        "w": 2.8,
        "sill": 0,
        "spring": 3.8,
-       "glass": false,
-       "shafts": false
+       "shafts": false,
+       "door": "#1a130d",
+       "doorHeight": 5.2
       }
      ],
-     "skip": [
-      [
-       0,
-       1
-      ]
+     "windows": [
+      false
      ]
     },
     "u-": {
-     "bays": 3
+     "windows": [
+      false
+     ]
     },
     "v+": {
      "windows": [
@@ -3160,9 +3268,8 @@
    "windows": [
     {
      "angles": [
-      20,
-      60,
-      100
+      28,
+      68
      ],
      "w": 1.1,
      "sill": 1.5,
@@ -3170,9 +3277,8 @@
     },
     {
      "angles": [
-      20,
-      60,
-      100
+      28,
+      68
      ],
      "w": 1.1,
      "sill": 7.7,
@@ -3226,9 +3332,8 @@
    "windows": [
     {
      "angles": [
-      250,
-      290,
-      330
+      295,
+      335
      ],
      "w": 1.1,
      "sill": 1.5,
@@ -3236,9 +3341,8 @@
     },
     {
      "angles": [
-      250,
-      290,
-      330
+      295,
+      335
      ],
      "w": 1.1,
      "sill": 7.7,
