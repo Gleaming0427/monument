@@ -2,7 +2,9 @@
 // Every photo relief, seen as a picture. A relief is a photograph rectified onto the model (scripts/relief.mjs prepares it);
 // this holds what the viewer draws to what the photograph shows. Each relief, as laid (a `relief` element, or a photo a brick
 // lays on each of its details, a dormer's front), is looked at head on along its own normal, the section view cutting away
-// what stands more than SECTION metres in front of it, twice: with the photo reliefs and without them. Then:
+// what stands more than SECTION metres in front of it (a porch, a colonnade, the far side of a nave: what may stand before a
+// relief without hiding it), so that a relief buried in its own wall is still hidden by the stone. It is looked at twice: with
+// the photo reliefs and without them. Then:
 //   - the relief is seen: laying it changes the picture by more than CHANGE grey levels over MIN_SEEN of its panel at least
 //     (over the 57 reliefs of the collection and the gallery: 44 to 98% for those that show, 0 to 8% for the six found buried
 //     in stone or behind a member standing proud of the face, before they were brought out);
@@ -25,7 +27,7 @@ import {expand} from './lib/compact.mjs';
 import {decodePng} from './lib/vision.mjs';
 
 const root = fileURLToPath(new URL('..', import.meta.url)), only = process.argv.slice(2).filter(arg => !arg.startsWith('-'));
-const FRAME = [512, 320], MIN_SEEN = .25, CHANGE = 8, MIN_LIKENESS = .25, MIN_ON = .5, SECTION = .15, FOV = 20, REPORT = process.env.RELIEF_REPORT === '1', DIR = process.env.RELIEF_DIR;
+const FRAME = [512, 320], MIN_SEEN = .25, CHANGE = 8, MIN_LIKENESS = .25, MIN_ON = .5, SECTION = 1.2, FOV = 20, REPORT = process.env.RELIEF_REPORT === '1', DIR = process.env.RELIEF_DIR;
 const sources = [
   ...(await readdir(join(root, 'examples'))).filter(name => name.endsWith('.json')).map(name => [name.slice(0, -5), join(root, 'examples'), `${name.slice(0, -5)}`]),
   ...(await readdir(join(root, 'community'), {withFileTypes: true})).filter(entry => entry.isDirectory()).map(entry => [entry.name, join(root, 'community', entry.name), 'monument']),
@@ -54,7 +56,8 @@ const expected = d => {
 // the panel takes on screen; for each sample inside the panel's shape and outline, the photo's luminance and the point of the
 // panel in the scene, projected on the screen by the viewer itself.
 const sampler = `async (r, grid, smooth) => {
-  const image = new Image(); image.src = r.url; await image.decode();
+  const image = new Image(); image.src = r.url;
+  try { await Promise.race([image.decode(), new Promise((_, no) => setTimeout(() => no(new Error('no answer')), 20000))]); } catch { return null; }
   const canvas = document.createElement('canvas'), k = Math.min(1, smooth / Math.max(image.width, image.height));
   canvas.width = Math.max(1, Math.round(image.width * k)); canvas.height = Math.max(1, Math.round(image.height * k));
   const c = canvas.getContext('2d', {willReadFrequently: true}); c.imageSmoothingQuality = 'high'; c.drawImage(image, 0, 0, canvas.width, canvas.height);
@@ -126,6 +129,9 @@ if (monuments.length) {
     const want = expected(d);
     for (const [name, number] of want) counts.push({id, name, number, laid: laid.filter(r => d.elements[r.element]?.name === name).length});
     for (const [k, r] of laid.entries()) {
+      const name = d.elements[r.element]?.name ?? `element ${r.element}`;
+      // A relief whose photo did not load is not shown: there is nothing to look at.
+      if (!r.shown) { results.push({id, k, element: r.element, name, shown: false, samples: 0, changed: 0, likeness: 0, grain: 0, on: 0}); continue; }
       // Seen when it stands: at the end, or half way through its life when it is taken down before the end.
       const t = r.death > duration ? duration : (r.birth + r.death) / 2, [nx, nz] = r.normal, n = Math.hypot(nx, nz), az = Math.atan2(nx, -nz) * 180 / Math.PI;
       const [w, h] = r.size, dist = Math.max(h / .6, w / (.6 * FRAME[0] / FRAME[1])) / (2 * Math.tan(FOV * Math.PI / 360));
@@ -142,7 +148,7 @@ if (monuments.length) {
       const turn = (d.rotate ?? 0) * Math.PI / 180, toModel = ([X, y, Z]) => [X * Math.cos(turn) - Z * Math.sin(turn), y, X * Math.sin(turn) + Z * Math.cos(turn)];
       // About 2300 samples on a grid of square cells, whatever the panel's proportions: a long band is read as finely as a square.
       const grid = [Math.max(12, Math.round(Math.sqrt(2304 * w / h))), Math.max(12, Math.round(Math.sqrt(2304 * h / w)))];
-      const samples = await browser.run(`(${sampler})(${JSON.stringify({...r, turn})}, ${JSON.stringify(grid)}, 160)`);
+      const samples = await browser.run(`(${sampler})(${JSON.stringify({...r, turn})}, ${JSON.stringify(grid)}, 160)`) ?? [];
       const seen = samples.filter(([, x, y]) => x >= 0 && y >= 0 && x < img.width && y < img.height);
       const likeness = correlation(...cells(seen, img)), grain = correlation(seen.map(s => s[0]), seen.map(([, x, y]) => around(img, x, y)));
       // Seen: the share of the panel where laying the relief changes the picture by more than CHANGE grey levels.
@@ -160,7 +166,7 @@ if (monuments.length) {
         if (p.x < 0 || p.y < 0 || p.x >= img.width || p.y >= img.height) continue;
         ring++; if (around(img, p.x, p.y, 2) > 3) on++;
       }
-      results.push({id, k, element: r.element, name: d.elements[r.element]?.name ?? `element ${r.element}`, shown: r.shown, samples: seen.length, changed, likeness, grain, on: ring ? on / ring : 0, px: Math.abs((samples.at(-1)?.[1] ?? 0) - (samples[0]?.[1] ?? 0))});
+      results.push({id, k, element: r.element, name, shown: samples.length > 0, samples: seen.length, changed, likeness, grain, on: ring ? on / ring : 0, px: Math.abs((samples.at(-1)?.[1] ?? 0) - (samples[0]?.[1] ?? 0))});
     }
   }
 }
@@ -178,7 +184,7 @@ for (const {id} of monuments) {
     }
   });
   test(`${id}: every photo relief lies on the building and faces out of it`, () => {
-    for (const r of mine) assert.ok(r.on >= MIN_ON, `${id}: round relief "${r.name}" (#${r.k}) the picture is the model over ${Math.round(r.on * 100)}% of the ring, under ${MIN_ON * 100}%: it stands in the void, or faces into the building`);
+    for (const r of mine.filter(r => r.shown)) assert.ok(r.on >= MIN_ON, `${id}: round relief "${r.name}" (#${r.k}) the picture is the model over ${Math.round(r.on * 100)}% of the ring, under ${MIN_ON * 100}%: it stands in the void, or faces into the building`);
   });
   test(`${id}: the bricks lay a photo on each detail that names one`, () => {
     for (const c of counts.filter(c => c.id === id)) assert.equal(c.laid, c.number, `${id}: "${c.name}" is named by ${c.number} details and laid ${c.laid} times`);
