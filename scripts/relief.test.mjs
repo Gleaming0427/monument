@@ -3,10 +3,14 @@
 // this holds what the viewer draws to what the photograph shows. Each relief, as laid (a `relief` element, or a photo a brick
 // lays on each of its details, a dormer's front), is looked at head on along its own normal, the section view cutting away
 // what stands more than SECTION metres in front of it, twice: with the photo reliefs and without them. Then:
-//   - the relief is seen: laying it changes the picture over most of its panel (nothing of stone stands in front of it);
+//   - the relief is seen: laying it changes the picture by more than CHANGE grey levels over MIN_SEEN of its panel at least
+//     (over the 57 reliefs of the collection and the gallery: 44 to 98% for those that show, 0 to 8% for the six found buried
+//     in stone or behind a member standing proud of the face, before they were brought out);
 //   - what is seen is its photograph: the picture's luminance, read cell by cell over the panel, correlates with the photograph
-//     rectified through the relief's corners and cut to its shape and outline (a correlation of 1 is the photo itself);
-//   - it lies on the building and faces out of it: round the panel, the picture is the model, not the backdrop behind it.
+//     rectified through the relief's corners and cut to its shape and outline (1 is the photo itself; 0.34 to 0.98 for those
+//     that show, weathered low-contrast photos lowest; -0.16 to 0.30 for the buried ones);
+//   - it lies on the building and faces out of it: on a band round the panel, the picture is the model, not the backdrop
+//     (60 to 100% for those laid right; a relief turned to face into the building, on an outer wall, sees the void round it).
 // A relief buried in its wall (stone in front of the photo), turned to face into the building, or whose image did not load,
 // fails here. Whether its corners are the right ones on the photo is relief.mjs --check's question, not this test's.
 // $RELIEF_DIR keeps the picture of every relief; $RELIEF_REPORT=1 prints every measure.
@@ -21,7 +25,7 @@ import {expand} from './lib/compact.mjs';
 import {decodePng} from './lib/vision.mjs';
 
 const root = fileURLToPath(new URL('..', import.meta.url)), only = process.argv.slice(2).filter(arg => !arg.startsWith('-'));
-const FRAME = [640, 400], MIN_SEEN = .6, CHANGE = 8, MIN_LIKENESS = .3, MIN_ON = .8, SECTION = .15, FOV = 20, REPORT = process.env.RELIEF_REPORT === '1', DIR = process.env.RELIEF_DIR;
+const FRAME = [512, 320], MIN_SEEN = .25, CHANGE = 8, MIN_LIKENESS = .25, MIN_ON = .5, SECTION = .15, FOV = 20, REPORT = process.env.RELIEF_REPORT === '1', DIR = process.env.RELIEF_DIR;
 const sources = [
   ...(await readdir(join(root, 'examples'))).filter(name => name.endsWith('.json')).map(name => [name.slice(0, -5), join(root, 'examples'), `${name.slice(0, -5)}`]),
   ...(await readdir(join(root, 'community'), {withFileTypes: true})).filter(entry => entry.isDirectory()).map(entry => [entry.name, join(root, 'community', entry.name), 'monument']),
