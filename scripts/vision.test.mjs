@@ -3,7 +3,8 @@
 // what the viewer draws to them. Each wall that carries openings is photographed head on, from its outward normal and level
 // with its middle, and the openings the monument's numbers declare are projected into that picture by the viewer itself.
 // Then, for every opening nothing stands in front of:
-//   - a window's glass reads dark: a window whose pane is covered (a blind arch's panel laid over it, a wall standing behind
+//   - a window's glass reads dark, in each third of its height (at Chambord the dimmest third of 106 sound windows measures 0.48 to 1.0;
+//     a window with a panel laid over its foot or a block in front of it measures 0.0 to 0.27): a window whose pane is covered (a blind arch's panel laid over it, a wall standing behind
 //     its hole) shows stone where it should show glass;
 //   - it stands where the numbers put it, within 0.3 m, so that windows centred in their bays are centred in the picture too;
 //   - a door reads as an opening, dark, in the middle of the wall or of its bay.
@@ -19,7 +20,7 @@ import {expand} from './lib/compact.mjs';
 import {decodePng, darkness, wallOpenings, hiddenBy, FRAME} from './lib/vision.mjs';
 
 const root = fileURLToPath(new URL('..', import.meta.url)), only = process.argv.slice(2).filter(arg => !arg.startsWith('-'));
-const MIN_GLASS = .5, MIN_DOOR = .6, WITHIN = .3, REPORT = process.env.VISION_REPORT === '1', DIR = process.env.VISION_DIR;
+const MIN_GLASS = .4, MIN_DOOR = .6, WITHIN = .3, REPORT = process.env.VISION_REPORT === '1', DIR = process.env.VISION_DIR;
 const files = [
   ...(await readdir(join(root, 'examples'))).filter(name => name.endsWith('.json')).map(name => [name.slice(0, -5), join(root, 'examples', name)]),
   ...(await readdir(join(root, 'community'), {withFileTypes: true})).filter(entry => entry.isDirectory()).map(entry => [entry.name, join(root, 'community', entry.name, 'monument.json')]),
@@ -69,8 +70,10 @@ if (monuments.length) {
         const mine = o => Math.abs(o.s - centre) <= width / 2 - 1.2, hidden = (s, y) => hiddenBy(d.elements, i, camera, face(s), y) !== null;
         for (const o of wall.windows.filter(mine)) {
           const r = rectOf(o.s, o.sill, o.head, o.w), cx = (r.x0 + r.x1) / 2, pxm = (r.x1 - r.x0) / o.w, ix = (r.x1 - r.x0) * .2, iy = (r.y1 - r.y0) * .12;
+          // The pane is read in thirds of its height: a panel laid over the foot of a window leaves its head dark and the rest stone.
           const inner = darkness(img, [r.x0 + ix, r.y0 + iy, r.x1 - ix, r.y1 - iy]), around = darkness(img, [r.x0 - .15 * (r.x1 - r.x0), r.y0, r.x1 + .15 * (r.x1 - r.x0), r.y1]);
-          results.push({id, wall: `${i}${wall.side}`, kind: 'window', level: o.level, s: o.s, hidden: hidden(o.s, (o.sill + o.head) / 2) || r.x0 < 4 || r.x1 > FRAME[0] - 4 || r.y0 < 4 || r.y1 > FRAME[1] - 4, share: inner.share, offset: (around.cx - cx) / pxm, px: r.x1 - r.x0});
+          const third = (r.y1 - r.y0 - 2 * iy) / 3, thirds = [0, 1, 2].map(n => darkness(img, [r.x0 + ix, r.y0 + iy + n * third, r.x1 - ix, r.y0 + iy + (n + 1) * third]).share);
+          results.push({id, wall: `${i}${wall.side}`, kind: 'window', level: o.level, s: o.s, hidden: hidden(o.s, (o.sill + o.head) / 2) || r.x0 < 4 || r.x1 > FRAME[0] - 4 || r.y0 < 4 || r.y1 > FRAME[1] - 4, share: Math.min(...thirds), whole: inner.share, offset: (around.cx - cx) / pxm, px: r.x1 - r.x0});
         }
         for (const o of wall.doors.filter(mine)) {
           const r = rectOf(o.s, o.sill, o.head, o.w), cx = (r.x0 + r.x1) / 2, pxm = (r.x1 - r.x0) / o.w, ix = (r.x1 - r.x0) * .3;
@@ -81,13 +84,13 @@ if (monuments.length) {
     }
   }
 }
-if (REPORT) for (const r of results) console.log(`${r.id} ${r.wall.padEnd(5)} ${r.kind.padEnd(6)} s=${r.s.toFixed(2).padStart(6)} ${r.hidden ? 'hidden ' : 'visible'} dark ${r.share.toFixed(2)} offset ${Number.isNaN(r.offset) ? '  n/a' : r.offset.toFixed(2).padStart(5)} m  (${r.px.toFixed(0)} px wide)`);
+if (REPORT) for (const r of results) console.log(`${r.id} ${r.wall.padEnd(5)} ${r.kind.padEnd(6)} s=${r.s.toFixed(2).padStart(6)} ${r.hidden ? 'hidden ' : 'visible'} dark ${r.share.toFixed(2)}${r.whole === undefined ? '' : ` (${r.whole.toFixed(2)} whole)`} offset ${Number.isNaN(r.offset) ? '  n/a' : r.offset.toFixed(2).padStart(5)} m  (${r.px.toFixed(0)} px wide)`);
 
 for (const {id} of monuments) {
   const mine = results.filter(r => r.id === id), seen = kind => mine.filter(r => r.kind === kind && !r.hidden && r.px >= 8);
   test(`${id}: the windows' glass reads dark in a frontal view`, () => {
     assert.ok(seen('window').length >= 20, `only ${seen('window').length} windows could be looked at head on`);
-    for (const r of seen('window')) assert.ok(r.share >= MIN_GLASS, `${id} wall ${r.wall}: the window at ${r.s.toFixed(2)} (storey ${r.level}) shows dark glass over ${Math.round(r.share * 100)}% of its pane, under ${MIN_GLASS * 100}%: a panel laid over it, or a wall standing behind its hole`);
+    for (const r of seen('window')) assert.ok(r.share >= MIN_GLASS, `${id} wall ${r.wall}: the window at ${r.s.toFixed(2)} (storey ${r.level}) shows dark glass over only ${Math.round(r.share * 100)}% of its dimmest third, under ${MIN_GLASS * 100}%: a panel laid over it, or a wall standing behind its hole`);
   });
   test(`${id}: the windows stand in the picture where the numbers put them`, () => {
     for (const r of seen('window').filter(r => r.share >= MIN_GLASS)) assert.ok(Math.abs(r.offset) <= WITHIN, `${id} wall ${r.wall}: the window at ${r.s.toFixed(2)} (storey ${r.level}) is ${r.offset.toFixed(2)} m from its place in the picture`);
