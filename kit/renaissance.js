@@ -116,17 +116,18 @@ export function renaissance(gothic) {
   // The stone dressing of a window on a wall whose face at the window faces `out` ([du, dv] of the frame): jambs, a lintel
   // with its small cornice, a sill, and the cross of a mullion and a transom with the glass behind it.
   function dressWindow(S, {at, out, w, sill, head, wall = 1, stone, glass = '#3a4655', mullion = true, transom = true, lights = 0, phase, extra = {}, proud = .1}) {
+    const own = {...extra, opening: S.k.nextOpening = (S.k.nextOpening ?? 0) + 1, role: 'window'}, pane = {...own, pane: true};
     const {G} = S, dir = [-out[1], out[0]], h = head - sill, off = d => [at[0] + out[0] * d, at[1] + out[1] * d];
     const jamb = .26 + .02 * w, tint = c => G.tint(c, .04);
-    for (const side of [-1, 1]) G.box('stone', off(proud * .6).map((x, i) => x + dir[i] * side * (w / 2 + jamb / 2 - .04)), sill + h / 2 + .06, [jamb, h + .3, .34], dir, tint(stone), phase, extra);
-    G.box('stone', off(proud * .8), head + .15, [w + jamb * 2 + .1, .3, .42], dir, tint(stone), phase, extra);
-    G.box('stone', off(proud * 1.5), head + .36, [w + jamb * 2 + .42, .12, .5], dir, tint(stone), phase, extra);
-    G.box('stone', off(proud * .9), sill - .08, [w + jamb * 2 - .1, .16, .46], dir, tint(stone), phase, extra);
+    for (const side of [-1, 1]) G.box('stone', off(proud * .6).map((x, i) => x + dir[i] * side * (w / 2 + jamb / 2 - .04)), sill + h / 2 + .06, [jamb, h + .3, .34], dir, tint(stone), phase, own);
+    G.box('stone', off(proud * .8), head + .15, [w + jamb * 2 + .1, .3, .42], dir, tint(stone), phase, own);
+    G.box('stone', off(proud * 1.5), head + .36, [w + jamb * 2 + .42, .12, .5], dir, tint(stone), phase, own);
+    G.box('stone', off(proud * .9), sill - .08, [w + jamb * 2 - .1, .16, .46], dir, tint(stone), phase, own);
     const inset = off(-wall * .42);
-    G.box('glass', inset, sill + h / 2, [w, h, .05], dir, tint(glass), phase, extra);
-    if (mullion) G.box('wood', off(-wall * .42 + .05), sill + h / 2, [.1, h, .09], dir, tint('#cfc7b4'), phase, extra);
-    if (transom) G.box('wood', off(-wall * .42 + .05), sill + h * .64, [w, .1, .09], dir, tint('#cfc7b4'), phase, extra);
-    for (let i = 1; i <= lights; i++) G.box('wood', off(-wall * .42 + .05), sill + h * i / (lights + 1), [w, .05, .08], dir, tint('#cfc7b4'), phase, extra);
+    G.box('glass', inset, sill + h / 2, [w, h, .05], dir, tint(glass), phase, pane);
+    if (mullion) G.box('wood', off(-wall * .42 + .05), sill + h / 2, [.1, h, .09], dir, tint('#cfc7b4'), phase, own);
+    if (transom) G.box('wood', off(-wall * .42 + .05), sill + h * .64, [w, .1, .09], dir, tint('#cfc7b4'), phase, own);
+    for (let i = 1; i <= lights; i++) G.box('wood', off(-wall * .42 + .05), sill + h * i / (lights + 1), [w, .05, .08], dir, tint('#cfc7b4'), phase, own);
   }
 
   // An open lantern crowning a roof: a lead or slate spire, a ring of slim columns under a lead dome, a gilded vane.
@@ -372,36 +373,37 @@ export function renaissance(gothic) {
   // `at` is the middle of its foot on the wall's face, `out` the wall's outward normal, `slope` the roof's rise for a metre
   // of run, so that its cheeks run back to meet the roof.
   function dormer(S, {at, out, y, w = 2.4, h = 3.2, pediment = 'triangle', slope = 1.6, stone, slate = '#4b525c', phase, extra = {}, window = {}}) {
+    const own = {...extra, opening: S.k.nextOpening = (S.k.nextOpening ?? 0) + 1, role: 'dormer'}, pane = {...own, pane: true};
     const {G, k} = S, dir = [-out[1], out[0]], tint = c => G.tint(c, .04), off = d => [at[0] + out[0] * d, at[1] + out[1] * d];
     const cheek = Math.max(.5, w * .24), depth = Math.max(1.4, h / slope + .6), top = y + h;
     for (const side of [-1, 1]) {
       const c = off(.15 - depth / 2).map((x, i) => x + dir[i] * side * (w / 2 - cheek / 2));
-      G.box('stone', c, y + h / 2, [cheek, h, depth], dir, tint(stone), phase, extra);
+      G.box('stone', c, y + h / 2, [cheek, h, depth], dir, tint(stone), phase, own);
     }
     // Under the window, a solid; the window itself, glazed behind its cross; the entablature above.
-    G.box('stone', off(.25), y + .55, [w - cheek, 1.1, .7], dir, tint(stone), phase, extra);
+    G.box('stone', off(.25), y + .55, [w - cheek, 1.1, .7], dir, tint(stone), phase, own);
     { // The slate lozenges the dormers of Chambord carry in their stonework: under the window and on each cheek.
       const L = S.layers(2), face = (d, side) => [at[0] + out[0] * d + dir[0] * side, at[1] + out[1] * d + dir[1] * side], n = [out[0], 0, out[1]];
       lozenge(L, face(.61, 0), dir, n, y + .55, Math.min(.42, w * .16), .42);
       for (const side of [-1, 1]) lozenge(L, face(.165, side * (w / 2 - cheek / 2)), dir, n, y + h * .55, Math.min(.2, cheek * .3), Math.min(.5, h * .14));
-      S.flush(L, 'slate', slate, phase, extra);
+      S.flush(L, 'slate', slate, phase, own);
     }
     const ww = w - 2 * cheek - .1, sill = y + 1.1, head = top - .5;
-    G.box('glass', off(-.05), (sill + head) / 2, [ww, head - sill, .06], dir, tint('#3a4655'), phase, extra);
-    G.box('wood', off(.0), (sill + head) / 2, [.1, head - sill, .1], dir, tint('#cfc7b4'), phase, extra);
-    G.box('wood', off(.0), sill + (head - sill) * .62, [ww, .1, .1], dir, tint('#cfc7b4'), phase, extra);
-    G.box('stone', off(.2), top - .2, [w + .3, .4, .9], dir, tint(stone), phase, extra);
+    G.box('glass', off(-.05), (sill + head) / 2, [ww, head - sill, .06], dir, tint('#3a4655'), phase, pane);
+    G.box('wood', off(.0), (sill + head) / 2, [.1, head - sill, .1], dir, tint('#cfc7b4'), phase, own);
+    G.box('wood', off(.0), sill + (head - sill) * .62, [ww, .1, .1], dir, tint('#cfc7b4'), phase, own);
+    G.box('stone', off(.2), top - .2, [w + .3, .4, .9], dir, tint(stone), phase, own);
     // The pediment: a gable of stone, framed by a moulding that follows its rake.
     const run = w / 2 + .15, rise = pediment === 'triangle' ? w * .32 : w * .18, n = 6;
     for (let i = 0; i < n; i++) {
       const f0 = i / n, f1 = (i + 1) / n, hw = run * (1 - (f0 + f1) / 2), yy = top + rise * (f0 + f1) / 2;
-      G.box('stone', off(.1), yy, [hw * 2, rise / n * 1.05, .62], dir, tint(stone), phase, extra);
+      G.box('stone', off(.1), yy, [hw * 2, rise / n * 1.05, .62], dir, tint(stone), phase, own);
     }
     for (const side of [-1, 1]) {
       const a = off(.45).map((x, i) => x + dir[i] * side * run), b = off(.45);
-      k.beam('stone', G.V(a[0], top + .18, a[1]), G.V(b[0], top + rise + .22, b[1]), .26, tint(stone), phase, extra);
+      k.beam('stone', G.V(a[0], top + .18, a[1]), G.V(b[0], top + rise + .22, b[1]), .26, tint(stone), phase, own);
     }
-    { const q = off(.25); k.turned('ball', 'stone', G.V(q[0], top + rise + .5, q[1]).toArray(), [.34, .5, .34], 0, tint(stone), phase, top, extra); }
+    { const q = off(.25); k.turned('ball', 'stone', G.V(q[0], top + rise + .5, q[1]).toArray(), [.34, .5, .34], 0, tint(stone), phase, top, own); }
   }
 
   // The frame of a pitched roof, a pair of rafters at a time: tie beams across, rafters up to the ridge, a collar and a
@@ -595,9 +597,10 @@ export function renaissance(gothic) {
       // Round-headed bays on the four faces, dark behind a stone surround.
       for (let i = 0; i < 4; i++) {
         const a = i * Math.PI / 2, d = rA * Math.cos(Math.PI / sides) + .08, p = [Math.cos(a) * d, Math.sin(a) * d], dir = [-Math.sin(a), Math.cos(a)];
-        G.box('glass', p, y0 + hA * .55, [1.5, 3.4, .1], dir, tint('#2f3a47'), ph, extra);
-        G.box('stone', p.map((x, j) => x + (j ? Math.sin(a) : Math.cos(a)) * .08), y0 + hA * .55 + 1.95, [2.1, .35, .3], dir, tint(stone), ph, extra);
-        for (const sgn of [-1, 1]) G.box('stone', p.map((x, j) => x + dir[j] * sgn * .95 + (j ? Math.sin(a) : Math.cos(a)) * .06), y0 + hA * .55, [.28, 3.7, .3], dir, tint(stone), ph, extra);
+        const own = {...extra, opening: S.k.nextOpening = (S.k.nextOpening ?? 0) + 1, role: 'window'};
+        G.box('glass', p, y0 + hA * .55, [1.5, 3.4, .1], dir, tint('#2f3a47'), ph, {...own, pane: true});
+        G.box('stone', p.map((x, j) => x + (j ? Math.sin(a) : Math.cos(a)) * .08), y0 + hA * .55 + 1.95, [2.1, .35, .3], dir, tint(stone), ph, own);
+        for (const sgn of [-1, 1]) G.box('stone', p.map((x, j) => x + dir[j] * sgn * .95 + (j ? Math.sin(a) : Math.cos(a)) * .06), y0 + hA * .55, [.28, 3.7, .3], dir, tint(stone), ph, own);
       }
       // The cornice, and the four corner turrets with their small cones.
       const Lr = S.layers(2), yc = y0 + hA;

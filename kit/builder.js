@@ -349,6 +349,9 @@ function gothic(k, e, P) {
   }
   // Glass and tracery of one opening. F(s, y, off) is a point on the wall, `off` towards the outside.
   function opening(F, o, t, ph, extra) {
+    // Every piece of an opening carries its number, and its pane or leaf says so: the vision test
+    // (scripts/vision.test.mjs) finds every window and door by them, and tells its own frame from a stone in front of it.
+    const own = {...extra, opening: k.nextOpening = (k.nextOpening ?? 0) + 1, role: o.door ? 'door' : o.louvres ? 'louvres' : o.kind === 'circle' ? 'rose' : 'window'}, pane = {...own, pane: true};
     const W = o.kind === 'circle' ? 2 * o.r : o.w, y0 = o.kind === 'circle' ? o.y - o.r : o.sill, y1 = top(o), face = t / 2 + .08;
     const [a, b] = [F(o.s - 1, 0, 0), F(o.s + 1, 0, 0)], dir = [(b[0] - a[0]) / 2, (b[2] - a[2]) / 2];
     // An opening whose tracery is a photo relief (`photo`) keeps only its glass, set back in the wall: the
@@ -357,46 +360,46 @@ function gothic(k, e, P) {
       const cols = Math.max(1, Math.round(W / 1.4)), rows = Math.max(1, Math.round((y1 - y0) / 1.4)), pw = W / cols, ph2 = (y1 - y0) / rows;
       for (let i = 0; i < cols; i++) for (let j = 0; j < rows; j++) {
         const p = F(o.s - W / 2 + (i + .5) * pw, 0, -t * .2);
-        box('glass', [p[0], p[2]], y0 + (j + .5) * ph2, [pw, ph2, .1], dir, tint(o.colors ? o.colors[Math.floor(k.rand() * o.colors.length)] : glass, .2), ph, extra);
+        box('glass', [p[0], p[2]], y0 + (j + .5) * ph2, [pw, ph2, .1], dir, tint(o.colors ? o.colors[Math.floor(k.rand() * o.colors.length)] : glass, .2), ph, pane);
       }
       return;
     }
     if (o.door) {
       // The leaf stands to the springing of the arch, or to `doorHeight` (the crown, to fill a round head).
       const p = F(o.s, 0, t / 2 - .4), dh = o.doorHeight ?? o.spring ?? 4;
-      box('wood', [p[0], p[2]], dh / 2, [W, dh, .25], dir, tint(o.door, .05), ph, extra);
+      box('wood', [p[0], p[2]], dh / 2, [W, dh, .25], dir, tint(o.door, .05), ph, pane);
     } else if (o.louvres) {
       for (let y = y0 + .4; y < y1 - .3; y += .75) {
         const hw = Math.max(.2, span(o, y + .1)), p = F(o.s, 0, 0);
-        box('wood', [p[0], p[2]], y, [2 * hw, .12, t * .5], dir, tint(o.louvres, .06), ph, extra);
+        box('wood', [p[0], p[2]], y, [2 * hw, .12, t * .5], dir, tint(o.louvres, .06), ph, pane);
       }
     } else if (o.glass !== false) {
       const cols = Math.max(1, Math.round(W / 1.4)), rows = Math.max(1, Math.round((y1 - y0) / 1.9)), pw = W / cols, ph2 = (y1 - y0) / rows;
       for (let i = 0; i < cols; i++) for (let j = 0; j < rows; j++) {
         const p = F(o.s - W / 2 + (i + .5) * pw, 0, 0);
-        box('glass', [p[0], p[2]], y0 + (j + .5) * ph2, [pw, ph2, .1], dir, tint(o.colors ? o.colors[Math.floor(k.rand() * o.colors.length)] : glass, .2), ph, extra);
+        box('glass', [p[0], p[2]], y0 + (j + .5) * ph2, [pw, ph2, .1], dir, tint(o.colors ? o.colors[Math.floor(k.rand() * o.colors.length)] : glass, .2), ph, pane);
       }
     }
     if (o.kind === 'circle') {
       // A rose: frame on the face, two inner rings, spokes.
-      ring(F, o.s, o.y, o.r + .25, face, .7, 32, ph, extra);
-      ring(F, o.s, o.y, o.r * .66, 0, .32, 24, ph, extra);
-      ring(F, o.s, o.y, o.r * .3, 0, .3, 14, ph, extra);
+      ring(F, o.s, o.y, o.r + .25, face, .7, 32, ph, own);
+      ring(F, o.s, o.y, o.r * .66, 0, .32, 24, ph, own);
+      ring(F, o.s, o.y, o.r * .3, 0, .3, 14, ph, own);
       const n = o.spokes ?? 16;
       for (let i = 0; i < n; i++) {
         const a = i / n * Math.PI * 2, c = Math.cos(a), s = Math.sin(a);
-        beam('stone', F(o.s + c * o.r * .3, o.y + s * o.r * .3, 0), F(o.s + c * o.r, o.y + s * o.r, 0), .26, tint(stone), ph, extra);
-        if (i % 2 === 0) beam('stone', F(o.s + c * o.r * .08, o.y + s * o.r * .08, 0), F(o.s + c * o.r * .3, o.y + s * o.r * .3, 0), .22, tint(stone), ph, extra);
+        beam('stone', F(o.s + c * o.r * .3, o.y + s * o.r * .3, 0), F(o.s + c * o.r, o.y + s * o.r, 0), .26, tint(stone), ph, own);
+        if (i % 2 === 0) beam('stone', F(o.s + c * o.r * .08, o.y + s * o.r * .08, 0), F(o.s + c * o.r * .3, o.y + s * o.r * .3, 0), .22, tint(stone), ph, own);
       }
       return;
     }
     // The arch frame on the face, its jambs, and the tracery: a mullion, two lancets and an oculus.
-    arch(F, o.s, W + .35, o.spring, face, .45, ph, extra, o.kind);
-    if (o.spring - y0 > .1) for (const side of [-1, 1]) beam('stone', F(o.s + side * (W / 2 + .1), y0, face), F(o.s + side * (W / 2 + .1), o.spring, face), .4, tint(stone), ph, extra);
+    arch(F, o.s, W + .35, o.spring, face, .45, ph, own, o.kind);
+    if (o.spring - y0 > .1) for (const side of [-1, 1]) beam('stone', F(o.s + side * (W / 2 + .1), y0, face), F(o.s + side * (W / 2 + .1), o.spring, face), .4, tint(stone), ph, own);
     if (o.twin && W > 1.6) {
-      beam('stone', F(o.s, y0, 0), F(o.s, o.spring + W * .18, 0), .3, tint(stone), ph, extra);
-      for (const side of [-1, 1]) arch(F, o.s + side * W / 4, W / 2 - .12, o.spring, 0, .24, ph, extra, 'pointed', 3);
-      if (o.oculus !== false && o.kind !== 'rect') ring(F, o.s, o.spring + W * .5, W * .19, 0, .22, 10, ph, extra);
+      beam('stone', F(o.s, y0, 0), F(o.s, o.spring + W * .18, 0), .3, tint(stone), ph, own);
+      for (const side of [-1, 1]) arch(F, o.s + side * W / 4, W / 2 - .12, o.spring, 0, .24, ph, own, 'pointed', 3);
+      if (o.oculus !== false && o.kind !== 'rect') ring(F, o.s, o.spring + W * .5, W * .19, 0, .22, 10, ph, own);
     }
   }
   // Coursed ashlar from a to b ([u, v]) between y0 and y1, thickness t, `out` its outward normal ([u, v]),
@@ -828,9 +831,10 @@ export const generators = {
         // The door (`door`: {angle, width, height}; angle in degrees, 0 = south, 90 = east), in the nearest bay.
         if (s.door) {
           const a = (Math.round((s.door.angle ?? 0) / 360 * n - .5) + .5) / n * 2 * Math.PI, w = s.door.width ?? 1.6, dh = s.door.height ?? 3.4;
-          box(a, R + .02, y + .7 + dh / 2, [w, dh, .2], s.door.color ?? '#4a3b2f', ph);
+          const own = {opening: k.nextOpening = (k.nextOpening ?? 0) + 1, role: 'door'};
+          box(a, R + .02, y + .7 + dh / 2, [w, dh, .2], s.door.color ?? '#4a3b2f', ph, {...own, pane: true});
           for (const side of [-1, 1]) { const q = pos(a, R + .1, 0), t2 = new T.Vector3(Math.cos(a), 0, -Math.sin(a)).multiplyScalar(side * (w / 2 + .14)); k.box('stone', [q.x + t2.x, y + .7 + dh / 2, q.z + t2.z], [.26, dh, .3], a, k.tint(color, .03), ph, y); }
-          box(a, R + .12, y + .7 + dh + .2, [w + .6, .4, .32], color, ph);
+          box(a, R + .12, y + .7 + dh + .2, [w + .6, .4, .32], color, ph, own);
         }
         ring(R - .45, y + h - .4, .4, 1.3, color, ph);
       } else if (s.kind === 'loggia') {
@@ -1071,7 +1075,7 @@ export const generators = {
     const {center:[cx,cz], length, floors=2, floorHeight=3.6, bays=5, rot=0, y0=0,
       thickness=.6, color='#c39e85', trim='#e1d0ae', phase}=e;
     const co=Math.cos(rot),si=Math.sin(rot), bay=length/bays, ww=e.windowWidth??bay*.45;
-    const put=(x,y,z,w,h,d,kind='stone',hex=color)=>k.box(kind,[cx+x*co+z*si,y0+y,cz-x*si+z*co],[w,h,d],rot,k.tint(hex,.045),P(phase),(y0+y)*1e4+x);
+    const put=(x,y,z,w,h,d,kind='stone',hex=color,extra={})=>k.box(kind,[cx+x*co+z*si,y0+y,cz-x*si+z*co],[w,h,d],rot,k.tint(hex,.045),P(phase),(y0+y)*1e4+x,extra);
     for(let f=0;f<floors;f++) for(let b=0;b<bays;b++) {
       const x=-length/2+(b+.5)*bay, base=f*floorHeight;
       const door=e.door&&f===0&&b===Math.floor(bays/2), sill=door?0:.85, wh=door?floorHeight-.5:floorHeight-1.45;
@@ -1081,7 +1085,7 @@ export const generators = {
         put(x-bay/2+side/2,y,0,side*.98,h,thickness);put(x+bay/2-side/2,y,0,side*.98,h,thickness);
         if(y<base+sill||y>base+sill+wh)put(x,y,0,ww,h,thickness);
       }
-      put(x,base+sill+wh/2,-.04,ww*.96,wh,.08,door?'wood':'metal',door?'#614534':'#314856');
+      put(x,base+sill+wh/2,-.04,ww*.96,wh,.08,door?'wood':'metal',door?'#614534':'#314856',{opening:k.nextOpening=(k.nextOpening??0)+1,role:door?'door':'window',pane:true});
       for(const sign of [-1,1])put(x+sign*(ww/2+.07),base+sill+wh/2,.06,.14,wh+.24,thickness+.14,'stone',trim);
       for(const yy of [base+sill,base+sill+wh])put(x,yy,.08,ww+.32,.17,thickness+.22,'stone',trim);
       if(!door){put(x,base+sill+wh/2,.13,.06,wh,.07,'wood','#e7d7b6');put(x,base+sill+wh*.58,.13,ww,.06,.07,'wood','#e7d7b6');}
@@ -1234,9 +1238,10 @@ export const generators = {
         const door = e.door !== false && edge.length === longest && floor === 0 && i === Math.floor(bays / 2);
         const w = Math.min(bay * (e.windowRatio ?? .48), door ? 1.8 : 1.55), h = door ? Math.max(2.2, floorHeight - .45) : Math.max(1.25, floorHeight * .5);
         const along = (i + .5) * bay, x = edge.a[0] + edge.ux * along + edge.nx * (thickness / 2 + .08), z = edge.a[1] + edge.uz * along + edge.nz * (thickness / 2 + .08), y = y0 + floor * floorHeight + (door ? h / 2 : floorHeight * .56);
-        k.box(door ? 'wood' : 'metal', [x, y, z], [w, h, .12], edge.rot, k.tint(door ? '#5e4435' : '#304552', .04), P(e.phase), y * 1e4 + along);
-        for (const side of [-1, 1]) k.box('stone', [x + edge.ux * side * (w / 2 + .08), y, z + edge.uz * side * (w / 2 + .08)], [.13, h + .25, .18], edge.rot, k.tint(trim, .03), P(e.phase), y * 1e4 + along + side);
-        for (const dy of [-h / 2 - .08, h / 2 + .08]) k.box('stone', [x, y + dy, z], [w + .3, .14, .18], edge.rot, k.tint(trim, .03), P(e.phase), y * 1e4 + along + dy);
+        const own = {opening: k.nextOpening = (k.nextOpening ?? 0) + 1, role: door ? 'door' : 'window'};
+        k.box(door ? 'wood' : 'metal', [x, y, z], [w, h, .12], edge.rot, k.tint(door ? '#5e4435' : '#304552', .04), P(e.phase), y * 1e4 + along, {...own, pane: true});
+        for (const side of [-1, 1]) k.box('stone', [x + edge.ux * side * (w / 2 + .08), y, z + edge.uz * side * (w / 2 + .08)], [.13, h + .25, .18], edge.rot, k.tint(trim, .03), P(e.phase), y * 1e4 + along + side, own);
+        for (const dy of [-h / 2 - .08, h / 2 + .08]) k.box('stone', [x, y + dy, z], [w + .3, .14, .18], edge.rot, k.tint(trim, .03), P(e.phase), y * 1e4 + along + dy, own);
         if (door) {
           for (const side of [-1, 1]) for (const dy of [-.22, .22]) k.box('wood', [x + edge.ux * side * w * .24 + edge.nx * .08, y + dy * h, z + edge.uz * side * w * .24 + edge.nz * .08], [w * .38, h * .32, .09], edge.rot, k.tint('#765744', .025), P(e.phase), y * 1e4 + along + side + dy);
           k.box('metal', [x + edge.ux * w * .28 + edge.nx * .14, y, z + edge.uz * w * .28 + edge.nz * .14], [.06, .06, .08], edge.rot, k.tint('#c2a56d', .04), P(e.phase), y * 1e4 + along + 9);
@@ -3024,12 +3029,14 @@ export function createStage(host) {
       // The haze follows the distance: a long lens far away sees the monument as clearly as the overall view.
       scene.fog.density = .12 / Math.max(fit(), distance);
       controls.update();
+      // The camera's frame now, not at the next picture: where points fall on the screen and what a ray meets need it.
+      camera.updateMatrixWorld();
     },
     // Vertical field of view of a reference photo's lens, in degrees (38 by default).
     fov(degrees = 38) { camera.fov = degrees; camera.updateProjectionMatrix(); },
     // A photo whose verticals were straightened (a shift lens, or perspective correction afterwards) was taken
     // looking level with its centre moved: the horizon lies `shift` photo heights below the middle.
-    shift(amount = 0) { lensShift = amount; resize(); },
+    shift(amount = 0) { if (amount === lensShift) return; lensShift = amount; resize(); },
     // Evidence mode: tint the pieces by provenance; the measured outline drawn on the ground.
     proof(on) { uniforms.uProof.value = on ? 1 : 0; },
     outline(shapes) {
@@ -3060,9 +3067,88 @@ export function createStage(host) {
           while (lo < hi) { const mid = (lo + hi + 1) >> 1; if (starts[mid] <= hit.faceIndex) lo = mid; else hi = mid - 1; }
           piece = list[lo];
         }
-        if (piece && piece.birth <= t && piece.death > t) return {element: piece.element, phase: piece.phase, kind: piece.kind, point: hit.point.toArray()};
+        if (piece && piece.birth <= t && piece.death > t) return {element: piece.element, phase: piece.phase, kind: piece.kind, opening: piece.opening, role: piece.role, point: hit.point.toArray()};
       }
       return null;
+    },
+    // Many screen points at once, each answered as pick answers it (the vision test casts thousands of rays): every piece
+    // standing at `t` is first held against all the rays by a sphere around it, and only the pieces a ray may meet nearer
+    // than what it has met so far are intersected.
+    // With `both`, a face is met from behind too, as if every material were double-sided: a camera standing inside a
+    // wall then meets that wall, instead of seeing through it.
+    pickMany(points, t, both = false) {
+      const rect = renderer.domElement.getBoundingClientRect(), twoSided = both ? new T.MeshBasicMaterial({side: T.DoubleSide}) : null;
+      const casters = points.map(([x, y]) => { const r = new T.Raycaster(); r.setFromCamera(new T.Vector2((x - rect.left) / rect.width * 2 - 1, -(y - rect.top) / rect.height * 2 + 1), camera); return r; });
+      const best = points.map(() => ({distance: Infinity, answer: null}));
+      const c = new T.Vector3(), a = new T.Vector3(), b = new T.Vector3(), d = new T.Vector3(), at = new T.Vector3(), probe = new T.Mesh(), found = [];
+      const near = (center, radius, fn) => {
+        for (let i = 0; i < casters.length; i++) {
+          const {origin, direction} = casters[i].ray, vx = center.x - origin.x, vy = center.y - origin.y, vz = center.z - origin.z, s = vx * direction.x + vy * direction.y + vz * direction.z;
+          if (s < -radius || s - radius > best[i].distance || vx * vx + vy * vy + vz * vz - s * s > radius * radius) continue;
+          fn(i);
+        }
+      };
+      const keep = (i, distance, point, piece) => { if (distance < best[i].distance) best[i] = {distance, answer: {element: piece.element, phase: piece.phase, kind: piece.kind, opening: piece.opening, role: piece.role, point: point.toArray()}}; };
+      for (const mesh of meshes) {
+        const {pieces: list, starts} = mesh.userData;
+        if (!list) continue;
+        if (mesh.isInstancedMesh) {
+          if (!mesh.geometry.boundingSphere) mesh.geometry.computeBoundingSphere();
+          const sphere = mesh.geometry.boundingSphere; probe.geometry = mesh.geometry; probe.material = twoSided ?? mesh.material;
+          for (const piece of list) {
+            if (!(piece.birth <= t && piece.death > t)) continue;
+            near(c.copy(sphere.center).applyMatrix4(piece.matrix), sphere.radius * piece.matrix.getMaxScaleOnAxis(), i => {
+              probe.matrixWorld.copy(piece.matrix); found.length = 0; probe.raycast(casters[i], found);
+              for (const hit of found) keep(i, hit.distance, hit.point, piece);
+            });
+          }
+        } else if (starts) {
+          // A mesh of patches: its triangles are in the scene's frame already, each piece's between its two starts.
+          const position = mesh.geometry.attributes.position, index = mesh.geometry.index.array, cull = !both && mesh.material.side === T.FrontSide;
+          list.forEach((piece, n) => {
+            if (!(piece.birth <= t && piece.death > t)) return;
+            const e = piece.matrix.elements;
+            near(c.set(e[12], e[13], e[14]), .5 * Math.hypot(Math.hypot(e[0], e[1], e[2]), Math.hypot(e[4], e[5], e[6]), Math.hypot(e[8], e[9], e[10])), i => {
+              const {ray} = casters[i];
+              for (let f = starts[n]; f < starts[n + 1]; f++) {
+                a.fromBufferAttribute(position, index[f * 3]); b.fromBufferAttribute(position, index[f * 3 + 1]); d.fromBufferAttribute(position, index[f * 3 + 2]);
+                if (ray.intersectTriangle(a, b, d, cull, at)) keep(i, ray.origin.distanceTo(at), at, piece);
+              }
+            });
+          });
+        }
+      }
+      // The reliefs are few: intersected as pick intersects them.
+      const reliefs = meshes.filter(m => m.userData.relief && m.visible);
+      if (reliefs.length) casters.forEach((caster, i) => {
+        for (const hit of caster.intersectObjects(reliefs, false)) {
+          const relief = hit.object.userData.relief;
+          if (hit.distance >= best[i].distance) break;
+          if (relief.birth <= t && relief.death > t) { best[i] = {distance: hit.distance, answer: {element: relief.element, phase: relief.phase, kind: 'relief', point: hit.point.toArray()}}; break; }
+        }
+      });
+      twoSided?.dispose();
+      return best.map(x => x.answer);
+    },
+    // Every pane and door leaf standing at `t`, for the vision test (scripts/vision.test.mjs): its element, the opening it
+    // belongs to and its role, and where it stands in the scene's frame (a box by its matrix, a patch by its corners).
+    openings(t) {
+      const out = [], v = new T.Vector3();
+      for (const mesh of meshes) for (const piece of mesh.userData.pieces ?? []) {
+        if (!piece.pane || !(piece.birth <= t && piece.death > t)) continue;
+        const own = {element: piece.element, opening: piece.opening, role: piece.role, kind: piece.kind};
+        if (!piece.mesh) { out.push({...own, matrix: piece.matrix.elements.slice()}); continue; }
+        // A patch keeps its vertices in its own unit box: up to 64 of them, carried into the scene's frame.
+        const count = piece.mesh.position.length / 3, step = Math.max(1, Math.floor(count / 64)), points = [];
+        for (let i = 0; i < count; i += step) points.push(v.fromArray(piece.mesh.position, i * 3).applyMatrix4(piece.matrix).toArray());
+        out.push({...own, points});
+      }
+      return out;
+    },
+    // Where a point of the scene's frame falls on the screen, in CSS pixels, and how far it lies along the view (-1 to 1).
+    screen(point) {
+      const v = new T.Vector3(...point).project(camera);
+      return {x: (v.x * .5 + .5) * host.clientWidth, y: (-v.y * .5 + .5) * host.clientHeight, z: v.z};
     },
     // The outline of what stands, for holding the model against a photograph (scripts/silhouette.mjs): 1 where the
     // monument covers a pixel of the drawing buffer, rows from the top. The floor, the worksites and the haze go, and

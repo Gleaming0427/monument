@@ -430,6 +430,8 @@ export function masonry(env) {
 
   // Glass and tracery of one opening. F(s, y, off) is a point on the wall, `off` towards the outside.
   function opening(F, o, t, ph, extra) {
+    // Every piece of the opening carries its number, and its glass or leaf says it is the pane (scripts/vision.test.mjs).
+    const own = {...extra, opening: env.k.nextOpening = (env.k.nextOpening ?? 0) + 1, role: o.door ? 'door' : o.louvres ? 'louvres' : o.kind === 'circle' ? 'rose' : 'window'}, pane = {...own, pane: true};
     const circle = o.kind === 'circle', W = circle ? 2 * o.r : o.w, y0 = circle ? o.y - o.r : o.sill, y1 = env.top(o), face = t / 2;
     const lay = frameOf(F), [a, b] = [F(o.s - 1, 0, 0), F(o.s + 1, 0, 0)], dir = [(b[0] - a[0]) / 2, (b[2] - a[2]) / 2];
     const k = clamp(.75 + .12 * W, .85, 1.5), glassOff = o.photo ? -t * .2 : face - Math.min(.55, t * .32);
@@ -446,33 +448,33 @@ export function masonry(env) {
         const [a, b, c] = tri.map(at), back = v => ({...v, n: v.n.map(x => -x)});
         cells.get(key).tri(a, b, c); cells.get(key).tri(back(a), back(c), back(b));
       }
-      for (const layers of cells.values()) flush(layers, 'glass', tint(o.colors ? o.colors[Math.floor(rand() * o.colors.length)] : env.glass, .2), ph, extra);
+      for (const layers of cells.values()) flush(layers, 'glass', tint(o.colors ? o.colors[Math.floor(rand() * o.colors.length)] : env.glass, .2), ph, pane);
     };
     if (o.photo) { glaze(light, glassOff, o.panes ?? .4); return; }
     if (o.door) {
       // The leaf stands to the springing of the arch, or to `doorHeight` (the crown, to fill a round head).
       const p = F(o.s, 0, t / 2 - .4), dh = o.doorHeight ?? o.spring ?? 4;
-      env.box('wood', [p[0], p[2]], dh / 2, [W, dh, .25], dir, tint(o.door, .05), ph, extra);
+      env.box('wood', [p[0], p[2]], dh / 2, [W, dh, .25], dir, tint(o.door, .05), ph, pane);
     } else if (o.louvres) {
       for (let y = y0 + .4; y < y1 - .3; y += .75) {
         const hw = Math.max(.2, env.span(o, y + .1)), p = F(o.s, 0, 0);
-        env.box('wood', [p[0], p[2]], y, [2 * hw, .12, t * .5], dir, tint(o.louvres, .06), ph, extra);
+        env.box('wood', [p[0], p[2]], y, [2 * hw, .12, t * .5], dir, tint(o.louvres, .06), ph, pane);
       }
     } else if (o.glass !== false) glaze(light, glassOff, o.panes ?? .46);
     // The orders round the light, running down its jambs to the sill, standing out of the face.
     const layers = layersFor(1.2), orders = o.orders ?? (W > 4 ? 4 : W > 2.4 ? 3 : 2);
     sweep(layers, lay, light, surroundSection(orders, k), {base: face, closed: circle, caps: true});
-    flush(layers, 'stone', tint(stone), ph, extra);
-    if (circle) { rose(lay, o, t, ph, extra, face, glassOff, k); return; }
+    flush(layers, 'stone', tint(stone), ph, own);
+    if (circle) { rose(lay, o, t, ph, own, face, glassOff, k); return; }
     // Slim colonnettes up the jambs, each capped by a ring at the springing, as the lancets of the photographed fronts have.
     if (o.shafts !== false && o.kind !== 'rect' && o.glass !== false && !o.door && !o.louvres && o.spring - y0 > 1.4 && W >= 1.1) {
       for (const side of [-1, 1]) {
         const p = F(o.s + side * (W / 2 + .1 * k), 0, face + .08), ys = [y0]; for (let y = y0 + 2.4; y < o.spring - .05; y += 2.4) ys.push(y); ys.push(o.spring);
-        loft([p[0], p[2]], ys, () => .055, ph, extra, {sides: 8, smooth: true, step: 2.4});
-        env.k.turned('torus', 'stone', env.V(p[0], o.spring + .03, p[2]).toArray(), [.17, .08, .17], 0, tint(stone), ph, o.spring, extra);
+        loft([p[0], p[2]], ys, () => .055, ph, own, {sides: 8, smooth: true, step: 2.4});
+        env.k.turned('torus', 'stone', env.V(p[0], o.spring + .03, p[2]).toArray(), [.17, .08, .17], 0, tint(stone), ph, o.spring, own);
       }
     }
-    if (o.twin && W > 1.6 && o.glass !== false) tracery(lay, o, W, y0, face, glassOff, ph, extra, k);
+    if (o.twin && W > 1.6 && o.glass !== false) tracery(lay, o, W, y0, face, glassOff, ph, own, k);
   }
 
   // The distance from a point to a polyline.

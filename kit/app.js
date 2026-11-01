@@ -558,6 +558,21 @@ window.monument = {
   get eye() { return stage?.eye ?? []; },
   get insets() { return stage?.insets ?? {left: 0, right: 0, top: 0, bottom: 0}; },
   project(point) { return stage?.project(point) ?? {x: 0, y: 0, visible: false}; },
+  // The vision test (scripts/vision.test.mjs): the camera set as `cam` says ([azimuth, elevation, distance, x, y, z]) at
+  // `t`, and one picture drawn (unless `picture` is false: the rays need none); then the panes and door leaves standing,
+  // where points of the scene fall on the screen, and which piece stands under points of the screen (its element, its
+  // opening, the point hit), all the rays at once, or one by one as a click is (pickEach).
+  view({t = stage.duration, cam, fov = 38, shift = 0, picture = true}) {
+    stepping = true; touched = true;
+    time = Math.max(0, Math.min(stage.duration, t)); play(false); update();
+    stage.autoRotate(false); stage.look(...cam); stage.fov(fov); stage.shift(shift);
+    if (picture) draw(performance.now());
+    return true;
+  },
+  openings() { return stage?.openings(time) ?? []; },
+  screen(points) { return points.map(point => stage.screen(point)); },
+  pick(points, both = false) { return stage.pickMany(points, time, both); },
+  pickEach(points) { return points.map(([x, y]) => stage.pick(x, y, time)); },
   // The monument's outline from a reference photo's viewpoint, in the state the photo shows (scripts/silhouette.mjs):
   // `cam` is [azimuth, elevation, distance, x, y, z], as ?cam takes it. The page stays still afterwards.
   silhouette({t = stage.duration, cam, fov = 38, shift = 0}) {
