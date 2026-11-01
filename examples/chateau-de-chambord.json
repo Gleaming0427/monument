@@ -420,7 +420,7 @@
    "The lantern tower over the stair, the highest point of the château at 56 m, crowned by a fleur-de-lis: simplified; the lantern tower is modelled as stacked drums, with none of the crown of arches, ribs and carved ornament of the real one.",
    "Terraces, dormers, chimney stacks and turrets over the keep, a roofscape like a village in the sky: simplified; 25 of the 28 chimney stacks stand at the place and rise to the top of a compact block of the IGN's LiDAR HD point cloud (the largest blocks of each tower or pavilion, shared among its stacks so that they move least; the scan is laid on the model by the keep's four towers, to about 0.5 m, so a place is good to about 1 m and a top to about 1 m), but those blocks were taken for stacks from their shape and none was matched to a photograph, so a few may be turrets or pinnacles, and the real roofscape holds more of them than the model draws; the other 3 stacks stay at plausible places; the stacks are drawn in the two kinds the roof photographs show (a lattice of slate lozenges under a gabled crown, or great slate discs on moulded plates under an attic of pinnacles round a slate spire, both with a frieze of slate dots), but which kind stands where, their widths and where their shafts start were not read; the dormers are standard shapes without their carved ornament, set over the window axes of their wall and left out where a measured stack stands: 4 of the 21 round the towers and 4 of the 17 on the pavilions.",
    "The royal oratory, built outside the original block and dated 1540, which breaks the symmetry of the great façade: simplified; the oratory is a plain block of the plan's size, without its carved decoration.",
-   "The windows are rectangular windows with a cross of mullion and transom throughout; the round-headed bays of the loggias and the arches of the wings' ground floor are not modelled. The low enceinte's windows, whose heads are segmental arches reaching the frieze on the photograph from the south-east, are rectangles glazed from 1.9 m to 4.95 m, under an entablature 1 m high (5.4 m to 6.4 m) read on the same photograph to about 0.15 m.",
+   "The windows are rectangular windows with a cross of mullion and transom throughout; the round-headed bays of the loggias and the arches of the wings' ground floor are not modelled. The low enceinte's windows, whose heads are segmental arches reaching the frieze on the photograph from the south-east, are rectangles glazed from 1.9 m to 4.95 m, under an entablature 1 m high (5.4 m to 6.4 m) read on the same photograph to about 0.15 m. The two unfinished south-east towers, which stop at the enceinte's height, take the same heads and entablature: their windows ran up to 6.4 m, through a cornice 1.3 m high.",
    "The front of the keep stands about 2 m lower, against the photographs, on its north-west side than the court: the model has one ground level, the one of the court.",
    "Heights are read on photographs fitted on points of the plan (the lantern tower 56 m, the keep's cornice 21 m, the wings' 18.4 m, the low enceinte 6.4 m); the lead ornaments of the lanternons and the carved ornament of the façades are not modelled.",
    "The figures given for the length of the façade differ between sources (156 m for the French Wikipedia, 128 m for the English one); the model follows the mapped outline, 156 m tower to tower.",
@@ -428,7 +428,7 @@
    "Dates of the roofs of the chapel tower and of the stair towers are interpreted from the chapel wing's: the Domaine's pages say the chapel wing was roofed under Louis XIV and give no date for the towers.",
    "The timber scaffold and the gin-pole of the 16th-century site are reconstructions: the sources read describe the stone, the foundations and the masons' pay, not the lifting gear.",
    "The mansard roofs of 1680–1686 are drawn as a typical broken roof of the period; their exact profile, and the position of their dormers, were not read in a source.",
-   "The windows of the keep, the towers and the wings: simplified; they are placed by rule, not read one by one: centred in regular bays, on one axis from storey to storey, and on a tower only where no other building hides its wall (the six large towers, of the keep and of the west range, have windows all round their exposed wall at the 30° pitch the model already used; the two small towers keep their pair, at 40°, and the two unfinished south-east towers their three) (the arcades and the windows of the west range share one set of axes, spaced evenly about the middle of their wall: its arches moved by up to 1.9 m); the same frame, with its mullion and transom, in every period. The portal in the middle of the south-east range stands on the axis of the range (it stood 0.8 m off it, over three of the range's windows); the four bays it covers, the two under it and the one on each side that its corners cut, are left without windows on both faces of the range. It has no windows of its own (the photograph shows none within its pediment) and a dark round-headed door; the windows nearest the door stand 13.9 m from it in the model and about 11 to 12 m in the photograph, which is read to a metre or two. The photograph of the west tower shows part of its wall plain where the model has windows; the round arches of the keep's courtyard loggias, the doors other than the portal in the middle of the south-east range, and the windows of each period are not modelled. No window or dormer stands where another building stands: the bays another building stands in front of are left without a window, as the rendering showed them walled in or inside that building (the three middle bays of the keep's ground floor, behind the low block on its court front; beside the two small towers, the bays of the four ranges they stand between that stood wholly or partly inside a tower (from 0.25 m of a window's 1.6 m to all of it), on their three storeys, with their dormers; the ground-floor bays of the north-east and south-west ranges where the low enceinte meets them, and the end bays of the low enceinte's side ranges where they meet its south-east range; the bay of the small block against the north corner tower, on its two storeys; and, in the four pavilions on the keep's terraces, the eight bays that stood inside the roof of a tower, with the dormers over four of them)."
+   "The windows of the keep, the towers and the wings: simplified; they are placed by rule, not read one by one: centred in regular bays, on one axis from storey to storey, and on a tower only where no other building hides its wall (the six large towers, of the keep and of the west range, have windows all round their exposed wall at the 30° pitch the model already used; the two small towers keep their pair, at 40°, and the two unfinished south-east towers their three) (the arcades and the windows of the west range share one set of axes, spaced evenly about the middle of their wall: its arches moved by up to 1.9 m); the same frame, with its mullion and transom, in every period. The portal in the middle of the south-east range stands on the axis of the range (it stood 0.8 m off it, over three of the range's windows); the four bays it covers, the two under it and the one on each side that its corners cut, are left without windows on both faces of the range. It has no windows of its own (the photograph shows none within its pediment) and a dark round-headed door; the windows nearest the door stand 13.9 m from it in the model and about 11 to 12 m in the photograph, which is read to a metre or two. The photograph of the west tower shows part of its wall plain where the model has windows; the round arches of the keep's courtyard loggias, the doors other than the portal in the middle of the south-east range, and the windows of each period are not modelled. No window or dormer stands where another building stands: the bays another building stands in front of are left without a window, as the rendering showed them walled in or inside that building (the three middle bays of the keep's ground floor, behind the low block on its court front; beside the two small towers, the bays of the four ranges they stand between that stood wholly or partly inside a tower (from 0.25 m of a window's 1.6 m to all of it), on their three storeys, with their dormers; the ground-floor bays of the north-east and south-west ranges where the low enceinte meets them, and the end bays of the low enceinte's side ranges where they meet its south-east range; the bay of the small block against the north corner tower, on its two storeys; and, in the four pavilions on the keep's terraces, the eight bays that stood inside the roof of a tower, with the dormers over four of them). The top windows of the two large towers of the west range end at 16.7 m, under their cornice (from 16.8 m), which they ran into by 0.2 m."
   ],
   "detailReview": {
    "version": 1,
@@ -3089,7 +3089,7 @@
      ],
      "w": 1.5,
      "sill": 13.8,
-     "head": 17
+     "head": 16.7
     }
    ],
    "roof": {
@@ -3198,7 +3198,7 @@
      ],
      "w": 1.5,
      "sill": 13.8,
-     "head": 17
+     "head": 16.7
     }
    ],
    "roof": {
@@ -3251,7 +3251,7 @@
    "piers": 14,
    "pierWidth": 0.7,
    "cornice": {
-    "height": 1.3,
+    "height": 1,
     "out": 0.7,
     "corbels": 44
    },
@@ -3264,7 +3264,7 @@
      ],
      "w": 2,
      "sill": 2,
-     "head": 6.4
+     "head": 4.95
     }
    ],
    "balustrade": {
@@ -3287,7 +3287,7 @@
    "piers": 14,
    "pierWidth": 0.7,
    "cornice": {
-    "height": 1.3,
+    "height": 1,
     "out": 0.7,
     "corbels": 44
    },
@@ -3300,7 +3300,7 @@
      ],
      "w": 2,
      "sill": 2,
-     "head": 6.4
+     "head": 4.95
     }
    ],
    "balustrade": {

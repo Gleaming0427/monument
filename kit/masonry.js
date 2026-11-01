@@ -300,7 +300,8 @@ export function masonry(env) {
       return w > .7 ? {...o, w, s: o.s ?? len / 2} : null;
     }).filter(Boolean);
     layWall({F, len, y0, y1, t, holes, ph, extra, course, shape});
-    for (const o of holes) env.opening(F, o, t, ph, extra);
+    // A wall laid in parts lays the glass and frame of the openings it holds only (see the toolkit's wall).
+    for (const o of holes) if ((o.kind === 'circle' ? o.y - o.r : o.sill) < y1 && env.top(o) > y0) env.opening(F, o, t, ph, extra);
     return F;
   }
 
@@ -431,9 +432,15 @@ export function masonry(env) {
   // Glass and tracery of one opening. F(s, y, off) is a point on the wall, `off` towards the outside.
   function opening(F, o, t, ph, extra) {
     // Every piece of the opening carries its number, and its glass or leaf says it is the pane (scripts/vision.test.mjs).
-    const own = {...extra, opening: env.k.nextOpening = (env.k.nextOpening ?? 0) + 1, role: o.door ? 'door' : o.louvres ? 'louvres' : o.kind === 'circle' ? 'rose' : 'window'}, pane = {...own, pane: true};
+    const own = {...extra, opening: env.k.nextOpening = (env.k.nextOpening ?? 0) + 1, opens: o.door ? 'door' : o.louvres ? 'louvres' : o.kind === 'circle' ? 'rose' : o.open ?? 'window'}, pane = {...own, pane: true};
     const circle = o.kind === 'circle', W = circle ? 2 * o.r : o.w, y0 = circle ? o.y - o.r : o.sill, y1 = env.top(o), face = t / 2;
     const lay = frameOf(F), [a, b] = [F(o.s - 1, 0, 0), F(o.s + 1, 0, 0)], dir = [(b[0] - a[0]) / 2, (b[2] - a[2]) / 2];
+    // An opening left open to the outside (`open`: what it is) has no pane: its outline stands at the back of its hole,
+    // on the wall's inner face (scripts/vision.test.mjs). A hole without `open` (an arcade inside the church) is not looked at.
+    if (o.open && o.glass === false && !o.door && !o.louvres) {
+      const p = F(o.s, 0, -t / 2), c = env.V(p[0], (y0 + y1) / 2, p[2]);
+      env.k.aperture([c.x, c.y, c.z], [W, y1 - y0], env.rot + Math.atan2(-dir[1], dir[0]), ph, {...own, reveal: t});
+    }
     const k = clamp(.75 + .12 * W, .85, 1.5), glassOff = o.photo ? -t * .2 : face - Math.min(.55, t * .32);
     const light = outline(o, {foot: y0, tol});
     // The glazing: one pane of leaded glass across the whole light, set back in the wall.
@@ -448,17 +455,17 @@ export function masonry(env) {
         const [a, b, c] = tri.map(at), back = v => ({...v, n: v.n.map(x => -x)});
         cells.get(key).tri(a, b, c); cells.get(key).tri(back(a), back(c), back(b));
       }
-      for (const layers of cells.values()) flush(layers, 'glass', tint(o.colors ? o.colors[Math.floor(rand() * o.colors.length)] : env.glass, .2), ph, pane);
+      for (const layers of cells.values()) flush(layers, 'glass', tint(o.colors ? o.colors[Math.floor(rand() * o.colors.length)] : env.glass, .2), ph, {...pane, reveal: face - off});
     };
     if (o.photo) { glaze(light, glassOff, o.panes ?? .4); return; }
     if (o.door) {
       // The leaf stands to the springing of the arch, or to `doorHeight` (the crown, to fill a round head).
       const p = F(o.s, 0, t / 2 - .4), dh = o.doorHeight ?? o.spring ?? 4;
-      env.box('wood', [p[0], p[2]], dh / 2, [W, dh, .25], dir, tint(o.door, .05), ph, pane);
+      env.box('wood', [p[0], p[2]], dh / 2, [W, dh, .25], dir, tint(o.door, .05), ph, {...pane, reveal: .4});
     } else if (o.louvres) {
       for (let y = y0 + .4; y < y1 - .3; y += .75) {
         const hw = Math.max(.2, env.span(o, y + .1)), p = F(o.s, 0, 0);
-        env.box('wood', [p[0], p[2]], y, [2 * hw, .12, t * .5], dir, tint(o.louvres, .06), ph, pane);
+        env.box('wood', [p[0], p[2]], y, [2 * hw, .12, t * .5], dir, tint(o.louvres, .06), ph, {...pane, reveal: face});
       }
     } else if (o.glass !== false) glaze(light, glassOff, o.panes ?? .46);
     // The orders round the light, running down its jambs to the sill, standing out of the face.

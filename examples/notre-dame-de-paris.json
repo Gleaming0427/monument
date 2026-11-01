@@ -245,7 +245,8 @@
    "The 2019 collapse of part of the vaults and their rebuilding are not shown.",
    "Seen from the north-east, the model and the photo still differ by about 5% of the photo's height after fitting the viewpoint; the cause (the photo's recorded position or the towers' plan) is not settled.",
    "Inside, only the great organ (on a tribune drawn plainly), the choir screens (their masonry, height above the floor and place along the choir read on photographs) and the high altar of 1182 (form and place not known) are shown; the choir stalls, Robert de Cotte's altar and the Vœu de Louis XIII are not.",
-   "The interior elevation is drawn from the published vault height and the tribunes' 8 m: the arcade's springing (7.2 m), the tribune openings and the aisle and chapel vaults (6.5–11 m) are read on photographs, not surveyed; the choir's vaults are drawn sexpartite like the nave's, and the crossing and transept as simple quadripartite bays."
+   "The interior elevation is drawn from the published vault height and the tribunes' 8 m: the arcade's springing (7.2 m), the tribune openings and the aisle and chapel vaults (6.5–11 m) are read on photographs, not surveyed; the choir's vaults are drawn sexpartite like the nave's, and the crossing and transept as simple quadripartite bays.",
+   "The four front buttresses rise through the high gallery in the model, 2.3 m wide, and seven of the gallery's 35 arches stand in them, in part or whole: the gallery's colonnettes run on inside them, and those arches are not openings. Whether the real gallery runs in front of the buttresses or between them was not checked on a photograph (Wikimedia Commons refused the requests when this was looked at)."
   ],
   "comparisons": [
    {
@@ -2323,15 +2324,15 @@
   {
    "type": "building",
    "provenance": "interpreted",
-   "note": "Viollet-le-Duc's sacristy on its OpenStreetMap footprint; drawn as plain blocks with an estimated height, as no photo used shows it.",
+   "note": "Viollet-le-Duc's sacristy on its OpenStreetMap footprint; drawn as plain blocks with an estimated height, as no photo used shows it. Its west end stops 1.2 m short of the mapped outline: at its full height there it would wall up a window of the choir chapels.",
    "phase": "restauration",
    "center": [
-    26.65,
+    27.25,
     20.25
    ],
    "size": [
     7.5,
-    15.7
+    14.5
    ],
    "height": 8,
    "rot": 1.5708,

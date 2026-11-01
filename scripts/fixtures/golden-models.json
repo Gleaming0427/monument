@@ -7,13 +7,13 @@
         "id": "parthenon",
         "phases": 15,
         "elements": 72,
-        "pieces": 37837,
+        "pieces": 37874,
         "reliefs": 31,
         "bounds": {
           "min": [
             -39.038,
             0,
-            -27.097
+            -26.497
           ],
           "max": [
             39.038,
@@ -24,18 +24,18 @@
         "shapes": {
           "ball": 3,
           "bell": 1,
-          "box": 20248,
+          "box": 20285,
           "cone": 1,
           "drum": 35,
           "flare": 5,
           "octagon": 2,
           "parthenonAnthemion": 186,
           "parthenonCoverTile": 11616,
-          "parthenonDoricDrum": 148,
+          "parthenonDoricDrum": 144,
           "parthenonDoricGutta": 4528,
           "parthenonDoricRing": 504,
           "parthenonEchinus": 168,
-          "parthenonFlutedDrum": 347,
+          "parthenonFlutedDrum": 351,
           "parthenonLionSpout": 4,
           "profiledShaft": 24,
           "shaft": 3,
@@ -214,7 +214,7 @@
           1.2,
           0.6
         ],
-        "digest": "0c32404f8928913350b0",
+        "digest": "66a3e2fa37dd4acb22e5",
         "unknownShapes": []
       }
     },
@@ -224,7 +224,7 @@
         "id": "cathedrale-de-coutances",
         "phases": 9,
         "elements": 59,
-        "pieces": 32171,
+        "pieces": 31690,
         "reliefs": 7,
         "bounds": {
           "min": [
@@ -244,10 +244,10 @@
           "drum": 402,
           "flare": 114,
           "octagon": 234,
-          "patch": 26190,
+          "patch": 25753,
           "profiledShaft": 612,
           "spike": 48,
-          "torus": 600
+          "torus": 556
         },
         "shapeGeometry": {
           "ball": {
@@ -331,7 +331,7 @@
           1.4,
           1.1
         ],
-        "digest": "18efd55a702e97018db7",
+        "digest": "c190e8b8695205d3dfe0",
         "unknownShapes": []
       }
     },

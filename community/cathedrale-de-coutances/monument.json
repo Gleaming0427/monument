@@ -506,7 +506,11 @@
       "The corner turrets of the transept fronts are read on one photograph only (the south transept, its camera fitted with rms 1.1): the depth of their axis is not known, and each half metre of depth moves their heights by about a metre. They stand with the top of their pier at 26.4 m, the cornice of their drum at 32 m and the tip of their cone at 37.6 m, to within about 1.5 m. In that fitted view the right-hand turret reads about 2 m lower than the left-hand one, which the model, symmetrical, does not reproduce. The colonnettes, the blind arches, the spouts and the courses of the cone are drawn from the photograph, not surveyed.",
       "The chapel of St John against the south transept is 3.9 m high, as read on the south-transept photograph (its camera 1.9 m above the ground, 4.6 m from the wall). Its windows are one great pointed arch per bay of 3 m (apex 3.3 m) over two lancets, where the photograph shows pairs of lancets under one great arch at a pitch of about 4 m, with cusps in their heads that are not drawn.",
       "Only the south transept has a photograph laid over its capture, from the copy kept in the evidence folder. The other four fitted photographs are on Wikimedia Commons and could not be loaded when the captures were taken, so their comparison is by capture and by the fitted points (rms) alone.",
-      "The buttresses of the nave chapels stand 4.8 m apart in the model. The north flank of the OpenStreetMap outline draws them at 4.4 to 4.9 m (stations within 0.2 m of the model's); a photograph of the south flank had been read as 3.1 to 3.9 m at the west end and 4.1 to 4.4 m at the east, and that reading is not confirmed by the outline. The two have not been settled on a fitted photograph."
+      "The buttresses of the nave chapels stand 4.8 m apart in the model. The north flank of the OpenStreetMap outline draws them at 4.4 to 4.9 m (stations within 0.2 m of the model's); a photograph of the south flank had been read as 3.1 to 3.9 m at the west end and 4.1 to 4.4 m at the east, and that reading is not confirmed by the outline. The two have not been settled on a fitted photograph.",
+      "The Romanesque walls and towers that the Gothic facing kept inside it are drawn standing while the facing rises around them, and taken down late in the nave's phase (from 45 to 95 % of it), once it is up: inside the new walls they would not be seen, and drawn there they stood in the Gothic windows (the Romanesque west wall 0.33 m in front of the glass of the great west window, the mouldings of the Romanesque aisle windows 0.08 m in front of the Gothic ones'). Before, they stood until the transept's phase.",
+      "Bays against which another part of the model stands keep no window: the last bay of each transept arm, on both sides, behind the transept front, which stands within 1 m of their wall; the first bay of the choir's outer aisle on both sides, behind the foot of the transept fronts; the first and last faces of the apse, behind the Norman turrets; the Romanesque bay between the west towers, whose side windows faced the towers 0.3 to 0.9 m away, and the face of those towers' first stage that faced it; the side arch of the north porch, against the first chapel of the nave, and the arch of the south porch nearest the south tower, against its buttress. They follow from the model's own masses and were not checked one by one on photographs.",
+      "The windows on the east side of the transept arms have their sills at 17 m, where those of the other side are at 14.5 m: the lean-to roof of the inner ambulatory meets that wall between 15.2 and 17.2 m and covered the foot of the lower sills. The 17 m clears the roof; it is not measured.",
+      "The lantern's four stair turrets stand 6.45 m from its axes, 1 m further out than before, where they stood 0.84 m into the octagon's diagonal faces: the photograph of the lantern shows them standing clear of it, but their place is not measured on it. On each west tower, the two fillettes on the side the belfry stands towards are moved out along their corner's diagonal, by about 0.8 m, until 10 cm of air part them from the belfry's octagon: one stood across the louvres of the north tower's belfry. That is a rule, not a measurement."
     ],
     "generated": {
       "query": "Cathédrale Notre-Dame de Coutances, Coutances, France",
@@ -515,169 +519,7 @@
       "heightSource": "family estimate",
       "levelsSource": "family estimate"
     },
-    "geometry": "Plan: the OpenStreetMap outline turned onto the nave's axis (104.5° from north) gives the bays (six of 4.8 m in the nave, three of 5.2 m in the choir), the towers, porches, transept annexes, the hemicycle and the Circata. Heights: spires (77, 75 m), lantern (57.45 m outside, 40.85 m inside) and nave vault (21.90 m) from the sources; the others read on four Commons photographs whose viewpoints were fitted to the model with calibrate.mjs (west front: galerie top 29.8 m, rose 18.8 m, belfries 30.8–47.5 m; chevet: outer ambulatory 7.2 m, inner 15.2 m, clerestory 25 m, apse roof 31.8 m, Circata 9 m; south side: chapels 9.7 m, nave eave 22.4 m). The spires stand about 1.4 m inward of the towers' outline, as both the west and the north-east photos show.",
-    "openings": [
-      {
-        "element": 14,
-        "role": "louvres",
-        "at": [
-          -40.4,
-          38.3,
-          -15.2
-        ],
-        "fault": "a stone member of the north tower stands across the middle of these louvres, 0.8 m in front of them"
-      },
-      {
-        "element": 19,
-        "role": "window",
-        "at": [
-          -2.7,
-          18.2,
-          -13.1
-        ],
-        "fault": "the transept front (element 20) stands in front of this window of the arm’s last bay, within 1 m of its wall"
-      },
-      {
-        "element": 19,
-        "role": "window",
-        "at": [
-          10.5,
-          18.2,
-          -9.7
-        ],
-        "fault": "the transept front (element 20) stands in front of this window of the arm’s last bay, within 1 m of its wall"
-      },
-      {
-        "element": 19,
-        "role": "window",
-        "at": [
-          9.5,
-          18.2,
-          -5.7
-        ],
-        "fault": "the lean-to roof of the inner ambulatory (element 26), 17.2 m high against this wall, covers the foot of this window, whose sill is at 14.5 m"
-      },
-      {
-        "element": 21,
-        "role": "window",
-        "at": [
-          -9.5,
-          18.2,
-          12.9
-        ],
-        "fault": "the transept front (element 22) stands in front of this window of the arm’s last bay, within 1 m of its wall"
-      },
-      {
-        "element": 21,
-        "role": "window",
-        "at": [
-          3.8,
-          18.2,
-          16.3
-        ],
-        "fault": "the transept front (element 22) stands in front of this window of the arm’s last bay, within 1 m of its wall"
-      },
-      {
-        "element": 21,
-        "role": "window",
-        "at": [
-          4.8,
-          18.2,
-          12.3
-        ],
-        "fault": "the lean-to roof of the inner ambulatory (element 26), 17.2 m high against this wall, covers the foot of this window, whose sill is at 14.5 m"
-      },
-      {
-        "element": 23,
-        "role": "louvres",
-        "at": [
-          3.7,
-          48.4,
-          7.1
-        ],
-        "fault": "a stair turret of the lantern (its axis 7.7 m from the centre, 1.55 m in radius) stands 0.84 m into this diagonal face of the octagon; the photograph of the lantern shows the turrets clear of it"
-      },
-      {
-        "element": 23,
-        "role": "louvres",
-        "at": [
-          -4.9,
-          48.4,
-          4.9
-        ],
-        "fault": "a stair turret of the lantern stands 0.84 m into this diagonal face of the octagon"
-      },
-      {
-        "element": 23,
-        "role": "louvres",
-        "at": [
-          -2.7,
-          48.4,
-          -3.8
-        ],
-        "fault": "a stair turret of the lantern stands 0.84 m into this diagonal face of the octagon"
-      },
-      {
-        "element": 23,
-        "role": "louvres",
-        "at": [
-          5.9,
-          48.4,
-          -1.5
-        ],
-        "fault": "a stair turret of the lantern stands 0.84 m into this diagonal face of the octagon"
-      },
-      {
-        "element": 23,
-        "role": "window",
-        "at": [
-          -2.8,
-          36.7,
-          -4.0
-        ],
-        "fault": "a stair turret of the lantern stands 0.84 m into this diagonal face of the octagon"
-      },
-      {
-        "element": 25,
-        "role": "window",
-        "at": [
-          24.2,
-          20.2,
-          2.9
-        ],
-        "fault": "the Norman turret (element 32) stands in front of this window of the first face of the apse"
-      },
-      {
-        "element": 25,
-        "role": "window",
-        "at": [
-          21.6,
-          20.2,
-          13.1
-        ],
-        "fault": "the Norman turret (element 33) stands in front of this window of the last face of the apse"
-      },
-      {
-        "element": 28,
-        "role": "window",
-        "at": [
-          13.0,
-          4.2,
-          -10.3
-        ],
-        "fault": "the foot of the north transept front (element 20) stands 0.6 m in front of this chapel window"
-      },
-      {
-        "element": 28,
-        "role": "window",
-        "at": [
-          5.4,
-          4.2,
-          19.2
-        ],
-        "fault": "the foot of the south transept front (element 22) stands in this chapel window, 0.1 m in front of its glass"
-      }
-    ]
+    "geometry": "Plan: the OpenStreetMap outline turned onto the nave's axis (104.5° from north) gives the bays (six of 4.8 m in the nave, three of 5.2 m in the choir), the towers, porches, transept annexes, the hemicycle and the Circata. Heights: spires (77, 75 m), lantern (57.45 m outside, 40.85 m inside) and nave vault (21.90 m) from the sources; the others read on four Commons photographs whose viewpoints were fitted to the model with calibrate.mjs (west front: galerie top 29.8 m, rose 18.8 m, belfries 30.8–47.5 m; chevet: outer ambulatory 7.2 m, inner 15.2 m, clerestory 25 m, apse roof 31.8 m, Circata 9 m; south side: chapels 9.7 m, nave eave 22.4 m). The spires stand about 1.4 m inward of the towers' outline, as both the west and the north-east photos show."
   },
   "phases": [
     {
@@ -1436,7 +1278,8 @@
         "until": "nef"
       },
       "lower": {
-        "until": "transept"
+        "until": "nef",
+        "late": true
       }
     },
     {
@@ -1480,9 +1323,20 @@
         "until": "nef"
       },
       "lower": {
-        "until": "transept"
+        "until": "nef",
+        "late": true
       },
-      "rail": false
+      "rail": false,
+      "blind": [
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          0
+        ]
+      ]
     },
     {
       "use": "chevetLevel#note",
@@ -1519,7 +1373,8 @@
         "until": "nef"
       },
       "lower": {
-        "until": "transept"
+        "until": "nef",
+        "late": true
       },
       "rail": false
     },
@@ -1536,7 +1391,17 @@
       "keepBelow": 27,
       "upper": {
         "until": "nef"
-      }
+      },
+      "lower": {
+        "until": "nef",
+        "late": true
+      },
+      "blind": [
+        [
+          0,
+          2
+        ]
+      ]
     },
     {
       "use": "romanesqueTower#note+stages",
@@ -1551,7 +1416,17 @@
       "keepBelow": 27,
       "upper": {
         "until": "nef"
-      }
+      },
+      "lower": {
+        "until": "nef",
+        "late": true
+      },
+      "blind": [
+        [
+          0,
+          0
+        ]
+      ]
     },
     {
       "use": "romanesqueTower",
@@ -1571,7 +1446,8 @@
             "count": 1,
             "width": 8,
             "sill": 0,
-            "spring": 12.5
+            "spring": 12.5,
+            "inside": true
           }
         },
         {
@@ -2312,7 +2188,28 @@
           0,
           1.8
         ]
-      }
+      },
+      "blind": [
+        [
+          0,
+          1
+        ],
+        [
+          1,
+          1
+        ]
+      ],
+      "lines": [
+        {},
+        {
+          "windows": {
+            "width": 3.2,
+            "sill": 17.0,
+            "spring": 19.6,
+            "twin": true
+          }
+        }
+      ]
     },
     {
       "use": "transeptFront",
@@ -2374,7 +2271,28 @@
           1.8,
           0
         ]
-      }
+      },
+      "blind": [
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          0
+        ]
+      ],
+      "lines": [
+        {},
+        {
+          "windows": {
+            "width": 3.2,
+            "sill": 17.0,
+            "spring": 19.6,
+            "twin": true
+          }
+        }
+      ]
     },
     {
       "use": "transeptFront",
@@ -2439,7 +2357,7 @@
       },
       "turrets": {
         "r": 1.55,
-        "at": 5.45,
+        "at": 6.45,
         "from": 22.6,
         "top": 51.3,
         "tip": 59
@@ -2523,7 +2441,17 @@
         "width": 1.4,
         "sill": 17.6,
         "spring": 22
-      }
+      },
+      "blind": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          6
+        ]
+      ]
     },
     {
       "use": "chevetLevel#color",
@@ -2638,7 +2566,17 @@
         "spring": 4.6,
         "crown": 7.9,
         "inner": 10.4
-      }
+      },
+      "blind": [
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          0
+        ]
+      ]
     },
     {
       "use": "chevetLevel#color",
@@ -2793,7 +2731,13 @@
         "spring": 4.6,
         "rise": 2.8
       },
-      "bays": 1
+      "bays": 1,
+      "blind": [
+        [
+          -1,
+          0
+        ]
+      ]
     },
     {
       "use": "porch",
@@ -2813,6 +2757,12 @@
         "rise": 3.4
       },
       "bays": 2,
+      "blind": [
+        [
+          1,
+          1
+        ]
+      ],
       "niches": true
     },
     {

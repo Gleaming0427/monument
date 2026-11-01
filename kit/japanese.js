@@ -129,9 +129,10 @@ export function japanese() {
       }
       const wn = g.windows ?? 4, wy = base + height * .27;
       for (let i = 0; i < wn; i++) {
-        const a = (i - (wn - 1) / 2) * 1.55;
-        put('wood', onFace(f, at0 + a, out + .06, wy), [1.0, 1.0, .12], r, tint(C.wood, .05));
-        for (let b = 0; b < 3; b++) put('plaster', onFace(f, at0 + a - .33 + b * .33, out + .1, wy), [.06, 1.0, .06], r, tint(C.trim));
+        // The window is a dark board behind its bars, laid on the face: the board is its pane (scripts/vision.test.mjs).
+        const a = (i - (wn - 1) / 2) * 1.55, own = {opening: k.nextOpening = (k.nextOpening ?? 0) + 1, opens: 'window'};
+        put('wood', onFace(f, at0 + a, out + .06, wy), [1.0, 1.0, .12], r, tint(C.wood, .05), {...own, pane: true, reveal: 0});
+        for (let b = 0; b < 3; b++) put('plaster', onFace(f, at0 + a - .33 + b * .33, out + .1, wy), [.06, 1.0, .06], r, tint(C.trim), own);
       }
       if (g.board !== false) {
         put('wood', onFace(f, at0, out + .12, base - .15), [width * 1.06, .6, .24], r, tint(C.lacquer, .03));
@@ -165,31 +166,45 @@ export function japanese() {
       ridge(front, onFace(f, g.at, out - depth, apex + .2));
       if (g.shachi !== false) shachi(front, vec(FACES[f][0], 0, FACES[f][1]), .8);
       host = null;
+      // Where it stands, for the tier above: its face, its axis, the half-width of its tiled edges, its foot and its apex.
+      return {face: f, at: g.at, half: half + .45, base, apex};
     }
 
-    // Windows with their lattice, in groups, and the row of small square openings along the foot of a wall.
-    function windows(f, half, out, from, to, tier, skip) {
+    // Is a stretch [c - w/2, c + w/2] of face f, from height y up, behind a gable of the roof below (`behind`)? The
+    // gable is a triangle, its tiled edges reaching `half` either side of its axis at its foot and nothing at its apex.
+    const behindGable = (behind, f, c, w, y) => behind.some(g => {
+      if (g.face !== f || y > g.apex + .2) return false;
+      const a = Math.min(1, (g.apex + .2 - y) / (g.apex - g.base + .4));
+      return Math.abs(c - g.at) < a * g.half + w / 2 + .1;
+    });
+
+    // Windows with their lattice, in groups, and the row of small square openings along the foot of a wall. A group
+    // that a gable of the roof below would stand in front of is left out, whole.
+    function windows(f, half, out, from, to, tier, skip, behind = []) {
       const W = tier.windows ?? {}, pitchW = W.pitch ?? 4.2, n = Math.max(1, Math.floor(2 * half / pitchW)), r = faceRot(f), count = W.group ?? 2, gap = W.gap ?? .28;
       const w = W.w ?? .84, h = W.h ?? 1.45, yc = from + (to - from) * (W.at ?? .5);
       if (W.none) return;
       for (let i = 0; i < n; i++) {
         const along = (i - (n - 1) / 2) * pitchW;
         if (skip.some(s => s.face === f && Math.abs(along - s.at) < s.width / 2 + w * count / 2 + .4)) continue;
+        if (behindGable(behind, f, along, count * w + (count - 1) * gap, yc - h / 2)) continue;
         for (let j = 0; j < count; j++) {
-          const dx = (j - (count - 1) / 2) * (w + gap);
-          put('wood', onFace(f, along + dx, out + .03, yc), [w, h, .08], r, tint(C.wood, .05));
-          for (let b = 0; b < 4; b++) put('plaster', onFace(f, along + dx - w / 2 + (b + .5) * w / 4, out + .08, yc), [.07, h, .06], r, tint(C.trim, .01));
-          put('plaster', onFace(f, along + dx, out + .05, yc - h / 2 - .06), [w + .14, .1, .12], r, tint(C.trim, .01));
+          // A dark board behind four bars, on a sill: the board is the window's pane (scripts/vision.test.mjs).
+          const dx = (j - (count - 1) / 2) * (w + gap), own = {opening: k.nextOpening = (k.nextOpening ?? 0) + 1, opens: 'window'};
+          put('wood', onFace(f, along + dx, out + .03, yc), [w, h, .08], r, tint(C.wood, .05), {...own, pane: true, reveal: 0});
+          for (let b = 0; b < 4; b++) put('plaster', onFace(f, along + dx - w / 2 + (b + .5) * w / 4, out + .08, yc), [.07, h, .06], r, tint(C.trim, .01), own);
+          put('plaster', onFace(f, along + dx, out + .05, yc - h / 2 - .06), [w + .14, .1, .12], r, tint(C.trim, .01), own);
         }
       }
     }
-    function ports(f, half, out, y, tier, skip) {
+    function ports(f, half, out, y, tier, skip, behind = []) {
       const p = tier.ports; if (!p) return;
       const n = Math.floor(2 * half / p.pitch);
       for (let i = 0; i < n; i++) {
         const along = (i - (n - 1) / 2) * p.pitch;
         if (skip.some(s => s.face === f && Math.abs(along - s.at) < s.width / 2 + .6)) continue;
-        put('wood', onFace(f, along, out + .03, y), [p.w ?? .36, p.w ?? .36, .08], faceRot(f), tint(C.wood, .05));
+        if (behindGable(behind, f, along, p.w ?? .36, y - (p.w ?? .36) / 2)) continue;
+        put('wood', onFace(f, along, out + .03, y), [p.w ?? .36, p.w ?? .36, .08], faceRot(f), tint(C.wood, .05), {opening: k.nextOpening = (k.nextOpening ?? 0) + 1, opens: 'loophole', pane: true, reveal: 0});
       }
     }
     // A bay projecting from a wall (a white box with its slats and a little roof).
@@ -212,7 +227,7 @@ export function japanese() {
     // ——— The tiers ———
     const E = [y0];
     tiers.forEach(t => E.push(E.at(-1) + t.height));
-    let shown = y0;
+    let shown = y0, behind = [];
     tiers.forEach((tier, i) => {
       const yb = E[i], Ey = E[i + 1], hw = tier.plan[0] / 2, hd = tier.plan[1] / 2, [ox, oz] = Array.isArray(tier.eave) ? tier.eave : [tier.eave ?? 2.2, tier.eave ?? 2.2];
       const gables = (tier.gables ?? []).map(g => ({...g}));
@@ -221,15 +236,15 @@ export function japanese() {
       for (const f of ALL) {
         const x = alongX(f), half = x ? hw : hd, out = x ? hd : hw, h = Ey - yb;
         put('plaster', onFace(f, 0, out - .25, yb + h / 2), [x ? 2 * half : 2 * half - 1, h, .5], faceRot(f), tint(C.wall, .012));
-        windows(f, half, out, shown, Ey - .6, tier, skip);
-        ports(f, half, out, yb + (tier.ports?.y ?? 1.0), tier, skip);
+        windows(f, half, out, shown, Ey - .6, tier, skip, behind);
+        ports(f, half, out, yb + (tier.ports?.y ?? 1.0), tier, skip, behind);
         for (const b of (tier.bays ?? []).filter(b => b.face === f)) bay(f, b, out, yb + (b.y ?? 2), b.height ?? 3);
       }
       host = null;
       const next = tiers[i + 1] ?? top;
       const ai = next.plan[0] / 2, bi = next.plan[1] / 2, rise = tier.rise ?? pitch * ((ox + hw - ai) + (oz + hd - bi)) / 2;
       const sk = skirt({ao: hw + ox, bo: hd + oz, ai, bi, base: Ey - .35, lift: t => rise * t ** 1.3, wall: [hw, hd]});
-      for (const g of gables) gable(sk, g, alongX(g.face) ? bi : ai);
+      behind = gables.map(g => gable(sk, g, alongX(g.face) ? bi : ai));
       shown = Ey - .35 + rise;
     });
 
@@ -269,11 +284,13 @@ export function japanese() {
         }
         for (let a = -half + .9; a < half - .6; a += 2.7) put('wood', onFace(f, a, out - .25, floorY - .45), [.3, .7, .6], faceRot(f), lacquer());
       }
-      // The glazed storey, between black posts, up to the eaves.
+      // The glazed storey, between black posts, up to the eaves: on each face one glazed opening, its posts as mullions
+      // (scripts/vision.test.mjs).
       for (const f of ALL) {
         const x = alongX(f), half = x ? hw : hd, out = (x ? hd : hw) - .05, n = Math.ceil(2 * half / 1.35), r = faceRot(f), h = eaveY - floorY - .5;
-        put('glass', onFace(f, 0, out, floorY + h / 2), [2 * half - .3, h, .05], r, tint(C.glass, .06));
-        for (let i = 0; i <= n; i++) put('wood', onFace(f, -half + i * 2 * half / n, out + .02, floorY + h / 2), [.1, h, .1], r, lacquer());
+        const own = {opening: k.nextOpening = (k.nextOpening ?? 0) + 1, opens: 'window'};
+        put('glass', onFace(f, 0, out, floorY + h / 2), [2 * half - .3, h, .05], r, tint(C.glass, .06), {...own, pane: true, reveal: 0});
+        for (let i = 0; i <= n; i++) put('wood', onFace(f, -half + i * 2 * half / n, out + .02, floorY + h / 2), [.1, h, .1], r, lacquer(), own);
       }
       // The roof: a hip below, a gable above; the ridge runs along `axis`.
       const A = (a, y, b) => axis === 'z' ? at(b, y, a) : at(a, y, b);

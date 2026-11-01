@@ -45,15 +45,20 @@ function paneOf(p) {
 
 // The panes and leaves the viewer lists, gathered into openings: each with its centre, its normal n (level for an
 // opening in a wall; its sign is not known, an opening shows from both sides of its wall), its width w along a (level)
-// and its height h along b (up), in metres.
+// and its height h along b (up), in metres. An opening left open (an arch, a doorway: `open`) is the outline the kit
+// sets at the back of its hole. `reveal`, where the kit gives it, is how far its glass (or the back of its hole) stands
+// behind the face of its wall.
 export function openingsOf(panes) {
   const groups = new Map();
   for (const p of panes) {
     const key = `${p.element}:${p.opening}`;
-    if (!groups.has(key)) groups.set(key, {key, element: p.element, opening: p.opening, role: p.role, parts: []});
-    groups.get(key).parts.push(paneOf(p));
+    if (!groups.has(key)) groups.set(key, {key, element: p.element, opening: p.opening, role: p.role, open: false, parts: []});
+    const g = groups.get(key);
+    g.parts.push(paneOf(p));
+    if (p.open) g.open = true;
+    if (p.reveal !== undefined && p.reveal !== null) g.reveal = Math.max(g.reveal ?? -Infinity, p.reveal);
   }
-  return [...groups.values()].map(({parts, ...g}) => {
+  const shape = ({parts, ...g}) => {
     const first = parts[0].n;
     let n = unit(parts.reduce((s, p) => add(s, mul(p.n, p.area * (dot(p.n, first) < 0 ? -1 : 1))), [0, 0, 0]));
     const level = Math.hypot(n[0], n[2]);
@@ -61,8 +66,19 @@ export function openingsOf(panes) {
     const a = level > .3 ? unit(cross([0, 1, 0], n)) : unit(cross(n, [1, 0, 0])), b = cross(n, a);
     const points = parts.flatMap(p => p.corners), [a0, a1] = spread(points, a), [b0, b1] = spread(points, b), [n0, n1] = spread(points, n);
     const centre = add(mul(a, (a0 + a1) / 2), add(mul(b, (b0 + b1) / 2), mul(n, (n0 + n1) / 2)));
-    return {...g, centre, n, a, b, w: a1 - a0, h: b1 - b0};
-  });
+    return {...g, parts, centre, n, a, b, w: a1 - a0, h: b1 - b0};
+  };
+  // One opening drawn in layers by several elements (a door's wooden core, and the gold leaf laid on it by a later
+  // element) is one opening: openings of one role, parallel, of one size and within 15 cm of each other are merged, and
+  // a ray that meets any of their layers meets the opening. Two doors 0.58 m apart are two doors.
+  const shaped = [...groups.values()].map(shape), merged = [];
+  for (const o of shaped) {
+    const same = merged.find(m => m.role === o.role && Math.abs(dot(m.n, o.n)) > .98 && len(sub(m.centre, o.centre)) < .15 && Math.abs(m.w - o.w) < .3 && Math.abs(m.h - o.h) < .3);
+    if (!same) { merged.push({...o, aliases: [o.key]}); continue; }
+    Object.assign(same, shape({...same, parts: [...same.parts, ...o.parts]}), {aliases: [...same.aliases, o.key], open: same.open || o.open, reveal: Math.max(same.reveal ?? -Infinity, o.reveal ?? -Infinity)});
+    if (same.reveal === -Infinity) delete same.reveal;
+  }
+  return merged.map(({parts, ...o}) => o);
 }
 
 const COMPASS = ['north', 'north-east', 'east', 'south-east', 'south', 'south-west', 'west', 'north-west'];
@@ -170,44 +186,51 @@ export function outlook(o, side, face, t) {
   return {view: {name: `outlook of the ${o.role} ${o.key}`, t, cam: [round(azimuthOf(mul(n, -1)), 1000), 0, far - face - .05, ...add(o.centre, mul(n, far))], fov: 30, shift: 0}, from};
 }
 
-// Where the rays go for an opening seen from `eye`: three through its pane (its middle, and a third of its height above
-// and below), two on the wall either side of it, at its middle's height, 80 cm clear of it; and the two ends of its
-// width, to measure it on the screen. Null when the opening is seen edge on.
+// Where the rays go for an opening seen from `eye`: three through its pane, a fifth of its width either side of its
+// axis (where two leaves meet, or a mullion stands, the axis shows neither glass nor a gap fairly): at its middle's
+// height on one side, and a third of its height above and below on the other; two on the wall either side of it, at its
+// middle's height, 80 cm clear of it; and the two ends of its width, to measure it on the screen. Null when the opening
+// is seen edge on.
 export function sampleRays(o, eye) {
   const v = sub(eye, o.centre);
   if (Math.abs(dot(v, o.n)) < GRAZING * len(v)) return null;
-  const up = mul(o.b, o.h / 3), side = mul(o.a, o.w / 2 + .8), half = mul(o.a, o.w / 2);
-  return {points: [o.centre, add(o.centre, up), sub(o.centre, up), add(o.centre, side), sub(o.centre, side)], pane: [0, 1, 2], wall: [3, 4], ends: [add(o.centre, half), sub(o.centre, half)]};
+  const up = mul(o.b, o.h / 3), off = mul(o.a, o.w / 5), side = mul(o.a, o.w / 2 + .8), half = mul(o.a, o.w / 2);
+  return {points: [sub(o.centre, off), add(add(o.centre, off), up), sub(add(o.centre, off), up), add(o.centre, side), sub(o.centre, side)], pane: [0, 1, 2], wall: [3, 4], ends: [add(o.centre, half), sub(o.centre, half)]};
 }
 
 const what = h => h.kind === 'relief' ? `a relief of element ${h.element}` : `${h.role ? `the ${h.role} ${h.element}:${h.opening}` : `a ${h.kind} piece`} of element ${h.element}`;
 
 // What the rays met, for one opening in one view (`hits` as monument.pick returns them, in the order of rays.points):
 //   seen     a ray through its pane meets the opening itself (its glass, leaf, bars or frame), a relief laid in it (the
-//            photograph of a portal or a rose), or passes between its boards (louvres), and none meets anything that
-//            should not be there;
+//            photograph of a portal or a rose), or passes between its boards (louvres) or through an open one (an arch,
+//            a doorway) past the back of its hole, and none meets anything that should not be there;
 //   hidden   the rays through its pane meet something standing in front of its wall's face (by more than FRONT);
-//   covered  a ray through its pane meets something else inside its opening, between the wall's face and the glass, or
-//            passes where its glass should be and meets what stands behind it;
+//   covered  a ray through its pane meets something else inside its opening, between the wall's face and the glass (or
+//            the back of an open one's hole: a wall built up in an arch), or passes where its glass should be and meets
+//            what stands behind it;
 //   unknown  the rays meet only the sides of its own hole: it is seen too obliquely to tell.
-// The wall's face is found by the rays beside the opening that meet bare wall within 3 m of the glass (1.5 m when none
-// does). Something met near the edges of the opening, rather than across its middle, is the side of its own hole.
+// The wall's face stands `reveal` in front of the glass, as the kit lays it; for an opening without it, the rays beside
+// the opening find it where they meet bare wall within 3 m of the glass (1.5 m when none does). Something met near the
+// edges of the opening, rather than across its middle, is the side of its own hole.
 export function verdict(o, rays, hits, eye) {
   const n = dot(sub(eye, o.centre), o.n) > 0 ? o.n : mul(o.n, -1), depth = h => dot(sub(h.point, o.centre), n);
-  const own = h => h.element === o.element && h.opening === o.opening;
+  // Its own pieces: those of its number (a number is the opening's, whichever element lays a layer of it: the gold leaf
+  // a later element lays on a door), or of an opening merged with it.
+  const own = h => h.opening !== undefined && (h.opening === o.opening || (o.aliases ?? [o.key]).includes(`${h.element}:${h.opening}`));
+  // The face of the wall: where the kit says (`reveal`); else from the rays beside the opening.
   const beside = rays.wall.map(i => hits[i]).filter(h => h && h.opening === undefined && h.kind !== 'relief').map(depth).filter(f => f > -.15 && f < 3);
-  const face = beside.length ? Math.max(.05, Math.min(...beside)) : 1.5;
+  const face = Math.max(.05, o.reveal ?? (beside.length ? Math.min(...beside) : 1.5));
   const looks = rays.pane.map(i => {
-    const h = hits[i], open = o.role === 'louvres';
-    // Louvres are boards with gaps between them: a ray that passes between them sees the opening open.
+    const h = hits[i], open = o.open || o.role === 'louvres';
+    // An opening left open is seen when a ray goes through its hole, past the back of it; louvres are boards with gaps
+    // between them: a ray that passes between them sees the opening open.
     if (!h) return open ? {kind: 'seen'} : {kind: 'covered', why: 'the ray through its glass meets nothing: the glass is missing'};
     if (own(h)) return {kind: 'seen'};
-    const off = depth(h);
+    const off = depth(h), q = sub(h.point, o.centre);
     if (off < -.08) return open ? {kind: 'seen'} : {kind: 'covered', why: `the ray through its glass meets ${what(h)} ${(-off).toFixed(2)} m behind it: the glass is missing there`};
     if (off > face + FRONT + (h.kind === 'relief' ? .5 : 0)) return {kind: 'hidden', by: h.element, gap: off - face, face, side: n === o.n ? 1 : -1};
     // A relief is a photograph of a carving or an opening, laid in place: one standing in the opening is its picture.
     if (h.kind === 'relief') return {kind: 'seen'};
-    const q = sub(h.point, o.centre);
     if (Math.abs(dot(q, o.a)) > .3 * o.w || Math.abs(dot(q, o.b)) > .35 * o.h) return {kind: 'unknown'};
     return {kind: 'covered', why: `${what(h)} stands in its opening, ${off.toFixed(2)} m in front of its glass (the wall's face is ${face.toFixed(2)} m in front)`};
   });

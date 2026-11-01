@@ -3,7 +3,7 @@
 // hold, so that nothing stands off the axis of the bays it belongs to. For the bricks that carry their openings as
 // numbers (`lodgingRange` and `drumTower`, and the doors of a `doricTemple`'s walls):
 //   - a wall's windows stand in regular bays, and their span is centred on the wall;
-//   - a window's glass ends under the string course or the cornice above it;
+//   - a window's glass ends under the string course or the cornice above it, on a range or a tower;
 //   - no window or dormer of a range stands where another building stands (its walls, its roof, a tower and its cone);
 //   - arches stand on window axes, one arch to a bay;
 //   - dormers stand over window axes;
@@ -115,6 +115,16 @@ for (const {id, elements} of monuments) {
           assert.ok(head <= stone + TOL, `element ${i}, side ${side}, storey ${level}: its windows' glass rises to ${head.toFixed(2)} m, into the ${last ? 'cornice' : 'string course'} from ${stone.toFixed(2)} m`);
         });
       }
+    }
+  });
+
+  // A tower's windows end under its cornice, and no string course runs across them (renaissance.js turns a course from
+  // 0.12 m under its height to 0.16 m above it, and the cornice from `cornice.height` under the head of the drum).
+  test(`${id}: a tower's window glass ends under its cornice, and no string course crosses it`, () => {
+    for (const [e, i] of towers) for (const level of e.windows ?? []) {
+      const top = (e.y0 ?? 0) + (e.height ?? 0), cornice = e.cornice ? top - (e.cornice.height ?? 1.6) : top;
+      assert.ok(level.head <= cornice + TOL, `element ${i}: its windows' glass rises to ${level.head} m, into the cornice from ${cornice.toFixed(2)} m`);
+      for (const c of e.courses ?? []) assert.ok(level.head <= c - .12 + TOL || level.sill >= c + .16 - TOL, `element ${i}: the string course at ${c} m runs across its windows (${level.sill} to ${level.head} m)`);
     }
   });
 

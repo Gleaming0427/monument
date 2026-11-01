@@ -116,7 +116,7 @@ export function renaissance(gothic) {
   // The stone dressing of a window on a wall whose face at the window faces `out` ([du, dv] of the frame): jambs, a lintel
   // with its small cornice, a sill, and the cross of a mullion and a transom with the glass behind it.
   function dressWindow(S, {at, out, w, sill, head, wall = 1, stone, glass = '#3a4655', mullion = true, transom = true, lights = 0, phase, extra = {}, proud = .1}) {
-    const own = {...extra, opening: S.k.nextOpening = (S.k.nextOpening ?? 0) + 1, role: 'window'}, pane = {...own, pane: true};
+    const own = {...extra, opening: S.k.nextOpening = (S.k.nextOpening ?? 0) + 1, opens: 'window'}, pane = {...own, pane: true, reveal: wall * .42};
     const {G} = S, dir = [-out[1], out[0]], h = head - sill, off = d => [at[0] + out[0] * d, at[1] + out[1] * d];
     const jamb = .26 + .02 * w, tint = c => G.tint(c, .04);
     for (const side of [-1, 1]) G.box('stone', off(proud * .6).map((x, i) => x + dir[i] * side * (w / 2 + jamb / 2 - .04)), sill + h / 2 + .06, [jamb, h + .3, .34], dir, tint(stone), phase, own);
@@ -373,7 +373,7 @@ export function renaissance(gothic) {
   // `at` is the middle of its foot on the wall's face, `out` the wall's outward normal, `slope` the roof's rise for a metre
   // of run, so that its cheeks run back to meet the roof.
   function dormer(S, {at, out, y, w = 2.4, h = 3.2, pediment = 'triangle', slope = 1.6, stone, slate = '#4b525c', phase, extra = {}, window = {}}) {
-    const own = {...extra, opening: S.k.nextOpening = (S.k.nextOpening ?? 0) + 1, role: 'dormer'}, pane = {...own, pane: true};
+    const own = {...extra, opening: S.k.nextOpening = (S.k.nextOpening ?? 0) + 1, opens: 'dormer'}, pane = {...own, pane: true, reveal: .05};
     const {G, k} = S, dir = [-out[1], out[0]], tint = c => G.tint(c, .04), off = d => [at[0] + out[0] * d, at[1] + out[1] * d];
     const cheek = Math.max(.5, w * .24), depth = Math.max(1.4, h / slope + .6), top = y + h;
     for (const side of [-1, 1]) {
@@ -598,8 +598,8 @@ export function renaissance(gothic) {
       // Round-headed bays in the middle of the four faces on the axes, dark behind a stone surround.
       for (let i = 0; i < 4; i++) {
         const a = i * Math.PI / 2, d = rA * Math.cos(Math.PI / sides) + .08, p = [Math.cos(a) * d, Math.sin(a) * d], dir = [-Math.sin(a), Math.cos(a)];
-        const own = {...extra, opening: S.k.nextOpening = (S.k.nextOpening ?? 0) + 1, role: 'window'};
-        G.box('glass', p, y0 + hA * .55, [1.5, 3.4, .1], dir, tint('#2f3a47'), ph, {...own, pane: true});
+        const own = {...extra, opening: S.k.nextOpening = (S.k.nextOpening ?? 0) + 1, opens: 'window'};
+        G.box('glass', p, y0 + hA * .55, [1.5, 3.4, .1], dir, tint('#2f3a47'), ph, {...own, pane: true, reveal: 0});
         G.box('stone', p.map((x, j) => x + (j ? Math.sin(a) : Math.cos(a)) * .08), y0 + hA * .55 + 1.95, [2.1, .35, .3], dir, tint(stone), ph, own);
         for (const sgn of [-1, 1]) G.box('stone', p.map((x, j) => x + dir[j] * sgn * .95 + (j ? Math.sin(a) : Math.cos(a)) * .06), y0 + hA * .55, [.28, 3.7, .3], dir, tint(stone), ph, own);
       }

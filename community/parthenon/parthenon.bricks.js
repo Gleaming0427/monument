@@ -373,9 +373,15 @@ function doricTemple(k, e, P) {
       y += h;
     }
     if (door) {
-      // The door's frame: jambs and lintel standing proud of the wall face on both sides.
-      for (const s of [door.at - door.width / 2 - .25, door.at + door.width / 2 + .25]) box('stone', a[0] + dir[0] * s, y0 + door.height / 2, a[1] + dir[1] * s, [.5, door.height, t + .12], tint(), yaw);
-      box('stone', a[0] + dir[0] * door.at, y0 + door.height + .4, a[1] + dir[1] * door.at, [door.width + 1, .8, t + .14], tint(), yaw);
+      // The door's frame: jambs and lintel standing proud of the wall face on both sides. The doorway is left open: the
+      // number of its opening is on its frame, and its outline stands at the back of its hole, on the side of the
+      // temple's middle (scripts/vision.test.mjs).
+      const own = {opening: k.nextOpening = (k.nextOpening ?? 0) + 1, opens: 'door'}, mid = [a[0] + dir[0] * door.at, a[1] + dir[1] * door.at], across = [-dir[1], dir[0]];
+      const inward = mid[0] * across[0] + mid[1] * across[1] > 0 ? -1 : 1, back = [mid[0] + across[0] * inward * t / 2, mid[1] + across[1] * inward * t / 2];
+      const bp = W(back[0], y0 + door.height / 2 + lift(back[0], back[1]), back[1]);
+      k.aperture([bp.x, bp.y, bp.z], [door.width, door.height], rot + yaw, ph, {...extra, ...own, reveal: t});
+      for (const s of [door.at - door.width / 2 - .25, door.at + door.width / 2 + .25]) box('stone', a[0] + dir[0] * s, y0 + door.height / 2, a[1] + dir[1] * s, [.5, door.height, t + .12], tint(), yaw, undefined, own);
+      box('stone', a[0] + dir[0] * door.at, y0 + door.height + .4, a[1] + dir[1] * door.at, [door.width + 1, .8, t + .14], tint(), yaw, undefined, own);
     }
     if (full) {
       // Band of regulae under the frieze is on the porches only; the walls carry the frieze and its crown.
@@ -573,6 +579,12 @@ function apse(k, e, P) {
     }
     y += hh;
   }
+  // The windows are gaps left in the courses: each one's outline stands at the back of its hole, on the inner face
+  // (scripts/vision.test.mjs).
+  for (let wi = 1; wi <= win; wi++) {
+    const wa = -Math.PI / 2 + wi * Math.PI / (win + 1), rr = r - t / 2;
+    k.aperture(W(Math.cos(wa) * rr, y0 + h * .65, Math.sin(wa) * rr), [1.8, h * .4], rot - wa - Math.PI / 2, ph, {...e.extra, opening: k.nextOpening = (k.nextOpening ?? 0) + 1, opens: 'window', reveal: t});
+  }
   // The half dome: rings of stones closing towards the crown.
   for (let j = 0; j < 7; j++) {
     const b0 = j / 7 * Math.PI / 2, b1 = (j + 1) / 7 * Math.PI / 2, rr = r * Math.cos((b0 + b1) / 2), yy = y0 + h + r * Math.sin((b0 + b1) / 2), m = Math.max(3, Math.round(Math.PI * rr / .8));
@@ -626,16 +638,32 @@ function domedHall(k, e, P) {
     const hh = Math.min(.45, y0 + h - y);
     for (const [side, du, dv] of [[0, -1, 0], [1, 1, 0], [2, 0, -1], [3, 0, 1]]) {
       const len = side < 2 ? s : s - 2 * t;
+      // The door and the windows cut the course: a block stops at their jambs, whatever its length (a block that
+      // only had its middle outside a window used to run across it).
+      const holes = [];
+      if (side === 0 && e.door && y < y0 + e.door.height) holes.push([-e.door.width / 2, e.door.width / 2]);
+      if (e.windows && y > y0 + h * .45 && y < y0 + h * .8) for (const w of [-1, 0, 1].slice(0, e.windows)) holes.push([w * s / 3.2 - .45, w * s / 3.2 + .45]);
       for (let q = -len / 2 + (row % 2) * .5; q < len / 2 - .05;) {
-        const l = .9 + k.rand() * .5, a = Math.max(-len / 2, q), b = Math.min(len / 2, q + l), m = (a + b) / 2;
-        const door = side === 0 && e.door && Math.abs(m) < e.door.width / 2 && y < y0 + e.door.height;
-        const win = e.windows && y > y0 + h * .45 && y < y0 + h * .8 && [-1, 0, 1].slice(0, e.windows).some(w => Math.abs(m - w * s / 3.2) < .45);
-        if (b - a > .08 && !door && !win) k.box('stone', W(du ? du * (s / 2 - t / 2) : m, y + hh / 2, dv ? dv * (s / 2 - t / 2) : m), du ? [t, hh * .96, b - a - .02] : [b - a - .02, hh * .96, t], rot, k.tint(c, .07), ph, y, e.extra);
+        const l = .9 + k.rand() * .5;
+        let parts = [[Math.max(-len / 2, q), Math.min(len / 2, q + l)]];
+        for (const [h0, h1] of holes) parts = parts.flatMap(([a, b]) => b <= h0 || a >= h1 ? [[a, b]] : [[a, Math.min(b, h0)], [Math.max(a, h1), b]]);
+        for (const [a, b] of parts) {
+          const m = (a + b) / 2;
+          if (b - a > .08) k.box('stone', W(du ? du * (s / 2 - t / 2) : m, y + hh / 2, dv ? dv * (s / 2 - t / 2) : m), du ? [t, hh * .96, b - a - .02] : [b - a - .02, hh * .96, t], rot, k.tint(c, .07), ph, y, e.extra);
+        }
         q += l;
       }
     }
     y += hh;
   }
+  // The door and the windows are gaps left in the courses: each one's outline stands at the back of its hole, on the
+  // inner face of its wall (scripts/vision.test.mjs).
+  const gap = (side, m, y, w, hh, opens) => {
+    const [du, dv] = [[-1, 0], [1, 0], [0, -1], [0, 1]][side], back = s / 2 - t;
+    k.aperture(W(du ? du * back : m, y, dv ? dv * back : m), [w, hh], rot + (du ? Math.PI / 2 : 0), ph, {...e.extra, opening: k.nextOpening = (k.nextOpening ?? 0) + 1, opens, reveal: t});
+  };
+  if (e.door) gap(0, 0, y0 + e.door.height / 2, e.door.width, e.door.height, 'door');
+  if (e.windows) for (let side = 0; side < 4; side++) for (const w of [-1, 0, 1].slice(0, e.windows)) gap(side, w * s / 3.2, y0 + h * .65, .9, h * .35, 'window');
   const R = s / 2 - t / 2, rise = e.dome ?? 1, yd = y0 + h + .6;
   k.turned('octagon', 'stone', W(0, y0 + h + .3, 0), [s * 1.06, .6, s * 1.06], rot, k.tint(c, .05), ph, y0 + h, e.extra);
   for (let j = 0; j < 9; j++) {

@@ -1,5 +1,5 @@
 import * as T from 'three';
-import {generators, gothic} from '../kit/builder.js';
+import {generators, gothic, DEATH} from '../kit/builder.js';
 
 // ——— Norman Gothic (Normandy, 11th–14th centuries) ———
 // Bricks for the Norman Gothic cathedral and abbey church: a harmonic west front whose square towers turn
@@ -143,6 +143,12 @@ function normanTurret(G, k, c, tw, ph) {
   }
 }
 
+// The phase a part is taken down in, as `until` takes it: {until: phase}, or with `late: true` for a part that new walls
+// keep inside them (the Romanesque walls and towers of Coutances, kept under the Gothic facing): it goes late in that
+// phase, from 45 to 95 % of it, once the walls that encase it are up, and not from 10 % as what a phase pulls down. Out of
+// sight inside them, it would only stand in their windows.
+const takenDown = (P, spec) => P(spec.until) + (spec.late ? 1 - DEATH.from - DEATH.span - .05 : 0);
+
 export default {
   // A Gothic church body (the kit's `basilica`) under slate roofs, as in Normandy and Brittany: the same
   // parameters, every roof covering laid in slate instead of lead.
@@ -168,18 +174,24 @@ export default {
   //             false` leaves out the arches at the two ends of a run that another wall closes, and `trim` [first, last]
   //             draws the vault back from those ends by that many metres (the thickness of the wall that closes them)
   //   skip      bays (indices) with no wall (where a chapel or a crossing opens); `rail: false` drops the balustrade
+  //   blind     [line, bay] pairs whose wall keeps no window (another building stands in front of it); an apse is line 0
+  //   lines     per line (0 and 1, the two sides of a straight run), `windows` that differ from the run's own (a sill
+  //             raised over a roof that leans against that side)
   //   keepBelow, upper {until}, lower {until}: the wall above that height is taken down at `upper.until` (a
-  //             Romanesque clerestory replaced when the building is recast), the rest at `lower.until`
+  //             Romanesque clerestory replaced when the building is recast), the rest at `lower.until`; with `late`, late
+  //             in that phase (the walls a new facing keeps inside it: see takenDown)
   //   ends      ['from', 'to']: the run closed there by a wall and a gable (a half gable under a lean-to);
   //             `door` {at, w, spring} a doorway in that wall
   chevetLevel(k, e, P) {
     const G = gothicKit(k, e, P), X = vaultKit(G), roof = e.roof ?? {}, t = e.thick ?? 1.1, color = roof.color ?? SLATE, base = e.base, kind = e.arch ?? 'pointed';
-    const all = runLines(e), windows = [e.windows ?? []].flat(), upper = e.upper ? {until: P(e.upper.until)} : null, lower = e.lower ? {until: P(e.lower.until)} : {}, keep = e.keepBelow ?? Infinity;
-    for (const line of all) {
+    const all = runLines(e), windows = [e.windows ?? []].flat(), upper = e.upper ? {until: takenDown(P, e.upper)} : null, lower = e.lower ? {until: takenDown(P, e.lower)} : {}, keep = e.keepBelow ?? Infinity;
+    for (const [li, line] of all.entries()) {
+      const lineWindows = e.lines?.[li]?.windows ? [e.lines[li].windows].flat() : windows;
       for (let i = 0; i < line.length - 1; i++) {
         const s0 = line[i], s1 = line[i + 1], out = mid(s0, s1), a = at(s0, e.half), b = at(s1, e.half), len = Math.hypot(b[0] - a[0], b[1] - a[1]);
         if (!(e.skip ?? []).includes(i)) {
-          const openings = windows.map(w => ({kind, ...w, w: Math.min(w.width ?? 2, len - 1.2)}));
+          const blind = (e.blind ?? []).some(([l, bay]) => l === li && bay === i);
+          const openings = blind ? [] : lineWindows.map(w => ({kind, ...w, w: Math.min(w.width ?? 2, len - 1.2)}));
           if (base) openings.push({kind, w: len - (base.columns ?? 1) * (base.twin ? .6 : .8), sill: 0, spring: base.spring, rise: base.rise, glass: false, margin: 0});
           if (upper && keep < e.wall) { G.wall(a, b, 0, keep, t, out, openings, G.phase, lower, e.course ?? .8); G.wall(a, b, keep, e.wall, t, out, openings, G.phase, upper, e.course ?? .8); }
           else G.wall(a, b, 0, e.wall, t, out, openings, G.phase, lower, e.course ?? .8);
@@ -204,7 +216,7 @@ export default {
       // `ends` ['from', 'to']: the run closed at that end, by a wall and a gable (a half gable under a lean-to).
       if (!e.apse) for (const which of e.ends ?? []) {
         const s = line[which === 'from' ? 0 : line.length - 1], o = [which === 'from' ? -1 : 1, 0], u = s.A[0];
-        if (roof.ridge) { if (line === all[0]) { G.wall([u, -e.half - t / 2], [u, e.half + t / 2], 0, e.wall, t, o, e.door && which === e.door.at ? [{kind, w: e.door.w, sill: 0, spring: e.door.spring, glass: false, margin: 0}] : [], G.phase, lower); G.gable([u, -e.half - t / 2], [u, e.half + t / 2], e.wall, roof.ridge, t, o, G.phase, lower); } }
+        if (roof.ridge) { if (line === all[0]) { G.wall([u, -e.half - t / 2], [u, e.half + t / 2], 0, e.wall, t, o, e.door && which === e.door.at ? [{kind, w: e.door.w, sill: 0, spring: e.door.spring, glass: false, open: 'door', margin: 0}] : [], G.phase, lower); G.gable([u, -e.half - t / 2], [u, e.half + t / 2], e.wall, roof.ridge, t, o, G.phase, lower); } }
         else if (roof.top) {
           const side = s.n[1], d0 = roof.inner, d1 = e.half + t / 2;
           G.wall([u, side * d0], [u, side * d1], 0, e.wall, t, o, [], G.phase, lower);
@@ -333,10 +345,17 @@ export default {
       const q = [ax[0] + (b[0] - ax[0]) * 1.02, ax[1] + (b[1] - ax[1]) * 1.02];
       G.beam('stone', [q[0], S.top, q[1]], [q[0], B.top, q[1]], .4, G.tint(G.stone), ph(S.top));
     }
-    // Fillettes on three corners; the stair turret with its three small fillettes on the fourth.
-    const st = e.stair, f = e.fillettes, ins = f.inset ?? 1.1;
+    // Fillettes on three corners; the stair turret with its three small fillettes on the fourth. A fillette stands clear of
+    // the belfry: where its corner is too near the octagon (the belfry stands off the tower's middle), it is moved out
+    // along the corner's diagonal until 10 cm of air part them, so that no turret stands in a face of the octagon.
+    const st = e.stair, f = e.fillettes, ins = f.inset ?? 1.1, outer = polygon(8, B.r + .65, ax);
+    const toOctagon = c => Math.min(...outer.map((a, j) => {
+      const b = outer[(j + 1) % 8], dx = b[0] - a[0], dz = b[1] - a[1], q = Math.max(0, Math.min(1, ((c[0] - a[0]) * dx + (c[1] - a[1]) * dz) / (dx * dx + dz * dz)));
+      return Math.hypot(c[0] - a[0] - q * dx, c[1] - a[1] - q * dz);
+    }));
     for (const [su, sv] of [[-1, -1], [-1, 1], [1, -1], [1, 1]]) {
       const c = [su * (hu - ins), sv * (hv - ins)];
+      for (let n = 0; n < 40 && toOctagon(c) < f.r + .1; n++) { c[0] += su * .05 / Math.SQRT2; c[1] += sv * .05 / Math.SQRT2; }
       if (st && st.corner[0] === su && st.corner[1] === sv) {
         const sc = [su * (hu - st.r * .6), sv * (hv - st.r * .6)];
         shaft(G, k, sc, st.from ?? S.top, st.top, 2 * st.r, ph(st.from ?? S.top));
@@ -612,12 +631,14 @@ export default {
   // pointed doorway, side walls opening in `bays` arches, a gallery (balustrade) over the doorway, niches either
   // side, and a slate roof along its depth (or a flat terrace, `roof: false`).
   //   width, depth, eave, apex, opening {w, spring, rise}, bays, niches
+  //   blind     [side, bay] pairs whose side wall keeps no arch, another building standing against it (side -1 or 1, across
+  //             the porch; bay 0 at the front)
   porch(k, e, P) {
     const G = gothicKit(k, e, P), hw = e.width / 2, d = e.depth, o = e.opening, t = e.thick ?? 1, out = [-1, 0];
-    G.wall([t / 2, -hw], [t / 2, hw], 0, e.eave, t, out, [{kind: 'pointed', w: o.w, sill: 0, spring: o.spring, rise: o.rise, glass: false, margin: 0}], G.phase);
+    G.wall([t / 2, -hw], [t / 2, hw], 0, e.eave, t, out, [{kind: 'pointed', w: o.w, sill: 0, spring: o.spring, rise: o.rise, glass: false, open: 'arch', margin: 0}], G.phase);
     for (let i = 1; i < 4; i++) G.arch((s, y, off) => [i * .18 - .25 - off, y, s], 0, o.w + i * .5, o.spring, 0, .36, G.phase, {}, 'pointed', 5, o.rise ? o.rise + i * .25 : undefined);
     for (const side of [-1, 1]) {
-      G.wall([0, side * hw], [d, side * hw], 0, e.eave, t, [0, side], Array.from({length: e.bays ?? 1}, (_, i) => ({kind: 'pointed', s: d / (e.bays ?? 1) * (i + .5), w: d / (e.bays ?? 1) - 1.4, sill: 1, spring: o.spring * .75, glass: false, margin: 0})), G.phase);
+      G.wall([0, side * hw], [d, side * hw], 0, e.eave, t, [0, side], Array.from({length: e.bays ?? 1}, (_, i) => (e.blind ?? []).some(([s, b]) => s === side && b === i) ? null : ({kind: 'pointed', s: d / (e.bays ?? 1) * (i + .5), w: d / (e.bays ?? 1) - 1.4, sill: 1, spring: o.spring * .75, glass: false, open: 'arch', margin: 0})), G.phase);
       if (e.niches) { const v = side * (o.w / 2 + (hw - o.w / 2) / 2); G.arch((s, y, off) => [-.1 - off, y, s], v, Math.min(1.2, hw - o.w / 2 - .4), o.spring * .8, 0, .2, G.phase, {}, 'pointed', 3); }
     }
     if (e.gallery !== false) G.rail([-.4, -hw], [-.4, hw], o.spring + (o.rise ?? o.w * .87) + .4, G.phase);
@@ -650,16 +671,19 @@ export default {
 
   // A Romanesque tower in stages, square then octagonal, each stage lit by round-headed openings, under a low
   // pyramid roof: `stages` [{shape: "square" | "octagon", half (half side or apothem), top, openings {count,
-  // width, sill, spring}}], roof {top, color}; `keepBelow`, `upper` {until} and `lower` {until}: what is taken down, and when.
+  // width, sill, spring, louvres, inside}}], roof {top, color}; `keepBelow`, `upper` {until} and `lower` {until}: what is
+  // taken down, and when (`late`: see takenDown). Openings without louvres are open to the outside; `inside` says they open
+  // into the church instead (the arches of a crossing tower's foot). `blind`: [stage, side] pairs whose side keeps no
+  // opening, another building standing against it (sides in the order they are laid, the first along +u on the -v side).
   romanesqueTower(k, e, P) {
     const G = gothicKit(k, e, P);
     let y = e.y0 ?? 0;
-    const lifeOf = yy => e.upper && yy >= (e.keepBelow ?? 0) ? {until: P(e.upper.until)} : e.lower ? {until: P(e.lower.until)} : {};
-    for (const st of e.stages) {
+    const lifeOf = yy => e.upper && yy >= (e.keepBelow ?? 0) ? {until: takenDown(P, e.upper)} : e.lower ? {until: takenDown(P, e.lower)} : {};
+    for (const [si, st] of e.stages.entries()) {
       const pts = st.shape === 'octagon' ? polygon(8, st.half) : [[-st.half, -st.half], [st.half, -st.half], [st.half, st.half], [-st.half, st.half]];
       for (let i = 0; i < pts.length; i++) {
         const a = pts[i], b = pts[(i + 1) % pts.length], m = [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2], l = Math.hypot(...m), o = [m[0] / l, m[1] / l], len = Math.hypot(b[0] - a[0], b[1] - a[1]);
-        const op = st.openings, holes = op ? Array.from({length: op.count ?? 1}, (_, j) => ({kind: 'round', s: len / (op.count ?? 1) * (j + .5), w: op.width, sill: op.sill, spring: op.spring, louvres: op.louvres, glass: op.louvres ? undefined : false, margin: 0})) : [];
+        const op = (e.blind ?? []).some(([stage, side]) => stage === si && side === i) ? null : st.openings, holes = op ? Array.from({length: op.count ?? 1}, (_, j) => ({kind: 'round', s: len / (op.count ?? 1) * (j + .5), w: op.width, sill: op.sill, spring: op.spring, louvres: op.louvres, glass: op.louvres ? undefined : false, open: op.louvres || op.inside ? undefined : 'window', margin: 0})) : [];
         G.wall(a, b, y, st.top, st.thick ?? 1.4, o, holes, G.phase, lifeOf(y));
       }
       y = st.top;

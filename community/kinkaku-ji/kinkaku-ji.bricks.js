@@ -40,12 +40,13 @@ function storeyedPavilion(k, e, P) {
   // from the roof, and held to it (scripts/roof.test.mjs).
   const extra = {structural: true}, tagged = {}, ex = role => tagged[role] ??= {...extra, role};
   // An axis-aligned box: centre [u, y, v], size [along u, height, along v].
+  // `tags` (the number of an opening, what it opens, `pane`) are added to the piece's own, for the vision test.
   const put = (role, [u, y, v], [a, h, b], o = {}) => {
     if (!on(role, o.tag) || a <= 0 || h <= 0 || b <= 0) return;
     const p = V(u, y, v), c = k.tint(o.color ?? F[o.paint ?? role], o.jitter ?? .05);
-    const kind = o.kind ?? kindOf(role);
-    if (o.shape) k.turned(o.shape, kind, [p.x, p.y, p.z], [a, h, b], rot + (o.yaw ?? 0), c, ph, o.order ?? y - h / 2, ex(o.as ?? role));
-    else k.box(kind, [p.x, p.y, p.z], [a, h, b], rot + (o.yaw ?? 0), c, ph, o.order ?? y - h / 2, ex(o.as ?? role));
+    const kind = o.kind ?? kindOf(role), x = o.tags ? {...ex(o.as ?? role), ...o.tags} : ex(o.as ?? role);
+    if (o.shape) k.turned(o.shape, kind, [p.x, p.y, p.z], [a, h, b], rot + (o.yaw ?? 0), c, ph, o.order ?? y - h / 2, x);
+    else k.box(kind, [p.x, p.y, p.z], [a, h, b], rot + (o.yaw ?? 0), c, ph, o.order ?? y - h / 2, x);
   };
   const beam = (role, a, b, t, o = {}) => { if (on(role, o.tag)) k.beam(kindOf(role), V(...a), V(...b), t, k.tint(o.color ?? F[o.paint ?? role], .05), ph, o.order === undefined ? ex(o.as ?? role) : {...ex(o.as ?? role), order: o.order}); };
   const rod = (role, a, b, d, o = {}) => {
@@ -148,14 +149,21 @@ function storeyedPavilion(k, e, P) {
     // Heights of the fittings, from the storey's description: the lintel (nageshi) below the head, the waist
     // wall under the lattice windows, the shutters' lower panel, the head of panelled doors, the window.
     const S = [e.storey1, e.storey2, e.storey3][storey - 1] ?? {}, lint = S.lintel ?? .72, waist = S.waist ?? .9;
+    // A window or a door carries the number of its opening on its fittings, and `pane` on what fills it: the paper or
+    // the dark behind a lattice, a door's leaves (scripts/vision.test.mjs). A wall, plain planks or an open bay carry none.
+    const opens = ['door', 'door2', 'maira', 'sankarado'].includes(kind) ? 'door' : ['katomado', 'renji', 'lattice', 'shitomi'].includes(kind) ? 'window' : null;
+    // Its number is its place (storey, face, wall line, first post), so that the layers other elements lay on the same
+    // bay (the gold leaf of 1955, of 1987) are the same opening.
+    const place = `${storey}:${f.n.join(',')}:${line.toFixed(3)}:${s0.toFixed(3)}`;
+    const own = opens ? {tags: {opening: place, opens}} : {}, pane = opens ? {tags: {...own.tags, pane: true, reveal: .15}} : {};
     const wood = (s, y, off, size, o = {}) => g ? giltSlab(f, line, s, y, off, size, {...o, wrap: storey === 3 || o.wrap}) : slab(o.role ?? 'timber', f, line, s, y, off, size, o);
-    const bar = (s, y, off, size) => g ? giltSlab(f, line, s, y, off, size, {wrap: true}) : slab('timber', f, line, s, y, off, size, {color: '#2d261f'});
+    const bar = (s, y, off, size) => g ? giltSlab(f, line, s, y, off, size, {...own, wrap: true}) : slab('timber', f, line, s, y, off, size, {...own, color: '#2d261f'});
     const lattice = (sA, sB, yA, yB, off, step = .16, o = {}) => {
       bar((sA + sB) / 2, yA + .03, off, [sB - sA, .06, .06]); bar((sA + sB) / 2, yB - .03, off, [sB - sA, .06, .06]);
       for (let s = sA + step; s < sB - .02; s += step) bar(s, (yA + yB) / 2, off, [.035, yB - yA, .04]);
       if (!o.vertical) for (let y = yA + step; y < yB - .02; y += step) bar((sA + sB) / 2, y, off, [sB - sA, .035, .04]);
-      // Behind the lattice: paper (shōji), or the dark of the room.
-      slab(storey === 3 ? 'plaster' : g ? 'lacquer' : 'timber', f, line, (sA + sB) / 2, (yA + yB) / 2, off - .07, [sB - sA, yB - yA, .02], {color: o.paper ?? (storey === 3 ? '#d9d2bf' : g ? '#2a231d' : '#231c17')});
+      // Behind the lattice: paper (shōji), or the dark of the room: the pane of the opening.
+      slab(storey === 3 ? 'plaster' : g ? 'lacquer' : 'timber', f, line, (sA + sB) / 2, (yA + yB) / 2, off - .07, [sB - sA, yB - yA, .02], {...pane, color: o.paper ?? (storey === 3 ? '#d9d2bf' : g ? '#2a231d' : '#231c17')});
     };
     // Sill (jifuku), lintel (uchinori nageshi) and head beam (kashiranuki) run through every closed bay.
     if (kind !== 'open') {
@@ -183,19 +191,19 @@ function storeyedPavilion(k, e, P) {
       if (win) {
         lattice(mid - win.w / 2, mid + win.w / 2, win.sill, win.spring + (kind === 'katomado' ? .2 : 0), -.02, kind === 'renji' ? .11 : .14, {vertical: kind === 'renji'});
         // The frame: jambs, and the ogee head in short lengths.
-        for (const side of [-1, 1]) wood(mid + side * win.w / 2, (win.sill + win.spring) / 2, .04, [.07, win.spring - win.sill, .1], {wrap: true});
-        if (kind === 'katomado') for (let i = 0; i < 10; i++) { const s = mid - win.w / 2 + (i + .5) * win.w / 10; wood(s, head(s) + .02, .04, [win.w / 10 + .02, .07, .1], {wrap: true}); }
-        else wood(mid, win.spring, .04, [win.w, .07, .1], {wrap: true});
-        wood(mid, win.sill - .03, .05, [win.w + .14, .07, .12], {wrap: true});
+        for (const side of [-1, 1]) wood(mid + side * win.w / 2, (win.sill + win.spring) / 2, .04, [.07, win.spring - win.sill, .1], {...own, wrap: true});
+        if (kind === 'katomado') for (let i = 0; i < 10; i++) { const s = mid - win.w / 2 + (i + .5) * win.w / 10; wood(s, head(s) + .02, .04, [win.w / 10 + .02, .07, .1], {...own, wrap: true}); }
+        else wood(mid, win.spring, .04, [win.w, .07, .1], {...own, wrap: true});
+        wood(mid, win.sill - .03, .05, [win.w + .14, .07, .12], {...own, wrap: true});
       }
     } else if (kind === 'door' || kind === 'door2') {
       // Two leaves of boards (itado, itatobira) in a frame.
       const top = y1 - lint;
       for (const side of [-1, 1]) {
         const c = mid + side * w / 4;
-        if (g) wood(c, (y0 + .14 + top) / 2, -.02, [w / 2 - .02, top - y0 - .14, .07]);
-        else for (let s = -w / 4 + .06; s < w / 4; s += .2) slab('timber', f, line, c + s + .04, (y0 + .14 + top) / 2, -.02, [.19, top - y0 - .14, .07], {color: '#5a4230'});
-        for (const y of [y0 + .5, top - .4]) wood(c, y, .03, [w / 2 - .08, .08, .03]);
+        if (g) wood(c, (y0 + .14 + top) / 2, -.02, [w / 2 - .02, top - y0 - .14, .07], pane);
+        else for (let s = -w / 4 + .06; s < w / 4; s += .2) slab('timber', f, line, c + s + .04, (y0 + .14 + top) / 2, -.02, [.19, top - y0 - .14, .07], {...pane, color: '#5a4230'});
+        for (const y of [y0 + .5, top - .4]) wood(c, y, .03, [w / 2 - .08, .08, .03], own);
       }
       if (g) wood(mid, (top + y1 - .25) / 2, 0, [w, y1 - .25 - top, .06]);
       else put('plaster', at(f, line, mid, (top + .08 + y1 - .25) / 2, 0), dims(f, [w, y1 - .25 - top - .08, .14]));
@@ -203,9 +211,9 @@ function storeyedPavilion(k, e, P) {
       // Shitomi: a fixed lower lattice panel; the upper one hooked up under the eaves of the veranda.
       lattice(s0 + post / 2, s1 - post / 2, y0 + .14, y0 + (S.shitomi ?? 1.05), 0, .13);
       const yu = y1 - .42;
-      if (on('timber')) for (let d = .12; d < 1.0; d += .13) slab('timber', f, line, mid, yu, d, [w, .035, .035], {color: '#2d261f'});
-      for (let s = s0 + post / 2 + .13; s < s1 - post / 2; s += .13) slab('timber', f, line, s, yu, .52, [.035, .035, 1.0], {color: '#2d261f'});
-      slab('timber', f, line, mid, yu + .03, .52, [w, .02, 1.0], {color: '#3a312a'});
+      if (on('timber')) for (let d = .12; d < 1.0; d += .13) slab('timber', f, line, mid, yu, d, [w, .035, .035], {...own, color: '#2d261f'});
+      for (let s = s0 + post / 2 + .13; s < s1 - post / 2; s += .13) slab('timber', f, line, s, yu, .52, [.035, .035, 1.0], {...own, color: '#2d261f'});
+      slab('timber', f, line, mid, yu + .03, .52, [w, .02, 1.0], {...own, color: '#3a312a'});
       put('plaster', at(f, line, mid, y1 - .14, 0), dims(f, [w, .22, .14]));
       slab('timber', f, line, mid, y1 - .3, .04, [w + .02, .12, .16]);
     } else if (kind === 'lattice') {
@@ -217,19 +225,19 @@ function storeyedPavilion(k, e, P) {
       // Maira-do: two sliding panels with close horizontal slats.
       for (const side of [-1, 1]) {
         const c = mid + side * w / 4, top = y1 - lint - .08;
-        wood(c, (y0 + .14 + top) / 2, -.02, [w / 2, top - y0 - .14, .05]);
-        for (let y = y0 + .3; y < top - .05; y += .14) wood(c, y, .03, [w / 2 - .04, .025, .02], {wrap: true});
-        for (const s of [-w / 4 + .04, w / 4 - .04]) wood(c + s, (y0 + .14 + top) / 2, .03, [.06, top - y0 - .14, .04], {wrap: true});
+        wood(c, (y0 + .14 + top) / 2, -.02, [w / 2, top - y0 - .14, .05], pane);
+        for (let y = y0 + .3; y < top - .05; y += .14) wood(c, y, .03, [w / 2 - .04, .025, .02], {...own, wrap: true});
+        for (const s of [-w / 4 + .04, w / 4 - .04]) wood(c + s, (y0 + .14 + top) / 2, .03, [.06, top - y0 - .14, .04], {...own, wrap: true});
       }
       wood(mid, (y1 - lint + .08 + y1 - .25) / 2, 0, [w, lint - .33, .06]);
     } else if (kind === 'sankarado') {
       // Sankarado: panelled doors, latticed above and boarded below, in stiles and rails.
       for (const side of [-1, 1]) {
         const c = mid + side * w / 4, top = y1 - (S.doorTop ?? .45), ww = w / 2 - .02;
-        wood(c, (y0 + .14 + top) / 2, -.03, [ww, top - y0 - .14, .05]);
-        for (const s of [-ww / 2 + .04, ww / 2 - .04]) wood(c + s, (y0 + .14 + top) / 2, .02, [.07, top - y0 - .14, .05], {wrap: true});
+        wood(c, (y0 + .14 + top) / 2, -.03, [ww, top - y0 - .14, .05], pane);
+        for (const s of [-ww / 2 + .04, ww / 2 - .04]) wood(c + s, (y0 + .14 + top) / 2, .02, [.07, top - y0 - .14, .05], {...own, wrap: true});
         const split = y0 + (top - y0) * .45;
-        for (const y of [y0 + .2, split - .04, split + .04, top - .05]) wood(c, y, .02, [ww, .07, .05], {wrap: true});
+        for (const y of [y0 + .2, split - .04, split + .04, top - .05]) wood(c, y, .02, [ww, .07, .05], {...own, wrap: true});
         lattice(c - ww / 2 + .08, c + ww / 2 - .08, split + .08, top - .09, .01, .12);
       }
       const dtop = y1 - (S.doorTop ?? .45);
