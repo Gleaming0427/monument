@@ -515,7 +515,169 @@
       "heightSource": "family estimate",
       "levelsSource": "family estimate"
     },
-    "geometry": "Plan: the OpenStreetMap outline turned onto the nave's axis (104.5° from north) gives the bays (six of 4.8 m in the nave, three of 5.2 m in the choir), the towers, porches, transept annexes, the hemicycle and the Circata. Heights: spires (77, 75 m), lantern (57.45 m outside, 40.85 m inside) and nave vault (21.90 m) from the sources; the others read on four Commons photographs whose viewpoints were fitted to the model with calibrate.mjs (west front: galerie top 29.8 m, rose 18.8 m, belfries 30.8–47.5 m; chevet: outer ambulatory 7.2 m, inner 15.2 m, clerestory 25 m, apse roof 31.8 m, Circata 9 m; south side: chapels 9.7 m, nave eave 22.4 m). The spires stand about 1.4 m inward of the towers' outline, as both the west and the north-east photos show."
+    "geometry": "Plan: the OpenStreetMap outline turned onto the nave's axis (104.5° from north) gives the bays (six of 4.8 m in the nave, three of 5.2 m in the choir), the towers, porches, transept annexes, the hemicycle and the Circata. Heights: spires (77, 75 m), lantern (57.45 m outside, 40.85 m inside) and nave vault (21.90 m) from the sources; the others read on four Commons photographs whose viewpoints were fitted to the model with calibrate.mjs (west front: galerie top 29.8 m, rose 18.8 m, belfries 30.8–47.5 m; chevet: outer ambulatory 7.2 m, inner 15.2 m, clerestory 25 m, apse roof 31.8 m, Circata 9 m; south side: chapels 9.7 m, nave eave 22.4 m). The spires stand about 1.4 m inward of the towers' outline, as both the west and the north-east photos show.",
+    "openings": [
+      {
+        "element": 14,
+        "role": "louvres",
+        "at": [
+          -40.4,
+          38.3,
+          -15.2
+        ],
+        "fault": "a stone member of the north tower stands across the middle of these louvres, 0.8 m in front of them"
+      },
+      {
+        "element": 19,
+        "role": "window",
+        "at": [
+          -2.7,
+          18.2,
+          -13.1
+        ],
+        "fault": "the transept front (element 20) stands in front of this window of the arm’s last bay, within 1 m of its wall"
+      },
+      {
+        "element": 19,
+        "role": "window",
+        "at": [
+          10.5,
+          18.2,
+          -9.7
+        ],
+        "fault": "the transept front (element 20) stands in front of this window of the arm’s last bay, within 1 m of its wall"
+      },
+      {
+        "element": 19,
+        "role": "window",
+        "at": [
+          9.5,
+          18.2,
+          -5.7
+        ],
+        "fault": "the lean-to roof of the inner ambulatory (element 26), 17.2 m high against this wall, covers the foot of this window, whose sill is at 14.5 m"
+      },
+      {
+        "element": 21,
+        "role": "window",
+        "at": [
+          -9.5,
+          18.2,
+          12.9
+        ],
+        "fault": "the transept front (element 22) stands in front of this window of the arm’s last bay, within 1 m of its wall"
+      },
+      {
+        "element": 21,
+        "role": "window",
+        "at": [
+          3.8,
+          18.2,
+          16.3
+        ],
+        "fault": "the transept front (element 22) stands in front of this window of the arm’s last bay, within 1 m of its wall"
+      },
+      {
+        "element": 21,
+        "role": "window",
+        "at": [
+          4.8,
+          18.2,
+          12.3
+        ],
+        "fault": "the lean-to roof of the inner ambulatory (element 26), 17.2 m high against this wall, covers the foot of this window, whose sill is at 14.5 m"
+      },
+      {
+        "element": 23,
+        "role": "louvres",
+        "at": [
+          3.7,
+          48.4,
+          7.1
+        ],
+        "fault": "a stair turret of the lantern (its axis 7.7 m from the centre, 1.55 m in radius) stands 0.84 m into this diagonal face of the octagon; the photograph of the lantern shows the turrets clear of it"
+      },
+      {
+        "element": 23,
+        "role": "louvres",
+        "at": [
+          -4.9,
+          48.4,
+          4.9
+        ],
+        "fault": "a stair turret of the lantern stands 0.84 m into this diagonal face of the octagon"
+      },
+      {
+        "element": 23,
+        "role": "louvres",
+        "at": [
+          -2.7,
+          48.4,
+          -3.8
+        ],
+        "fault": "a stair turret of the lantern stands 0.84 m into this diagonal face of the octagon"
+      },
+      {
+        "element": 23,
+        "role": "louvres",
+        "at": [
+          5.9,
+          48.4,
+          -1.5
+        ],
+        "fault": "a stair turret of the lantern stands 0.84 m into this diagonal face of the octagon"
+      },
+      {
+        "element": 23,
+        "role": "window",
+        "at": [
+          -2.8,
+          36.7,
+          -4.0
+        ],
+        "fault": "a stair turret of the lantern stands 0.84 m into this diagonal face of the octagon"
+      },
+      {
+        "element": 25,
+        "role": "window",
+        "at": [
+          24.2,
+          20.2,
+          2.9
+        ],
+        "fault": "the Norman turret (element 32) stands in front of this window of the first face of the apse"
+      },
+      {
+        "element": 25,
+        "role": "window",
+        "at": [
+          21.6,
+          20.2,
+          13.1
+        ],
+        "fault": "the Norman turret (element 33) stands in front of this window of the last face of the apse"
+      },
+      {
+        "element": 28,
+        "role": "window",
+        "at": [
+          13.0,
+          4.2,
+          -10.3
+        ],
+        "fault": "the foot of the north transept front (element 20) stands 0.6 m in front of this chapel window"
+      },
+      {
+        "element": 28,
+        "role": "window",
+        "at": [
+          5.4,
+          4.2,
+          19.2
+        ],
+        "fault": "the foot of the south transept front (element 22) stands in this chapel window, 0.1 m in front of its glass"
+      }
+    ]
   },
   "phases": [
     {

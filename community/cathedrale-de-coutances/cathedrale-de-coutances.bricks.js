@@ -286,7 +286,8 @@ export default {
         // On a free face each register is an inner wall and a skin cut by the tall blind lancets (recessed).
         const y0 = regs[r], y1 = regs[r + 1], low = r === 0 && portal.length ? P0.spring + (P0.rise ?? 2) + 1.5 : y0 + .4, spring = y1 - aw0 * .9 - .4;
         if (plain(o) || spring - low < 1.5) { G.wall(a, b, y0, y1, t, o, r === 0 ? portal : [], ph(y0)); continue; }
-        G.wall(shiftIn(a, skin / 2), shiftIn(b, skin / 2), y0, y1, t - skin, o, r === 0 ? portal : [], ph(y0));
+        // The portal goes through both, but its door and its glass are laid once, in the skin: the inner wall is only cut.
+        G.wall(shiftIn(a, skin / 2), shiftIn(b, skin / 2), y0, y1, t - skin, o, r === 0 ? portal.map(h => ({...h, door: undefined, glass: false})) : [], ph(y0));
         const blind = Array.from({length: n0}, (_, j) => ({kind: 'pointed', s: bw + aw0 * (j + .5), w: aw0 - .55, sill: low, spring, glass: false, margin: 0}));
         G.wall(shiftOut(a, (t - skin) / 2), shiftOut(b, (t - skin) / 2), y0, y1, skin, o, [...(r === 0 ? portal : []), ...blind], ph(y0));
       }
